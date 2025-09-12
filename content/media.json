@@ -1,0 +1,79 @@
+{
+  "sectionTitle": "MEDIA",
+  "photos": {
+    "sectionTitle": "PHOTOS",
+    "gallery": [
+      {
+        "id": "venue-dec-2023",
+        "caption": "THE VENUE - DEC 2023",
+        "image": "images/live/venue-dec-2023.jpg",
+        "alt": "Lockslip performing at The Venue in December 2023"
+      },
+      {
+        "id": "recording-nov-2023", 
+        "caption": "RECORDING SESSION - NOV 2023",
+        "image": "images/archive/recording-nov-2023.jpg",
+        "alt": "Band recording in studio November 2023"
+      },
+      {
+        "id": "festival-summer-2023",
+        "caption": "FESTIVAL - SUMMER 2023",
+        "image": "images/live/festival-summer-2023.jpg", 
+        "alt": "Festival performance summer 2023"
+      },
+      {
+        "id": "rehearsal-oct-2023",
+        "caption": "REHEARSAL - OCT 2023",
+        "image": "images/archive/rehearsal-oct-2023.jpg",
+        "alt": "Band rehearsal October 2023"
+      }
+    ]
+  },
+  "videos": {
+    "sectionTitle": "VIDEOS",
+    "items": [
+      {
+        "id": "live-set-2024",
+        "title": "Live at The Venue 2024",
+        "description": "Full live set from our headlining show",
+        "url": "https://www.youtube.com/watch?v=example1",
+        "thumbnail": "images/videos/live-set-2024-thumb.jpg",
+        "type": "youtube"
+      },
+      {
+        "id": "studio-session-2023",
+        "title": "Studio Session Behind the Scenes",
+        "description": "Behind the scenes footage from our latest recording",
+        "url": "https://www.youtube.com/watch?v=example2",
+        "thumbnail": "images/videos/studio-session-thumb.jpg",
+        "type": "youtube"
+      }
+    ]
+  },
+  "logos": {
+    "sectionTitle": "LOGOS & PRESS KIT",
+    "items": [
+      {
+        "id": "logo-heavy",
+        "title": "Heavy Logo",
+        "description": "Bold version with heavy styling",
+        "file": "images/logos/lockslip-logo-heavy.png",
+        "size": "High Resolution PNG"
+      },
+      {
+        "id": "logo-mild",
+        "title": "Mild Logo",
+        "description": "Standard version with clean styling",
+        "file": "images/logos/lockslip-logo-mild.png",
+        "size": "High Resolution PNG"
+      },
+      {
+        "id": "logo-alt",
+        "title": "Alternative Logo", 
+        "description": "Alternative styling variation",
+        "file": "images/logos/lockslip-logo-alt.png",
+        "size": "High Resolution PNG"
+      }
+    ]
+  }
+}

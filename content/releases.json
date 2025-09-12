@@ -1,0 +1,25 @@
+{
+  "sectionTitle": "RELEASES",
+  "releases": [
+    {
+      "id": "ep-2024",
+      "title": "Lockslip - EP",
+      "description": "Lockslip is the crushing self-titled debut EP from the Los Angeles metallic hardcore outfit. Forming in late 2022 and self-producing/self-releasing the EP in January 2024, the band turned heads quickly with this 14-minute display of chaos. With punishing breakdowns that any hardcore fan would enjoy, as well as plenty of complex mathy bits, this feels less like the debut release of a brand-new band, and more like an intentional and polished group looking ahead to the future. These 4 songs tell the story of being fed up with the status quo, and of expressing a deep inner turmoil through feedback-laden anguish. The EP was produced and mixed by drummer Noah Baxter at Dichotic Studios, mastered digitally by Brian Skipworth at Skipwave Sound, and remastered for vinyl by Nick Townsend at Townsend Mastering.",
+      "year": "2024",
+      "month": "January",
+      "day": "26",
+      "coverImage": "images/releases/2024-ep-cover.png",
+      "tracks": [
+        "1. Guillotine Blueprint",
+        "2. Bend",
+        "3. Evildoer",
+        "4. Payment"
+      ],
+      "streamingLinks": {
+        "bandcamp": "https://lockslip.bandcamp.com/album/lockslip",
+        "spotify": "https://open.spotify.com/album/7megYx0XmIKQLbz2tun7CU",
+        "apple": "https://music.apple.com/us/album/lockslip-ep/1727216728"
+      }
+    }
+  ]
+}

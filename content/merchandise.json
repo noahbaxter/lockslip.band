@@ -1,0 +1,43 @@
+{
+  "sectionTitle": "MERCH",
+  "items": [
+    {
+      "id": "guillotine-tee",
+      "name": "Guillotine Tee",
+      "price": "$25",
+      "image": "images/merch/shirt-guillotine.jpg",
+      "description": "Guillotine Blueprint design on black Comfort Colors",
+      "purchaseUrl": "https://lockslip.bigcartel.com/product/lockslip-tee",
+      "inStock": true
+    },
+    {
+      "id": "vinyl-lp",
+      "name": "VINYL LP",
+      "price": "$30", 
+      "image": "images/merch/vinyl-lp-black.jpg",
+      "description": "Latest album on 180g black vinyl",
+      "purchaseUrl": "https://lockslip.bigcartel.com/product/vinyl-lp",
+      "variants": ["Black Vinyl", "Limited Red Vinyl"],
+      "inStock": true
+    },
+    {
+      "id": "sticker-pack",
+      "name": "STICKER PACK",
+      "price": "$8",
+      "image": "images/merch/sticker-pack.jpg",
+      "description": "Pack of 5 die-cut vinyl stickers",
+      "purchaseUrl": "https://lockslip.bigcartel.com/product/sticker-pack",
+      "inStock": true
+    },
+    {
+      "id": "hoodie",
+      "name": "LOCKSLIP HOODIE",
+      "price": "$45",
+      "image": "images/merch/hoodie-black.jpg",
+      "description": "Heavy weight pullover hoodie",
+      "purchaseUrl": "https://lockslip.bigcartel.com/product/hoodie",
+      "sizes": ["S", "M", "L", "XL", "XXL"],
+      "inStock": false
+    }
+  ]
+}

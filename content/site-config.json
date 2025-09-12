@@ -1,0 +1,63 @@
+{
+  "bandName": "LOCKSLIP",
+  "hero": {
+    "title": "LOCKSLIP",
+    "primaryButton": {
+      "text": "LISTEN NOW",
+      "link": "#music"
+    },
+    "secondaryButton": {
+      "text": "LIVE SHOWS", 
+      "link": "#shows"
+    }
+  },
+  "streamingLinks": [
+    {
+      "name": "Bandcamp",
+      "url": "https://lockslip.bandcamp.com/",
+      "className": "bandcamp"
+    },
+    {
+      "name": "Spotify",
+      "url": "https://open.spotify.com/artist/0gzGKvAghxfa0VdLBWLb7R",
+      "className": "spotify"
+    },
+    {
+      "name": "Apple Music",
+      "url": "https://music.apple.com/us/artist/lockslip/1727196689",
+      "className": "apple"
+    },
+    {
+      "name": "YouTube",
+      "url": "https://www.youtube.com/channel/UC39B7KVWxjYZQprFl6JNKoQ",
+      "className": "youtube"
+    }
+  ],
+  "contact": {
+    "booking": "lockslipband@gmail.com"
+  },
+  "socialMedia": [
+    {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/lockslip/"
+    },
+    {
+      "platform": "Twitter",
+      "url": "https://twitter.com/Lockslipband"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://www.facebook.com/lockslip/"
+    },
+    {
+      "platform": "TikTok",
+      "url": "https://tiktok.com/@lockslip"
+    }
+  ],
+  "newsletter": {
+    "title": "UPDATES",
+    "subtitle": "NEW RELEASES + LIVE SHOWS",
+    "placeholder": "Enter your email",
+    "buttonText": "SUBSCRIBE"
+  }
+}
