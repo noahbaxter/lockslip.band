@@ -259,14 +259,14 @@ class ContentLoader {
                                 <h3>${show.event || show.venue}</h3>
                                 <p class="show-location">${show.location}</p>
                             </div>
+                            ${show.bands && show.bands.length > 0 ? `
+                                <div class="show-bands">
+                                    <p class="bands-list">${show.bands.map(band => 
+                                        band === 'Lockslip' ? `<span class="lockslip-highlight">${band}</span>` : band
+                                    ).join(', ')}</p>
+                                </div>
+                            ` : ''}
                         </div>
-                        ${show.bands && show.bands.length > 0 ? `
-                            <div class="show-bands">
-                                <p class="bands-list">${show.bands.map(band => 
-                                    band === 'Lockslip' ? `<span class="lockslip-highlight">${band}</span>` : band
-                                ).join(', ')}</p>
-                            </div>
-                        ` : ''}
                         ${!isPast && show.ticketsUrl ? `
                             <div class="show-actions">
                                 <a href="${show.ticketsUrl}" class="btn small" target="_blank" rel="noopener">TICKETS</a>

@@ -541,41 +541,10 @@ h3 {
 
 .show-info {
     flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Desktop layout: reset mobile ordering */
-@media (min-width: 769px) {
-    .show-card {
-        display: grid;
-        grid-template-columns: 80px 1fr auto;
-        grid-template-areas: 
-            "date info poster"
-            "date bands poster";
-        gap: 2rem;
-        align-items: start;
-    }
-    
-    .show-date {
-        grid-area: date;
-        order: unset;
-    }
-    
-    .show-info {
-        grid-area: info;
-        order: unset;
-    }
-    
-    .show-bands {
-        grid-area: bands;
-        order: unset;
-        margin-top: 0;
-    }
-    
-    .show-poster-preview {
-        grid-area: poster;
-        order: unset;
-    }
-}
 
 .show-info h3 {
     margin-bottom: 0.1rem;
@@ -1219,32 +1188,59 @@ footer {
         font-size: 0.9rem;
     }
     
-    .show-card {
+    /* Mobile layout for shows with posters */
+    .show-card.has-poster {
+        display: grid;
+        grid-template-columns: 45% 55%;
+        grid-template-areas: 
+            "poster info"
+            "poster date";
+        gap: 1rem;
+        padding: 1.5rem;
+        align-items: start;
+    }
+    
+    .show-card.has-poster .show-poster-preview {
+        grid-area: poster;
+        height: 100%;
+        width: 100%;
+        aspect-ratio: 3/4;
+        overflow: hidden;
+    }
+    
+    .show-card.has-poster .show-poster-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .show-card.has-poster .show-info {
+        grid-area: info;
+        align-self: start;
+    }
+    
+    .show-card.has-poster .show-date {
+        grid-area: date;
+        align-self: end;
+        text-align: center;
+    }
+    
+    /* Hide bands on mobile for shows with posters */
+    .show-card.has-poster .show-info .show-bands {
+        display: none;
+    }
+    
+    /* Remove red line under location on mobile */
+    .show-card.has-poster .show-location {
+        border-bottom: none !important;
+        padding-bottom: 0;
+    }
+    
+    /* Shows without posters keep original mobile layout */
+    .show-card:not(.has-poster) {
         flex-direction: column;
-        text-align: left;
         gap: 1.5rem;
         padding: 1.5rem;
-    }
-    
-    .show-date {
-        margin-right: 0;
-        text-align: center;
-        align-self: center;
-        order: 1;
-    }
-    
-    .show-info {
-        text-align: left;
-        order: 2;
-    }
-    
-    .show-bands {
-        order: 3;
-    }
-    
-    .show-poster-preview {
-        order: 4;
-        align-self: center;
     }
     
     .show-info h3 {
