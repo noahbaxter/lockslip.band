@@ -28,6 +28,7 @@ body {
     background-image: 
         radial-gradient(circle at 25% 25%, rgba(255, 0, 0, 0.02) 0%, transparent 50%),
         radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.01) 0%, transparent 50%);
+    overflow-x: hidden;
 }
 
 .container {
@@ -47,6 +48,7 @@ header {
     border-bottom: 2px solid var(--border-color);
     backdrop-filter: blur(10px);
     overflow: visible;
+    left: 0;
 }
 
 nav {
@@ -266,7 +268,7 @@ h2 {
 
 h3 {
     font-size: 2rem;
-    margin-bottom: 2rem;
+    /* margin-bottom: 2rem; */
     color: var(--secondary-color);
     font-weight: 800;
     text-transform: uppercase;
@@ -541,12 +543,56 @@ h3 {
     flex: 1;
 }
 
+/* Desktop layout: reset mobile ordering */
+@media (min-width: 769px) {
+    .show-card {
+        display: grid;
+        grid-template-columns: 80px 1fr auto;
+        grid-template-areas: 
+            "date info poster"
+            "date bands poster";
+        gap: 2rem;
+        align-items: start;
+    }
+    
+    .show-date {
+        grid-area: date;
+        order: unset;
+    }
+    
+    .show-info {
+        grid-area: info;
+        order: unset;
+    }
+    
+    .show-bands {
+        grid-area: bands;
+        order: unset;
+        margin-top: 0;
+    }
+    
+    .show-poster-preview {
+        grid-area: poster;
+        order: unset;
+    }
+}
+
 .show-info h3 {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.1rem;
     font-size: 1.4rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
+    border-bottom: none !important;
+}
+
+.show-location {
+    color: var(--text-dark);
+    margin: 0 0 0.5rem 0;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
 }
 
 .show-info p {
@@ -964,14 +1010,186 @@ footer {
     font-size: 0.8rem;
 }
 
-@media (max-width: 768px) {
-    .nav-right {
-        flex-direction: column;
-        gap: 1rem;
+/* Mobile Menu Styles */
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    z-index: 1001;
+    position: relative;
+}
+
+.hamburger-line {
+    width: 25px;
+    height: 2px;
+    background: var(--text-color);
+    margin: 3px 0;
+    transition: 0.3s;
+    transform-origin: center;
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 90px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 90px);
+    background: var(--primary-color);
+    z-index: 999;
+    padding: 2rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 3rem;
+    overflow-y: auto;
+}
+
+.mobile-menu.active {
+    display: flex;
+}
+
+.mobile-nav-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.mobile-nav-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 1.5rem;
+    transition: color 0.2s ease;
+}
+
+.mobile-nav-links a:hover {
+    color: var(--accent-color);
+    text-shadow: 0 0 10px var(--accent-color);
+}
+
+.mobile-streaming-icons {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.mobile-streaming-icons .streaming-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-streaming-icons .streaming-icon img {
+    width: 32px;
+    height: 32px;
+}
+
+@media (max-width: 1024px) {
+    .release-item {
+        grid-template-columns: 1fr;
+        gap: 2rem;
     }
     
+    .release-artwork {
+        align-items: center;
+    }
+    
+    .release-cover {
+        width: 100%;
+        max-width: 400px;
+        height: 400px;
+        margin: 0 auto;
+    }
+    
+    .release-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .release-date {
+        align-self: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
     .nav-links {
-        gap: 1rem;
+        display: none;
+    }
+    
+    .streaming-icons {
+        display: none;
+    }
+    
+    .mobile-menu-toggle {
+        display: flex;
+    }
+    
+    .nav-spacer {
+        display: block;
+        width: 1px;
+        height: 1px;
+        visibility: hidden;
+    }
+    
+    .logo {
+        height: 120px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
+    }
+    
+    .logo img {
+        height: 120px;
+        width: auto;
+    }
+    
+    nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 20px;
+        grid-template-columns: none;
+        gap: 0;
+        width: 100%;
+        position: relative;
+        height: 60px;
+    }
+    
+    .mobile-menu-toggle {
+        position: absolute;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+        z-index: 1001;
     }
     
     .hero-content h2 {
@@ -1003,16 +1221,51 @@ footer {
     
     .show-card {
         flex-direction: column;
-        text-align: center;
-        gap: 1rem;
+        text-align: left;
+        gap: 1.5rem;
+        padding: 1.5rem;
     }
     
     .show-date {
         margin-right: 0;
+        text-align: center;
+        align-self: center;
+        order: 1;
+    }
+    
+    .show-info {
+        text-align: left;
+        order: 2;
+    }
+    
+    .show-bands {
+        order: 3;
+    }
+    
+    .show-poster-preview {
+        order: 4;
+        align-self: center;
+    }
+    
+    .show-info h3 {
+        font-size: 1.2rem;
+        line-height: 1.3;
+        margin-bottom: 0.5rem;
+    }
+    
+    .show-info p {
+        font-size: 0.9rem;
+        margin: 0.2rem 0;
+    }
+    
+    .bands-list {
+        font-size: 0.9rem !important;
+        line-height: 1.4 !important;
     }
     
     .show-actions {
         margin-left: 0;
+        align-self: center;
     }
     
     .newsletter-signup {
@@ -1091,7 +1344,19 @@ footer {
     
     .release-cover {
         width: 100%;
-        height: 280px;
+        max-width: 320px;
+        height: 320px;
+        margin: 0 auto;
+    }
+    
+    .release-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .release-date {
+        align-self: flex-start;
     }
     
     .release-streaming-links {
@@ -1166,9 +1431,7 @@ section::before {
     color: var(--accent-color);
     text-transform: uppercase;
     letter-spacing: 2px;
-    margin-bottom: 1.5rem;
     border-bottom: 2px solid var(--accent-color);
-    padding-bottom: 0.5rem;
 }
 
 .show-date .year {
@@ -1579,8 +1842,32 @@ section::before {
     }
     
     .show-card.has-poster {
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
+        gap: 1rem;
+    }
+    
+    .show-card.has-poster {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .show-card.has-poster .show-date {
+        order: 1;
+    }
+    
+    .show-card.has-poster .show-info {
+        text-align: center;
+        order: 2;
+    }
+    
+    .show-card.has-poster .show-poster-preview {
+        order: 3;
+    }
+    
+    .show-card.has-poster .show-bands {
+        order: 4;
     }
     
     .show-date {
@@ -1619,5 +1906,10 @@ section::before {
     
     .tour-shows {
         padding: 0.5rem;
+    }
+    
+    .tour-shows .show-card {
+        margin-bottom: 0.5rem;
+        padding: 1rem;
     }
 }

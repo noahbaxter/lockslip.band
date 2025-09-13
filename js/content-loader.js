@@ -255,16 +255,18 @@ class ContentLoader {
                             <span class="year">${show.date.year}</span>
                         </div>
                         <div class="show-info">
-                            <h3>${show.event || show.venue}</h3>
-                            <p>${show.location}</p>
-                            ${show.bands && show.bands.length > 0 ? `
-                                <div class="show-bands">
-                                    <p class="bands-list">${show.bands.map(band => 
-                                        band === 'Lockslip' ? `<span class="lockslip-highlight">${band}</span>` : band
-                                    ).join(', ')}</p>
-                                </div>
-                            ` : ''}
+                            <div class="show-header">
+                                <h3>${show.event || show.venue}</h3>
+                                <p class="show-location">${show.location}</p>
+                            </div>
                         </div>
+                        ${show.bands && show.bands.length > 0 ? `
+                            <div class="show-bands">
+                                <p class="bands-list">${show.bands.map(band => 
+                                    band === 'Lockslip' ? `<span class="lockslip-highlight">${band}</span>` : band
+                                ).join(', ')}</p>
+                            </div>
+                        ` : ''}
                         ${!isPast && show.ticketsUrl ? `
                             <div class="show-actions">
                                 <a href="${show.ticketsUrl}" class="btn small" target="_blank" rel="noopener">TICKETS</a>
@@ -482,8 +484,10 @@ class ContentLoader {
 
     renderStreamingIcons() {
         const streamingIcons = document.querySelector('.streaming-icons');
-        if (streamingIcons && this.config.streamingLinks) {
-            streamingIcons.innerHTML = this.config.streamingLinks.map(link => {
+        const mobileStreamingIcons = document.querySelector('.mobile-streaming-icons');
+        
+        if (this.config.streamingLinks) {
+            const iconHTML = this.config.streamingLinks.map(link => {
                 // Map to actual SVG files
                 let iconPath = '';
                 switch(link.className) {
@@ -511,6 +515,14 @@ class ContentLoader {
                     `;
                 }
             }).join('');
+            
+            // Populate both desktop and mobile streaming icons
+            if (streamingIcons) {
+                streamingIcons.innerHTML = iconHTML;
+            }
+            if (mobileStreamingIcons) {
+                mobileStreamingIcons.innerHTML = iconHTML;
+            }
         }
     }
 

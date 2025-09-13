@@ -7,6 +7,7 @@
     <meta name="description" content="Lockslip - Official band website. Stream our music, buy merch, and stay updated on shows.">
     <link rel="stylesheet" href="styles.css">
     <script src="js/content-loader.js"></script>
+    <script src="js/mobile-menu.js"></script>
 </head>
 <body>
     <header>
@@ -23,7 +24,23 @@
             <div class="streaming-icons">
                 <!-- Streaming icons loaded dynamically -->
             </div>
+            <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
         </nav>
+        <div class="mobile-menu">
+            <ul class="mobile-nav-links">
+                <li><a href="#music">Music</a></li>
+                <li><a href="#shows">Shows</a></li>
+                <li><a href="#merch">Merch</a></li>
+                <li><a href="#media">Media</a></li>
+            </ul>
+            <div class="mobile-streaming-icons">
+                <!-- Streaming icons loaded dynamically -->
+            </div>
+        </div>
     </header>
 
     <main>
