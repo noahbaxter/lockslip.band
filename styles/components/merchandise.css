@@ -1,0 +1,63 @@
+/* Merchandise Component */
+.merch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.merch-item {
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.merch-item:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+.merch-image {
+    width: 100%;
+    height: 250px;
+    background: linear-gradient(45deg, var(--border-color), var(--section-alt));
+    border-radius: 0;
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.merch-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.merch-image:hover img {
+    transform: scale(1.05);
+}
+
+.merch-item h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0 1rem;
+}
+
+.merch-item p {
+    color: var(--accent-color);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.merch-item .btn {
+    margin-bottom: 1.5rem;
+}

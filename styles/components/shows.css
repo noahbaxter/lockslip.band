@@ -1,0 +1,480 @@
+/* Shows Component */
+.shows-section {
+    margin-bottom: 3rem;
+}
+
+.shows-section h3 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+    text-align: center;
+    padding-bottom: 0.5rem;
+}
+
+.shows-chronological {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Show/Hide desktop/mobile versions */
+.desktop-only {
+    display: block;
+}
+
+.mobile-only {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .desktop-only {
+        display: none;
+    }
+    
+    .mobile-only {
+        display: block;
+    }
+}
+
+/* Desktop Show Cards */
+.desktop-show {
+    display: grid;
+    grid-template-columns: 120px 1fr auto auto;
+    gap: 2rem;
+    align-items: center;
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.desktop-show:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+}
+
+.desktop-show.past-show {
+    opacity: 0.8;
+}
+
+/* Desktop Show Date */
+.desktop-show .show-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: 100px;
+}
+
+.desktop-show .show-date .month {
+    color: var(--accent-color);
+    font-size: 1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.desktop-show .show-date .day {
+    color: var(--secondary-color);
+    font-size: 2.5rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.desktop-show .show-date .year {
+    color: var(--text-dark);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Desktop Show Info */
+.desktop-show .show-info {
+    flex: 1;
+}
+
+.desktop-show .show-header {
+    margin-bottom: 0.5rem;
+}
+
+.desktop-show .show-venue {
+    margin-bottom: 0.1rem;
+    font-size: 1.4rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent-color);
+    text-align: left;
+}
+
+.desktop-show .show-location {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: normal;
+    padding-bottom: 0.3rem;
+    display: block;
+    width: 100%;
+}
+
+.desktop-show .show-bands {
+    margin-top: 0.5rem;
+}
+
+.desktop-show .bands-list {
+    color: var(--text-light);
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.desktop-show .show-actions {
+    display: flex;
+    align-items: center;
+}
+
+/* Desktop Show Poster */
+.desktop-show .show-poster-preview {
+    width: 120px;
+    height: 160px;
+    position: relative;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.desktop-show .show-poster-preview:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+}
+
+.desktop-show .show-poster-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.desktop-show .show-poster-preview:hover img {
+    transform: scale(1.05);
+}
+
+/* Mobile Show Cards */
+.mobile-show {
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+    background: rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.mobile-show:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+}
+
+.mobile-show.past-show {
+    opacity: 0.8;
+}
+
+/* Mobile show with poster */
+.mobile-show.has-poster {
+    display: grid;
+    grid-template-columns: 45% 55%;
+    align-items: start;
+    gap: 1rem;
+    padding: 1.5rem;
+}
+
+.mobile-show .show-poster-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.mobile-show .show-poster-preview {
+    width: 100%;
+    aspect-ratio: 3/4;
+    position: relative;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.mobile-show .show-poster-preview:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+}
+
+.mobile-show .show-poster-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.mobile-show .show-poster-preview:hover img {
+    transform: scale(1.05);
+}
+
+.mobile-show .show-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 0.5rem;
+    text-align: center;
+    min-height: 160px;
+}
+
+.mobile-show .show-venue {
+    margin-bottom: 0.3rem;
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent-color);
+    line-height: 1.2;
+}
+
+.mobile-show .show-location {
+    color: var(--text-light);
+    font-size: 0.85rem;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: normal;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+    border-bottom: none !important;
+}
+
+.mobile-show .show-date {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.mobile-show .show-date .month {
+    color: var(--accent-color);
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.mobile-show .show-date .day {
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.mobile-show .show-date .year {
+    color: var(--text-dark);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Mobile show without poster */
+.mobile-show:not(.has-poster) {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 1rem;
+    padding: 1.5rem;
+    align-items: center;
+}
+
+.mobile-show:not(.has-poster) .show-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.mobile-show:not(.has-poster) .show-date .month {
+    font-size: 0.9rem;
+}
+
+.mobile-show:not(.has-poster) .show-date .day {
+    font-size: 2rem;
+}
+
+.mobile-show:not(.has-poster) .show-info {
+    flex: 1;
+}
+
+.mobile-show .show-actions {
+    align-self: start;
+}
+
+/* Poster overlay effects */
+.poster-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.show-poster-preview:hover .poster-overlay {
+    opacity: 1;
+}
+
+.poster-zoom-icon {
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+    background: var(--accent-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tour sections */
+.tour-section {
+    margin-bottom: 3rem;
+    border: 2px solid var(--border-color);
+    background: rgba(255, 0, 0, 0.05);
+    position: relative;
+    width: 100%;
+}
+
+.tour-section.future-tour {
+    border-color: var(--accent-color);
+    background: rgba(255, 0, 0, 0.08);
+}
+
+.tour-header {
+    padding: 2rem 4rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.tour-info h4 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.future-tour .tour-info h4 {
+    color: var(--accent-color);
+}
+
+.tour-dates {
+    color: var(--text-dark);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 0.5rem;
+}
+
+.tour-poster-preview {
+    width: 120px;
+    height: 160px;
+    position: relative;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.tour-poster-preview:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+}
+
+.tour-poster-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.tour-poster-preview:hover img {
+    transform: scale(1.05);
+}
+
+.tour-shows {
+    padding: 1rem;
+}
+
+.tour-shows .desktop-show .show-poster-preview {
+    margin-right: -1rem;
+}
+
+.booking-info {
+    text-align: center;
+    color: var(--text-dark);
+    margin-top: 3rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.booking-info a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.booking-info a:hover {
+    color: var(--secondary-color);
+    text-shadow: 0 0 5px var(--accent-color);
+}
+
+/* Shared styles */
+.lockslip-highlight {
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+.bands-list {
+    color: var(--text-light);
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+/* Mobile tour responsive */
+@media (max-width: 768px) {
+    .tour-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .tour-poster-preview {
+        align-self: center;
+    }
+    
+    .tour-info h4 {
+        font-size: 1.2rem;
+        text-align: center;
+        align-self: center;
+    }
+}

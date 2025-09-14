@@ -1,0 +1,102 @@
+/* Button Component Styles */
+.btn {
+    display: inline-block;
+    padding: 15px 30px;
+    text-decoration: none;
+    border-radius: 0;
+    font-weight: 700;
+    text-align: center;
+    transition: all 0.2s ease;
+    border: 2px solid var(--secondary-color);
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.btn.primary {
+    background: var(--accent-color);
+    color: var(--secondary-color);
+    border-color: var(--accent-color);
+}
+
+.btn.primary:hover {
+    background: var(--secondary-color);
+    color: var(--accent-color);
+    box-shadow: 0 0 20px var(--accent-color);
+    transform: translateY(-1px);
+}
+
+.btn.secondary {
+    background: transparent;
+    color: var(--secondary-color);
+    border: 2px solid var(--secondary-color);
+}
+
+.btn.secondary:hover {
+    background: var(--secondary-color);
+    color: var(--primary-color);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.btn.small {
+    padding: 10px 20px;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    background: var(--accent-color);
+    color: var(--secondary-color);
+    border-color: var(--accent-color);
+}
+
+.btn.small:hover {
+    background: var(--secondary-color);
+    color: var(--accent-color);
+    box-shadow: 0 0 15px var(--accent-color);
+}
+
+/* State variants */
+.btn.sold-out {
+    background: var(--text-dark) !important;
+    color: var(--background-color) !important;
+    border-color: var(--text-dark) !important;
+    cursor: not-allowed;
+}
+
+.btn.sold-out:hover {
+    background: var(--text-dark) !important;
+    color: var(--background-color) !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.btn.completed {
+    background: transparent !important;
+    color: var(--text-dark) !important;
+    border-color: var(--text-dark) !important;
+    cursor: default;
+}
+
+.btn.completed:hover {
+    background: transparent !important;
+    color: var(--text-dark) !important;
+    border-color: var(--text-dark) !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.btn.poster-btn {
+    background: var(--secondary-color);
+    color: var(--background-color);
+    border-color: var(--secondary-color);
+}
+
+.btn.poster-btn:hover {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--secondary-color);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .btn {
+        width: 200px;
+    }
+}

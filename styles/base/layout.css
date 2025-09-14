@@ -1,0 +1,56 @@
+/* Layout Base Styles */
+section {
+    padding: 100px 0;
+    position: relative;
+    background: var(--background-color);
+}
+
+/* Section texture overlay */
+section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(255, 0, 0, 0.01) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.005) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(255, 0, 0, 0.008) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+#hero {
+    height: 100vh;
+    min-height: 600px;
+    background-image: url('../../images/art/2024-ep-cover-nologo.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+}
+
+/* Mobile Layout */
+@media (max-width: 480px) {
+    section {
+        padding: 60px 0;
+    }
+}

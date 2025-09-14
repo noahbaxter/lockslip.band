@@ -1,0 +1,55 @@
+/* Typography */
+h2 {
+    font-size: 3rem;
+    margin-bottom: 4rem;
+    text-align: center;
+    color: var(--secondary-color);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+h3 {
+    font-size: 2rem;
+    color: var(--secondary-color);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+h4 {
+    margin: 0;
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.lockslip-highlight {
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+/* Mobile Typography */
+@media (max-width: 768px) {
+    h2 {
+        font-size: 2rem;
+    }
+    
+    h3 {
+        font-size: 1.2rem;
+    }
+    
+    h4 {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h2 {
+        font-size: 2.2rem;
+        margin-bottom: 2rem;
+        letter-spacing: 2px;
+    }
+}

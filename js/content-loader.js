@@ -53,78 +53,14 @@ class ContentLoader {
     renderStreamingLinks() {
         const streamingContainer = document.querySelector('.streaming-links');
         if (streamingContainer && this.config.streamingLinks) {
-            streamingContainer.innerHTML = this.config.streamingLinks.map(link => `
-                <a href="${link.url}" class="streaming-link ${link.className}" target="_blank" rel="noopener">
-                    <span>${link.name}</span>
-                </a>
-            `).join('');
+            streamingContainer.innerHTML = NavigationComponent.renderStreamingLinks(this.config.streamingLinks);
         }
     }
 
     renderReleases() {
         const releasesSection = document.getElementById('music');
         if (releasesSection && this.releases) {
-            const releasesHTML = `
-                <div class="container">
-                    <div class="releases">
-                        <h3>MUSIC</h3>
-                        <div class="release-list">
-                            ${this.releases.releases.map(release => `
-                                <div class="release-item" data-release-id="${release.id}">
-                                    <div class="release-artwork">
-                                        <div class="release-cover">
-                                            ${release.coverImage ? `<img src="${release.coverImage}" alt="${release.title}" onerror="this.style.display='none'">` : ''}
-                                        </div>
-                                        <div class="release-streaming">
-                                            <div class="release-streaming-links">
-                                                ${Object.entries(release.streamingLinks || {}).map(([platform, url]) => {
-                                                    // Map to actual SVG files
-                                                    let iconPath = '';
-                                                    switch(platform) {
-                                                        case 'spotify': iconPath = 'images/icon-social/spotify.svg'; break;
-                                                        case 'apple': iconPath = 'images/icon-social/apple-music.svg'; break;
-                                                        case 'youtube': iconPath = 'images/icon-social/youtube.svg'; break;
-                                                        case 'bandcamp': iconPath = 'images/icon-social/bandcamp.svg'; break;
-                                                        case 'soundcloud': iconPath = 'images/icon-social/soundcloud.svg'; break;
-                                                        default: iconPath = '';
-                                                    }
-                                                    
-                                                    if (iconPath) {
-                                                        return `
-                                                            <a href="${url}" class="release-streaming-link ${platform}" target="_blank" rel="noopener" title="${platform}">
-                                                                <img src="${iconPath}" alt="${platform}" />
-                                                            </a>
-                                                        `;
-                                                    } else {
-                                                        return `
-                                                            <a href="${url}" class="release-streaming-link ${platform}" target="_blank" rel="noopener" title="${platform}">${platform.slice(0,2).toUpperCase()}</a>
-                                                        `;
-                                                    }
-                                                }).join('')}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="release-content">
-                                        <div class="release-header">
-                                            <h4>${release.title}</h4>
-                                            <span class="release-date">${release.month} ${release.day}, ${release.year}</span>
-                                        </div>
-                                        ${release.tracks ? `
-                                            <div class="track-listing">
-                                                <ul>
-                                                    ${release.tracks.map(track => `<li>${track}</li>`).join('')}
-                                                </ul>
-                                            </div>
-                                        ` : ''}
-                                        <p class="release-description">${release.description}</p>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                </div>
-            `;
-            releasesSection.innerHTML = releasesHTML;
+            releasesSection.innerHTML = ReleasesComponent.render(this.releases);
         }
     }
 
@@ -200,15 +136,45 @@ class ContentLoader {
                 }
             });
 
-            // Add tours to appropriate arrays
+            // Add tours to appropriate arrays, splitting ongoing tours
             categorizedTours.forEach(tour => {
-                // For past tours, sort by end date; for future tours, sort by start date
-                const sortDate = tour.actuallyPast ? tour.tourEndDate : tour.tourStartDate;
-                const item = { type: 'tour', data: tour, sortDate: sortDate };
-                if (tour.actuallyPast) {
-                    pastItems.push(item);
+                const pastShows = tour.shows.filter(show => show.actuallyPast);
+                const futureShows = tour.shows.filter(show => !show.actuallyPast);
+                
+                // If tour has both past and future shows, split it
+                if (pastShows.length > 0 && futureShows.length > 0) {
+                    // Add past portion to past items
+                    const pastTour = {
+                        ...tour,
+                        shows: pastShows,
+                        actuallyPast: true
+                    };
+                    pastItems.push({ 
+                        type: 'tour', 
+                        data: pastTour, 
+                        sortDate: tour.tourEndDate 
+                    });
+                    
+                    // Add future portion to future items
+                    const futureTour = {
+                        ...tour,
+                        shows: futureShows,
+                        actuallyPast: false
+                    };
+                    futureItems.push({ 
+                        type: 'tour', 
+                        data: futureTour, 
+                        sortDate: tour.tourStartDate 
+                    });
                 } else {
-                    futureItems.push(item);
+                    // Tour is completely past or future, add as normal
+                    const sortDate = tour.actuallyPast ? tour.tourEndDate : tour.tourStartDate;
+                    const item = { type: 'tour', data: tour, sortDate: sortDate };
+                    if (tour.actuallyPast) {
+                        pastItems.push(item);
+                    } else {
+                        futureItems.push(item);
+                    }
                 }
             });
 
@@ -243,119 +209,8 @@ class ContentLoader {
             
             window.showsWithPosters = showsWithPosters;
 
-            // Helper function to render individual show
-            const renderShow = (show, isPast = false) => {
-                const posterIndex = show.poster ? showsWithPosters.findIndex(posterShow => posterShow.id === show.id) : -1;
-                
-                return `
-                    <div class="show-card ${isPast ? 'past-show' : ''} ${show.poster ? 'has-poster' : ''}" data-show-id="${show.id}">
-                        <div class="show-date">
-                            <span class="month">${show.date.month}</span>
-                            <span class="day">${show.date.day}</span>
-                            <span class="year">${show.date.year}</span>
-                        </div>
-                        <div class="show-info">
-                            <div class="show-header">
-                                <h3>${show.event || show.venue}</h3>
-                                <p class="show-location">${show.location}</p>
-                            </div>
-                            ${show.bands && show.bands.length > 0 ? `
-                                <div class="show-bands">
-                                    <p class="bands-list">${show.bands.map(band => 
-                                        band === 'Lockslip' ? `<span class="lockslip-highlight">${band}</span>` : band
-                                    ).join(', ')}</p>
-                                </div>
-                            ` : ''}
-                        </div>
-                        ${!isPast && show.ticketsUrl ? `
-                            <div class="show-actions">
-                                <a href="${show.ticketsUrl}" class="btn small" target="_blank" rel="noopener">TICKETS</a>
-                            </div>
-                        ` : ''}
-                        ${show.poster ? `
-                            <div class="show-poster-preview" onclick="openPosterModal(${posterIndex})">
-                                <img src="${show.poster}" alt="${show.venue} poster" onerror="this.parentElement.style.display='none'">
-                                <div class="poster-overlay">
-                                    <span class="poster-zoom-icon">🔍</span>
-                                </div>
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
-            };
 
-            // Helper function to render tour section
-            const renderTour = (tour, isPast = false) => {
-                const tourPosterIndex = tour.poster ? showsWithPosters.findIndex(posterShow => posterShow.id === tour.id) : -1;
-                
-                return `
-                    <div class="tour-section ${isPast ? 'past-tour' : 'future-tour'}">
-                        <div class="tour-header">
-                            <div class="tour-info">
-                                <h4>${tour.name}</h4>
-                                <p class="tour-dates">${tour.startDate.month} ${tour.startDate.day} - ${tour.endDate.month} ${tour.endDate.day}, ${tour.startDate.year}</p>
-                            </div>
-                            ${tour.poster ? `
-                                <div class="tour-poster-preview" onclick="openPosterModal(${tourPosterIndex})">
-                                    <img src="${tour.poster}" alt="${tour.name} poster" onerror="this.parentElement.style.display='none'">
-                                    <div class="poster-overlay">
-                                        <span class="poster-zoom-icon">🔍</span>
-                                    </div>
-                                </div>
-                            ` : ''}
-                        </div>
-                        <div class="tour-shows">
-                            ${(() => {
-                                // Sort shows within tour: past tours show newest first, future tours show oldest first
-                                const sortedShows = [...tour.shows].sort((a, b) => {
-                                    return isPast ? (b.showDate - a.showDate) : (a.showDate - b.showDate);
-                                });
-                                return sortedShows.map(show => renderShow(show, isPast)).join('');
-                            })()}
-                        </div>
-                    </div>
-                `;
-            };
-
-            // Helper function to render mixed items
-            const renderMixedItems = (items, isPast = false) => {
-                return items.map(item => {
-                    if (item.type === 'show') {
-                        return renderShow(item.data, isPast);
-                    } else if (item.type === 'tour') {
-                        return renderTour(item.data, isPast);
-                    }
-                    return '';
-                }).join('');
-            };
-
-            const showsHTML = `
-                <div class="container">
-                    <h2>${this.shows.sectionTitle}</h2>
-                    
-                    <!-- Upcoming Shows -->
-                    ${futureItems.length > 0 ? `
-                        <div class="shows-section">
-                            <h3>UPCOMING</h3>
-                            <div class="shows-chronological">
-                                ${renderMixedItems(futureItems, false)}
-                            </div>
-                        </div>
-                    ` : ''}
-
-                    <!-- Past Shows -->
-                    ${pastItems.length > 0 ? `
-                        <div class="shows-section">
-                            <h3>PAST SHOWS</h3>
-                            <div class="shows-chronological past-shows">
-                                ${renderMixedItems(pastItems, true)}
-                            </div>
-                        </div>
-                    ` : ''}
-
-                    <p class="booking-info">${this.shows.bookingInfo.replace('lockslipband@gmail.com', `<a href="mailto:${this.config.contact.booking}">${this.config.contact.booking}</a>`)}</p>
-                </div>
-            `;
+            const showsHTML = ShowsComponent.render(this.shows, this.config, futureItems, pastItems, showsWithPosters);
             showsSection.innerHTML = showsHTML;
         }
     }
@@ -363,114 +218,21 @@ class ContentLoader {
     renderMerchandise() {
         const merchSection = document.getElementById('merch');
         if (merchSection && this.merchandise) {
-            const merchHTML = `
-                <div class="container">
-                    <h2>${this.merchandise.sectionTitle}</h2>
-                    <div class="merch-grid">
-                        ${this.merchandise.items.filter(item => item.inStock).map(item => `
-                            <div class="merch-item" data-item-id="${item.id}">
-                                <div class="merch-image">${item.image ? `<img src="${item.image}" alt="${item.name}" onerror="this.style.display='none'">` : ''}</div>
-                                <h3>${item.name}</h3>
-                                <p>${item.price}</p>
-                                <a href="${item.purchaseUrl}" class="btn small" target="_blank" rel="noopener">BUY NOW</a>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-            merchSection.innerHTML = merchHTML;
+            merchSection.innerHTML = MerchandiseComponent.render(this.merchandise);
         }
     }
 
     renderMedia() {
         const mediaSection = document.getElementById('media');
         if (mediaSection && this.media) {
-            const mediaHTML = `
-                <div class="container">
-                    <h2>${this.media.sectionTitle}</h2>
-                    
-                    <!-- Photos Section -->
-                    <div class="media-section">
-                        <h3>${this.media.photos.sectionTitle}</h3>
-                        <div class="photo-grid">
-                            ${this.media.photos.gallery.map(photo => `
-                                <div class="photo-card" data-photo-id="${photo.id}">
-                                    <div class="photo-placeholder">${photo.image ? `<img src="${photo.image}" alt="${photo.alt}" onerror="this.style.display='none'">` : ''}</div>
-                                    <p>${photo.caption}</p>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-
-                    <!-- Videos Section -->
-                    <div class="media-section">
-                        <h3>${this.media.videos.sectionTitle}</h3>
-                        <div class="video-grid">
-                            ${this.media.videos.items.map(video => `
-                                <div class="video-card" data-video-id="${video.id}">
-                                    <div class="video-thumbnail">
-                                        <a href="${video.url}" target="_blank" rel="noopener">
-                                            ${video.thumbnail ? `<img src="${video.thumbnail}" alt="${video.title}" onerror="this.style.display='none'">` : ''}
-                                            <div class="video-play-overlay">▶</div>
-                                        </a>
-                                    </div>
-                                    <div class="video-info">
-                                        <h4>${video.title}</h4>
-                                        <p>${video.description}</p>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-
-                    <!-- Logos Section -->
-                    <div class="media-section">
-                        <h3>${this.media.logos.sectionTitle}</h3>
-                        <div class="logos-grid">
-                            ${this.media.logos.items.map(logo => `
-                                <div class="logo-card" data-logo-id="${logo.id}">
-                                    <div class="logo-preview">
-                                        <img src="${logo.file}" alt="${logo.title}" onerror="this.style.display='none'">
-                                    </div>
-                                    <div class="logo-download">
-                                        <a href="${logo.file}" download class="btn small">DOWNLOAD</a>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                </div>
-            `;
-            mediaSection.innerHTML = mediaHTML;
+            mediaSection.innerHTML = MediaComponent.render(this.media);
         }
     }
 
     renderFooter() {
         const footerContent = document.querySelector('.footer-content');
         if (footerContent && this.config) {
-            footerContent.innerHTML = `
-                <div class="footer-section">
-                    <h3>FOLLOW</h3>
-                    <div class="social-links">
-                        ${this.config.socialMedia.map(social => `
-                            <a href="${social.url}" target="_blank" rel="noopener">${social.platform}</a>
-                        `).join('')}
-                    </div>
-                </div>
-                <div class="footer-section">
-                    <h3>CONTACT</h3>
-                    <p>Email: <a href="mailto:${this.config.contact.general}">${this.config.contact.general}</a></p>
-                    <p>Booking: <a href="mailto:${this.config.contact.booking}">${this.config.contact.booking}</a></p>
-                </div>
-                <div class="footer-section">
-                    <h3>${this.config.newsletter.title}</h3>
-                    <p>${this.config.newsletter.subtitle}</p>
-                    <div class="newsletter-signup">
-                        <input type="email" placeholder="${this.config.newsletter.placeholder}" id="newsletter-email">
-                        <button type="button" class="btn small" onclick="this.subscribeNewsletter()">${this.config.newsletter.buttonText}</button>
-                    </div>
-                </div>
-            `;
+            footerContent.innerHTML = FooterComponent.render(this.config);
         }
     }
 
@@ -487,36 +249,8 @@ class ContentLoader {
         const mobileStreamingIcons = document.querySelector('.mobile-streaming-icons');
         
         if (this.config.streamingLinks) {
-            const iconHTML = this.config.streamingLinks.map(link => {
-                // Map to actual SVG files
-                let iconPath = '';
-                switch(link.className) {
-                    case 'spotify': iconPath = 'images/icon-social/spotify.svg'; break;
-                    case 'apple': iconPath = 'images/icon-social/apple-music.svg'; break;
-                    case 'youtube': iconPath = 'images/icon-social/youtube.svg'; break;
-                    case 'bandcamp': iconPath = 'images/icon-social/bandcamp.svg'; break;
-                    case 'soundcloud': iconPath = 'images/icon-social/soundcloud.svg'; break;
-                    default: iconPath = '';
-                }
-                
-                if (iconPath) {
-                    return `
-                        <a href="${link.url}" class="streaming-icon ${link.className}" target="_blank" rel="noopener" title="${link.name}">
-                            <img src="${iconPath}" alt="${link.name}" />
-                        </a>
-                    `;
-                } else {
-                    // Fallback to text for platforms without icons
-                    const iconText = link.name.slice(0, 2).toUpperCase();
-                    return `
-                        <a href="${link.url}" class="streaming-icon ${link.className}" target="_blank" rel="noopener" title="${link.name}">
-                            ${iconText}
-                        </a>
-                    `;
-                }
-            }).join('');
+            const iconHTML = NavigationComponent.renderStreamingIcons(this.config.streamingLinks);
             
-            // Populate both desktop and mobile streaming icons
             if (streamingIcons) {
                 streamingIcons.innerHTML = iconHTML;
             }
@@ -603,7 +337,7 @@ window.openPosterModal = function(index) {
     
     updateModalContent();
     
-    // Show modal
+    // Show modal and lock scroll
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 };
@@ -651,7 +385,8 @@ window.updateModalContent = function() {
         if (dateEl) dateEl.textContent = `${show.date.month} ${show.date.day}, ${show.date.year}`;
         if (bandsEl) {
             if (show.bands && show.bands.length > 0) {
-                bandsEl.innerHTML = show.bands.map(band => 
+                const displayBands = ShowsComponent.getBandList(show.bands);
+                bandsEl.innerHTML = displayBands.map(band => 
                     band === 'Lockslip' ? `<span class="lockslip-highlight">${band}</span>` : band
                 ).join(', ');
             } else {
@@ -678,11 +413,33 @@ window.navigatePoster = function(direction) {
     }
 };
 
+window.togglePosterInfo = function() {
+    const modal = document.getElementById('poster-modal');
+    if (!modal) return;
+    
+    const infoEl = modal.querySelector('.poster-modal-info');
+    const bgEl = modal.querySelector('.poster-modal-bg');
+    const toggleBtn = modal.querySelector('.poster-modal-info-toggle');
+    
+    window.showingInfo = !window.showingInfo;
+    
+    if (window.showingInfo) {
+        if (infoEl) infoEl.classList.add('show-info');
+        if (bgEl) bgEl.classList.add('show-info');
+        if (toggleBtn) toggleBtn.textContent = 'POSTER';
+    } else {
+        if (infoEl) infoEl.classList.remove('show-info');
+        if (bgEl) bgEl.classList.remove('show-info');
+        if (toggleBtn) toggleBtn.textContent = 'INFO';
+    }
+};
+
 window.closePosterModal = function() {
     const modal = document.getElementById('poster-modal');
     if (modal) {
         modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
+        document.body.style.overflow = '';
+        window.showingInfo = false;
     }
 };
 

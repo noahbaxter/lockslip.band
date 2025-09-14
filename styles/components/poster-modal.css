@@ -1,0 +1,258 @@
+/* Poster Modal Component */
+.poster-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    background: rgba(0, 0, 0, 0.95);
+    align-items: center;
+    justify-content: center;
+}
+
+.poster-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.poster-modal-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.poster-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 0, 0, 0.8);
+    color: var(--secondary-color);
+    border: none;
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 2001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.poster-modal-close:hover {
+    background: var(--accent-color);
+    transform: scale(1.1);
+}
+
+.poster-modal-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 0, 0, 0.8);
+    color: var(--secondary-color);
+    border: none;
+    font-size: 3rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 2001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.poster-modal-nav:hover {
+    background: var(--accent-color);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.poster-modal-nav.prev {
+    left: 20px;
+}
+
+.poster-modal-nav.next {
+    right: 20px;
+}
+
+.poster-modal-image {
+    max-width: 60vw;
+    max-height: 80vh;
+    object-fit: contain;
+    border: 3px solid var(--border-color);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+}
+
+.poster-modal-info {
+    color: var(--text-color);
+    max-width: 300px;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--border-color);
+}
+
+.poster-modal-venue {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.poster-modal-location {
+    color: var(--text-dark);
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
+
+.poster-modal-date {
+    color: var(--accent-color);
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
+
+.poster-modal-bands {
+    color: var(--text-light);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.poster-modal-counter {
+    color: var(--text-dark);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+}
+
+/* Desktop modal - move controls outside content area */
+@media (min-width: 769px) {
+    .poster-modal-close {
+        top: -60px;
+        right: -60px;
+    }
+    
+    .poster-modal-nav.prev {
+        left: -80px;
+    }
+    
+    .poster-modal-nav.next {
+        right: -80px;
+    }
+}
+
+/* Mobile modal */
+@media (max-width: 768px) {
+    .poster-modal-content {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+        max-width: 95vw;
+        max-height: 95vh;
+        overflow: hidden;
+        justify-content: flex-start;
+    }
+    
+    .poster-modal-image {
+        max-width: 90vw;
+        max-height: 50vh;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        flex-shrink: 1;
+    }
+    
+    .poster-modal-info {
+        width: 90vw;
+        max-width: 90vw;
+        padding: 1.5rem;
+        flex-grow: 1;
+        min-height: auto;
+        max-height: none;
+        overflow: visible;
+        background: rgba(0, 0, 0, 0.8);
+        border: 1px solid var(--border-color);
+    }
+    
+    .poster-modal-venue {
+        font-size: 1.2rem !important;
+        font-weight: 800;
+        color: var(--accent-color) !important;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.5rem;
+    }
+
+    .poster-modal-location {
+        color: var(--text-light) !important;
+        font-size: 0.9rem !important;
+        font-weight: 400 !important;
+        text-transform: none !important;
+        letter-spacing: normal !important;
+        margin-bottom: 0.8rem;
+    }
+
+    .poster-modal-date {
+        color: var(--text-light) !important;
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+        text-transform: none !important;
+        letter-spacing: normal !important;
+        margin-bottom: 1rem;
+    }
+
+    .poster-modal-bands {
+        color: var(--text-light);
+        line-height: 1.5;
+        margin-bottom: 1rem;
+        font-size: 0.85rem;
+    }
+
+    .poster-modal-counter {
+        color: var(--text-dark);
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-align: center;
+        border-top: 1px solid var(--border-color);
+        padding-top: 1rem;
+    }
+    
+    .poster-modal-nav {
+        font-size: 2rem;
+        width: 50px;
+        height: 50px;
+    }
+    
+    .poster-modal-close {
+        font-size: 1.5rem;
+        width: 40px;
+        height: 40px;
+        top: 15px;
+        right: 15px;
+    }
+}

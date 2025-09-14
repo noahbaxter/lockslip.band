@@ -1,0 +1,24 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Helvetica', 'Arial Black', Arial, sans-serif;
+    line-height: 1.4;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    font-weight: 500;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(255, 0, 0, 0.02) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.01) 0%, transparent 50%);
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}

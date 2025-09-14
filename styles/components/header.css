@@ -1,0 +1,288 @@
+/* Header Component */
+header {
+    background: var(--primary-color);
+    color: var(--text-color);
+    padding: 1.5rem 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    border-bottom: 2px solid var(--border-color);
+    backdrop-filter: blur(10px);
+    overflow: visible;
+    left: 0;
+}
+
+nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    min-width: 100%;
+    max-height: 70px;
+    margin: 0 auto;
+    padding: 0 20px;
+    gap: 2rem;
+    position: relative;
+}
+
+.logo {
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    flex-shrink: 0;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.logo:hover {
+    transform: translateX(-50%) translateY(-50%) scale(1.05);
+}
+
+.logo img {
+    height: 100%;
+    width: auto;
+    filter: brightness(0) invert(1);
+    transition: filter 0.2s ease;
+}
+
+.logo:hover img {
+    filter: brightness(0) saturate(100%) invert(11%) sepia(100%) saturate(7378%) hue-rotate(4deg) brightness(97%) contrast(118%);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: var(--accent-color);
+    text-shadow: 0 0 10px var(--accent-color);
+}
+
+.streaming-icons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    align-items: center;
+}
+
+.streaming-icon {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.streaming-icon img {
+    width: 100%;
+    height: 100%;
+    filter: brightness(0) invert(1);
+    transition: filter 0.2s ease;
+}
+
+.streaming-icon:hover img {
+    filter: brightness(0) saturate(100%) invert(11%) sepia(100%) saturate(7378%) hue-rotate(4deg) brightness(97%) contrast(118%);
+}
+
+/* Platform-specific hover colors */
+.streaming-icon.spotify:hover img {
+    filter: brightness(0) saturate(100%) invert(58%) sepia(75%) saturate(466%) hue-rotate(94deg) brightness(96%) contrast(95%);
+}
+
+.streaming-icon.apple:hover img {
+    filter: brightness(0) saturate(100%) invert(21%) sepia(100%) saturate(7426%) hue-rotate(353deg) brightness(95%) contrast(107%);
+}
+
+.streaming-icon.youtube:hover img {
+    filter: brightness(0) saturate(100%) invert(11%) sepia(100%) saturate(7378%) hue-rotate(4deg) brightness(97%) contrast(118%);
+}
+
+.streaming-icon.bandcamp:hover img {
+    filter: brightness(0) saturate(100%) invert(51%) sepia(18%) saturate(1137%) hue-rotate(152deg) brightness(91%) contrast(88%);
+}
+
+.streaming-icon:hover {
+    color: var(--accent-color);
+    transform: scale(1.1);
+}
+
+/* Mobile Menu */
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    z-index: 1001;
+    position: relative;
+}
+
+.hamburger-line {
+    width: 25px;
+    height: 2px;
+    background: var(--text-color);
+    margin: 3px 0;
+    transition: all 0.2s ease;
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 90px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 90px);
+    background: var(--primary-color);
+    z-index: 999;
+    padding: 2rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 3rem;
+    overflow-y: auto;
+}
+
+.mobile-menu.active {
+    display: flex;
+}
+
+.mobile-nav-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.mobile-nav-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.2s ease;
+}
+
+.mobile-nav-links a:hover {
+    color: var(--accent-color);
+    text-shadow: 0 0 10px var(--accent-color);
+}
+
+.mobile-streaming-icons {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Streaming Links Grid (for hero section) */
+.streaming-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 4rem;
+}
+
+.streaming-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: var(--section-alt);
+    border: 2px solid var(--border-color);
+    border-radius: 0;
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 700;
+    transition: all 0.2s ease;
+    box-shadow: inset 0 0 0 0 var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+.streaming-link:hover {
+    color: var(--background-color);
+    background: var(--accent-color);
+    box-shadow: 0 0 20px var(--accent-color);
+    transform: translateY(-2px);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .nav-links,
+    .streaming-icons {
+        display: none;
+    }
+    
+    .mobile-menu-toggle {
+        display: flex;
+    }
+    
+    .logo {
+        height: 120px;
+    }
+    
+    .streaming-links {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    nav {
+        padding: 0 15px;
+    }
+    
+    .mobile-menu-toggle {
+        position: absolute;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+        z-index: 1001;
+    }
+}

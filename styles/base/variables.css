@@ -1,0 +1,12 @@
+/* CSS Custom Properties - Only variables actually used */
+:root {
+    --primary-color: #000000;
+    --secondary-color: #ffffff;
+    --accent-color: #ff0000;
+    --text-color: #ffffff;
+    --text-light: #ffffff;
+    --text-dark: #cccccc;
+    --background-color: #000000;
+    --section-alt: #000000;
+    --border-color: #ff0000;
+}
