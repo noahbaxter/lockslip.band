@@ -336,10 +336,8 @@
 .poster-zoom-icon {
     color: var(--secondary-color);
     font-size: 1.5rem;
-    background: var(--accent-color);
     width: 40px;
     height: 40px;
-    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -347,7 +345,6 @@
 
 /* Tour sections */
 .tour-section {
-    margin-bottom: 3rem;
     border: 2px solid var(--border-color);
     background: rgba(255, 0, 0, 0.05);
     position: relative;
@@ -459,6 +456,44 @@
     line-height: 1.4;
 }
 
+/* Past Shows Toggle */
+.past-shows-toggle {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.show-past-shows-btn {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 auto;
+}
+
+.show-past-shows-btn:hover {
+    border-color: var(--accent-color);
+    background: rgba(255, 0, 0, 0.1);
+    transform: scale(1.02);
+}
+
+.toggle-arrow {
+    font-size: 0.8rem;
+    transition: transform 0.2s ease;
+}
+
+.past-shows-content {
+    transition: all 0.3s ease;
+}
+
 /* Mobile tour responsive */
 @media (max-width: 768px) {
     .tour-header {
@@ -476,5 +511,10 @@
         font-size: 1.2rem;
         text-align: center;
         align-self: center;
+    }
+    
+    .show-past-shows-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
     }
 }

@@ -50,8 +50,8 @@ const ReleasesComponent = {
         
         return `
             <div class="container">
+                <h2>MUSIC</h2>
                 <div class="releases">
-                    <h3>MUSIC</h3>
                     <div class="release-list">
                         ${releases.releases.map(release => this.renderRelease(release)).join('')}
                     </div>

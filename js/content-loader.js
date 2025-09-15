@@ -456,3 +456,24 @@ document.addEventListener('keydown', function(e) {
         }
     }
 });
+
+// Past Shows Toggle Function
+window.togglePastShows = function() {
+    const content = document.querySelector('.past-shows-content');
+    const button = document.querySelector('.show-past-shows-btn');
+    const arrow = document.querySelector('.toggle-arrow');
+    
+    if (content && button && arrow) {
+        const isVisible = content.style.display !== 'none';
+        
+        if (isVisible) {
+            content.style.display = 'none';
+            button.innerHTML = button.innerHTML.replace('Hide Past Shows', 'Show Past Shows');
+            arrow.textContent = '▼';
+        } else {
+            content.style.display = 'block';
+            button.innerHTML = button.innerHTML.replace('Show Past Shows', 'Hide Past Shows');
+            arrow.textContent = '▲';
+        }
+    }
+};

@@ -9,4 +9,15 @@
     --background-color: #000000;
     --section-alt: #000000;
     --border-color: #ff0000;
+    
+    /* Platform brand colors */
+    --spotify-green: #1db954;
+    --apple-music-orange: #fa2d48;
+    --youtube-red: #ff0000;
+    --bandcamp-teal: #629aa0;
+
+    --nav-height: 50px;
+    --nav-height-mobile: 60px;
+
+    --nav-logo-height-mobile: 100px;
 }

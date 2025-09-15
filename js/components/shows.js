@@ -187,11 +187,29 @@ const ShowsComponent = {
     renderPastSection(pastItems, showsWithPosters) {
         if (pastItems.length === 0) return '';
         
+        // Count individual shows (not tours themselves)
+        const totalShows = pastItems.reduce((count, item) => {
+            if (item.type === 'show') {
+                return count + 1;
+            } else if (item.type === 'tour') {
+                return count + item.data.shows.length;
+            }
+            return count;
+        }, 0);
+        
         return `
-            <div class="shows-section">
-                <h3>PAST SHOWS</h3>
-                <div class="shows-chronological past-shows">
-                    ${this.renderMixedItems(pastItems, true, showsWithPosters)}
+            <div class="shows-section past-shows-section">
+                <div class="past-shows-toggle">
+                    <button class="show-past-shows-btn" onclick="togglePastShows()">
+                        Show Past Shows (${totalShows})
+                        <span class="toggle-arrow">▼</span>
+                    </button>
+                </div>
+                <div class="past-shows-content" style="display: none;">
+                    <h3>PAST SHOWS</h3>
+                    <div class="shows-chronological past-shows">
+                        ${this.renderMixedItems(pastItems, true, showsWithPosters)}
+                    </div>
                 </div>
             </div>
         `;
