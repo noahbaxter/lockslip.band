@@ -12,7 +12,7 @@
 
 .release-item {
     display: grid;
-    grid-template-columns: 400px 1fr;
+    grid-template-columns: 350px 1fr;
     gap: 3rem;
     border: 1px solid var(--border-color);
     transition: all 0.2s ease;
@@ -31,70 +31,99 @@
     gap: 1rem;
 }
 
-.release-cover {
-    width: 400px;
-    height: 400px;
-    background: linear-gradient(45deg, var(--border-color), var(--section-alt));
-    position: relative;
-    overflow: hidden;
+
+/* Bandcamp Embed as Artwork Replacement */
+.bandcamp-embed-artwork {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    background: var(--background-color);
 }
 
-.release-cover img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
+.bandcamp-embed-artwork iframe {
+    display: block;
+    max-width: 100%;
+    height: auto;
 }
 
-.release-cover:hover img {
-    transform: scale(1.02);
+/* Streaming links in content area */
+.content-streaming-links {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 1.5rem;
 }
 
-.release-streaming {
-    padding: 1rem;
-    background: rgba(0, 0, 0, 0.8);
+.content-streaming-links .streaming-icon {
+    width: 35px;
+    height: 35px;
 }
 
-.release-streaming-links {
+/* Physical Links in Content Area */
+.physical-links-content {
+    margin-top: 2rem;
+}
+
+.physical-links-grid {
     display: flex;
     gap: 1rem;
     justify-content: center;
     align-items: center;
 }
 
-.release-streaming-link {
-    display: inline-block;
-    width: 35px;
-    height: 35px;
-    transition: all 0.2s ease;
+.physical-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
     text-decoration: none;
     color: var(--text-color);
-    font-size: 0.7rem;
-    font-weight: 700;
+    transition: all 0.2s ease;
+    padding: 1rem;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    min-width: 120px;
+}
+
+.physical-link img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border-radius: 4px;
+    transition: transform 0.2s ease;
+}
+
+.physical-link-text {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
+    gap: 0.2rem;
+    text-align: center;
 }
 
-.release-streaming-link img {
-    width: 20px;
-    height: 20px;
-    filter: brightness(0) invert(1);
-    transition: filter 0.2s ease;
+.physical-link-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.2;
 }
 
-.release-streaming-link:hover {
-    background: var(--accent-color);
+.physical-link-format {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--accent-color);
+}
+
+.physical-link:hover {
+    background: rgba(255, 0, 0, 0.1);
+    color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.physical-link:hover img {
     transform: scale(1.1);
-}
-
-.release-streaming-link:hover img {
-    filter: brightness(0) invert(1);
 }
 
 .release-content {
@@ -157,9 +186,10 @@
         gap: 1.5rem;
     }
     
-    .release-cover {
+    .bandcamp-embed-artwork iframe {
         width: 100%;
-        height: 300px;
+        max-width: 350px;
+        height: 588px;
     }
     
     .release-content {
@@ -170,5 +200,34 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
+    }
+    
+    .physical-links-grid {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: flex-start;
+    }
+    
+    .content-streaming-links {
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    
+    .physical-link {
+        min-width: 100px;
+        padding: 0.8rem;
+    }
+    
+    .physical-link img {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .physical-link-name {
+        font-size: 0.7rem;
+    }
+    
+    .physical-link-format {
+        font-size: 0.6rem;
     }
 }

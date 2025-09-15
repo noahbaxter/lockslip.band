@@ -34,6 +34,10 @@ const PlatformIcons = {
         }
     },
 
+    renderStreamingIcon(platform, url) {
+        return this.renderStreamingLink(platform, url, true);
+    },
+
     renderReleaseStreamingLink(platform, url) {
         const iconPath = this.iconMap[platform];
         

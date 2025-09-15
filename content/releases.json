@@ -16,9 +16,29 @@
         "4. Payment"
       ],
       "streamingLinks": {
-        "bandcamp": "https://lockslip.bandcamp.com/album/lockslip",
         "spotify": "https://open.spotify.com/album/7megYx0XmIKQLbz2tun7CU",
         "apple": "https://music.apple.com/us/album/lockslip-ep/1727216728"
+      },
+      "bandcampEmbed": "https://bandcamp.com/EmbeddedPlayer/album=2052797199/size=large/bgcol=000000/linkcol=ff0000/transparent=true/",
+      "physicalLinks": {
+        "deathwish": {
+          "url": "https://deathwishinc.com/products/lockslip-lockslip",
+          "name": "Deathwish Inc.",
+          "format": "VINYL",
+          "icon": "https://deathwishinc.com/cdn/shop/files/logo_footer_400x.png?v=1613155780"
+        },
+        "protagonist": {
+          "url": "https://protagonistmusic.bandcamp.com/album/self-titled-16",
+          "name": "Protagonist Music",
+          "format": "VINYL",
+          "icon": "https://f4.bcbits.com/img/0002629124_10.jpg"
+        },
+        "badbreak": {
+          "url": "https://www.badbreakrecords.com/products/777388-lockslip-ep",
+          "name": "Bad Break Records",
+          "format": "TAPES",
+          "icon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZjGOlCYE4UR9_2JTHHSx93D8qQmEv7IAU2A&s"
+        }
       }
     }
   ]
