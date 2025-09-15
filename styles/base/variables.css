@@ -18,6 +18,59 @@
 
     --nav-height: 50px;
     --nav-height-mobile: 60px;
-
     --nav-logo-height-mobile: 100px;
+    
+    /* Carousel Variables */
+    --carousel-items-per-view: 3;
+    --carousel-gap: 2rem;
+    --carousel-item-width: calc(100% / var(--carousel-items-per-view) - (var(--carousel-gap) * (var(--carousel-items-per-view) - 1) / var(--carousel-items-per-view)));
+    --carousel-container-padding: 80px;
+    
+    /* Navigation Button Variables */
+    --nav-btn-width: 30px;
+    --nav-btn-height: 50px;
+    --nav-btn-font-size: 1.5rem;
+    --nav-btn-border-radius: 8px;
+    --nav-btn-bg: rgba(0, 0, 0, 0.4);
+    --nav-btn-color: rgba(255, 255, 255, 0.7);
+    --nav-btn-border: 1px solid rgba(255, 255, 255, 0.2);
+    --nav-btn-hover-bg: rgba(255, 0, 0, 0.6);
+    --nav-btn-hover-color: var(--secondary-color);
+    --nav-btn-hover-border: rgba(255, 0, 0, 0.8);
+    
+    /* Item Carousel Navigation */
+    --item-nav-btn-width: 24px;
+    --item-nav-btn-height: 40px;
+    --item-nav-btn-font-size: 1.2rem;
+    --item-nav-btn-border-radius: 6px;
+    
+    /* Modal Navigation */
+    --modal-nav-btn-width: 40px;
+    --modal-nav-btn-height: 70px;
+    --modal-nav-btn-font-size: 2.5rem;
+    --modal-nav-btn-border-radius: 10px;
+    
+    /* Mobile Title Navigation */
+    --mobile-title-nav-width: 20px;
+    --mobile-title-nav-height: 20px;
+    --mobile-title-nav-font-size: 0.8rem;
+    --mobile-title-nav-border-radius: 3px;
+    
+    /* Merch Item Variables */
+    --merch-item-padding: 1rem;
+    --merch-item-bg: rgba(0, 0, 0, 0.3);
+    --merch-image-height: 350px;
+    --merch-image-height-mobile: 200px;
+}
+
+/* Mobile Variables */
+@media (max-width: 768px) {
+    :root {
+        --carousel-items-per-view: 1;
+        --carousel-container-padding: 50px;
+        --nav-btn-width: 28px;
+        --nav-btn-height: 44px;
+        --nav-btn-font-size: 1.2rem;
+        --merch-item-padding: 0.75rem;
+    }
 }

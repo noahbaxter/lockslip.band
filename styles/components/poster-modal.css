@@ -59,24 +59,27 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255, 0, 0, 0.8);
-    color: var(--secondary-color);
-    border: none;
-    font-size: 3rem;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
+    background: var(--nav-btn-bg);
+    color: var(--nav-btn-color);
+    border: var(--nav-btn-border);
+    font-size: var(--modal-nav-btn-font-size);
+    width: var(--modal-nav-btn-width);
+    height: var(--modal-nav-btn-height);
+    border-radius: var(--modal-nav-btn-border-radius);
     cursor: pointer;
     z-index: 2001;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
+    backdrop-filter: blur(4px);
 }
 
 .poster-modal-nav:hover {
-    background: var(--accent-color);
-    transform: translateY(-50%) scale(1.1);
+    background: var(--nav-btn-hover-bg);
+    color: var(--nav-btn-hover-color);
+    border-color: var(--nav-btn-hover-border);
+    transform: translateY(-50%) scale(1.05);
 }
 
 .poster-modal-nav.prev {
@@ -243,9 +246,9 @@
     }
     
     .poster-modal-nav {
-        font-size: 2rem;
-        width: 50px;
-        height: 50px;
+        font-size: 1.8rem;
+        width: 35px;
+        height: 60px;
     }
     
     .poster-modal-close {
