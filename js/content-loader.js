@@ -25,6 +25,9 @@ class ContentLoader {
 
             this.renderAllContent();
             this.setupScrollWheelSupport();
+            this.updateCopyrightYear();
+            this.setupHeroBioFade();
+            this.setupSmoothScrolling();
         } catch (error) {
             console.error('Error loading content:', error);
             this.showError();
@@ -329,6 +332,71 @@ class ContentLoader {
                 }
             }
         }, { passive: false });
+    }
+
+    // Update copyright year to show 2024-CURRENTYEAR format
+    updateCopyrightYear() {
+        const copyrightEl = document.getElementById('copyright-year');
+        if (copyrightEl) {
+            const currentYear = new Date().getFullYear();
+            copyrightEl.textContent = currentYear;
+        }
+    }
+
+    // Setup hero bio fade animation on scroll
+    setupHeroBioFade() {
+        const heroBioOverlay = document.querySelector('.hero-bio-overlay');
+        if (!heroBioOverlay) return;
+
+        const handleScroll = () => {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const fadeStart = windowHeight * 0.1; // Start fading after 10% of viewport height
+            const fadeEnd = windowHeight * 0.6;   // Completely faded by 60% of viewport height
+
+            if (scrollY <= fadeStart) {
+                heroBioOverlay.style.opacity = '1';
+            } else if (scrollY >= fadeEnd) {
+                heroBioOverlay.style.opacity = '0';
+            } else {
+                const fadeProgress = (scrollY - fadeStart) / (fadeEnd - fadeStart);
+                heroBioOverlay.style.opacity = (1 - fadeProgress).toString();
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        handleScroll(); // Initialize on load
+    }
+
+    // Setup smooth scrolling with header offset
+    setupSmoothScrolling() {
+        // Get header height for offset calculation
+        const getHeaderHeight = () => {
+            const header = document.querySelector('header');
+            return header ? header.offsetHeight : 0;
+        };
+
+        // Handle clicks on navigation links
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a[href^="#"]');
+            if (!link) return;
+
+            const href = link.getAttribute('href');
+            const targetId = href.slice(1); // Remove the #
+            const targetElement = document.getElementById(targetId);
+
+            if (targetElement) {
+                e.preventDefault();
+                
+                const headerHeight = getHeaderHeight();
+                const targetPosition = targetElement.offsetTop - headerHeight - 20; // Extra 20px padding
+
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
     }
 }
 

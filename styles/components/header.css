@@ -126,7 +126,6 @@ nav {
 
 .streaming-icon:hover {
     color: var(--accent-color);
-    transform: scale(1.1);
 }
 
 /* Mobile Menu */

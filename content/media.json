@@ -4,28 +4,40 @@
     "sectionTitle": "PHOTOS",
     "gallery": [
       {
-        "id": "venue-dec-2023",
-        "caption": "THE VENUE - DEC 2023",
-        "image": "images/live/venue-dec-2023.jpg",
-        "alt": "Lockslip performing at The Venue in December 2023"
+        "id": "poltergeist-media-sep-2025",
+        "caption": "POLTERGEIST.MEDIA - SEP 2025",
+        "image": "images/live-photos/poltergeist.media-20250910_075051-2572601417.jpg",
+        "alt": "Lockslip live performance, photographed by Poltergeist Media September 2025"
       },
       {
-        "id": "recording-nov-2023", 
-        "caption": "RECORDING SESSION - NOV 2023",
-        "image": "images/archive/recording-nov-2023.jpg",
-        "alt": "Band recording in studio November 2023"
+        "id": "poltergeist-media-sep-2025-2",
+        "caption": "POLTERGEIST.MEDIA - SEP 2025",
+        "image": "images/live-photos/poltergeist.media-20250910_075051-2929348132.jpg",
+        "alt": "Lockslip live performance, photographed by Poltergeist Media September 2025"
       },
       {
-        "id": "festival-summer-2023",
-        "caption": "FESTIVAL - SUMMER 2023",
-        "image": "images/live/festival-summer-2023.jpg", 
-        "alt": "Festival performance summer 2023"
+        "id": "punk-monk-ray-jun-2025",
+        "caption": "PUNK MONK RAY - JUN 2025",
+        "image": "images/live-photos/punk_monk_ray-20250621_125004-1718973183.jpg",
+        "alt": "Lockslip live performance, photographed by Punk Monk Ray June 2025"
       },
       {
-        "id": "rehearsal-oct-2023",
-        "caption": "REHEARSAL - OCT 2023",
-        "image": "images/archive/rehearsal-oct-2023.jpg",
-        "alt": "Band rehearsal October 2023"
+        "id": "lockslip-mar-2025",
+        "caption": "LIVE - MAR 2025",
+        "image": "images/live-photos/lockslip-20250308_100000-3007254630.jpg",
+        "alt": "Lockslip live performance March 2025"
+      },
+      {
+        "id": "lockslip-dec-2024",
+        "caption": "LIVE - DEC 2024",
+        "image": "images/live-photos/lockslip-20241227_085645-212794611.jpg",
+        "alt": "Lockslip live performance December 2024"
+      },
+      {
+        "id": "live-photo-img-0965",
+        "caption": "LIVE PERFORMANCE",
+        "image": "images/live-photos/IMG_0965.jpeg",
+        "alt": "Lockslip live performance"
       }
     ]
   },
@@ -33,19 +45,19 @@
     "sectionTitle": "VIDEOS",
     "items": [
       {
-        "id": "live-set-2024",
-        "title": "Live at The Venue 2024",
-        "description": "Full live set from our headlining show",
-        "url": "https://www.youtube.com/watch?v=example1",
-        "thumbnail": "images/videos/live-set-2024-thumb.jpg",
+        "id": "mathcore-index-fest-2025",
+        "title": "Lockslip live at Mathcore Index Fest 2025",
+        "description": "Lockslip live at Mathcore Index Fest 2025, July 11th, 2025 - 924 Gilman, Berkeley, CA, filmed and edited by Danny Keane",
+        "url": "https://www.youtube.com/watch?v=QOSsgGGRel0",
+        "thumbnail": "images/videos/mathcore-index-fest-2025.jpg",
         "type": "youtube"
       },
       {
-        "id": "studio-session-2023",
-        "title": "Studio Session Behind the Scenes",
-        "description": "Behind the scenes footage from our latest recording",
-        "url": "https://www.youtube.com/watch?v=example2",
-        "thumbnail": "images/videos/studio-session-thumb.jpg",
+        "id": "197-media-04272024",
+        "title": "(197 Media) Lockslip - 04/27/2024",
+        "description": "Lockslip performing in Pomona, CA. at Mosh for Youth 5",
+        "url": "https://www.youtube.com/watch?v=ky0w41lNK_M",
+        "thumbnail": "images/videos/197-media-04272024.jpg",
         "type": "youtube"
       }
     ]

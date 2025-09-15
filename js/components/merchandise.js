@@ -63,18 +63,12 @@ const MerchandiseComponent = {
     },
 
     renderMerchItem(item) {
-        const hasMultipleImages = item.images && item.images.length > 1;
-        const titleNavigation = hasMultipleImages ? `
-            <button class="title-nav prev" onclick="navigateItemCarousel('${item.id}', -1)">‹</button>
-            <span>${item.name}</span>
-            <button class="title-nav next" onclick="navigateItemCarousel('${item.id}', 1)">›</button>
-        ` : item.name;
         
         return `
             <div class="merch-item" data-item-id="${item.id}">
                 ${this.renderItemImageCarousel(item)}
                 <div class="merch-details">
-                    <h3>${titleNavigation}</h3>
+                    <h3>${item.name}</h3>
                     ${this.renderSizeSelection(item)}
                     ${item.description ? `<p class="merch-description">${item.description}</p>` : ''}
                     <a href="${item.purchaseUrl}" class="btn purchase-btn small" target="_blank" rel="noopener">${item.price}</a>
@@ -94,12 +88,16 @@ const MerchandiseComponent = {
                 <div class="container">
                     <h2>${merchandise.sectionTitle}</h2>
                     <div class="merch-collection-carousel">
-                        <button class="collection-nav prev" onclick="navigateCollectionCarousel(-1)">‹</button>
-                        <button class="collection-nav next" onclick="navigateCollectionCarousel(1)">›</button>
+                        <button class="collection-nav prev desktop-only" onclick="navigateCollectionCarousel(-1)">‹</button>
+                        <button class="collection-nav next desktop-only" onclick="navigateCollectionCarousel(1)">›</button>
                         <div class="merch-carousel-container">
                             <div class="merch-carousel-track">
                                 ${displayItems.map(item => this.renderMerchItem(item)).join('')}
                             </div>
+                        </div>
+                        <div class="mobile-collection-nav mobile-only">
+                            <button class="collection-nav prev" onclick="navigateCollectionCarousel(-1)">‹</button>
+                            <button class="collection-nav next" onclick="navigateCollectionCarousel(1)">›</button>
                         </div>
                     </div>
                 </div>

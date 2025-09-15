@@ -324,12 +324,6 @@
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
-    .merch-item {
-        flex: 0 0 90%; /* Use 90% of screen width instead of 100% */
-        width: 90%;
-        padding: var(--merch-item-padding);
-    }
-    
     /* Reduce mobile image height further */
     .merch-image-container {
         height: var(--merch-image-height-mobile);
@@ -354,7 +348,8 @@
     }
     
     .merch-carousel-container {
-        padding: 0 5%; /* Reduce padding to give cards more space */
+        margin-top: 0;
+        padding: 0;
     }
     
     /* Adjust fade gradients for mobile */
@@ -368,42 +363,23 @@
         background: linear-gradient(to left, var(--background-color) 0%, var(--background-color) 3%, transparent 100%);
     } */
     
-    /* Hide image carousel arrows on mobile - we'll add them to the title */
+    /* Show image carousel arrows on mobile */
     .merch-item .carousel-nav {
-        display: none !important;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .carousel-nav.prev {
+        left: 0;
+    }
+    .carousel-nav.next {
+        right: 0;
     }
     
-    /* Mobile item title with navigation */
+    /* Mobile item title - simplified */
     .merch-details h3 {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        position: relative;
-    }
-    
-    /* Mobile navigation arrows in title */
-    .merch-item .title-nav {
-        background: var(--nav-btn-bg);
-        color: var(--nav-btn-color);
-        border: var(--nav-btn-border);
-        font-size: var(--mobile-title-nav-font-size);
-        width: var(--mobile-title-nav-width);
-        height: var(--mobile-title-nav-height);
-        border-radius: var(--mobile-title-nav-border-radius);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-        backdrop-filter: blur(3px);
-        flex-shrink: 0;
-    }
-    
-    .merch-item .title-nav:hover {
-        background: var(--nav-btn-hover-bg);
-        color: var(--nav-btn-hover-color);
-        border-color: var(--nav-btn-hover-border);
+        display: block;
+        text-align: center;
     }
     
     /* Hide title navigation on desktop */
@@ -417,17 +393,20 @@
         }
     }
     
-    .collection-nav {
-        font-size: 1.2rem;
-        width: 28px;
-        height: 44px;
+    /* Mobile collection navigation below cards */
+    .mobile-collection-nav {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 1rem;
     }
     
-    .collection-nav.prev {
-        left: 5px;
-    }
-    
-    .collection-nav.next {
-        right: 5px;
+    .mobile-collection-nav .collection-nav {
+        position: static;
+        font-size: 1.5rem;
+        width: 50px;
+        height: 50px;
+        transform: none;
+        margin: 0;
     }
 }

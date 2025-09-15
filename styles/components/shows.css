@@ -361,7 +361,7 @@
 }
 
 .tour-header {
-    padding: 2rem 4rem;
+    padding: 2rem;
     border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;

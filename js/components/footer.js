@@ -7,6 +7,7 @@ const FooterComponent = {
     },
 
     renderNewsletterSection(newsletter) {
+        return ``;
         return `
             <div class="footer-section">
                 <h3>${newsletter.title}</h3>
@@ -31,7 +32,6 @@ const FooterComponent = {
             </div>
             <div class="footer-section">
                 <h3>CONTACT</h3>
-                <p>Email: <a href="mailto:${config.contact.general || config.contact.booking}">${config.contact.general || config.contact.booking}</a></p>
                 <p>Booking: <a href="mailto:${config.contact.booking}">${config.contact.booking}</a></p>
             </div>
             ${this.renderNewsletterSection(config.newsletter)}
