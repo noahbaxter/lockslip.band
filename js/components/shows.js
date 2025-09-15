@@ -38,10 +38,17 @@ const ShowsComponent = {
     renderShowDesktop(show, isPast = false, showsWithPosters = []) {
         return `
             <div class="show-card desktop-show ${isPast ? 'past-show' : ''} ${show.poster ? 'has-poster' : ''}" data-show-id="${show.id}">
-                <div class="show-date">
-                    <span class="month">${show.date.month}</span>
-                    <span class="day">${show.date.day}</span>
-                    <span class="year">${show.date.year}</span>
+                <div class="show-date-section">
+                    <div class="show-date">
+                        <span class="month">${show.date.month}</span>
+                        <span class="day">${show.date.day}</span>
+                        <span class="year">${show.date.year}</span>
+                    </div>
+                    ${!isPast && show.ticketsUrl ? `
+                        <div class="show-actions">
+                            <a href="${show.ticketsUrl}" class="btn small" target="_blank" rel="noopener">TICKETS</a>
+                        </div>
+                    ` : ''}
                 </div>
                 <div class="show-info">
                     <div class="show-header">
@@ -50,11 +57,6 @@ const ShowsComponent = {
                     </div>
                     ${this.renderBandsList(show.bands, !!show.poster)}
                 </div>
-                ${!isPast && show.ticketsUrl ? `
-                    <div class="show-actions">
-                        <a href="${show.ticketsUrl}" class="btn small" target="_blank" rel="noopener">TICKETS</a>
-                    </div>
-                ` : ''}
                 ${this.renderShowPoster(show, showsWithPosters)}
             </div>
         `;

@@ -182,6 +182,7 @@
       "event": "Within These Walls",
       "venue": "The Nile",
       "location": "Mesa, AZ",
+      "ticketsUrl": "https://www.eventim.us/event/within-these-walls-2025/644859",
       "poster": "images/show-posters/2025_09_20.png",
       "bands": ["End of Dayz", "Contention", "Entry", "Torena", "Common Wounds", "See It Through", "Price of Life", "Lockslip", "Such Gold", "Apex Predators", "The Beautiful Ones", "Shutdown", "Bleeding Through", "The Warriors", "Desmadre", "Twitching Tongues", "Bane"]
     },
@@ -194,8 +195,273 @@
       },
       "venue": "The Roxy",
       "location": "Los Angeles, CA",
+      "ticketsUrl": "https://www.theroxy.com/events/detail/?event_id=1112741",
       "poster": "images/show-posters/2025_11_10.jpg",
       "bands": ["Lockslip", "7d7d", "Many Eyes", "The Barbarians of California"]
+    },
+    {
+      "id": "2024-08-08",
+      "date": {
+        "month": "AUG",
+        "day": "08",
+        "year": "2024"
+      },
+      "venue": "Midnight Hour",
+      "location": "San Fernando, CA",
+      "poster": "images/show-posters/2024_08_08 - Midnight Hour - San Fernando, CA.jpg",
+      "bands": ["Shape", "Mallet", "Cold Stare", "Lockslip"]
+    },
+    {
+      "id": "2024-08-09",
+      "date": {
+        "month": "AUG",
+        "day": "09",
+        "year": "2024"
+      },
+      "venue": "Open",
+      "location": "San Jose, CA",
+      "poster": "images/show-posters/2024_08_09 - Open - San Jose, CA.JPG",
+      "bands": ["Eradicate", "Vial of Tearz", "Impact", "Lockslip", "Complex", "No Right"]
+    },
+    {
+      "id": "2024-08-10",
+      "date": {
+        "month": "AUG",
+        "day": "10",
+        "year": "2024"
+      },
+      "venue": "Ghost Town",
+      "location": "Eugene, OR",
+      "poster": "images/show-posters/2024_08_10 - Ghost Town - Eugene, OR.JPG",
+      "bands": ["Aberrance", "Before the Chaos", "SHELLxSHOCK", "Lockslip"]
+    },
+    {
+      "id": "2024-08-11",
+      "date": {
+        "month": "AUG",
+        "day": "11",
+        "year": "2024"
+      },
+      "venue": "Woodland Theater",
+      "location": "Seattle, WA",
+      "poster": "images/show-posters/2024_08_11 - Woodland Theater - Seattle, WA.jpg",
+      "bands": ["Plagued by God", "Lilith", "Writhe in Fear", "Lockslip", "Lacerated"]
+    },
+    {
+      "id": "2024-08-12",
+      "date": {
+        "month": "AUG",
+        "day": "12",
+        "year": "2024"
+      },
+      "venue": "Red Gate",
+      "location": "Vancouver, BC",
+      "poster": "images/show-posters/2024_08_12 - Red Gate - Vancouver, BC, Canada.jpg",
+      "bands": ["The July Effect", "Plagued by God", "Place of Refuge", "Seasons Worn", "Lockslip"]
+    },
+    {
+      "id": "2024-08-13",
+      "date": {
+        "month": "AUG",
+        "day": "13",
+        "year": "2024"
+      },
+      "venue": "Bridge City Sessions",
+      "location": "Portland, OR",
+      "poster": "images/show-posters/2024_08_13 - Bridge City Sessions - Portland, OR.jpeg",
+      "bands": ["N.O.", "Mind Palace", "Breakneck Flow", "Lockslip"]
+    },
+    {
+      "id": "2024-08-14",
+      "date": {
+        "month": "AUG",
+        "day": "14",
+        "year": "2024"
+      },
+      "venue": "Cafe Colonial",
+      "location": "Sacramento, CA",
+      "poster": "images/show-posters/2024_08_14 - Cafe Colonial - Sacramento - CA.JPG",
+      "bands": ["Ingrata", "Cockring", "Ologist", "Lockslip", "Ceramik"]
+    },
+    {
+      "id": "2024-08-15",
+      "date": {
+        "month": "AUG",
+        "day": "15",
+        "year": "2024"
+      },
+      "venue": "Naked Lounge",
+      "location": "Chico, CA",
+      "poster": "images/show-posters/2024_08_15 - Naked Lounge - Chico - CA.jpg",
+      "bands": ["Cull", "Lockslip", "Junim"]
+    },
+    {
+      "id": "2024-08-16",
+      "date": {
+        "month": "AUG",
+        "day": "16",
+        "year": "2024"
+      },
+      "venue": "Midnight Coffee Roasting",
+      "location": "Reno, NV",
+      "poster": "images/show-posters/2024_08_16 - Midnight Coffee Roasting - Reno, NV.JPG",
+      "bands": ["Ignoramus", "Procyon", "Infernuium", "Lockslip"]
+    },
+    {
+      "id": "2024-08-17",
+      "date": {
+        "month": "AUG",
+        "day": "17",
+        "year": "2024"
+      },
+      "venue": "Dragon's Lair",
+      "location": "Las Vegas, NV",
+      "poster": "images/show-posters/2024_08_17.jpg",
+      "bands": ["Species", "Overexposed", "Lockslip"]
+    },
+    {
+      "id": "2025-08-30",
+      "date": {
+        "month": "AUG",
+        "day": "30",
+        "year": "2025"
+      },
+      "venue": "The Doom Tomb",
+      "location": "Las Vegas, NV",
+      "poster": "images/show-posters/2025_08_30.jpg",
+      "bands": ["Echo Company", "Werm", "Pogo's Clubhouse", "Adjudicator", "Manos de Fierro", "Lockslip"]
+    },
+    {
+      "id": "2025-08-31",
+      "date": {
+        "month": "AUG",
+        "day": "31",
+        "year": "2025"
+      },
+      "venue": "The Mystery Shop",
+      "location": "Oxnard, CA",
+      "poster": "images/show-posters/2025_08_31.jpg",
+      "bands": ["Skeptik", "Lockslip", "Paperclip", "Gunshy", "Watch You Fall"]
+    },
+    {
+      "id": "2025-09-04",
+      "date": {
+        "month": "SEP",
+        "day": "04",
+        "year": "2025"
+      },
+      "venue": "Small Karns",
+      "location": "Knoxville, TN",
+      "poster": "images/show-posters/2025_09_04.jpg",
+      "bands": ["For God", "As She Prayed", "Deceit", "Lockslip", "Church Tongue", "Your Spirit Dies"]
+    },
+    {
+      "id": "2025-09-05",
+      "date": {
+        "month": "SEP",
+        "day": "05",
+        "year": "2025"
+      },
+      "venue": "Hoots Beer Co",
+      "location": "Winston-Salem, NC",
+      "poster": "images/show-posters/2025_09_05.jpg",
+      "bands": [".memoria", "A Knife in the Dark", "Chained", "Lockslip", "Church Tongue"]
+    },
+    {
+      "id": "2025-09-06",
+      "date": {
+        "month": "SEP",
+        "day": "06",
+        "year": "2025"
+      },
+      "venue": "Eyedrum Gallery",
+      "location": "Atlanta, GA",
+      "poster": "images/show-posters/2025_09_06.jpg",
+      "bands": ["Cheerleader", "Lockslip", "Seasons End", "Church Tongue"]
+    },
+    {
+      "id": "2025-09-07",
+      "date": {
+        "month": "SEP",
+        "day": "07",
+        "year": "2025"
+      },
+      "venue": "Mad Malts",
+      "location": "Birmingham, AL",
+      "poster": "images/show-posters/2025_09_07.jpg",
+      "bands": ["Stitch", "Out to Destroy", "Lockslip", "Nailed Shut", "Church Tongue", "Two Piece"]
+    },
+    {
+      "id": "2025-09-08",
+      "date": {
+        "month": "SEP",
+        "day": "08",
+        "year": "2025"
+      },
+      "venue": "Eastside Bowl",
+      "location": "Nashville, TN",
+      "poster": "images/show-posters/2025_09_08.jpg",
+      "bands": ["Gorge", "Circuit Circuit", "Lockslip", "Church Tongue"]
+    },
+    {
+      "id": "2025-09-09",
+      "date": {
+        "month": "SEP",
+        "day": "09",
+        "year": "2025"
+      },
+      "venue": "Camp Spaceman",
+      "location": "Louisville, KY",
+      "poster": "images/show-posters/2025_09_09.jpg",
+      "bands": ["xGargoylex", "Age of Panic", "Nailed Shut", "Lockslip", "Two Piece", "Church Tongue"]
+    },
+    {
+      "id": "2025-09-10",
+      "date": {
+        "month": "SEP",
+        "day": "10",
+        "year": "2025"
+      },
+      "venue": "Roses Midwest",
+      "location": "Bloomington, IN",
+      "poster": "images/show-posters/2025_09_10.jpg",
+      "bands": ["Blinding Light", "Desensitize", "Lockslip", "Church Tongue"]
+    },
+    {
+      "id": "2025-09-11",
+      "date": {
+        "month": "SEP",
+        "day": "11",
+        "year": "2025"
+      },
+      "venue": "Ruidosa Arts Collective",
+      "location": "Chicago, IL",
+      "poster": "images/show-posters/2025_09_11.jpg",
+      "bands": ["XnullifyX", "Premeditated", "Lockslip", "Gagger", "Church Tongue"]
+    },
+    {
+      "id": "2025-09-12",
+      "date": {
+        "month": "SEP",
+        "day": "12",
+        "year": "2025"
+      },
+      "venue": "JJ's Bar and Grill",
+      "location": "Milwaukee, WI",
+      "poster": "images/show-posters/2025_09_12.jpg",
+      "bands": ["At the Bottom of the Great Lake", "Zipbomb", "Bird Law", "Lower Heaven", "Lockslip", "Church Tongue"]
+    },
+    {
+      "id": "2025-09-13",
+      "date": {
+        "month": "SEP",
+        "day": "13",
+        "year": "2025"
+      },
+      "venue": "Sinkhole",
+      "location": "St. Louis, MO",
+      "poster": "images/show-posters/2025_09_13.jpg",
+      "bands": ["Blistered Spirit", "Direct Measure", "Lockslip", "Lower Heaven", "Church Tongue"]
     }
   ],
   "tours": [
@@ -214,126 +480,16 @@
       },
       "poster": "images/show-posters/2024_08 Summer Tour Poster.jpg",
       "shows": [
-        {
-          "id": "2024-08-08",
-          "date": {
-            "month": "AUG",
-            "day": "08",
-            "year": "2024"
-          },
-          "venue": "Midnight Hour",
-          "location": "San Fernando, CA",
-          "poster": "images/show-posters/2024_08_08 - Midnight Hour - San Fernando, CA.jpg",
-          "bands": ["Shape", "Mallet", "Cold Stare", "Lockslip"]
-        },
-        {
-          "id": "2024-08-09",
-          "date": {
-            "month": "AUG",
-            "day": "09",
-            "year": "2024"
-          },
-          "venue": "Open",
-          "location": "San Jose, CA",
-          "poster": "images/show-posters/2024_08_09 - Open - San Jose, CA.JPG",
-          "bands": ["Eradicate", "Vial of Tearz", "Impact", "Lockslip", "Complex", "No Right"]
-        },
-        {
-          "id": "2024-08-10",
-          "date": {
-            "month": "AUG",
-            "day": "10",
-            "year": "2024"
-          },
-          "venue": "Ghost Town",
-          "location": "Eugene, OR",
-          "poster": "images/show-posters/2024_08_10 - Ghost Town - Eugene, OR.JPG",
-          "bands": ["Aberrance", "Before the Chaos", "SHELLxSHOCK", "Lockslip"]
-        },
-        {
-          "id": "2024-08-11",
-          "date": {
-            "month": "AUG",
-            "day": "11",
-            "year": "2024"
-          },
-          "venue": "Woodland Theater",
-          "location": "Seattle, WA",
-          "poster": "images/show-posters/2024_08_11 - Woodland Theater - Seattle, WA.jpg",
-          "bands": ["Plagued by God", "Lilith", "Writhe in Fear", "Lockslip", "Lacerated"]
-        },
-        {
-          "id": "2024-08-12",
-          "date": {
-            "month": "AUG",
-            "day": "12",
-            "year": "2024"
-          },
-          "venue": "Red Gate",
-          "location": "Vancouver, BC",
-          "poster": "images/show-posters/2024_08_12 - Red Gate - Vancouver, BC, Canada.jpg",
-          "bands": ["The July Effect", "Plagued by God", "Place of Refuge", "Seasons Worn", "Lockslip"]
-        },
-        {
-          "id": "2024-08-13",
-          "date": {
-            "month": "AUG",
-            "day": "13",
-            "year": "2024"
-          },
-          "venue": "Bridge City Sessions",
-          "location": "Portland, OR",
-          "poster": "images/show-posters/2024_08_13 - Bridge City Sessions - Portland, OR.jpeg",
-          "bands": ["N.O.", "Mind Palace", "Breakneck Flow", "Lockslip"]
-        },
-        {
-          "id": "2024-08-14",
-          "date": {
-            "month": "AUG",
-            "day": "14",
-            "year": "2024"
-          },
-          "venue": "Cafe Colonial",
-          "location": "Sacramento, CA",
-          "poster": "images/show-posters/2024_08_14 - Cafe Colonial - Sacramento - CA.JPG",
-          "bands": ["Ingrata", "Cockring", "Ologist", "Lockslip", "Ceramik"]
-        },
-        {
-          "id": "2024-08-15",
-          "date": {
-            "month": "AUG",
-            "day": "15",
-            "year": "2024"
-          },
-          "venue": "Naked Lounge",
-          "location": "Chico, CA",
-          "poster": "images/show-posters/2024_08_15 - Naked Lounge - Chico - CA.jpg",
-          "bands": ["Cull", "Lockslip", "Junim"]
-        },
-        {
-          "id": "2024-08-16",
-          "date": {
-            "month": "AUG",
-            "day": "16",
-            "year": "2024"
-          },
-          "venue": "Midnight Coffee Roasting",
-          "location": "Reno, NV",
-          "poster": "images/show-posters/2024_08_16 - Midnight Coffee Roasting - Reno, NV.JPG",
-          "bands": ["Ignoramus", "Procyon", "Infernuium", "Lockslip"]
-        },
-        {
-          "id": "2024-08-17",
-          "date": {
-            "month": "AUG",
-            "day": "17",
-            "year": "2024"
-          },
-          "venue": "Dragon's Lair",
-          "location": "Las Vegas, NV",
-          "poster": "images/show-posters/2024_08_17.jpg",
-          "bands": ["Species", "Overexposed", "Lockslip"]
-        }
+        "2024-08-08",
+        "2024-08-09",
+        "2024-08-10",
+        "2024-08-11",
+        "2024-08-12",
+        "2024-08-13",
+        "2024-08-14",
+        "2024-08-15",
+        "2024-08-16",
+        "2024-08-17"
       ]
     },
     {
@@ -351,30 +507,8 @@
       },
       "poster": "images/show-posters/2025_08_30_31.jpg",
       "shows": [
-        {
-          "id": "2025-08-30",
-          "date": {
-            "month": "AUG",
-            "day": "30",
-            "year": "2025"
-          },
-          "venue": "The Doom Tomb",
-          "location": "Las Vegas, NV",
-          "poster": "images/show-posters/2025_08_30.jpg",
-          "bands": ["Echo Company", "Werm", "Pogo's Clubhouse", "Adjudicator", "Manos de Fierro", "Lockslip"]
-        },
-        {
-          "id": "2025-08-31",
-          "date": {
-            "month": "AUG",
-            "day": "31",
-            "year": "2025"
-          },
-          "venue": "The Mystery Shop",
-          "location": "Oxnard, CA",
-          "poster": "images/show-posters/2025_08_31.jpg",
-          "bands": ["Skeptik", "Lockslip", "Paperclip", "Gunshy", "Watch You Fall"]
-        }
+        "2025-08-30",
+        "2025-08-31"
       ]
     },
     {
@@ -392,127 +526,35 @@
       },
       "poster": "images/show-posters/2025_09_04_14 - Tour1.JPG",
       "shows": [
-        {
-          "id": "2025-09-04",
-          "date": {
-            "month": "SEP",
-            "day": "04",
-            "year": "2025"
-          },
-          "venue": "Small Karns",
-          "location": "Knoxville, TN",
-          "poster": "images/show-posters/2025_09_04.jpg",
-          "bands": ["For God", "As She Prayed", "Deceit", "Lockslip", "Church Tongue", "Your Spirit Dies"]
-        },
-        {
-          "id": "2025-09-05",
-          "date": {
-            "month": "SEP",
-            "day": "05",
-            "year": "2025"
-          },
-          "venue": "Hoots Beer Co",
-          "location": "Winston-Salem, NC",
-          "poster": "images/show-posters/2025_09_05.jpg",
-          "bands": [".memoria", "A Knife in the Dark", "Chained", "Lockslip", "Church Tongue"]
-        },
-        {
-          "id": "2025-09-06",
-          "date": {
-            "month": "SEP",
-            "day": "06",
-            "year": "2025"
-          },
-          "venue": "Eyedrum Gallery",
-          "location": "Atlanta, GA",
-          "poster": "images/show-posters/2025_09_06.jpg",
-          "bands": ["Cheerleader", "Lockslip", "Seasons End", "Church Tongue"]
-        },
-        {
-          "id": "2025-09-07",
-          "date": {
-            "month": "SEP",
-            "day": "07",
-            "year": "2025"
-          },
-          "venue": "Mad Malts",
-          "location": "Birmingham, AL",
-          "poster": "images/show-posters/2025_09_07.jpg",
-          "bands": ["Stitch", "Out to Destroy", "Lockslip", "Nailed Shut", "Church Tongue", "Two Piece"]
-        },
-        {
-          "id": "2025-09-08",
-          "date": {
-            "month": "SEP",
-            "day": "08",
-            "year": "2025"
-          },
-          "venue": "Eastside Bowl",
-          "location": "Nashville, TN",
-          "poster": "images/show-posters/2025_09_08.jpg",
-          "bands": ["Gorge", "Circuit Circuit", "Lockslip", "Church Tongue"]
-        },
-        {
-          "id": "2025-09-09",
-          "date": {
-            "month": "SEP",
-            "day": "09",
-            "year": "2025"
-          },
-          "venue": "Camp Spaceman",
-          "location": "Louisville, KY",
-          "poster": "images/show-posters/2025_09_09.jpg",
-          "bands": ["xGargoylex", "Age of Panic", "Nailed Shut", "Lockslip", "Two Piece", "Church Tongue"]
-
-        },
-        {
-          "id": "2025-09-10",
-          "date": {
-            "month": "SEP",
-            "day": "10",
-            "year": "2025"
-          },
-          "venue": "Roses Midwest",
-          "location": "Bloomington, IN",
-          "poster": "images/show-posters/2025_09_10.jpg",
-          "bands": ["Blinding Light", "Desensitize", "Lockslip", "Church Tongue"]
-        },
-        {
-          "id": "2025-09-11",
-          "date": {
-            "month": "SEP",
-            "day": "11",
-            "year": "2025"
-          },
-          "venue": "Ruidosa Arts Collective",
-          "location": "Chicago, IL",
-          "poster": "images/show-posters/2025_09_11.jpg",
-          "bands": ["XnullifyX", "Premeditated", "Lockslip", "Gagger", "Church Tongue"]
-        },
-        {
-          "id": "2025-09-12",
-          "date": {
-            "month": "SEP",
-            "day": "12",
-            "year": "2025"
-          },
-          "venue": "JJ's Bar and Grill",
-          "location": "Milwaukee, WI",
-          "poster": "images/show-posters/2025_09_12.jpg",
-          "bands": ["At the Bottom of the Great Lake", "Zipbomb", "Bird Law", "Lower Heaven", "Lockslip", "Church Tongue"]
-        },
-        {
-          "id": "2025-09-13",
-          "date": {
-            "month": "SEP",
-            "day": "13",
-            "year": "2025"
-          },
-          "venue": "Sinkhole",
-          "location": "St. Louis, MO",
-          "poster": "images/show-posters/2025_09_13.jpg",
-          "bands": ["Blistered Spirit", "Direct Measure", "Lockslip", "Lower Heaven", "Church Tongue"]
-        }
+        "2025-09-04",
+        "2025-09-05",
+        "2025-09-06",
+        "2025-09-07",
+        "2025-09-08",
+        "2025-09-09",
+        "2025-09-10",
+        "2025-09-11",
+        "2025-09-12",
+        "2025-09-13"
+      ]
+    },
+    {
+      "id": "summer-weekender-2024",
+      "name": "Summer Weekender 2024",
+      "startDate": {
+        "month": "JUL",
+        "day": "27",
+        "year": "2024"
+      },
+      "endDate": {
+        "month": "JUL",
+        "day": "28",
+        "year": "2024"
+      },
+      "poster": "images/show-posters/2024_07_27 - 1Weekender.jpg",
+      "shows": [
+        "2024-07-27",
+        "2024-07-28"
       ]
     }
   ]

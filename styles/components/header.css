@@ -249,7 +249,16 @@ nav {
     box-shadow: 0 0 20px var(--accent-color);
     transform: translateY(-2px);
 }
+@media (max-width: 1000px) {
+   .nav-links {
+        gap: 1rem;
+    }
 
+    .nav-links a {
+        font-size: 0.8rem;
+        /* letter-spacing: 1px; */
+    }
+}
 /* Mobile responsive */
 @media (max-width: 768px) {
     header {
@@ -274,9 +283,7 @@ nav {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 0.5rem;
     }
-}
 
-@media (max-width: 480px) {
     .container {
         padding: 0 15px;
     }

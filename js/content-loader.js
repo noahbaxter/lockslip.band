@@ -24,6 +24,7 @@ class ContentLoader {
             this.media = media;
 
             this.renderAllContent();
+            this.setupScrollWheelSupport();
         } catch (error) {
             console.error('Error loading content:', error);
             this.showError();
@@ -67,21 +68,39 @@ class ContentLoader {
     renderShows() {
         const showsSection = document.getElementById('shows');
         if (showsSection && this.shows) {
-            // Process individual shows
-            const individualShows = [...(this.shows.shows || [])];
-            
-            // Process tours separately to maintain grouping
+            // Create a map of all shows by ID for easy lookup
+            const allShowsById = {};
+            this.shows.shows.forEach(show => {
+                allShowsById[show.id] = show;
+            });
+
+            // Identify which shows are part of tours
+            const tourShowIds = new Set();
             const processedTours = [];
+            
             if (this.shows.tours) {
                 this.shows.tours.forEach(tour => {
                     if (tour.shows && tour.shows.length > 0) {
-                        processedTours.push({
-                            ...tour,
-                            shows: tour.shows || []
-                        });
+                        // Map show IDs to actual show objects
+                        const tourShows = tour.shows
+                            .map(showId => allShowsById[showId])
+                            .filter(show => show); // Filter out any missing shows
+                        
+                        if (tourShows.length > 0) {
+                            processedTours.push({
+                                ...tour,
+                                shows: tourShows
+                            });
+                            
+                            // Track which shows are part of tours
+                            tour.shows.forEach(showId => tourShowIds.add(showId));
+                        }
                     }
                 });
             }
+
+            // Get individual shows (those not part of any tour)
+            const individualShows = this.shows.shows.filter(show => !tourShowIds.has(show.id));
 
             // Get today's date (set to start of day for accurate comparison)
             const today = new Date();
@@ -194,7 +213,7 @@ class ContentLoader {
                 } else if (item.type === 'tour') {
                     const tour = item.data;
                     // Add tour poster first
-                    if (tour.poster) showsWithPosters.push({...tour, isTourPoster: true});
+                    if (tour.poster) showsWithPosters.push({...tour, isTourPoster: true, tourId: tour.id});
                     
                     // Add tour shows in chronological order (oldest first)
                     const tourShowsWithPosters = tour.shows
@@ -277,6 +296,39 @@ class ContentLoader {
                 </div>
             </div>
         `;
+    }
+
+    // Add scroll wheel support for carousels
+    setupScrollWheelSupport() {
+        document.addEventListener('wheel', (e) => {
+            // Check if we're scrolling over an image container with multiple images
+            const imageContainer = e.target.closest('.merch-image-container');
+            if (imageContainer) {
+                const carousel = imageContainer.querySelector('.merch-image-carousel');
+                if (carousel) {
+                    const images = carousel.querySelectorAll('.carousel-image');
+                    if (images.length > 1) {
+                        e.preventDefault();
+                        const itemId = imageContainer.closest('.merch-item').dataset.itemId;
+                        const direction = e.deltaY > 0 ? 1 : -1;
+                        window.navigateItemCarousel(itemId, direction);
+                    }
+                }
+                return;
+            }
+
+            // Check if we're scrolling over a merch collection carousel
+            const merchCarousel = e.target.closest('.merch-collection-carousel');
+            if (merchCarousel) {
+                const track = merchCarousel.querySelector('.merch-carousel-track');
+                const items = track.querySelectorAll('.merch-item');
+                if (items.length > 3) { // Only enable if there are enough items for carousel
+                    e.preventDefault();
+                    const direction = e.deltaY > 0 ? 1 : -1;
+                    window.navigateCollectionCarousel(direction);
+                }
+            }
+        }, { passive: false });
     }
 }
 
@@ -395,7 +447,56 @@ window.updateModalContent = function() {
         }
     }
     
-    if (counterEl) counterEl.textContent = `${window.currentPosterIndex + 1} of ${window.showsWithPosters.length}`;
+    // Calculate counter display (handle tour ranges)
+    if (counterEl) {
+        // Count total actual shows (exclude tour posters)
+        const totalShows = window.showsWithPosters.filter(item => !item.isTourPoster).length;
+        
+        let counterText;
+        if (show.isTourPoster) {
+            // Find which actual show positions this tour represents
+            let showPosition = 1;
+            let tourStartPosition = null;
+            let tourEndPosition = null;
+            
+            for (let i = 0; i < window.showsWithPosters.length; i++) {
+                const item = window.showsWithPosters[i];
+                if (!item.isTourPoster) {
+                    // This is an actual show
+                    // Check if this show ID matches any show in the tour
+                    const isInTour = show.shows && show.shows.some(tourShow => {
+                        // Handle both string IDs and show objects
+                        const tourShowId = typeof tourShow === 'string' ? tourShow : tourShow.id;
+                        return tourShowId === item.id;
+                    });
+                    if (isInTour) {
+                        // This show belongs to our tour
+                        if (tourStartPosition === null) tourStartPosition = showPosition;
+                        tourEndPosition = showPosition;
+                    }
+                    showPosition++;
+                }
+            }
+            
+            if (tourStartPosition && tourEndPosition && tourEndPosition > tourStartPosition) {
+                counterText = `${tourStartPosition}-${tourEndPosition} of ${totalShows}`;
+            } else if (tourStartPosition) {
+                counterText = `${tourStartPosition} of ${totalShows}`;
+            } else {
+                counterText = `1 of ${totalShows}`;
+            }
+        } else {
+            // For individual shows, find their position among actual shows
+            let showPosition = 1;
+            for (let i = 0; i < window.currentPosterIndex; i++) {
+                if (!window.showsWithPosters[i].isTourPoster) {
+                    showPosition++;
+                }
+            }
+            counterText = `${showPosition} of ${totalShows}`;
+        }
+        counterEl.textContent = counterText;
+    }
     
     // Update navigation button visibility
     const prevBtn = modal.querySelector('.poster-modal-nav.prev');

@@ -94,6 +94,34 @@
     color: var(--secondary-color);
 }
 
+/* Filled red button with white text */
+.btn.filled-red {
+    background: var(--accent-color);
+    color: var(--secondary-color);
+    border-color: var(--accent-color);
+}
+
+.btn.filled-red:hover {
+    background: var(--secondary-color);
+    color: var(--accent-color);
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 15px var(--accent-color);
+}
+
+/* Black button with red border */
+.btn.black-red-border {
+    background: var(--background-color);
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.btn.black-red-border:hover {
+    background: var(--accent-color);
+    color: var(--secondary-color);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px var(--accent-color);
+}
+
 /* Mobile responsive */
 @media (max-width: 768px) {
     .btn {

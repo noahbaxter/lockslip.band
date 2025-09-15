@@ -1,4 +1,3 @@
-/* CSS Custom Properties - Only variables actually used */
 :root {
     --primary-color: #000000;
     --secondary-color: #ffffff;
@@ -28,7 +27,7 @@
     
     /* Navigation Button Variables */
     --nav-btn-width: 30px;
-    --nav-btn-height: 50px;
+    --nav-btn-height: 40px;
     --nav-btn-font-size: 1.5rem;
     --nav-btn-border-radius: 8px;
     --nav-btn-bg: rgba(0, 0, 0, 0.4);

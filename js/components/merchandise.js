@@ -6,7 +6,15 @@ const MerchandiseComponent = {
         if (item.images.length === 1) {
             return `
                 <div class="merch-image-container">
-                    <img src="${item.images[0]}" alt="${item.name}" onerror="this.style.display='none'">
+                    <div class="merch-image-carousel" data-item-id="${item.id}">
+                        <div class="carousel-images">
+                            <img src="${item.images[0]}" 
+                                 alt="${item.name}" 
+                                 class="carousel-image active"
+                                 data-index="0"
+                                 onerror="this.style.display='none'">
+                        </div>
+                    </div>
                 </div>
             `;
         }
@@ -68,9 +76,8 @@ const MerchandiseComponent = {
                 <div class="merch-details">
                     <h3>${titleNavigation}</h3>
                     ${this.renderSizeSelection(item)}
-                    <p class="merch-price">${item.price}</p>
                     ${item.description ? `<p class="merch-description">${item.description}</p>` : ''}
-                    <a href="${item.purchaseUrl}" class="btn small" target="_blank" rel="noopener">BUY NOW</a>
+                    <a href="${item.purchaseUrl}" class="btn purchase-btn small" target="_blank" rel="noopener">${item.price}</a>
                 </div>
             </div>
         `;

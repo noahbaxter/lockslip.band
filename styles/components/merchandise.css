@@ -93,6 +93,15 @@
     transition: all 0.2s ease;
     flex: 0 0 var(--carousel-item-width);
     width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Merch Details */
+.merch-details {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 /* Item Image Carousel */
@@ -111,6 +120,7 @@
 .carousel-images {
     position: relative;
     height: 100%;
+    object-fit: contain;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -201,8 +211,8 @@
 }
 
 
-/* Show carousel arrows on merch item hover */
-.merch-item:hover .carousel-nav {
+/* Show carousel arrows on image container hover only */
+.merch-image-container:hover .carousel-nav {
     opacity: 1;
     pointer-events: auto;
 }
@@ -221,11 +231,11 @@
 /* Merch Details */
 .merch-details h3 {
     color: var(--secondary-color);
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
 }
 
 .merch-price {
@@ -233,6 +243,7 @@
     font-size: 1.1rem;
     font-weight: 700;
     margin-bottom: 0.3rem;
+    align-self: flex-end;
 }
 
 .merch-description {
@@ -268,11 +279,23 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border-radius: 3px;
+    border-radius: 0;
     cursor: default;
     transition: all 0.2s ease;
     min-width: 35px;
     text-align: center;
+    margin-left: -1px;
+}
+
+.size-btn:first-child {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    margin-left: 0;
+}
+
+.size-btn:last-child {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
 }
 
 .size-btn.in-stock {
@@ -288,8 +311,15 @@
     opacity: 0.5;
 }
 
-.merch-item .btn {
-    margin-bottom: 1rem;
+.merch-item .purchase-btn {
+    margin-top: auto;
+    align-self: center;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    border-radius: 3px;
+    white-space: nowrap;
+    width: fit-content;
 }
 
 /* Mobile Responsive */
