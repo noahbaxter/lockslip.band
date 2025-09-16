@@ -153,7 +153,6 @@ nav {
     background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
     border-radius: 6px;
     opacity: 0;
-    transition: opacity 0.3s ease;
     z-index: -1;
 }
 
@@ -189,14 +188,12 @@ nav {
     filter: invert(8%) sepia(100%) saturate(6463%) hue-rotate(342deg) brightness(105%) contrast(108%) !important;
     transform: translate(2px, 2px);
     opacity: 0;
-    transition: opacity 0.2s ease;
 }
 
 .tiktok-cyan {
     filter: invert(89%) sepia(96%) saturate(3924%) hue-rotate(147deg) brightness(100%) contrast(107%) !important;
     transform: translate(-2px, -2px);
     opacity: 0;
-    transition: opacity 0.2s ease;
 }
 
 .tiktok-white {
