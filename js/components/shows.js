@@ -37,9 +37,9 @@ const ShowsComponent = {
 
     renderShowDesktop(show, isPast = false, showsWithPosters = []) {
         return `
-            <div class="show-card desktop-show ${isPast ? 'past-show' : ''} ${show.poster ? 'has-poster' : ''}" data-show-id="${show.id}">
-                <div class="show-date-section">
-                    <div class="show-date">
+            <div class="show-card desktop-show ${isPast ? 'past-show' : ''} ${show.poster ? 'has-poster' : ''} card-base glow-hover semi-transparent-bg" data-show-id="${show.id}">
+                <div class="show-date-section flex-column-center">
+                    <div class="show-date flex-column-center text-center">
                         <span class="month">${show.date.month}</span>
                         <span class="day">${show.date.day}</span>
                         <span class="year">${show.date.year}</span>

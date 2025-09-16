@@ -24,7 +24,7 @@ const ReleasesComponent = {
         if (!embedUrl) return '';
         
         return `
-            <div class="bandcamp-embed-artwork">
+            <div class="bandcamp-embed-artwork flex-center">
                 <iframe style="border: 0; width: 350px; height: 588px;" 
                         src="${embedUrl}" 
                         seamless>
@@ -38,7 +38,7 @@ const ReleasesComponent = {
         
         return `
             <div class="physical-links-content">
-                <div class="physical-links-grid">
+                <div class="physical-links-grid flex-center">
                     ${Object.entries(physicalLinks).map(([key, link]) => `
                         <a href="${link.url}" target="_blank" rel="noopener" class="physical-link">
                             <img src="${link.icon}" alt="${link.name}" onerror="this.style.display='none'">
