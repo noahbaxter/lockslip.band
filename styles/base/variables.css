@@ -2,6 +2,7 @@
     --primary-color: #000000;
     --secondary-color: #ffffff;
     --accent-color: #ff0000;
+    --accent-color-background: rgba(255, 0, 0, 0.1);
     --text-color: #ffffff;
     --text-dark: #cccccc;
     --border-color: #ff0000;

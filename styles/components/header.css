@@ -57,6 +57,8 @@ nav {
     color: var(--text-color);
     text-decoration: none;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .nav-links a:hover {

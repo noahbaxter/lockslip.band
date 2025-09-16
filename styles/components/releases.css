@@ -22,7 +22,7 @@
 
 .release-item:hover {
     border-color: var(--accent-color);
-    box-shadow: 0 0 20px rgba(255, 0, 0, 0.1);
+    box-shadow: 0 0 20px var(--accent-color-background);
 }
 
 .release-artwork {
@@ -117,9 +117,8 @@
 }
 
 .physical-link:hover {
-    background: rgba(255, 0, 0, 0.1);
+    background: var(--accent-color-background);
     color: var(--accent-color);
-    transform: translateY(-2px);
 }
 
 .physical-link:hover img {
