@@ -323,15 +323,26 @@ nav {
 
 .mobile-streaming-icons {
     display: flex;
-    gap: 1.5rem;
+    gap: 2rem;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
 }
 
 .mobile-streaming-icons .icon-separator {
-    margin: 0 0.5rem;
-    font-size: 1rem;
+    margin: 0 0.7rem;
+    font-size: 1.2rem;
+}
+
+.mobile-streaming-icons .streaming-icon,
+.mobile-streaming-icons .social-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.mobile-streaming-icons .tiktok-3d-container {
+    width: 32px;
+    height: 32px;
 }
 
 /* Streaming Links Grid (for hero section) */
@@ -367,6 +378,28 @@ nav {
     box-shadow: 0 0 20px var(--accent-color);
     transform: translateY(-2px);
 }
+@media (max-width: 1220px) {
+    .streaming-icons {
+        gap: 0.7rem;
+    }
+    
+    .icon-separator {
+        margin: 0 0.7rem;
+        font-size: 0.95rem;
+    }
+    
+    .streaming-icon,
+    .social-icon {
+        width: 26px;
+        height: 26px;
+    }
+    
+    .tiktok-3d-container {
+        width: 26px;
+        height: 26px;
+    }
+}
+
 @media (max-width: 1115px) {
     .streaming-icons {
         gap: 0.6rem;
@@ -418,6 +451,36 @@ nav {
         height: 22px;
     }
 }
+
+@media (max-width: 890px) {
+    .nav-links {
+        gap: 0.8rem;
+    }
+
+    .nav-links a {
+        font-size: 0.75rem;
+    }
+    
+    .streaming-icons {
+        gap: 0.4rem;
+    }
+    
+    .icon-separator {
+        margin: 0 0.4rem;
+        font-size: 0.85rem;
+    }
+    
+    .streaming-icon,
+    .social-icon {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .tiktok-3d-container {
+        width: 20px;
+        height: 20px;
+    }
+}
 /* Mobile responsive */
 @media (max-width: 768px) {
     header {
@@ -457,5 +520,43 @@ nav {
         right: 20px;
         transform: translateY(-50%);
         z-index: 1001;
+    }
+
+    .mobile-streaming-icons {
+        gap: 1rem;
+    }
+
+    .mobile-streaming-icons .icon-separator {
+        margin: 0 0.3rem;
+        font-size: 0.9rem;
+    }
+
+    .mobile-streaming-icons .streaming-icon,
+    .mobile-streaming-icons .social-icon {
+        width: 30px;
+        height: 30px;
+    }
+
+    .mobile-streaming-icons .tiktok-3d-container {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 500px) {
+    .mobile-streaming-icons .icon-separator {
+        margin: 0 0.3rem;
+        font-size: 0.9rem;
+    }
+
+    .mobile-streaming-icons .streaming-icon,
+    .mobile-streaming-icons .social-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .mobile-streaming-icons .tiktok-3d-container {
+        width: 24px;
+        height: 24px;
     }
 }

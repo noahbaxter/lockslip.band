@@ -203,8 +203,8 @@
     
     .physical-links-grid {
         flex-wrap: wrap;
-        gap: 0.5rem;
-        justify-content: flex-start;
+        gap: 0.4rem;
+        justify-content: center;
     }
     
     .content-streaming-links {
@@ -213,20 +213,20 @@
     }
     
     .physical-link {
-        min-width: 100px;
-        padding: 0.8rem;
+        min-width: 85px;
+        padding: 0.6rem;
     }
     
     .physical-link img {
-        width: 45px;
-        height: 45px;
+        width: 40px;
+        height: 40px;
     }
     
     .physical-link-name {
-        font-size: 0.7rem;
+        font-size: 0.65rem;
     }
     
     .physical-link-format {
-        font-size: 0.6rem;
+        font-size: 0.55rem;
     }
 }

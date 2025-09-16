@@ -1,90 +1,224 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides comprehensive guidance for Claude Code when working with the Lockslip band website repository.
 
-## Development Commands
+## Quick Start
 
-### Running the Website
+### Development Server
 ```bash
 python3 server.py
 ```
-Starts a local development server on port 8000 with CORS headers enabled for JSON content loading.
+Starts local development server on port 8000 with CORS headers for JSON loading.
 
 ### Image Optimization
 ```bash
-# Setup (one-time)
+# One-time setup
 python3 -m venv image_optimizer_env
 source image_optimizer_env/bin/activate
 pip install Pillow pillow-heif
 
-# Usage
+# Optimize images
 source image_optimizer_env/bin/activate
-python optimize_images.py path/to/images [options]
-
-# Common use cases:
-python optimize_images.py images/show-posters -q 80 --max-width 800 --max-height 800
-python optimize_images.py images/releases -q 85 --max-width 600 --max-height 600
+python optimize_images.py images/show-posters -q 80 --max-width 800
+python optimize_images.py images/releases -q 85 --max-width 600
 ```
 
 ## Architecture Overview
 
-### Content-Driven Single Page Application
-This is a static band website that dynamically loads all content from JSON files, allowing non-technical content updates without touching code.
+### Component-Based Single Page Application
+Modern vanilla JavaScript SPA with component architecture, CSS imports, and JSON-driven content management.
 
-**Core Architecture:**
-- `index.html` - Static HTML shell with placeholder sections
-- `styles.css` - Complete styling with responsive mobile layouts
-- `js/content-loader.js` - Loads and renders all dynamic content from JSON
-- `js/mobile-menu.js` - Handles responsive navigation
-- `content/*.json` - All website content (shows, releases, merch, config)
+**Core Files:**
+- `index.html` - Semantic HTML shell with component mount points
+- `styles.css` - CSS import orchestrator for modular stylesheets
+- `js/content-loader.js` - Main application controller
+- `content/*.json` - All dynamic content (shows, releases, merch, config)
 
-### Content System
-The entire website content is managed through JSON files in `/content/`:
+### Modular JavaScript Architecture
 
-- `site-config.json` - Site settings, social links, streaming platforms
-- `releases.json` - Music releases with streaming links and artwork
-- `shows.json` - Live shows with dates, venues, bands, and poster images
-- `merchandise.json` - Merch items with pricing and purchase links
-- `media.json` - Photos, videos, logos, and press coverage
+**Component System (`js/components/`):**
+- `shows.js` (238 lines) - Complex show rendering with mobile/desktop variants
+- `poster-modal.js` (233 lines) - Full-screen poster viewer with keyboard navigation
+- `shows-processor.js` (192 lines) - Show categorization and tour grouping logic
+- `carousel-manager.js` (148 lines) - Multi-level carousel functionality
+- `merchandise.js` (115 lines) - Product display with image carousels
+- `releases.js` (90 lines) - Music release cards with streaming integration
+- `media.js` (88 lines) - Photo/video galleries
+- `platform-icons.js` (57 lines) - Dynamic social media icons
+- `footer.js` (39 lines) - Footer content rendering
+- `navigation.js` (15 lines) - Navigation component
 
-### Key Technical Details
+**Utilities:**
+- `js/utils/helpers.js` - Shared utility functions
+- `js/mobile-menu.js` - Mobile navigation behavior
 
-**Content Loading Flow:**
-1. `ContentLoader` class fetches all JSON files in parallel
-2. Renders content into placeholder HTML sections
-3. Handles error states if JSON files are missing/invalid
+### CSS Architecture
 
-**Show Display Logic:**
-- Automatically categorizes shows as past/future based on current date
-- Shows with posters get special layout treatment
-- Mobile layout uses CSS Grid for poster + text columns
-- Desktop maintains horizontal date | info | poster layout
+**Modular Stylesheets (`styles/`):**
+```
+base/
+├── variables.css (67 lines) - CSS custom properties
+├── reset.css (23 lines) - Normalize styles
+├── typography.css (54 lines) - Font systems
+├── layout.css (92 lines) - Grid & flexbox utilities
+├── buttons.css (129 lines) - Button component styles
+└── utilities.css (106 lines) - Helper classes
 
-**Responsive Design:**
-- Mobile: Hamburger menu with full-screen overlay
-- Shows with posters: 45%/55% grid (poster/content) on mobile
-- Poster aspect ratios: 3:4 on mobile, original on desktop
-- Bands list hidden on mobile for shows with posters
+components/
+├── shows.css (523 lines) - Complex show layouts
+├── merchandise.css (400 lines) - Product displays
+├── header.css (284 lines) - Navigation & hero
+├── poster-modal.css (260 lines) - Modal overlay system
+├── releases.css (231 lines) - Music release cards
+├── media.css (183 lines) - Gallery components
+└── footer.css (109 lines) - Footer styling
+```
 
-**Image Organization:**
-- `/images/show-posters/` - Concert poster images
-- `/images/releases/` - Album/EP artwork
-- `/images/icon-social/` - Platform icons (SVG format)
-- `/images/art/` - Background and promotional images
+### Content Management System
 
-### Content Update Workflow
-1. Edit JSON files in `/content/` directory
-2. Add images to appropriate `/images/` subdirectories
-3. Reference image paths in JSON (e.g., `"images/show-posters/poster.jpg"`)
-4. Changes appear immediately on page refresh
+**JSON Structure (`content/`):**
+- `site-config.json` - Band info, social links, streaming platforms, contact
+- `shows.json` - Live shows with tours, posters, venues, bands, tickets
+- `releases.json` - Discography with streaming links, physical formats
+- `merchandise.json` - Products with images, pricing, purchase links
+- `media.json` - Photos, videos, press coverage, logos
 
-### Mobile-Specific Considerations
-- Shows with posters use completely different layout structure on mobile
-- CSS Grid template areas reorganize content: poster left, date/venue/location right
-- Poster images forced to 3:4 aspect ratio via CSS
-- Desktop layout reverts to original horizontal flow
+**Image Organization (`images/`):**
+- `show-posters/` (8.3MB) - Concert posters - **NEEDS OPTIMIZATION**
+- `merch/` (2.0MB) - Product photography
+- `art/` (2.2MB) - Promotional artwork
+- `live-photos/` (5.0MB) - Concert photography
+- `releases/` (664K) - Album artwork
+- `logos/` (1.2MB) - Brand assets
+- `icon-social/` (40K) - Platform icons (SVG)
+- `videos/` (124K) - Video thumbnails
+
+## Key Features
+
+### Responsive Show Display System
+- **Desktop**: Horizontal layout (date | info | poster)
+- **Mobile with posters**: CSS Grid (45% poster | 55% content)
+- **Mobile without posters**: Vertical stacking
+- **Smart categorization**: Auto-sorts past/future by current date
+- **Tour grouping**: Multi-show tours display as collapsible sections
+
+### Advanced Poster Modal
+- Full-screen poster viewing with navigation
+- Keyboard controls (arrow keys, escape)
+- Touch/swipe support for mobile
+- Smooth transitions and loading states
+
+### Multi-Level Carousel System
+- Collection-level navigation (between releases/merch items)
+- Item-level navigation (multiple images per product)
+- Responsive breakpoints (3 items desktop, 1 mobile)
+- Touch-friendly controls
+
+### Progressive Enhancement
+- Works without JavaScript (static HTML)
+- Graceful image loading with error handling
+- CORS-enabled JSON loading for local development
+
+## Development Workflow
+
+### Content Updates
+1. **Shows**: Edit `content/shows.json`, add posters to `images/show-posters/`
+2. **Releases**: Edit `content/releases.json`, add artwork to `images/releases/`
+3. **Merchandise**: Edit `content/merchandise.json`, add photos to `images/merch/`
+4. **Media**: Edit `content/media.json`, add files to respective image folders
+
+### Adding New Shows
+```json
+{
+  "id": "2025-01-15",
+  "date": {"month": "JAN", "day": "15", "year": "2025"},
+  "venue": "Venue Name",
+  "location": "City, State",
+  "poster": "images/show-posters/2025_01_15.jpg",
+  "bands": ["Opener", "Lockslip", "Headliner"],
+  "ticketsUrl": "https://tickets.example.com"
+}
+```
+
+### Performance Optimization
+- **Images**: Use `optimize_images.py` script before committing
+- **Show posters**: Target 800x800px max, 80% quality
+- **Merch photos**: Target 600x600px max, 85% quality
+- **Consider WebP**: Add WebP conversion for better compression
+
+## Technical Considerations
+
+### Mobile-First Design
+- CSS Grid transforms show layouts on mobile
+- Touch-optimized carousel controls
+- Hamburger menu with full-screen overlay
+- Optimized image aspect ratios (3:4 for mobile posters)
+
+### Accessibility Features
+- Semantic HTML structure
+- ARIA labels for interactive elements
+- Keyboard navigation support
+- Alt text for all images
+- Focus management in modals
+
+### Browser Compatibility
+- Modern JavaScript (ES6+)
+- CSS Custom Properties
+- CSS Grid & Flexbox
+- No build process required
+- Works in all modern browsers
 
 ### Error Handling
-- Content loader shows error page if JSON files fail to load
-- Images have fallback hiding if file missing (`onerror="this.style.display='none'"`)
-- Server includes CORS headers to prevent local file loading issues
+- Graceful JSON loading failures
+- Image error fallbacks (`onerror="this.style.display='none'"`)
+- Console error logging for debugging
+- User-friendly error messages
+
+## Deployment
+
+### GitHub Pages
+- Repository configured for GitHub Pages deployment
+- CNAME file points to custom domain
+- Static assets served directly
+- No Jekyll processing (vanilla HTML/CSS/JS)
+
+### Local Development
+- Python HTTP server handles CORS for JSON files
+- No external dependencies or build tools
+- Instant refresh on file changes
+- Supports hot reloading of content
+
+## Maintenance Tasks
+
+### Regular Updates
+- Optimize new images before committing
+- Update show dates and ticket links
+- Add new releases and merchandise
+- Archive old shows to past section
+
+### Performance Monitoring
+- Check image file sizes (use `du -sh images/*`)
+- Monitor total bundle size
+- Test mobile performance
+- Validate JSON syntax
+
+### Code Quality
+- No TODO/FIXME comments found (clean codebase)
+- Consistent component architecture
+- Modular CSS organization
+- Semantic HTML structure
+
+## Future Enhancements
+
+### Priority Improvements
+1. **Image Optimization**: Implement WebP with fallbacks
+2. **Search Functionality**: Add show/release search
+3. **Loading States**: Add skeleton loading for content
+4. **Service Worker**: Enable offline functionality
+
+### Advanced Features
+- Newsletter signup integration
+- Social media sharing
+- Analytics tracking
+- SEO structured data
+- Progressive Web App features
