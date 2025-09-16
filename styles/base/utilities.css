@@ -1,0 +1,107 @@
+/* Utility Classes for Common Patterns */
+
+/* Common border and transition combinations */
+.card-base {
+    border: var(--standard-border);
+    transition: var(--standard-transition);
+}
+
+.card-base:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+}
+
+/* Common hover effects for interactive elements */
+.interactive {
+    transition: var(--standard-transition);
+    cursor: pointer;
+}
+
+.interactive:hover {
+    color: var(--accent-color);
+    text-shadow: 0 0 10px var(--accent-color);
+}
+
+/* Common box shadows */
+.glow-hover:hover {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+}
+
+.glow-hover-strong:hover {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+}
+
+/* Common transforms */
+.scale-hover:hover {
+    transform: scale(1.1);
+}
+
+/* Typography utilities */
+.uppercase {
+    text-transform: uppercase;
+}
+
+.letter-spaced {
+    letter-spacing: 1px;
+}
+
+.letter-spaced-wide {
+    letter-spacing: 2px;
+}
+
+/* Positioning utilities */
+.absolute-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mx-auto {
+    margin: 0 auto;
+}
+
+/* Background patterns */
+.semi-transparent-bg {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* Layout helpers */
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-column-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flex-start-center {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.grid-auto-fit {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+}

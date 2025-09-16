@@ -14,8 +14,8 @@
     display: grid;
     grid-template-columns: 350px 1fr;
     gap: 3rem;
-    border: 1px solid var(--border-color);
-    transition: all 0.2s ease;
+    border: var(--standard-border);
+    transition: var(--standard-transition);
     position: relative;
     overflow: hidden;
 }

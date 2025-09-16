@@ -46,8 +46,8 @@
     gap: 2rem;
     align-items: center;
     padding: 2rem;
-    border: 1px solid var(--border-color);
-    transition: all 0.2s ease;
+    border: var(--standard-border);
+    transition: var(--standard-transition);
     background: rgba(0, 0, 0, 0.3);
 }
 

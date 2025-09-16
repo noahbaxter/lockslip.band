@@ -9,6 +9,7 @@
 @import url('styles/base/typography.css');
 @import url('styles/base/layout.css');
 @import url('styles/base/buttons.css');
+@import url('styles/base/utilities.css');
 
 /* Component Styles */
 @import url('styles/components/header.css');

@@ -30,17 +30,6 @@
     --gradient-length: 20px;
 }
 
-/* .merch-carousel-container::before {
-    left: calc(-1*var(--gradient-length));
-    width: calc(var(--carousel-container-padding) + var(--gradient-length));
-    background: linear-gradient(to right, var(--background-color) 0%, var(--background-color) calc(var(--carousel-container-padding) - 60px), transparent 100%);
-}
-
-.merch-carousel-container::after {
-    right: calc(-1*var(--gradient-length));
-    width: calc(var(--carousel-container-padding) + var(--gradient-length));
-    background: linear-gradient(to left, var(--background-color) 0%, var(--background-color) calc(var(--carousel-container-padding) - 60px), transparent 100%);
-} */
 
 .merch-carousel-track {
     display: flex;

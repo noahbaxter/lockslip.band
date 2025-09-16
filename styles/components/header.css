@@ -17,7 +17,6 @@ nav {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
-    min-width: 100%;
     max-height: 70px;
     margin: 0 auto;
     padding: 0 20px;
@@ -27,9 +26,6 @@ nav {
 
 .logo {
     height: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     z-index: 1002;
     position: absolute;
     left: 50%;
@@ -37,7 +33,7 @@ nav {
     transform: translateX(-50%) translateY(-50%);
     flex-shrink: 0;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: transform 0.2s ease;
 }
 
 .logo:hover {
@@ -48,12 +44,8 @@ nav {
     height: 100%;
     width: auto;
     filter: brightness(0) invert(1);
-    transition: filter 0.2s ease;
 }
 
-.logo:hover img {
-    filter: brightness(0) saturate(100%) invert(11%) sepia(100%) saturate(7378%) hue-rotate(4deg) brightness(97%) contrast(118%);
-}
 
 .nav-links {
     list-style: none;
@@ -65,9 +57,6 @@ nav {
     color: var(--text-color);
     text-decoration: none;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.2s ease;
 }
 
 .nav-links a:hover {
@@ -79,32 +68,25 @@ nav {
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
-    align-items: center;
 }
 
 .streaming-icon {
-    display: inline-block;
     width: 30px;
     height: 30px;
-    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
     color: var(--text-color);
     font-size: 0.8rem;
     font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    transition: all 0.2s ease;
 }
 
 .streaming-icon img {
     width: 100%;
     height: 100%;
     filter: brightness(0) invert(1);
-    transition: filter 0.2s ease;
-}
-
-.streaming-icon:hover img {
-    filter: brightness(0) saturate(100%) invert(11%) sepia(100%) saturate(7378%) hue-rotate(4deg) brightness(97%) contrast(118%);
 }
 
 /* Platform-specific hover colors */
@@ -116,12 +98,13 @@ nav {
     filter: brightness(0) saturate(100%) invert(25%) sepia(98%) saturate(6478%) hue-rotate(344deg) brightness(106%) contrast(94%);
 }
 
-.streaming-icon.youtube:hover img {
-    filter: brightness(0) saturate(100%) invert(11%) sepia(100%) saturate(7378%) hue-rotate(4deg) brightness(97%) contrast(118%);
-}
-
 .streaming-icon.bandcamp:hover img {
     filter: brightness(0) saturate(100%) invert(51%) sepia(18%) saturate(1137%) hue-rotate(152deg) brightness(91%) contrast(88%);
+}
+
+.logo:hover img,
+.streaming-icon:hover img {
+    filter: brightness(0) saturate(100%) invert(11%) sepia(100%) saturate(7378%) hue-rotate(4deg) brightness(97%) contrast(118%);
 }
 
 .streaming-icon:hover {
@@ -229,12 +212,12 @@ nav {
     justify-content: center;
     padding: 20px;
     background: var(--section-alt);
-    border: 2px solid var(--border-color);
+    border: var(--standard-border);
     border-radius: 0;
     text-decoration: none;
     color: var(--text-color);
     font-weight: 700;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
     box-shadow: inset 0 0 0 0 var(--secondary-color);
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -255,7 +238,6 @@ nav {
 
     .nav-links a {
         font-size: 0.8rem;
-        /* letter-spacing: 1px; */
     }
 }
 /* Mobile responsive */
