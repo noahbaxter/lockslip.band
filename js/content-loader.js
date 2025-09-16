@@ -114,8 +114,8 @@ class ContentLoader {
         const streamingIcons = document.querySelector('.streaming-icons');
         const mobileStreamingIcons = document.querySelector('.mobile-streaming-icons');
         
-        if (this.config.streamingLinks) {
-            const iconHTML = NavigationComponent.renderStreamingIcons(this.config.streamingLinks);
+        if (this.config.streamingLinks || this.config.socialMedia) {
+            const iconHTML = NavigationComponent.renderHeaderIcons(this.config.streamingLinks, this.config.socialMedia);
             
             if (streamingIcons) {
                 streamingIcons.innerHTML = iconHTML;
