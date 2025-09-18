@@ -1,8 +1,8 @@
 // Footer Component
 const FooterComponent = {
     renderSocialLinks(socialMedia) {
-        return socialMedia.map(social => 
-            `<a href="${social.url}" target="_blank" rel="noopener">${social.platform}</a>`
+        return socialMedia.map(social =>
+            PlatformIcons.renderSocialIcon(social)
         ).join('');
     },
 

@@ -42,26 +42,11 @@ footer {
 
 .social-links {
     display: flex;
-    flex-direction: column;
     flex-wrap: wrap;
     gap: 1rem;
 }
 
-.social-links a {
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--border-color);
-    transition: all 0.2s ease;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
-    width: fit-content;
-}
-
-.social-links a:hover {
-    border-color: var(--accent-color);
-    background: var(--accent-color);
-    color: var(--secondary-color);
-}
+/* Social icon styles moved to utilities.css */
 
 .newsletter-signup {
     display: flex;

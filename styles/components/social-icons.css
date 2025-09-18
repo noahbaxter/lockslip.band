@@ -1,0 +1,164 @@
+/* Social & Streaming Icon Components */
+
+/* Base Icon Styles */
+.streaming-icon,
+.social-icon {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 0.8rem;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+.streaming-icon img,
+.social-icon img {
+    width: 100%;
+    height: 100%;
+    filter: brightness(0) invert(1);
+}
+
+/* Unified Hover Behavior */
+.streaming-icon:hover,
+.social-icon:hover {
+    color: var(--accent-color);
+}
+
+/* Platform-specific hover colors - Streaming */
+.streaming-icon.spotify:hover img {
+    filter: brightness(0) saturate(100%) invert(58%) sepia(75%) saturate(466%) hue-rotate(94deg) brightness(96%) contrast(95%);
+}
+
+.streaming-icon.apple:hover img {
+    filter: brightness(0) saturate(100%) invert(25%) sepia(98%) saturate(6478%) hue-rotate(344deg) brightness(106%) contrast(94%);
+}
+
+.streaming-icon.bandcamp:hover img {
+    filter: brightness(0) saturate(100%) invert(51%) sepia(18%) saturate(1137%) hue-rotate(152deg) brightness(91%) contrast(88%);
+}
+
+.streaming-icon.youtube:hover img {
+    filter: brightness(0) saturate(100%) invert(11%) sepia(100%) saturate(7378%) hue-rotate(4deg) brightness(97%) contrast(118%);
+}
+
+/* Default streaming icon hover for unknown platforms */
+.streaming-icon:not(.spotify):not(.apple):not(.bandcamp):not(.youtube):hover img {
+    filter: brightness(0) saturate(100%) invert(11%) sepia(100%) saturate(7378%) hue-rotate(4deg) brightness(97%) contrast(118%);
+}
+
+/* Platform-specific hover effects - Social Media */
+.social-icon.instagram {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.social-icon.instagram::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    border-radius: 6px;
+    opacity: 0;
+    z-index: 0;
+}
+
+.social-icon.instagram:hover::before {
+    opacity: 1;
+}
+
+.social-icon.instagram img {
+    position: relative;
+    z-index: 2;
+}
+
+.social-icon.instagram:hover img {
+    filter: brightness(0) invert(1);
+}
+
+.social-icon.tiktok {
+    position: relative;
+    overflow: visible;
+}
+
+.tiktok-3d-container {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tiktok-3d-container img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.tiktok-red {
+    filter: invert(8%) sepia(100%) saturate(6463%) hue-rotate(342deg) brightness(105%) contrast(108%) !important;
+    transform: translate(2px, 2px);
+    opacity: 0;
+}
+
+.tiktok-cyan {
+    filter: invert(89%) sepia(96%) saturate(3924%) hue-rotate(147deg) brightness(100%) contrast(107%) !important;
+    transform: translate(-2px, -2px);
+    opacity: 0;
+}
+
+.tiktok-white {
+    filter: brightness(0) invert(1) !important;
+    transform: translate(0, 0);
+    z-index: 3;
+}
+
+.social-icon.tiktok:hover .tiktok-red,
+.social-icon.tiktok:hover .tiktok-cyan {
+    opacity: 0.9;
+}
+
+.social-icon.twitter:hover img {
+    filter: brightness(0) saturate(100%) invert(54%) sepia(98%) saturate(1945%) hue-rotate(178deg) brightness(96%) contrast(101%);
+}
+
+.social-icon.facebook:hover img {
+    filter: brightness(0) saturate(100%) invert(28%) sepia(96%) saturate(1651%) hue-rotate(213deg) brightness(99%) contrast(101%);
+}
+
+.social-icon.email:hover img {
+    filter: brightness(0) saturate(100%) invert(70%) sepia(54%) saturate(329%) hue-rotate(71deg) brightness(91%) contrast(87%);
+}
+
+.social-icon.bandsintown:hover img {
+    filter: brightness(0) saturate(100%) invert(54%) sepia(84%) saturate(2718%) hue-rotate(158deg) brightness(99%) contrast(88%);
+}
+
+/* Container Styles */
+.streaming-icons,
+.social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.streaming-icons {
+    justify-content: flex-end;
+}
+
+/* Icon Separator */
+.icon-separator {
+    color: var(--text-dark);
+    margin: 0 0.5rem;
+    display: flex;
+    align-items: center;
+    font-weight: 300;
+}
