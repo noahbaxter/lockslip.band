@@ -24,7 +24,7 @@ section::before {
 #hero {
     min-height: 600px;
     height: 100%;
-    background-image: url('../../images/art/2024-ep-cover-nologo.png');
+    background-image: url('../../assets/art/2024-ep-cover-nologo.png');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;

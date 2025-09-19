@@ -53,9 +53,9 @@ Save the file, then refresh your website - changes appear instantly!
 - `bands` - List all bands playing (put Lockslip where you fit in the lineup)
 - `ticketsUrl` - Link where people can buy tickets
 
-**Adding a poster:** If you have a concert poster, save it in `images/show-posters/` and add:
+**Adding a poster:** If you have a concert poster, save it in `assets/show-posters/` and add:
 ```
-"poster": "images/show-posters/2025_01_15.jpg"
+"poster": "assets/show-posters/2025_01_15.jpg"
 ```
 
 ---
@@ -73,7 +73,7 @@ Save the file, then refresh your website - changes appear instantly!
   "year": "2025",
   "month": "March",
   "day": "15",
-  "coverImage": "images/releases/album-cover.jpg",
+  "coverImage": "assets/releases/album-cover.jpg",
   "tracks": [
     "1. Song One",
     "2. Song Two", 
@@ -87,7 +87,7 @@ Save the file, then refresh your website - changes appear instantly!
 ```
 
 **Don't forget to:**
-- Save your album cover image in `images/releases/`
+- Save your album cover image in `assets/releases/`
 - Update the streaming links with your actual URLs
 
 ---
@@ -104,8 +104,8 @@ Save the file, then refresh your website - changes appear instantly!
   "price": "$25",
   "description": "100% cotton, sizes S-XL",
   "images": [
-    "images/merch/shirt-front.jpg",
-    "images/merch/shirt-back.jpg"
+    "assets/merch/shirt-front.jpg",
+    "assets/merch/shirt-back.jpg"
   ],
   "purchaseUrl": "https://your-store.com/product-link",
   "inStock": true
@@ -143,11 +143,11 @@ Save the file, then refresh your website - changes appear instantly!
 **Open:** `content/media.json`
 
 **For photos:**
-1. Save your photo in `images/live-photos/`
+1. Save your photo in `assets/live-photos/`
 2. Add this to the photos section:
 ```
 {
-  "image": "images/live-photos/concert-photo.jpg",
+  "image": "assets/live-photos/concert-photo.jpg",
   "caption": "Lockslip at The Venue - March 2025"
 }
 ```
@@ -159,7 +159,7 @@ Save the file, then refresh your website - changes appear instantly!
 {
   "title": "Live Performance at The Venue",
   "youtubeId": "dQw4w9WgXcQ",
-  "thumbnail": "images/videos/video-thumbnail.jpg"
+  "thumbnail": "assets/videos/video-thumbnail.jpg"
 }
 ```
 

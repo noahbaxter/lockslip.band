@@ -6,10 +6,10 @@
       "name": "Guillotine Tee",
       "price": "$25",
       "images": [
-        "images/merch/tshirt1+beauties-1.jpg",
-        "images/merch/tshirt1+beauties-2.jpg",
-        "images/merch/tshirt1+beauties-3_bandcamp.jpg",
-        "images/merch/tshirt1+beauties-4.jpg"
+        "assets/merch/tshirt1+beauties-1.jpg",
+        "assets/merch/tshirt1+beauties-2.jpg",
+        "assets/merch/tshirt1+beauties-3_bandcamp.jpg",
+        "assets/merch/tshirt1+beauties-4.jpg"
       ],
       "description": "Guillotine Blueprint design on black Comfort Colors",
       "purchaseUrl": "http://lockslip.bigcartel.com/product/guillotine-tee",
@@ -22,9 +22,9 @@
       "name": "Long Sleeve Logo/Lock Tee",
       "price": "$25",
       "images": [
-        "images/merch/lockslongsleeve_beauties_1+copy.jpg",
-        "images/merch/lockslongsleeve_beauties_2.jpg",
-        "images/merch/lockslongsleeve_beauties_3.jpg"
+        "assets/merch/lockslongsleeve_beauties_1+copy.jpg",
+        "assets/merch/lockslongsleeve_beauties_2.jpg",
+        "assets/merch/lockslongsleeve_beauties_3.jpg"
       ],
       "description": "\"Number Your F***ing Days\" Lock Longsleeve on black Comfort Colors",
       "purchaseUrl": "http://lockslip.bigcartel.com/product/long-sleeve-logo-lock-tee",
@@ -38,9 +38,9 @@
       "name": "Logo Hat - Black",
       "price": "$25",
       "images": [
-        "images/merch/BLACK+HAT+BEAUTY+PIC.jpg",
-        "images/merch/BLACK+HAT+LOGO+INSERT.jpg",
-        "images/merch/BLACK+HAT+BACK+INSERT.jpg"
+        "assets/merch/BLACK+HAT+BEAUTY+PIC.jpg",
+        "assets/merch/BLACK+HAT+LOGO+INSERT.jpg",
+        "assets/merch/BLACK+HAT+BACK+INSERT.jpg"
       ],
       "description": "Yupoong Dad Hat - Black with gold thread",
       "purchaseUrl": "http://lockslip.bigcartel.com/product/logo-hat-black",
@@ -51,9 +51,9 @@
       "name": "Logo Hat - Camo",
       "price": "$25",
       "images": [
-        "images/merch/CAMO+HAT+BEAUTY+PIC.jpg",
-        "images/merch/CAMO+HAT+LOGO+INSERT.jpg",
-        "images/merch/CAMO+HAT+BACK+INSERT.jpg"
+        "assets/merch/CAMO+HAT+BEAUTY+PIC.jpg",
+        "assets/merch/CAMO+HAT+LOGO+INSERT.jpg",
+        "assets/merch/CAMO+HAT+BACK+INSERT.jpg"
       ],
       "description": "Yupoong Dad Hat - Camo with orange thread",
       "purchaseUrl": "http://lockslip.bigcartel.com/product/logo-hat-camo",
@@ -64,10 +64,10 @@
       "name": "Leftover Tour Shirt - Brick",
       "price": "$6",
       "images": [
-        "images/merch/Maroon+beauty+1.jpg",
-        "images/merch/Maroon+beauty+2.jpg",
-        "images/merch/TOUR+SHIRTS-1-IG.jpg",
-        "images/merch/TOUR+SHIRTS-2-IG.jpg"
+        "assets/merch/Maroon+beauty+1.jpg",
+        "assets/merch/Maroon+beauty+2.jpg",
+        "assets/merch/TOUR+SHIRTS-1-IG.jpg",
+        "assets/merch/TOUR+SHIRTS-2-IG.jpg"
       ],
       "description": "2024 Summer Tour Shirt on brick Comfort Colors",
       "purchaseUrl": "http://lockslip.bigcartel.com/product/tour-shirt-brick",
@@ -81,10 +81,10 @@
       "name": "Leftover Tour Shirt - White",
       "price": "$6",
       "images": [
-        "images/merch/White+beauty+1.jpg",
-        "images/merch/white+beauty+2.jpg",
-        "images/merch/TOUR+SHIRTS-1-IG.jpg",
-        "images/merch/TOUR+SHIRTS-2-IG.jpg"
+        "assets/merch/White+beauty+1.jpg",
+        "assets/merch/white+beauty+2.jpg",
+        "assets/merch/TOUR+SHIRTS-1-IG.jpg",
+        "assets/merch/TOUR+SHIRTS-2-IG.jpg"
       ],
       "description": "2024 Summer Tour Shirt on white Comfort Colors",
       "purchaseUrl": "http://lockslip.bigcartel.com/product/tour-shirt-white",
@@ -98,7 +98,7 @@
       "name": "Camo Pinback Button",
       "price": "$5",
       "images": [
-        "images/merch/BUTTON+BEAUTY+1.jpg"
+        "assets/merch/BUTTON+BEAUTY+1.jpg"
       ],
       "description": "Camo Pinback Button with Orange Lettering",
       "purchaseUrl": "http://lockslip.bigcartel.com/product/camo-pinback-button",

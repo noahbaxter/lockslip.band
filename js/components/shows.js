@@ -29,7 +29,9 @@ const ShowsComponent = {
             <div class="show-poster-preview" onclick="openPosterModal(${posterIndex})">
                 <img src="${show.poster}" alt="${show.venue} poster" onerror="this.parentElement.style.display='none'">
                 <div class="poster-overlay">
-                    <span class="poster-zoom-icon">🔍</span>
+                    <span class="poster-zoom-icon">
+                        <img src="assets/icons/zoom.svg" alt="Zoom" />
+                    </span>
                 </div>
             </div>
         `;
@@ -134,7 +136,9 @@ const ShowsComponent = {
             <div class="tour-poster-preview" onclick="openPosterModal(${tourPosterIndex})">
                 <img src="${tour.poster}" alt="${tour.name} poster" onerror="this.parentElement.style.display='none'">
                 <div class="poster-overlay">
-                    <span class="poster-zoom-icon">🔍</span>
+                    <span class="poster-zoom-icon">
+                        <img src="assets/icons/zoom.svg" alt="Zoom" />
+                    </span>
                 </div>
             </div>
         `;

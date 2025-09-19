@@ -339,12 +339,18 @@
 
 .poster-zoom-icon {
     color: var(--secondary-color);
-    font-size: 1.5rem;
     width: 40px;
     height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.poster-zoom-icon img {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1);
 }
 
 /* Tour sections */
@@ -416,6 +422,24 @@
 
 .tour-poster-preview:hover img {
     transform: scale(1.05);
+}
+
+.tour-poster-preview .poster-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.tour-poster-preview:hover .poster-overlay {
+    opacity: 1;
 }
 
 .tour-shows {

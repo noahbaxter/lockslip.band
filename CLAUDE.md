@@ -19,8 +19,8 @@ pip install Pillow pillow-heif
 
 # Optimize images
 source image_optimizer_env/bin/activate
-python optimize_images.py images/show-posters -q 80 --max-width 800
-python optimize_images.py images/releases -q 85 --max-width 600
+python optimize_images.py assets/show-posters -q 80 --max-width 800
+python optimize_images.py assets/releases -q 85 --max-width 600
 ```
 
 ## Architecture Overview
@@ -83,14 +83,14 @@ components/
 - `merchandise.json` - Products with images, pricing, purchase links
 - `media.json` - Photos, videos, press coverage, logos
 
-**Image Organization (`images/`):**
+**Image Organization (`assets/`):**
 - `show-posters/` (8.3MB) - Concert posters - **NEEDS OPTIMIZATION**
 - `merch/` (2.0MB) - Product photography
 - `art/` (2.2MB) - Promotional artwork
 - `live-photos/` (5.0MB) - Concert photography
 - `releases/` (664K) - Album artwork
 - `logos/` (1.2MB) - Brand assets
-- `icon-social/` (40K) - Platform icons (SVG)
+- `social/` (40K) - Platform icons (SVG)
 - `videos/` (124K) - Video thumbnails
 
 ## Key Features
@@ -122,9 +122,9 @@ components/
 ## Development Workflow
 
 ### Content Updates
-1. **Shows**: Edit `content/shows.json`, add posters to `images/show-posters/`
-2. **Releases**: Edit `content/releases.json`, add artwork to `images/releases/`
-3. **Merchandise**: Edit `content/merchandise.json`, add photos to `images/merch/`
+1. **Shows**: Edit `content/shows.json`, add posters to `assets/show-posters/`
+2. **Releases**: Edit `content/releases.json`, add artwork to `assets/releases/`
+3. **Merchandise**: Edit `content/merchandise.json`, add photos to `assets/merch/`
 4. **Media**: Edit `content/media.json`, add files to respective image folders
 
 ### Adding New Shows
@@ -134,7 +134,7 @@ components/
   "date": {"month": "JAN", "day": "15", "year": "2025"},
   "venue": "Venue Name",
   "location": "City, State",
-  "poster": "images/show-posters/2025_01_15.jpg",
+  "poster": "assets/show-posters/2025_01_15.jpg",
   "bands": ["Opener", "Lockslip", "Headliner"],
   "ticketsUrl": "https://tickets.example.com"
 }
@@ -197,7 +197,7 @@ components/
 - Archive old shows to past section
 
 ### Performance Monitoring
-- Check image file sizes (use `du -sh images/*`)
+- Check image file sizes (use `du -sh assets/*`)
 - Monitor total bundle size
 - Test mobile performance
 - Validate JSON syntax

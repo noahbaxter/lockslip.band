@@ -6,37 +6,37 @@
       {
         "id": "poltergeist-media-sep-2025",
         "caption": "POLTERGEIST.MEDIA - SEP 2025",
-        "image": "images/live-photos/poltergeist.media-20250910_075051-2572601417.jpg",
+        "image": "assets/live-photos/poltergeist.media-20250910_075051-2572601417.jpg",
         "alt": "Lockslip live performance, photographed by Poltergeist Media September 2025"
       },
       {
         "id": "poltergeist-media-sep-2025-2",
         "caption": "POLTERGEIST.MEDIA - SEP 2025",
-        "image": "images/live-photos/poltergeist.media-20250910_075051-2929348132.jpg",
+        "image": "assets/live-photos/poltergeist.media-20250910_075051-2929348132.jpg",
         "alt": "Lockslip live performance, photographed by Poltergeist Media September 2025"
       },
       {
         "id": "punk-monk-ray-jun-2025",
         "caption": "PUNK MONK RAY - JUN 2025",
-        "image": "images/live-photos/punk_monk_ray-20250621_125004-1718973183.jpg",
+        "image": "assets/live-photos/punk_monk_ray-20250621_125004-1718973183.jpg",
         "alt": "Lockslip live performance, photographed by Punk Monk Ray June 2025"
       },
       {
         "id": "lockslip-mar-2025",
         "caption": "LIVE - MAR 2025",
-        "image": "images/live-photos/lockslip-20250308_100000-3007254630.jpg",
+        "image": "assets/live-photos/lockslip-20250308_100000-3007254630.jpg",
         "alt": "Lockslip live performance March 2025"
       },
       {
         "id": "lockslip-dec-2024",
         "caption": "LIVE - DEC 2024",
-        "image": "images/live-photos/lockslip-20241227_085645-212794611.jpg",
+        "image": "assets/live-photos/lockslip-20241227_085645-212794611.jpg",
         "alt": "Lockslip live performance December 2024"
       },
       {
         "id": "live-photo-img-0965",
         "caption": "LIVE PERFORMANCE",
-        "image": "images/live-photos/IMG_0965.jpeg",
+        "image": "assets/live-photos/IMG_0965.jpeg",
         "alt": "Lockslip live performance"
       }
     ]
@@ -49,7 +49,7 @@
         "title": "Lockslip live at Mathcore Index Fest 2025",
         "description": "Lockslip live at Mathcore Index Fest 2025, July 11th, 2025 - 924 Gilman, Berkeley, CA, filmed and edited by Danny Keane",
         "url": "https://www.youtube.com/watch?v=QOSsgGGRel0",
-        "thumbnail": "images/videos/mathcore-index-fest-2025.jpg",
+        "thumbnail": "assets/videos/mathcore-index-fest-2025.jpg",
         "type": "youtube"
       },
       {
@@ -57,7 +57,7 @@
         "title": "(197 Media) Lockslip - 04/27/2024",
         "description": "Lockslip performing in Pomona, CA. at Mosh for Youth 5",
         "url": "https://www.youtube.com/watch?v=ky0w41lNK_M",
-        "thumbnail": "images/videos/197-media-04272024.jpg",
+        "thumbnail": "assets/videos/197-media-04272024.jpg",
         "type": "youtube"
       }
     ]
@@ -69,21 +69,21 @@
         "id": "logo-heavy",
         "title": "Heavy Logo",
         "description": "Bold version with heavy styling",
-        "file": "images/logos/lockslip-logo-heavy.png",
+        "file": "assets/logos/lockslip-logo-heavy.png",
         "size": "High Resolution PNG"
       },
       {
         "id": "logo-mild",
         "title": "Mild Logo",
         "description": "Standard version with clean styling",
-        "file": "images/logos/lockslip-logo-mild.png",
+        "file": "assets/logos/lockslip-logo-mild.png",
         "size": "High Resolution PNG"
       },
       {
         "id": "logo-alt",
         "title": "Alternative Logo", 
         "description": "Alternative styling variation",
-        "file": "images/logos/lockslip-logo-alt.png",
+        "file": "assets/logos/lockslip-logo-alt.png",
         "size": "High Resolution PNG"
       }
     ]

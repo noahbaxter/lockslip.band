@@ -34,22 +34,22 @@ python optimize_images.py /path/to/images -o /path/to/optimized
 
 #### Show Posters (800x800, 80% quality)
 ```bash
-python optimize_images.py images/show-posters -q 80 --max-width 800 --max-height 800
+python optimize_images.py assets/show-posters -q 80 --max-width 800 --max-height 800
 ```
 
 #### Album Art (600x600, 85% quality)
 ```bash
-python optimize_images.py images/releases -q 85 --max-width 600 --max-height 600
+python optimize_images.py assets/releases -q 85 --max-width 600 --max-height 600
 ```
 
 #### Background Images (1920x1080, 85% quality)
 ```bash
-python optimize_images.py images/art -q 85 --max-width 1920 --max-height 1080
+python optimize_images.py assets/art -q 85 --max-width 1920 --max-height 1080
 ```
 
 #### Convert to WebP for Maximum Compression
 ```bash
-python optimize_images.py images/show-posters --webp -q 75
+python optimize_images.py assets/show-posters --webp -q 75
 ```
 
 ## What the Script Does

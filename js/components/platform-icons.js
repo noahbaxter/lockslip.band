@@ -1,17 +1,17 @@
 // Platform Icons Utility Component
 const PlatformIcons = {
     iconMap: {
-        spotify: 'images/icon-social/spotify.svg',
-        apple: 'images/icon-social/apple-music.svg',
-        youtube: 'images/icon-social/youtube.svg',
-        bandcamp: 'images/icon-social/bandcamp.svg',
-        soundcloud: 'images/icon-social/soundcloud.svg',
-        instagram: 'images/icon-social/instagram.svg',
-        twitter: 'images/icon-social/twitter.svg',
-        facebook: 'images/icon-social/facebook.svg',
-        tiktok: 'images/icon-social/tiktok.svg',
-        email: 'images/icon-social/email.svg',
-        bandsintown: 'images/icon-social/bandsintown.svg'
+        spotify: 'assets/social/spotify.svg',
+        apple: 'assets/social/apple-music.svg',
+        youtube: 'assets/social/youtube.svg',
+        bandcamp: 'assets/social/bandcamp.svg',
+        soundcloud: 'assets/social/soundcloud.svg',
+        instagram: 'assets/social/instagram.svg',
+        twitter: 'assets/social/twitter.svg',
+        facebook: 'assets/social/facebook.svg',
+        tiktok: 'assets/social/tiktok.svg',
+        email: 'assets/social/email.svg',
+        bandsintown: 'assets/social/bandsintown.svg'
     },
 
     socialIconMap: {
