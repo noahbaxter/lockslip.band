@@ -313,6 +313,10 @@
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+    .desktop-only {
+        display: none !important;
+    }
+
     /* Reduce mobile image height further */
     .merch-image-container {
         height: var(--merch-image-height-mobile);

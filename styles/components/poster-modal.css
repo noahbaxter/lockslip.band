@@ -35,9 +35,9 @@
     position: absolute;
     top: 20px;
     right: 20px;
-    background: rgba(255, 0, 0, 0.8);
-    color: var(--secondary-color);
-    border: none;
+    background: var(--nav-btn-bg);
+    color: var(--nav-btn-color);
+    border: var(--nav-btn-border);
     font-size: 2rem;
     width: 50px;
     height: 50px;
@@ -48,10 +48,13 @@
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
+    backdrop-filter: blur(4px);
 }
 
 .poster-modal-close:hover {
-    background: var(--accent-color);
+    background: var(--nav-btn-hover-bg);
+    color: var(--nav-btn-hover-color);
+    border-color: var(--nav-btn-hover-border);
     transform: scale(1.1);
 }
 
@@ -83,11 +86,11 @@
 }
 
 .poster-modal-nav.prev {
-    left: 20px;
+    left: 5px;
 }
 
 .poster-modal-nav.next {
-    right: 20px;
+    right: 5px;
 }
 
 .poster-modal-image {
@@ -101,9 +104,26 @@
 .poster-modal-info {
     color: var(--text-color);
     max-width: 300px;
+    max-height: 80vh;
     padding: 2rem;
     background: rgba(0, 0, 0, 0.8);
     border: 1px solid var(--border-color);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) rgba(0, 0, 0, 0.3);
+}
+
+.poster-modal-info::-webkit-scrollbar {
+    width: 6px;
+}
+
+.poster-modal-info::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.poster-modal-info::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 3px;
 }
 
 .poster-modal-venue {
@@ -153,17 +173,24 @@
 
 /* Desktop modal - move controls outside content area */
 @media (min-width: 769px) {
+    .poster-modal-content {
+        width: 100%;
+    }
+
     .poster-modal-close {
-        top: -60px;
-        right: -60px;
+        position: fixed;
+        top: 20px;
+        right: 20px;
     }
-    
+
     .poster-modal-nav.prev {
-        left: -80px;
+        position: fixed;
+        left: 20px;
     }
-    
+
     .poster-modal-nav.next {
-        right: -80px;
+        position: fixed;
+        right: 20px;
     }
 }
 
@@ -255,7 +282,7 @@
         font-size: 1.5rem;
         width: 40px;
         height: 40px;
-        top: 15px;
-        right: 15px;
+        top: 5px;
+        right: 5px;
     }
 }

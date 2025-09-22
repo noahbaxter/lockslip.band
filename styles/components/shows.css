@@ -316,6 +316,11 @@
 
 .mobile-show .show-actions {
     align-self: start;
+    margin: 0 auto;
+}
+
+.mobile-show .show-actions .btn.small {
+    max-width: 140px;
 }
 
 /* Poster overlay effects */

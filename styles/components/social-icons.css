@@ -154,6 +154,13 @@
     justify-content: flex-end;
 }
 
+/* Hide streaming icons on mobile - they appear in mobile menu instead */
+@media (max-width: 768px) {
+    .streaming-icons {
+        display: none !important;
+    }
+}
+
 /* Icon Separator */
 .icon-separator {
     color: var(--text-dark);

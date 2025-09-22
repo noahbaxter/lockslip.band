@@ -175,26 +175,26 @@ nav {
 
 .mobile-streaming-icons {
     display: flex;
-    gap: 2rem;
+    gap: 0.8rem;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
 }
 
 .mobile-streaming-icons .icon-separator {
-    margin: 0 0.7rem;
-    font-size: 1.2rem;
+    margin: 0 0.4rem;
+    font-size: 1rem;
 }
 
 .mobile-streaming-icons .streaming-icon,
 .mobile-streaming-icons .social-icon {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
 }
 
 .mobile-streaming-icons .tiktok-3d-container {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
 }
 
 /* Streaming Links Grid (for hero section) */
@@ -385,13 +385,17 @@ nav {
 
     .mobile-streaming-icons .streaming-icon,
     .mobile-streaming-icons .social-icon {
-        width: 30px;
-        height: 30px;
+        width: 26px;
+        height: 26px;
     }
 
     .mobile-streaming-icons .tiktok-3d-container {
-        width: 30px;
-        height: 30px;
+        width: 26px;
+        height: 26px;
+    }
+
+    .mobile-streaming-icons {
+        gap: 1rem;
     }
 }
 
@@ -403,12 +407,16 @@ nav {
 
     .mobile-streaming-icons .streaming-icon,
     .mobile-streaming-icons .social-icon {
-        width: 24px;
-        height: 24px;
+        width: 22px;
+        height: 22px;
     }
 
     .mobile-streaming-icons .tiktok-3d-container {
-        width: 24px;
-        height: 24px;
+        width: 22px;
+        height: 22px;
+    }
+
+    .mobile-streaming-icons {
+        gap: 0.8rem;
     }
 }
