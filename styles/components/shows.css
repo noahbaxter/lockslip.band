@@ -17,7 +17,7 @@
 .shows-chronological {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
 }
 
 /* Show/Hide desktop/mobile versions */
@@ -392,6 +392,7 @@
     padding: 2rem;
     border-bottom: 1px solid var(--border-color);
     display: flex;
+    flex-direction: row-reverse;
     justify-content: space-between;
     align-items: center;
     gap: 2rem;
@@ -556,27 +557,400 @@
     transition: all 0.3s ease;
 }
 
+/* View Toggle */
+.shows-view-toggle {
+    display: flex;
+    margin-top: -3rem !important;
+    margin-bottom: 2rem;
+    justify-content: center;
+}
+
+.view-toggle-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-color-faded);
+    background: transparent;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.view-toggle-btn:first-child {
+    border-radius: 4px 0 0 4px;
+}
+
+.view-toggle-btn:last-child {
+    border-radius: 0 4px 4px 0;
+}
+
+.view-toggle-btn.active {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--secondary-color);
+}
+
+.view-toggle-btn:not(.active):hover {
+    border-color: var(--border-color);
+    color: var(--text-light);
+}
+
+/* Poster Grid View */
+.poster-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0;
+    margin-top: 2rem;
+}
+
+.poster-grid-item {
+    aspect-ratio: 3/4;
+    border: none;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    background: var(--background-color);
+}
+
+.poster-grid-item:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: var(--accent-color);
+    box-shadow: 0 8px 25px rgba(255, 0, 0, 0.3);
+    z-index: 10;
+}
+
+.poster-grid-item.past-show {
+    border: none;
+}
+
+.poster-grid-item.future-show {
+    border: 1px solid var(--accent-color);
+}
+
+.poster-grid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.poster-grid-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-dark);
+    text-align: center;
+    padding: 1rem;
+}
+
+.poster-grid-placeholder .show-date-large {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+}
+
+.poster-grid-placeholder .show-info-compact {
+    font-size: 0.8rem;
+    line-height: 1.3;
+}
+
+.poster-grid-placeholder .venue {
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+}
+
+/* Mobile poster grid responsive */
+@media (max-width: 768px) {
+    .poster-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .poster-grid-item:hover {
+        transform: translateY(-4px) scale(1.01);
+    }
+
+    .shows-view-toggle {
+        margin-top: -1.5rem !important;
+        margin-bottom: 1.5rem;
+    }
+
+    .view-toggle-btn {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}
+
 /* Mobile tour responsive */
 @media (max-width: 768px) {
     .tour-header {
-        flex-direction: column;
-        align-items: flex-start;
+        display: grid;
+        grid-template-columns: 45% 55%;
+        align-items: start;
         gap: 1rem;
         padding: 1.5rem;
+        flex-direction: row;
     }
-    
+
     .tour-poster-preview {
-        align-self: center;
+        width: 100%;
+        aspect-ratio: 3/4;
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        transition: all 0.2s ease;
+    }
+
+    .tour-poster-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .tour-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        height: 100%;
     }
     
     .tour-info h4 {
-        font-size: 1.2rem;
-        text-align: center;
-        align-self: center;
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--accent-color);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.5rem;
+        line-height: 1.2;
+    }
+
+    .tour-dates {
+        color: var(--text-light);
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: none;
+        letter-spacing: normal;
+        line-height: 1.3;
+        margin-top: 0.3rem;
     }
     
     .show-past-shows-btn {
         padding: 0.8rem 1.5rem;
         font-size: 0.9rem;
+    }
+}
+
+/* Table View Styles */
+.shows-table-container {
+    margin-top: 2rem;
+    overflow-x: auto;
+}
+
+.shows-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color-faded);
+    table-layout: auto;
+}
+
+.show-date-cell {
+    width: 60px;
+    white-space: nowrap;
+}
+
+.show-venue-cell {
+    width: 160px;
+}
+
+.show-bands-cell {
+    width: auto;
+    min-width: 200px;
+}
+
+.bands-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.bands-text {
+    flex-grow: 1;
+}
+
+.inline-tickets-btn {
+    flex-shrink: 0;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    background: var(--accent-color);
+    color: var(--secondary-color);
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.inline-tickets-btn:hover {
+    background: var(--secondary-color);
+    color: var(--accent-color);
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+}
+
+.table-header th {
+    background: var(--accent-color);
+    color: var(--secondary-color);
+    padding: 1rem;
+    text-align: left;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+
+.table-header th:first-child {
+    text-align: center;
+}
+
+.show-table-row {
+    border-bottom: 1px solid var(--border-color-faded);
+    transition: background-color 0.2s ease;
+}
+
+.show-table-row.has-poster {
+    cursor: pointer;
+}
+
+.show-table-row.has-poster:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.show-table-row:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.show-table-row.future-show {
+    border-left: 3px solid var(--accent-color);
+}
+
+.show-table-row.past-show {
+    opacity: 0.8;
+}
+
+.show-table-row td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+
+.table-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.table-date .month {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.table-date .day {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-light);
+}
+
+.table-date .year {
+    font-size: 0.8rem;
+    color: var(--text-dark);
+}
+
+.show-venue-cell .venue {
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 0.3rem;
+}
+
+.show-venue-cell .location {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.show-bands-cell {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    line-height: 1.4;
+}
+
+
+
+/* Mobile table responsiveness */
+@media (max-width: 768px) {
+    .shows-table-container {
+        font-size: 0.7rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table-header th {
+        padding: 0.5rem 0.3rem;
+        font-size: 0.6rem;
+        white-space: nowrap;
+    }
+
+    .show-table-row td {
+        padding: 0.5rem 0.3rem;
+        vertical-align: middle;
+    }
+
+    .table-date .month {
+        font-size: 0.6rem;
+    }
+
+    .table-date .day {
+        font-size: 1rem;
+    }
+
+    .table-date .year {
+        font-size: 0.6rem;
+    }
+
+    .show-venue-cell .venue {
+        font-size: 0.7rem;
+        line-height: 1.2;
+    }
+
+    .show-venue-cell .location {
+        font-size: 0.6rem;
+        line-height: 1.2;
+    }
+
+    .show-bands-cell {
+        font-size: 0.6rem;
+        line-height: 1.3;
+        max-width: 200px;
+        word-break: break-word;
+    }
+
+    .bands-content {
+        gap: 0.5rem;
+    }
+
+    .inline-tickets-btn {
+        padding: 3px 8px;
+        font-size: 0.6rem;
+        letter-spacing: 0.3px;
     }
 }

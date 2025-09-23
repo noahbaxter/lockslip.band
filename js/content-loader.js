@@ -154,5 +154,10 @@ class ContentLoader {
 document.addEventListener('DOMContentLoaded', () => {
     const contentLoader = new ContentLoader();
     contentLoader.loadAllContent();
+
+    // Listen for view changes and re-render shows section
+    window.addEventListener('showViewChanged', () => {
+        contentLoader.renderShows();
+    });
 });
 

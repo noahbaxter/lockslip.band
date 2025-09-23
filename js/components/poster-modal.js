@@ -5,6 +5,8 @@ class PosterModal {
         this.showsWithPosters = [];
         this.showingInfo = false;
         this.modal = null;
+        this.touchStartX = null;
+        this.touchStartY = null;
         this.setupKeyboardListeners();
     }
 
@@ -45,11 +47,13 @@ class PosterModal {
                     <p class="poster-modal-location"></p>
                     <p class="poster-modal-date"></p>
                     <p class="poster-modal-bands"></p>
+                    <div class="poster-modal-tickets"></div>
                     <p class="poster-modal-counter"></p>
                 </div>
             </div>
         `;
         document.body.appendChild(this.modal);
+        this.setupTouchListeners();
     }
 
     updateContent() {
@@ -75,6 +79,7 @@ class PosterModal {
         const locationEl = this.modal.querySelector('.poster-modal-location');
         const dateEl = this.modal.querySelector('.poster-modal-date');
         const bandsEl = this.modal.querySelector('.poster-modal-bands');
+        const ticketsEl = this.modal.querySelector('.poster-modal-tickets');
         const counterEl = this.modal.querySelector('.poster-modal-counter');
         
         if (imageEl) imageEl.src = show.poster;
@@ -95,7 +100,7 @@ class PosterModal {
             if (bandsEl) {
                 if (show.bands && show.bands.length > 0) {
                     const displayBands = ShowsComponent.getBandList(show.bands);
-                    bandsEl.innerHTML = displayBands.map(band => 
+                    bandsEl.innerHTML = displayBands.map(band =>
                         band === 'Lockslip' ? `<span class="lockslip-highlight">${band}</span>` : band
                     ).join(', ');
                 } else {
@@ -103,7 +108,17 @@ class PosterModal {
                 }
             }
         }
-        
+
+        // Update tickets button
+        if (ticketsEl) {
+            const isPast = show.showDate < new Date();
+            if (!isPast && show.ticketsUrl && !show.isTourPoster) {
+                ticketsEl.innerHTML = `<a href="${show.ticketsUrl}" class="poster-modal-tickets-btn" target="_blank" rel="noopener">TICKETS</a>`;
+            } else {
+                ticketsEl.innerHTML = '';
+            }
+        }
+
         // Update counter
         if (counterEl) {
             counterEl.textContent = this.calculateCounter(show);
@@ -206,6 +221,43 @@ class PosterModal {
             document.body.style.overflow = '';
             this.showingInfo = false;
         }
+    }
+
+    setupTouchListeners() {
+        if (!this.modal) return;
+
+        this.modal.addEventListener('touchstart', (e) => {
+            // Only handle touches on the modal content, not the overlay
+            if (e.target.closest('.poster-modal-content')) {
+                this.touchStartX = e.touches[0].clientX;
+                this.touchStartY = e.touches[0].clientY;
+            }
+        }, { passive: true });
+
+        this.modal.addEventListener('touchend', (e) => {
+            if (!this.touchStartX || !this.touchStartY) return;
+
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            const deltaX = touchEndX - this.touchStartX;
+            const deltaY = touchEndY - this.touchStartY;
+
+            // Check if this is a horizontal swipe (more horizontal than vertical movement)
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+                e.preventDefault();
+                if (deltaX > 0) {
+                    // Swipe right - go to previous
+                    this.navigate(-1);
+                } else {
+                    // Swipe left - go to next
+                    this.navigate(1);
+                }
+            }
+
+            // Reset touch coordinates
+            this.touchStartX = null;
+            this.touchStartY = null;
+        }, { passive: false });
     }
 
     setupKeyboardListeners() {

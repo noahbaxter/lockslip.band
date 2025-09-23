@@ -20,6 +20,10 @@
     
     /* Carousel Variables */
     --carousel-items-per-view: 3;
+
+    /* Poster Grid Variables */
+    --poster-grid-columns-desktop: 5;
+    --poster-grid-columns-mobile: 2;
     --carousel-gap: 2rem;
     --carousel-item-width: calc(100% / var(--carousel-items-per-view) - (var(--carousel-gap) * (var(--carousel-items-per-view) - 1) / var(--carousel-items-per-view)));
     --carousel-container-padding: 80px;
@@ -59,6 +63,18 @@
     /* Common Properties */
     --standard-border: 1px solid var(--border-color);
     --standard-transition: all 0.2s ease;
+
+    /* Common Shows Styling Variables */
+    --show-padding-standard: 1rem;
+    --show-padding-large: 1.5rem;
+    --show-font-weight-bold: 600;
+    --show-font-weight-extra-bold: 800;
+    --show-font-weight-heavy: 900;
+
+    /* Show Date Styling */
+    --show-date-month-color: var(--accent-color);
+    --show-date-day-color: var(--secondary-color);
+    --show-date-year-color: var(--text-dark);
 }
 
 @media (max-width: 768px) {
