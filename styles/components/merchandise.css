@@ -304,11 +304,58 @@
     margin-top: auto;
     align-self: center;
     padding: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
     font-size: 0.9rem;
     line-height: 1.2;
     border-radius: 3px;
     white-space: nowrap;
     width: fit-content;
+    min-width: 5rem;
+}
+
+/* Sold Out Items */
+.merch-item.item-sold-out {
+    opacity: 0.6;
+    filter: grayscale(0.3);
+}
+
+/* Sold Out & Coming Soon Buttons */
+.purchase-btn.sold-out,
+.purchase-btn.coming-soon {
+    background: var(--border-color);
+    color: var(--text-muted);
+    border-color: var(--border-color);
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.purchase-btn.sold-out:hover,
+.purchase-btn.coming-soon:hover {
+    background: var(--border-color);
+    color: var(--text-muted);
+    border-color: var(--border-color);
+    opacity: 0.7;
+    transform: translateY(-1px);
+}
+
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 1rem;
+}
+
+.empty-state p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state-sub {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-style: italic;
 }
 
 /* Mobile Responsive */

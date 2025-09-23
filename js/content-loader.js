@@ -81,10 +81,32 @@ class ContentLoader {
         }
     }
 
-    renderMerchandise() {
+    async renderMerchandise() {
         const merchSection = document.getElementById('merch');
-        if (merchSection && this.merchandise) {
-            merchSection.innerHTML = MerchandiseComponent.render(this.merchandise);
+        if (merchSection) {
+            // Show loading state
+            merchSection.innerHTML = '<div class="container"><h2>Merchandise</h2><p>Loading merchandise...</p></div>';
+
+            try {
+                const merchHTML = await MerchandiseComponent.renderAsync();
+                merchSection.innerHTML = merchHTML;
+            } catch (error) {
+                console.error('Failed to render merchandise:', error);
+                // Fallback to static data if available
+                if (this.merchandise) {
+                    merchSection.innerHTML = MerchandiseComponent.render(this.merchandise);
+                } else {
+                    merchSection.innerHTML = `
+                        <div class="container">
+                            <h2>Merchandise</h2>
+                            <div class="empty-state">
+                                <p>Sorry but no merch items are currently in stock.</p>
+                                <p class="empty-state-sub">Please check back soon!</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
         }
     }
 

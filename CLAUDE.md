@@ -140,6 +140,50 @@ components/
 }
 ```
 
+### Merchandise Configuration
+The merchandise component supports both Big Cartel API integration and manual JSON management:
+
+**Toggle Mode** (in `js/components/merchandise.js`):
+```javascript
+const USE_BIG_CARTEL = true;  // Auto-sync with Big Cartel + fallback
+const USE_BIG_CARTEL = false; // Manual JSON only
+```
+
+**Manual Merchandise Format** (`content/merchandise.json`):
+```json
+{
+  "id": "product-id",
+  "name": "Product Name",
+  "price": "$25.00 USD",
+  "originalPrice": null,
+  "onSale": false,
+  "description": "Product description",
+  "images": ["assets/merch/photo1.jpg", "assets/merch/photo2.jpg"],
+  "sizeOptions": [
+    {"name": "S", "soldOut": false},
+    {"name": "M", "soldOut": true},
+    {"name": "L", "soldOut": false}
+  ],
+  "available": true,
+  "isComingSoon": false,
+  "isSoldOut": false,
+  "status": "active",
+  "purchaseUrl": "https://lockslip.bigcartel.com/product/product-name",
+  "hidden": false
+}
+```
+
+**Key Fields** (matches Big Cartel output exactly):
+- `price`: Formatted price string (e.g., "$25.00 USD")
+- `originalPrice`: Original price for sale items (null if not on sale)
+- `onSale`: Boolean for sale status
+- `sizeOptions`: Array of size objects with sold-out status (optional)
+- `available`: Boolean for product availability
+- `isComingSoon`: Boolean for coming soon status
+- `isSoldOut`: Boolean for sold out status
+- `status`: Product status ("active", "coming-soon", "sold-out")
+- `hidden`: Hide from display without deleting
+
 ### Performance Optimization
 - **Images**: Use `optimize_images.py` script before committing
 - **Show posters**: Target 800x800px max, 80% quality

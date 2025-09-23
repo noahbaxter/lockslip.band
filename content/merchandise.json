@@ -1,107 +1,154 @@
 {
-  "sectionTitle": "MERCH",
+  "sectionTitle": "Merchandise",
   "items": [
     {
       "id": "black-tshirt",
       "name": "Guillotine Tee",
-      "price": "$25",
-      "images": [
-        "assets/merch/tshirt1+beauties-1.jpg",
-        "assets/merch/tshirt1+beauties-2.jpg",
-        "assets/merch/tshirt1+beauties-3_bandcamp.jpg",
-        "assets/merch/tshirt1+beauties-4.jpg"
-      ],
+      "price": 25.0,
+      "default_price": 25.0,
+      "on_sale": false,
       "description": "Guillotine Blueprint design on black Comfort Colors",
-      "purchaseUrl": "http://lockslip.bigcartel.com/product/guillotine-tee",
-      "merchType": "upper-body",
-      "sizes": ["S", "M", "L", "XL", "2XL", "3XL", "4XL"],
+      "images": [
+        {"url": "assets/merch/tshirt1+beauties-1.jpg"},
+        {"url": "assets/merch/tshirt1+beauties-2.jpg"},
+        {"url": "assets/merch/tshirt1+beauties-3_bandcamp.jpg"},
+        {"url": "assets/merch/tshirt1+beauties-4.jpg"}
+      ],
+      "status": "active",
+      "options": [
+        {"name": "S", "sold_out": false},
+        {"name": "M", "sold_out": false},
+        {"name": "L", "sold_out": false},
+        {"name": "XL", "sold_out": false},
+        {"name": "2XL", "sold_out": false},
+        {"name": "3XL", "sold_out": false},
+        {"name": "4XL", "sold_out": false}
+      ],
+      "url": "/product/guillotine-tee",
       "hidden": false
     },
     {
       "id": "long-sleeve",
       "name": "Long Sleeve Logo/Lock Tee",
-      "price": "$25",
-      "images": [
-        "assets/merch/lockslongsleeve_beauties_1+copy.jpg",
-        "assets/merch/lockslongsleeve_beauties_2.jpg",
-        "assets/merch/lockslongsleeve_beauties_3.jpg"
-      ],
+      "price": 25.0,
+      "default_price": 25.0,
+      "on_sale": false,
       "description": "\"Number Your F***ing Days\" Lock Longsleeve on black Comfort Colors",
-      "purchaseUrl": "http://lockslip.bigcartel.com/product/long-sleeve-logo-lock-tee",
-      "merchType": "upper-body",
-      "sizes": ["L", "XL", "2XL", "3XL"],
-      "sizesSoldOut": ["L", "XL", "2XL"],
+      "images": [
+        {"url": "assets/merch/lockslongsleeve_beauties_1+copy.jpg"},
+        {"url": "assets/merch/lockslongsleeve_beauties_2.jpg"},
+        {"url": "assets/merch/lockslongsleeve_beauties_3.jpg"}
+      ],
+      "status": "active",
+      "options": [
+        {"name": "L", "sold_out": true},
+        {"name": "XL", "sold_out": true},
+        {"name": "2XL", "sold_out": true},
+        {"name": "3XL", "sold_out": false}
+      ],
+      "url": "/product/long-sleeve-logo-lock-tee",
       "hidden": false
     },
     {
       "id": "black-hat",
       "name": "Logo Hat - Black",
-      "price": "$25",
-      "images": [
-        "assets/merch/BLACK+HAT+BEAUTY+PIC.jpg",
-        "assets/merch/BLACK+HAT+LOGO+INSERT.jpg",
-        "assets/merch/BLACK+HAT+BACK+INSERT.jpg"
-      ],
+      "price": 25.0,
+      "default_price": 25.0,
+      "on_sale": false,
       "description": "Yupoong Dad Hat - Black with gold thread",
-      "purchaseUrl": "http://lockslip.bigcartel.com/product/logo-hat-black",
+      "images": [
+        {"url": "assets/merch/BLACK+HAT+BEAUTY+PIC.jpg"},
+        {"url": "assets/merch/BLACK+HAT+LOGO+INSERT.jpg"},
+        {"url": "assets/merch/BLACK+HAT+BACK+INSERT.jpg"}
+      ],
+      "status": "active",
+      "options": [
+        {"name": "Default", "sold_out": false}
+      ],
+      "url": "/product/logo-hat-black",
       "hidden": false
     },
     {
       "id": "camo-hat",
       "name": "Logo Hat - Camo",
-      "price": "$25",
-      "images": [
-        "assets/merch/CAMO+HAT+BEAUTY+PIC.jpg",
-        "assets/merch/CAMO+HAT+LOGO+INSERT.jpg",
-        "assets/merch/CAMO+HAT+BACK+INSERT.jpg"
-      ],
+      "price": 25.0,
+      "default_price": 25.0,
+      "on_sale": false,
       "description": "Yupoong Dad Hat - Camo with orange thread",
-      "purchaseUrl": "http://lockslip.bigcartel.com/product/logo-hat-camo",
+      "images": [
+        {"url": "assets/merch/CAMO+HAT+BEAUTY+PIC.jpg"},
+        {"url": "assets/merch/CAMO+HAT+LOGO+INSERT.jpg"},
+        {"url": "assets/merch/CAMO+HAT+BACK+INSERT.jpg"}
+      ],
+      "status": "active",
+      "options": [
+        {"name": "Default", "sold_out": false}
+      ],
+      "url": "/product/logo-hat-camo",
       "hidden": false
     },
     {
       "id": "maroon-tour-shirt",
       "name": "Leftover Tour Shirt - Brick",
-      "price": "$6",
-      "images": [
-        "assets/merch/Maroon+beauty+1.jpg",
-        "assets/merch/Maroon+beauty+2.jpg",
-        "assets/merch/TOUR+SHIRTS-1-IG.jpg",
-        "assets/merch/TOUR+SHIRTS-2-IG.jpg"
-      ],
+      "price": 6.0,
+      "default_price": 6.0,
+      "on_sale": true,
       "description": "2024 Summer Tour Shirt on brick Comfort Colors",
-      "purchaseUrl": "http://lockslip.bigcartel.com/product/tour-shirt-brick",
-      "merchType": "upper-body",
-      "sizes": ["XL", "2XL", "3XL"],
-      "sizesSoldOut": ["XL"],
+      "images": [
+        {"url": "assets/merch/Maroon+beauty+1.jpg"},
+        {"url": "assets/merch/Maroon+beauty+2.jpg"},
+        {"url": "assets/merch/TOUR+SHIRTS-1-IG.jpg"},
+        {"url": "assets/merch/TOUR+SHIRTS-2-IG.jpg"}
+      ],
+      "status": "active",
+      "options": [
+        {"name": "XL", "sold_out": true},
+        {"name": "2XL", "sold_out": false},
+        {"name": "3XL", "sold_out": false}
+      ],
+      "url": "/product/tour-shirt-brick",
       "hidden": false
     },
     {
       "id": "white-tour-shirt",
       "name": "Leftover Tour Shirt - White",
-      "price": "$6",
-      "images": [
-        "assets/merch/White+beauty+1.jpg",
-        "assets/merch/white+beauty+2.jpg",
-        "assets/merch/TOUR+SHIRTS-1-IG.jpg",
-        "assets/merch/TOUR+SHIRTS-2-IG.jpg"
-      ],
+      "price": 6.0,
+      "default_price": 6.0,
+      "on_sale": true,
       "description": "2024 Summer Tour Shirt on white Comfort Colors",
-      "purchaseUrl": "http://lockslip.bigcartel.com/product/tour-shirt-white",
-      "merchType": "upper-body",
-      "sizes": ["S", "M", "L", "XL", "2XL", "3XL"],
-      "sizesSoldOut": ["M"],
+      "images": [
+        {"url": "assets/merch/White+beauty+1.jpg"},
+        {"url": "assets/merch/white+beauty+2.jpg"},
+        {"url": "assets/merch/TOUR+SHIRTS-1-IG.jpg"},
+        {"url": "assets/merch/TOUR+SHIRTS-2-IG.jpg"}
+      ],
+      "status": "active",
+      "options": [
+        {"name": "S", "sold_out": false},
+        {"name": "M", "sold_out": true},
+        {"name": "L", "sold_out": false},
+        {"name": "XL", "sold_out": false},
+        {"name": "2XL", "sold_out": false},
+        {"name": "3XL", "sold_out": false}
+      ],
+      "url": "/product/tour-shirt-white",
       "hidden": false
     },
     {
       "id": "button-pack",
       "name": "Camo Pinback Button",
-      "price": "$5",
-      "images": [
-        "assets/merch/BUTTON+BEAUTY+1.jpg"
-      ],
+      "price": 5.0,
+      "default_price": 5.0,
+      "on_sale": false,
       "description": "Camo Pinback Button with Orange Lettering",
-      "purchaseUrl": "http://lockslip.bigcartel.com/product/camo-pinback-button",
+      "images": [
+        {"url": "assets/merch/BUTTON+BEAUTY+1.jpg"}
+      ],
+      "status": "active",
+      "options": [
+        {"name": "Default", "sold_out": false}
+      ],
+      "url": "/product/camo-pinback-button",
       "hidden": false
     }
   ]
