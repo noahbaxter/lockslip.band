@@ -39,7 +39,7 @@ const ShowsComponent = {
 
     renderShowDesktop(show, isPast = false, showsWithPosters = []) {
         return `
-            <div class="show-card desktop-show ${isPast ? 'past-show' : ''} ${show.poster ? 'has-poster' : ''} card-base glow-hover semi-transparent-bg" data-show-id="${show.id}">
+            <div class="show-card desktop-show ${isPast ? 'past-show' : 'future-show'} ${show.poster ? 'has-poster' : ''} card-base glow-hover semi-transparent-bg" data-show-id="${show.id}">
                 <div class="show-date-section flex-column-center">
                     <div class="show-date flex-column-center text-center">
                         <span class="month">${show.date.month}</span>
@@ -67,7 +67,7 @@ const ShowsComponent = {
     renderShowMobile(show, isPast = false, showsWithPosters = []) {
         if (show.poster) {
             return `
-                <div class="show-card mobile-show ${isPast ? 'past-show' : ''} has-poster" data-show-id="${show.id}">
+                <div class="show-card mobile-show ${isPast ? 'past-show' : 'future-show'} has-poster" data-show-id="${show.id}">
                     <div class="show-poster-container">
                         ${this.renderShowPoster(show, showsWithPosters)}
                     </div>
@@ -91,7 +91,7 @@ const ShowsComponent = {
             `;
         } else {
             return `
-                <div class="show-card mobile-show ${isPast ? 'past-show' : ''}" data-show-id="${show.id}">
+                <div class="show-card mobile-show ${isPast ? 'past-show' : 'future-show'}" data-show-id="${show.id}">
                     <div class="show-date">
                         <span class="month">${show.date.month}</span>
                         <span class="day">${show.date.day}</span>
@@ -146,7 +146,7 @@ const ShowsComponent = {
 
     renderTour(tour, isPast = false, showsWithPosters = []) {
         return `
-            <div class="tour-section ${isPast ? 'past-tour' : 'future-tour'}">
+            <div class="tour-section ${isPast ? 'past-show' : 'future-show'}">
                 <div class="tour-header">
                     <div class="tour-info">
                         <h4>${tour.name}</h4>

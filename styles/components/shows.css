@@ -46,9 +46,8 @@
     gap: 2rem;
     align-items: center;
     padding: 2rem;
-    border: var(--standard-border);
-    transition: var(--standard-transition);
-    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--border-color);
+    transition: all 0.2s ease;
 }
 
 .desktop-show:hover {
@@ -58,6 +57,13 @@
 
 .desktop-show.past-show {
     opacity: 0.8;
+    background: var(--accent-color-background);
+    border-color: var(--border-color-faded);
+}
+
+.desktop-show.future-show {
+    background: var(--dark-background);
+    border-color: var(--border-color);
 }
 
 /* Desktop Show Date Section */
@@ -169,9 +175,10 @@
 
 /* Mobile Show Cards */
 .mobile-show {
-    border: 1px solid var(--border-color);
+    border: 2px solid var(--border-color);
+    padding: 1.5rem;
     transition: all 0.2s ease;
-    background: rgba(0, 0, 0, 0.3);
+    position: relative;
     overflow: hidden;
 }
 
@@ -182,6 +189,13 @@
 
 .mobile-show.past-show {
     opacity: 0.8;
+    background: var(--accent-color-background);
+    border-color: var(--border-color-faded);
+}
+
+.mobile-show.future-show {
+    background: var(--dark-background);
+    border-color: var(--border-color);
 }
 
 /* Mobile show with poster */
@@ -190,7 +204,6 @@
     grid-template-columns: 45% 55%;
     align-items: start;
     gap: 1rem;
-    padding: 1.5rem;
 }
 
 .mobile-show .show-poster-container {
@@ -361,14 +374,18 @@
 /* Tour sections */
 .tour-section {
     border: 2px solid var(--border-color);
-    background: rgba(255, 0, 0, 0.05);
     position: relative;
     width: 100%;
 }
 
-.tour-section.future-tour {
-    border-color: var(--accent-color);
-    background: rgba(255, 0, 0, 0.08);
+.tour-section.past-show {
+    background: var(--accent-color-background);
+    border-color: var(--border-color-faded);
+}
+
+.tour-section.future-show {
+    background: var(--dark-background);
+    border-color: var(--border-color);
 }
 
 .tour-header {
@@ -449,6 +466,18 @@
 
 .tour-shows {
     padding: 1rem;
+}
+
+/* Shows within tours should not have backgrounds to avoid color stacking */
+.tour-shows .desktop-show,
+.tour-shows .mobile-show {
+    background: transparent;
+    border-color: var(--border-color-faded);
+}
+
+.tour-shows .desktop-show.future-show,
+.tour-shows .mobile-show.future-show {
+    border-color: var(--border-color);
 }
 
 .tour-shows .desktop-show .show-poster-preview {

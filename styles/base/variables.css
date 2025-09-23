@@ -3,9 +3,11 @@
     --secondary-color: #ffffff;
     --accent-color: #ff0000;
     --accent-color-background: rgba(255, 0, 0, 0.1);
+    --dark-background: rgba(0, 0, 0, 0.3);
     --text-color: #ffffff;
     --text-dark: #cccccc;
     --border-color: #ff0000;
+    --border-color-faded: rgba(255, 0, 0, 0.7);
     
     /* Aliases for clarity */
     --background-color: var(--primary-color);
