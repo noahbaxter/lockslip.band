@@ -3,6 +3,40 @@ class ShowsProcessor {
     constructor() {
         this.today = new Date();
         this.today.setHours(0, 0, 0, 0);
+
+        // Month abbreviation to number mapping
+        this.monthMap = {
+            'JAN': 0, 'FEB': 1, 'MAR': 2, 'APR': 3,
+            'MAY': 4, 'JUN': 5, 'JUL': 6, 'AUG': 7,
+            'SEP': 8, 'OCT': 9, 'NOV': 10, 'DEC': 11
+        };
+    }
+
+    // Helper to parse month abbreviation to date
+    parseMonthYear(monthAbbr, day, year) {
+        const monthNum = this.monthMap[monthAbbr];
+        if (monthNum === undefined) {
+            console.warn(`Unknown month abbreviation: ${monthAbbr}`);
+            return null;
+        }
+        const date = new Date(year, monthNum, day);
+        date.setHours(0, 0, 0, 0);
+        return date;
+    }
+
+    // Helper to safely get timestamp from a date (handles both Date objects and strings)
+    getTimestamp(date) {
+        if (date instanceof Date) {
+            return date.getTime();
+        }
+        return new Date(date).getTime();
+    }
+
+    // Helper to sort shows by date
+    sortByDate(a, b, descending = false) {
+        const timeA = this.getTimestamp(a.showDate);
+        const timeB = this.getTimestamp(b.showDate);
+        return descending ? timeB - timeA : timeA - timeB;
     }
 
     // Main processing function for shows data
@@ -65,8 +99,7 @@ class ShowsProcessor {
 
     // Helper function to categorize individual shows
     categorizeShow(show) {
-        const showDate = new Date(`${show.date.month} ${show.date.day}, ${show.date.year}`);
-        showDate.setHours(0, 0, 0, 0);
+        const showDate = this.parseMonthYear(show.date.month, show.date.day, show.date.year);
         return {
             ...show,
             actuallyPast: showDate < this.today, // Shows on today or in the future are not past
@@ -77,10 +110,8 @@ class ShowsProcessor {
     // Helper function to categorize tours
     categorizeTour(tour) {
         const categorizedTourShows = tour.shows.map(show => this.categorizeShow(show));
-        const tourStartDate = new Date(`${tour.startDate.month} ${tour.startDate.day}, ${tour.startDate.year}`);
-        tourStartDate.setHours(0, 0, 0, 0);
-        const tourEndDate = new Date(`${tour.endDate.month} ${tour.endDate.day}, ${tour.endDate.year}`);
-        tourEndDate.setHours(0, 0, 0, 0);
+        const tourStartDate = this.parseMonthYear(tour.startDate.month, tour.startDate.day, tour.startDate.year);
+        const tourEndDate = this.parseMonthYear(tour.endDate.month, tour.endDate.day, tour.endDate.year);
         
         // Tour is past only if it ended before today (ongoing and future tours are upcoming)
         const dayAfterTourEnds = new Date(tourEndDate);
@@ -162,29 +193,35 @@ class ShowsProcessor {
     // Collect all shows with posters for navigation in chronological order
     collectShowsWithPosters(pastItems, futureItems) {
         const showsWithPosters = [];
-        
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
         // Combine all items and sort chronologically (oldest first)
         const allItems = [...pastItems, ...futureItems].sort((a, b) => a.sortDate - b.sortDate);
-        
+
         allItems.forEach(item => {
             if (item.type === 'show' && item.data.poster) {
                 showsWithPosters.push(item.data);
             } else if (item.type === 'tour') {
                 const tour = item.data;
-                // Add tour poster first
+
+                // Tour poster always comes first, then shows in chronological order
                 if (tour.poster) showsWithPosters.push({...tour, isTourPoster: true, tourId: tour.id});
-                
-                // Add tour shows in chronological order (oldest first)
+
                 const tourShowsWithPosters = tour.shows
                     .filter(show => show.poster)
-                    .sort((a, b) => a.showDate - b.showDate);
-                
+                    .sort((a, b) => {
+                        const dateA = a.showDate instanceof Date ? a.showDate.getTime() : new Date(a.showDate).getTime();
+                        const dateB = b.showDate instanceof Date ? b.showDate.getTime() : new Date(b.showDate).getTime();
+                        return dateA - dateB; // Ascending (oldest first)
+                    });
+
                 tourShowsWithPosters.forEach(show => {
                     showsWithPosters.push(show);
                 });
             }
         });
-        
+
         return showsWithPosters;
     }
 }

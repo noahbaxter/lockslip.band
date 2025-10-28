@@ -14,6 +14,20 @@
     padding-bottom: 0.5rem;
 }
 
+.past-shows-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.no-shows-message {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 2rem 0;
+}
+
 .shows-chronological {
     display: flex;
     flex-direction: column;
@@ -42,7 +56,7 @@
 /* Desktop Show Cards */
 .desktop-show {
     display: grid;
-    grid-template-columns: 120px 1fr auto;
+    grid-template-columns: 120px 1fr 420px;
     gap: 2rem;
     align-items: center;
     padding: 2rem;
@@ -148,11 +162,11 @@
 
 /* Desktop Show Poster */
 .desktop-show .show-poster-preview {
-    width: 120px;
-    height: 160px;
+    width: 100%;
+    height: 580px;
     position: relative;
     cursor: pointer;
-    border: 1px solid var(--border-color);
+    border: 2px solid var(--border-color);
     overflow: hidden;
     transition: all 0.2s ease;
 }
@@ -357,8 +371,8 @@
 
 .poster-zoom-icon {
     color: var(--secondary-color);
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -560,8 +574,8 @@
 /* View Toggle */
 .shows-view-toggle {
     display: flex;
-    margin-top: -3rem !important;
-    margin-bottom: 2rem;
+    margin-top: 0;
+    margin-bottom: 0;
     justify-content: center;
 }
 
@@ -637,6 +651,32 @@
     object-position: center;
 }
 
+.poster-tickets-btn {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    background: linear-gradient(to top, rgba(255, 0, 0, 0.95), rgba(255, 0, 0, 0.7));
+    color: var(--secondary-color);
+    padding: 0.8rem;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.poster-grid-item:hover .poster-tickets-btn {
+    background: var(--accent-color);
+    padding: 1rem 0.8rem;
+}
+
 .poster-grid-placeholder {
     display: flex;
     flex-direction: column;
@@ -676,8 +716,8 @@
     }
 
     .shows-view-toggle {
-        margin-top: -1.5rem !important;
-        margin-bottom: 1.5rem;
+        margin-top: 0;
+        margin-bottom: 0;
     }
 
     .view-toggle-btn {
@@ -952,5 +992,40 @@
         padding: 3px 8px;
         font-size: 0.6rem;
         letter-spacing: 0.3px;
+    }
+}
+
+/* Responsive - Medium screens (tablets) */
+@media (min-width: 769px) and (max-width: 1200px) {
+    .desktop-show {
+        grid-template-columns: 100px 1fr 320px;
+        gap: 1.5rem;
+        padding: 1.5rem;
+    }
+
+    .desktop-show .show-poster-preview {
+        height: 460px;
+        border: 1.5px solid var(--border-color);
+    }
+
+    .poster-zoom-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .desktop-show .show-date-section {
+        min-width: 80px;
+    }
+
+    .desktop-show .show-date .month {
+        font-size: 0.9rem;
+    }
+
+    .desktop-show .show-date .day {
+        font-size: 2rem;
+    }
+
+    .desktop-show .show-date .year {
+        font-size: 0.75rem;
     }
 }

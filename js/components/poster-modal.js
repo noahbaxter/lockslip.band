@@ -27,7 +27,7 @@ const posterModal = new Modal({
 
             // Bands
             if (show.bands && show.bands.length > 0) {
-                const displayBands = ShowsComponent.getBandList(show.bands);
+                const displayBands = ShowsCard.getBandList(show.bands);
                 const bandsHtml = displayBands.map(band =>
                     band === 'Lockslip' ? `<span class="lockslip-highlight">${band}</span>` : band
                 ).join(', ');
