@@ -46,7 +46,7 @@ const ShowsTable = {
                 </td>
             </tr>
         `;
-    }
+    },
 
     renderPastViewToggle() {
         return `
