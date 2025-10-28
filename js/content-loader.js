@@ -71,9 +71,9 @@ class ContentLoader {
         const showsSection = document.getElementById('shows');
         if (showsSection && this.shows) {
             const { futureItems, pastItems, showsWithPosters } = showsProcessor.processShows(this.shows);
-            
+
             // Set shows with posters for modal navigation
-            posterModal.setShows(showsWithPosters);
+            posterModal.setData(showsWithPosters);
             window.showsWithPosters = showsWithPosters; // Maintain global reference for compatibility
 
             const showsHTML = ShowsComponent.render(this.shows, this.config, futureItems, pastItems, showsWithPosters);

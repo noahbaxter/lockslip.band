@@ -1,12 +1,11 @@
 // Media Component
 const MediaComponent = {
-    renderPhotoCard(photo) {
+    renderPhotoCard(photo, index) {
         return `
-            <div class="photo-card" data-photo-id="${photo.id}">
+            <div class="photo-card" data-photo-index="${index}" onclick="photoModal.open(${index})">
                 <div class="photo-placeholder">
-                    ${photo.image ? `<img src="${photo.image}" alt="${photo.alt}" onerror="this.style.display='none'">` : ''}
+                    ${photo.image ? `<img src="${photo.image}" alt="${photo.venue} - ${photo.location}" onerror="this.style.display='none'">` : ''}
                 </div>
-                <p>${photo.caption}</p>
             </div>
         `;
     },
@@ -42,11 +41,16 @@ const MediaComponent = {
     },
 
     renderPhotosSection(photos) {
+        // Initialize photo modal with the gallery
+        if (photoModal && photos.gallery) {
+            photoModal.setData(photos.gallery);
+        }
+
         return `
             <div class="media-section">
                 <h3>${photos.sectionTitle}</h3>
                 <div class="photo-grid">
-                    ${photos.gallery.map(photo => this.renderPhotoCard(photo)).join('')}
+                    ${photos.gallery.map((photo, index) => this.renderPhotoCard(photo, index)).join('')}
                 </div>
             </div>
         `;

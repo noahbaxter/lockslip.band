@@ -2,7 +2,6 @@
 class CarouselManager {
     constructor() {
         this.currentCollectionIndex = 0;
-        this.setupScrollWheelSupport();
     }
 
     // Navigate individual item carousel (merch item image carousel)
@@ -104,39 +103,6 @@ class CarouselManager {
             if (prevBtn) prevBtn.style.display = this.currentCollectionIndex > 0 ? 'flex' : 'none';
             if (nextBtn) nextBtn.style.display = this.currentCollectionIndex < maxIndex ? 'flex' : 'none';
         }
-    }
-
-    // Setup scroll wheel support for carousels
-    setupScrollWheelSupport() {
-        document.addEventListener('wheel', (e) => {
-            // Check if we're scrolling over an image container with multiple images
-            const imageContainer = e.target.closest('.merch-image-container');
-            if (imageContainer) {
-                const carousel = imageContainer.querySelector('.merch-image-carousel');
-                if (carousel) {
-                    const images = carousel.querySelectorAll('.carousel-image');
-                    if (images.length > 1) {
-                        e.preventDefault();
-                        const itemId = imageContainer.closest('.merch-item').dataset.itemId;
-                        const direction = e.deltaY > 0 ? 1 : -1;
-                        this.navigateItemCarousel(itemId, direction);
-                    }
-                }
-                return;
-            }
-
-            // Check if we're scrolling over a merch collection carousel
-            const merchCarousel = e.target.closest('.merch-collection-carousel');
-            if (merchCarousel) {
-                const track = merchCarousel.querySelector('.merch-carousel-track');
-                const items = track.querySelectorAll('.merch-item');
-                if (items.length > 3) { // Only enable if there are enough items for carousel
-                    e.preventDefault();
-                    const direction = e.deltaY > 0 ? 1 : -1;
-                    this.navigateCollectionCarousel(direction);
-                }
-            }
-        }, { passive: false });
     }
 }
 

@@ -4,40 +4,52 @@
     "sectionTitle": "PHOTOS",
     "gallery": [
       {
-        "id": "poltergeist-media-sep-2025",
-        "caption": "POLTERGEIST.MEDIA - SEP 2025",
-        "image": "assets/live-photos/poltergeist.media-20250910_075051-2572601417.jpg",
-        "alt": "Lockslip live performance, photographed by Poltergeist Media September 2025"
+        "image": "assets/live-photos/full-band/250620 Chain - Ray Camacho - DSC00364.jpg",
+        "date": "2025-06-20",
+        "venue": "Chain Reaction",
+        "location": "Anaheim, CA",
+        "photographer": "Ray Camacho",
+        "url": "https://www.instagram.com/punk_monk_ray/"
       },
       {
-        "id": "poltergeist-media-sep-2025-2",
-        "caption": "POLTERGEIST.MEDIA - SEP 2025",
-        "image": "assets/live-photos/poltergeist.media-20250910_075051-2929348132.jpg",
-        "alt": "Lockslip live performance, photographed by Poltergeist Media September 2025"
+        "image": "assets/live-photos/full-band/7.12.25 - Berkeley CA - 924 Gilman - Lockslip - TayTayGumby 21.jpg",
+        "date": "2025-07-12",
+        "venue": "924 Gilman",
+        "location": "Berkeley, CA",
+        "photographer": "Taylor Bates",
+        "url": "https://www.instagram.com/taytaygumby/"
       },
       {
-        "id": "punk-monk-ray-jun-2025",
-        "caption": "PUNK MONK RAY - JUN 2025",
-        "image": "assets/live-photos/punk_monk_ray-20250621_125004-1718973183.jpg",
-        "alt": "Lockslip live performance, photographed by Punk Monk Ray June 2025"
+        "image": "assets/live-photos/full-band/tremendousvisuals-20250927_100000-2444610634.jpg",
+        "date": "2025-09-27",
+        "venue": "Nile Theater",
+        "location": "Mesa, AZ",
+        "photographer": "Peter Caswell",
+        "url": "https://www.instagram.com/tremendousvisuals/"
       },
       {
-        "id": "lockslip-mar-2025",
-        "caption": "LIVE - MAR 2025",
-        "image": "assets/live-photos/lockslip-20250308_100000-3007254630.jpg",
-        "alt": "Lockslip live performance March 2025"
+        "image": "assets/live-photos/individual/7.12.25 - Berkeley CA - 924 Gilman - Lockslip - TayTayGumby 36.jpg",
+        "date": "2025-07-12",
+        "venue": "924 Gilman",
+        "location": "Berkeley, CA",
+        "photographer": "Taylor Bates",
+        "url": "https://www.instagram.com/taytaygumby/"
       },
       {
-        "id": "lockslip-dec-2024",
-        "caption": "LIVE - DEC 2024",
-        "image": "assets/live-photos/lockslip-20241227_085645-212794611.jpg",
-        "alt": "Lockslip live performance December 2024"
+        "image": "assets/live-photos/full-band/shawn madden - IMG_8340.jpg",
+        "date": "2025-09-27",
+        "venue": "Nile Theater",
+        "location": "Mesa, AZ",
+        "photographer": "Shawn Madden",
+        "url": "https://www.instagram.com/shwn.mdn/"
       },
       {
-        "id": "live-photo-img-0965",
-        "caption": "LIVE PERFORMANCE",
-        "image": "assets/live-photos/IMG_0965.jpeg",
-        "alt": "Lockslip live performance"
+        "image": "assets/live-photos/full-band/DSC07012.jpg",
+        "date": "2024-07-20",
+        "venue": "Programme Skate and Sound",
+        "location": "Pomona, CA",
+        "photographer": "jpg4you",
+        "url": "https://www.instagram.com/jpg4you/"
       }
     ]
   },
