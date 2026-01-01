@@ -224,6 +224,119 @@ nav {
     overflow: hidden;
 }
 
+/* Navigation Submenus */
+.nav-item-with-submenu {
+    position: relative;
+}
+
+.nav-item-with-submenu > a::after {
+    content: '▾';
+    margin-left: 0.4em;
+    font-size: 0.7em;
+    opacity: 0.6;
+    transition: transform 0.2s ease;
+}
+
+.nav-item-with-submenu:hover > a::after {
+    transform: rotate(180deg);
+}
+
+.nav-submenu {
+    list-style: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-color);
+    border: 1px solid var(--border-color);
+    min-width: 140px;
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+    z-index: 1001;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(-8px);
+    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+}
+
+.nav-item-with-submenu:hover .nav-submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.nav-submenu li {
+    padding: 0;
+}
+
+.nav-submenu a {
+    display: block;
+    padding: 0.6rem 1.2rem;
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.15s ease;
+    text-align: center;
+}
+
+.nav-submenu a:hover {
+    color: var(--accent-color);
+    text-shadow: 0 0 10px var(--accent-color);
+    background: rgba(255, 0, 0, 0.1);
+}
+
+/* Mobile Navigation Submenus */
+.mobile-nav-item-with-submenu {
+    position: relative;
+}
+
+.mobile-nav-item-with-submenu > a::after {
+    content: '▾';
+    margin-left: 0.5em;
+    font-size: 0.5em;
+    opacity: 0.5;
+    display: inline-block;
+    transition: transform 0.2s ease;
+    vertical-align: middle;
+}
+
+.mobile-nav-item-with-submenu.active > a::after {
+    transform: rotate(180deg);
+}
+
+.mobile-nav-submenu {
+    list-style: none;
+    display: none;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 1rem;
+    padding: 0;
+}
+
+.mobile-nav-item-with-submenu.active .mobile-nav-submenu {
+    display: flex;
+}
+
+.mobile-nav-submenu a {
+    display: block;
+    color: var(--text-muted, #888);
+    text-decoration: none;
+    font-size: 1.3rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+}
+
+.mobile-nav-submenu a:hover {
+    color: var(--accent-color);
+    text-shadow: 0 0 10px var(--accent-color);
+}
+
 .streaming-link:hover {
     color: var(--background-color);
     background: var(--accent-color);
