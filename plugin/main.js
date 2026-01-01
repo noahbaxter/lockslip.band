@@ -239,8 +239,9 @@ class GuillotineApp {
       this.outputGainKnob.ready
     ]);
 
-    // Insert main knobs in guaranteed order: Blade, Ceiling, Oversample
+    // Insert main knobs in guaranteed order: Blade, Exponent, Ceiling, Oversample
     this.mainKnobsContainer.appendChild(this.curveKnob.element);
+    this.mainKnobsContainer.appendChild(this.curveExponentKnob.element);
     this.mainKnobsContainer.appendChild(this.thresholdKnob.element);
     this.mainKnobsContainer.appendChild(this.oversamplingKnob.element);
 
