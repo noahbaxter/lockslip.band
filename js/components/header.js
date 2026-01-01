@@ -13,7 +13,8 @@ const HeaderComponent = {
         href: `${basePath}#media`,
         submenu: [
           { label: 'Photos', href: `${basePath}#photos` },
-          { label: 'Videos', href: `${basePath}#videos` }
+          { label: 'Videos', href: `${basePath}#videos` },
+          { label: 'Logos', href: `${basePath}#logos` }
         ]
       },
       {

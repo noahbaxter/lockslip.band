@@ -69,7 +69,7 @@ const MediaComponent = {
 
     renderLogosSection(logos) {
         return `
-            <div class="media-section">
+            <div class="media-section" id="logos">
                 <h3>${logos.sectionTitle}</h3>
                 <div class="logos-grid">
                     ${logos.items.map(logo => this.renderLogoCard(logo)).join('')}

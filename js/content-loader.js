@@ -30,6 +30,7 @@ class ContentLoader {
             UIHelpers.updateCopyrightYear();
             UIHelpers.setupHeroBioFade();
             UIHelpers.setupSmoothScrolling();
+            this.handleInitialHash();
         } catch (error) {
             console.error('Error loading content:', error);
             UIHelpers.showError();
@@ -159,6 +160,23 @@ class ContentLoader {
         }
     }
 
+    handleInitialHash() {
+        const hash = window.location.hash;
+        if (!hash) return;
+
+        const targetId = hash.slice(1);
+        const targetElement = document.getElementById(targetId);
+        if (!targetElement) return;
+
+        // Small delay to ensure DOM is fully rendered
+        setTimeout(() => {
+            const header = document.querySelector('header');
+            const headerHeight = header ? header.offsetHeight : 0;
+            const rect = targetElement.getBoundingClientRect();
+            const targetPosition = rect.top + window.scrollY - headerHeight - 20;
+            window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+        }, 100);
+    }
 }
 
 // Initialize content loader when DOM is ready
