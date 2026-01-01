@@ -5,16 +5,18 @@ class ContentLoader {
         this.shows = null;
         this.merchandise = null;
         this.media = null;
+        this.extras = null;
     }
 
     async loadAllContent() {
         try {
-            const [config, releases, shows, merchandise, media] = await Promise.all([
+            const [config, releases, shows, merchandise, media, extras] = await Promise.all([
                 this.loadJSON('content/site-config.json'),
                 this.loadJSON('content/releases.json'),
                 this.loadJSON('content/shows.json'),
                 this.loadJSON('content/merchandise.json'),
-                this.loadJSON('content/media.json')
+                this.loadJSON('content/media.json'),
+                this.loadJSON('content/extras.json')
             ]);
 
             this.config = config;
@@ -22,6 +24,7 @@ class ContentLoader {
             this.shows = shows;
             this.merchandise = merchandise;
             this.media = media;
+            this.extras = extras;
 
             this.renderAllContent();
             UIHelpers.updateCopyrightYear();
@@ -47,6 +50,7 @@ class ContentLoader {
         this.renderShows();
         this.renderMerchandise();
         this.renderMedia();
+        this.renderExtras();
         this.renderFooter();
         this.renderNavigation();
         this.renderStreamingIcons();
@@ -114,6 +118,13 @@ class ContentLoader {
         const mediaSection = document.getElementById('media');
         if (mediaSection && this.media) {
             mediaSection.innerHTML = MediaComponent.render(this.media);
+        }
+    }
+
+    renderExtras() {
+        const extrasSection = document.getElementById('extras');
+        if (extrasSection && this.extras) {
+            extrasSection.innerHTML = ExtrasComponent.render(this.extras);
         }
     }
 

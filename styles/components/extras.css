@@ -1,0 +1,48 @@
+/* Extras Component */
+.extras-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.extras-card {
+    border: 1px solid var(--border-color);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+}
+
+.extras-card:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+}
+
+.extras-card-content h3 {
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+}
+
+.extras-card-content p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.extras-card-action {
+    margin-top: auto;
+}
+
+.extras-card-action .btn {
+    width: 100%;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .extras-grid {
+        grid-template-columns: 1fr;
+    }
+}

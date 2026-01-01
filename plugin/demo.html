@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guillotine</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Left Panel: Title + Guillotine + Bucket Text -->
+    <div id="left-panel">
+      <div id="plugin-title">
+        <div id="plugin-logo" class="text-mask deltable" style="--mask-src: url(assets/guillotine-logo.png)"></div>
+      </div>
+      <div id="lockslip-text">
+        <div class="text-mask deltable" style="--mask-src: url(assets/text/text-lockslip.png)"></div>
+      </div>
+      <div id="guillotine-container">
+        <img id="guillotine-side" class="deltable" src="assets/side.png" alt="">
+      </div>
+      <div id="delta-text">
+        <div class="text-mask" style="--mask-src: url(assets/text/text-2.png)"></div>
+      </div>
+      <div id="version-tag"><span id="version-num"></span></div>
+      <div id="andy-sig" class="text-mask" style="--mask-src: url(assets/text/controls/andy.png)"></div>
+    </div>
+
+    <!-- Right Panel: Microscope + Knobs -->
+    <div id="right-panel">
+      <div id="microscope-wrapper">
+        <div id="microscope-labels">
+          <span id="label-top" class="microscope-label">
+            <span class="microscope-label__num"></span>
+            <span class="image-text">
+              <span class="image-text__text">dB</span>
+              <div class="image-text__image text-mask" style="--mask-src: url(assets/text/controls/dB.png)"></div>
+            </span>
+          </span>
+          <span id="label-bottom" class="microscope-label">
+            <span class="microscope-label__num"></span>
+            <span class="image-text">
+              <span class="image-text__text">dB</span>
+              <div class="image-text__image text-mask" style="--mask-src: url(assets/text/controls/dB.png)"></div>
+            </span>
+          </span>
+        </div>
+        <div id="microscope-container"></div>
+      </div>
+      <div id="main-knobs"></div>
+      <div id="gain-knobs"></div>
+    </div>
+  </div>
+
+  <script type="module" src="main.js"></script>
+  <script type="module">
+    // Demo audio - loads loop and extracts envelope for visualization
+    const BUFFER_SIZE = 512;
+    const preClip = new Float32Array(BUFFER_SIZE);
+    let writePos = 0;
+    let audioData = null;
+    let audioPos = 0;
+    const DOWNSAMPLE = 128;
+
+    async function loadAudio() {
+      try {
+        const response = await fetch('assets/demo-loop.mp3');
+        const arrayBuffer = await response.arrayBuffer();
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+        const channelData = audioBuffer.getChannelData(0);
+        audioData = new Float32Array(channelData.length);
+
+        for (let i = 0; i < channelData.length; i++) {
+          audioData[i] = Math.abs(channelData[i]);
+        }
+
+        console.log('Loaded demo loop:', audioData.length, 'samples');
+        generateFromAudio();
+      } catch (e) {
+        console.error('Failed to load audio:', e);
+      }
+    }
+
+    function generateFromAudio() {
+      if (!audioData) return;
+
+      for (let i = 0; i < 2; i++) {
+        let sum = 0;
+        for (let j = 0; j < DOWNSAMPLE; j++) {
+          sum += audioData[(audioPos + j) % audioData.length];
+        }
+        const envelope = sum / DOWNSAMPLE;
+
+        preClip[writePos] = Math.min(1, envelope * 2.5 + 0.05);
+        writePos = (writePos + 1) % BUFFER_SIZE;
+        audioPos = (audioPos + DOWNSAMPLE) % audioData.length;
+      }
+
+      if (window.updateEnvelope) {
+        window.updateEnvelope({ preClip, writePos });
+      }
+
+      requestAnimationFrame(generateFromAudio);
+    }
+
+    setTimeout(loadAudio, 500);
+  </script>
+</body>
+</html>

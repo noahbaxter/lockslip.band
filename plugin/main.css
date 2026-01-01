@@ -1,0 +1,310 @@
+@import url('lib/delta-mode.css');
+
+:root {
+  --cursive-font: 'Zeyada', cursive;
+  --readable-font: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+}
+
+/* ==========================================================================
+   Readable Mode - Clear fonts for accessibility
+   ========================================================================== */
+body.readable-mode {
+  --cursive-font: var(--readable-font);
+}
+
+/* ==========================================================================
+   Text Mask - PNG as mask, background-color defines color (no hue-rotate)
+   Usage: <div class="text-mask" style="--mask-src: url(image.png)"></div>
+   ========================================================================== */
+.text-mask {
+  display: inline-block;
+  background-color: var(--text-mask-color, var(--color-text-primary));
+  -webkit-mask-image: var(--mask-src);
+  mask-image: var(--mask-src);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  transition: background-color var(--delta-transition);
+}
+
+/* ==========================================================================
+   Image/Text Toggle Helper (createImageText)
+   Text takes up space, image overlays absolutely - neither mode causes reflow
+   ========================================================================== */
+.image-text {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-width: 1.5em;
+  min-height: 1em;
+}
+
+/* Text flows normally in fixed container, image absolutely positioned */
+.image-text__text {
+  visibility: hidden;
+}
+
+.image-text__image {
+  position: absolute;
+  left: 0;
+  height: 1.5em;
+  width: 1.5em;
+  pointer-events: none;
+  -webkit-mask-position: left center;
+  mask-position: left center;
+  background-color: var(--color-text-tertiary);
+}
+
+.readable-mode .image-text__text {
+  visibility: visible;
+}
+
+.readable-mode .image-text__image {
+  visibility: hidden;
+}
+
+html {
+  height: 100%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  outline: none;
+}
+
+body {
+  background: var(--color-surface-body);
+  color: var(--color-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('assets/grunge-texture.jpg') center/cover;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+#app {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  padding: 0.5em;
+  gap: 0.5em;
+  position: relative;
+  z-index: 1;
+}
+
+/* Left column: Title + Guillotine + Bucket Text */
+#left-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
+  min-height: 0;
+  gap: 0.25em;
+}
+
+#plugin-title {
+  height: 5.625em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#plugin-logo {
+  height: 100%;
+  width: 100%;
+  opacity: 0.8;
+  margin-top: 1.875em;
+  margin-left: -1.5625em;
+}
+
+#lockslip-text {
+  position: absolute;
+  top: 6.0em;
+  left: 3.0em;
+}
+
+#lockslip-text .text-mask {
+  height: 2.5em;
+  width: 8em;
+  background-color: var(--color-text-tertiary);
+}
+
+#guillotine-container {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 1.875em 0 1.25em 0;
+}
+
+#guillotine-side {
+  position: absolute;
+  left: 0;
+  top: 45%;
+  transform: translateY(-50%);
+  height: 6.25em;
+  width: auto;
+  pointer-events: none;
+  opacity: 1.0;
+}
+
+#delta-text {
+  height: 3.125em;
+  text-align: center;
+  transform: translateY(-1.2em);
+}
+
+#delta-text .text-mask {
+  height: 100%;
+  width: 100%;
+  opacity: 1.0;
+  background-color: var(--color-text-tertiary);
+}
+
+/* Right column: Microscope + Knobs */
+#right-panel {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
+  min-height: 0;
+  gap: 0.5em;
+}
+
+#microscope-wrapper {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: row;
+  padding: 0.75em 0.75em 0.75em 0;
+  padding-top: 1.25em;
+  position: relative;
+}
+
+#microscope-labels {
+  position: absolute;
+  left: -2.5em;
+  top: 1.25em;
+  bottom: 0.75em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 1.125em;
+  line-height: 1;
+  font-family: var(--cursive-font);
+  color: var(--color-text-tertiary);
+  padding-right: 0.375em;
+  text-align: right;
+  width: 2.5em;
+}
+
+.microscope-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+#label-top {
+  transform: translateY(-50%);
+}
+
+#label-bottom {
+  transform: translateY(50%);
+}
+
+/* Microscope label suffix uses global .image-text helper styles */
+.microscope-label .image-text__image {
+  height: 1em;
+  top: -0.10em;
+}
+
+#microscope-container {
+  flex: 1;
+  background: var(--color-surface-panel);
+  border: 0.0625em solid var(--color-white-15);
+  border-radius: 0.25em;
+  position: relative;
+  overflow: visible;
+  overflow-clip-margin: 6.25em;
+}
+
+#main-knobs {
+  margin-left: -6em;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5em;
+  padding: 0.5em 1em 0.5em 0;
+}
+
+/* Exponent knob - positioned absolutely relative to container */
+#main-knobs .knob-wrapper--exponent {
+  position: absolute;
+  top: 2.5em;
+  left: 3em;
+}
+
+#gain-knobs {
+  display: flex;
+  justify-content: center;
+  gap: 3.75em;
+  padding: 0.5em 0;
+}
+
+#gain-knobs .knob:first-child {
+  margin-right: 4.5em;
+}
+
+#gain-knobs .knob:last-child {
+  margin-left: 2.5em;
+}
+
+/* Version tag */
+#version-tag {
+  position: fixed;
+  bottom: 0;
+  left: 0.75em;
+  font-family: var(--cursive-font);
+  font-size: 0.625em;
+  color: var(--color-text-primary);
+  pointer-events: none;
+}
+
+#andy-sig {
+  position: fixed;
+  bottom: 0.25em;
+  left: 2.2em;
+  height: 1.25em;
+  width: 4em;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.readable-mode #version-tag {
+  font-size: 0.5em;
+  bottom: 0.5em;
+}
