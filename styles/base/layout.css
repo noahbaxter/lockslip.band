@@ -1,4 +1,8 @@
 /* Layout Base Styles */
+html {
+    scroll-padding-top: calc(var(--nav-height) + 20px);
+}
+
 section {
     padding: 50px 0;
     position: relative;
@@ -74,6 +78,10 @@ section::before {
 }
 
 @media (max-width: 768px) {
+    html {
+        scroll-padding-top: calc(var(--nav-height-mobile) + 20px);
+    }
+
     .hero-bio-overlay {
         padding: 1.5rem;
         width: 85%;

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guillotine VST - Lockslip</title>
+  <link rel="icon" type="image/png" href="../assets/icons/favicon.png">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../js/components/platform-icons.js"></script>
+  <script src="../js/components/navigation.js"></script>
+  <script src="../js/components/header.js"></script>
+  <style>
+    /* Page content */
+    main {
+      padding-top: 120px; /* Account for header */
+      padding-bottom: 4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Plugin showcase */
+    .plugin-showcase {
+      width: 100%;
+      max-width: 1200px;
+      padding: 0 2rem;
+      display: flex;
+      gap: 3rem;
+      align-items: flex-start;
+    }
+
+    /* Plugin frame container */
+    .plugin-frame-container {
+      flex: 1;
+      border: 1px solid #333;
+      box-shadow: 0 4px 30px rgba(255, 0, 0, 0.1);
+    }
+    .plugin-frame {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 12;
+      border: none;
+    }
+
+    /* Right column */
+    .plugin-sidebar {
+      flex: 0 0 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Description */
+    .plugin-description {
+      color: #aaa;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    /* Actions */
+    .plugin-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .plugin-actions a {
+      text-align: center;
+    }
+
+    /* Plugin link styling */
+    .plugin-link {
+      color: inherit;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .plugin-link:hover {
+      opacity: 0.8;
+    }
+
+    @media (max-width: 900px) {
+      .plugin-showcase {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 0;
+      }
+      .plugin-frame-container {
+        width: calc(100% - 3rem);
+        margin: 0 1.5rem;
+      }
+      .plugin-sidebar {
+        width: 100%;
+        padding: 0 1.5rem;
+      }
+      .plugin-actions {
+        flex-direction: row;
+        justify-content: center;
+      }
+      .plugin-actions a {
+        flex: 1;
+        max-width: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // Initialize header on page load with relative paths for plugin subdirectory
+    document.addEventListener('DOMContentLoaded', () => {
+      HeaderComponent.init({ basePath: '../' });
+    });
+  </script>
+
+  <main>
+    <div class="plugin-showcase">
+      <div class="plugin-frame-container">
+        <iframe class="plugin-frame" src="demo.html"></iframe>
+      </div>
+
+      <div class="plugin-sidebar">
+        <p class="plugin-description">
+          <strong>Guillotine</strong> is a hard clipper and saturation plugin that balances precision and chaos. It offers seven distinct saturation modes, each visible in real time through the built-in oscilloscope and adjustable with delta monitoring. Oversampling works up to 32× with the option of linear-phase or minimum-phase filtering, and you can select between natural peak overshoots or a true peak-safe clipping stage.
+        </p>
+        <p class="plugin-description">
+          <strong>Guillotine</strong> was designed for clean, precise transient clipping on drums or a mix bus, but it can just as easily add weight and energy to any dynamic material. For a more aggressive sound, try one of the nonlinear modes like Knee or T2 and push the input gain.
+        </p>
+        <p class="plugin-description">
+          Inspired by the "Guillotine Blueprint" shirt design by Amanda Duvail, <strong>Guillotine</strong> is the first release from <strong><a href="https://dichoticstudios.com" target="_blank" rel="noopener" class="plugin-link">Dichotic Studios</a></strong>, available now free for macOS, Windows, and Linux.
+        </p>
+
+        <div class="plugin-actions">
+          <a href="https://github.com/noahbaxter/guillotine/releases" target="_blank" rel="noopener" class="btn primary">Download</a>
+          <a href="https://github.com/noahbaxter/guillotine" target="_blank" rel="noopener" class="btn secondary">View Source</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

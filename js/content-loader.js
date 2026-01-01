@@ -5,16 +5,18 @@ class ContentLoader {
         this.shows = null;
         this.merchandise = null;
         this.media = null;
+        this.extras = null;
     }
 
     async loadAllContent() {
         try {
-            const [config, releases, shows, merchandise, media] = await Promise.all([
+            const [config, releases, shows, merchandise, media, extras] = await Promise.all([
                 this.loadJSON('content/site-config.json'),
                 this.loadJSON('content/releases.json'),
                 this.loadJSON('content/shows.json'),
                 this.loadJSON('content/merchandise.json'),
-                this.loadJSON('content/media.json')
+                this.loadJSON('content/media.json'),
+                this.loadJSON('content/extras.json')
             ]);
 
             this.config = config;
@@ -22,11 +24,13 @@ class ContentLoader {
             this.shows = shows;
             this.merchandise = merchandise;
             this.media = media;
+            this.extras = extras;
 
             this.renderAllContent();
             UIHelpers.updateCopyrightYear();
             UIHelpers.setupHeroBioFade();
             UIHelpers.setupSmoothScrolling();
+            this.handleInitialHash();
         } catch (error) {
             console.error('Error loading content:', error);
             UIHelpers.showError();
@@ -47,6 +51,7 @@ class ContentLoader {
         this.renderShows();
         this.renderMerchandise();
         this.renderMedia();
+        this.renderExtras();
         this.renderFooter();
         this.renderNavigation();
         this.renderStreamingIcons();
@@ -82,10 +87,10 @@ class ContentLoader {
     }
 
     async renderMerchandise() {
-        const merchSection = document.getElementById('merch');
+        const merchSection = document.getElementById('store');
         if (merchSection) {
             // Show loading state
-            merchSection.innerHTML = '<div class="container"><h2>Merchandise</h2><p>Loading merchandise...</p></div>';
+            merchSection.innerHTML = '<div class="container"><h2>Store</h2><p>Loading merchandise...</p></div>';
 
             try {
                 const merchHTML = await MerchandiseComponent.renderAsync();
@@ -98,7 +103,7 @@ class ContentLoader {
                 } else {
                     merchSection.innerHTML = `
                         <div class="container">
-                            <h2>Merchandise</h2>
+                            <h2>Store</h2>
                             <div class="empty-state">
                                 <p>Sorry but no merch items are currently in stock.</p>
                                 <p class="empty-state-sub">Please check back soon!</p>
@@ -114,6 +119,13 @@ class ContentLoader {
         const mediaSection = document.getElementById('media');
         if (mediaSection && this.media) {
             mediaSection.innerHTML = MediaComponent.render(this.media);
+        }
+    }
+
+    renderExtras() {
+        const extrasSection = document.getElementById('extras');
+        if (extrasSection && this.extras) {
+            extrasSection.innerHTML = ExtrasComponent.render(this.extras);
         }
     }
 
@@ -148,6 +160,23 @@ class ContentLoader {
         }
     }
 
+    handleInitialHash() {
+        const hash = window.location.hash;
+        if (!hash) return;
+
+        const targetId = hash.slice(1);
+        const targetElement = document.getElementById(targetId);
+        if (!targetElement) return;
+
+        // Small delay to ensure DOM is fully rendered
+        setTimeout(() => {
+            const header = document.querySelector('header');
+            const headerHeight = header ? header.offsetHeight : 0;
+            const rect = targetElement.getBoundingClientRect();
+            const targetPosition = rect.top + window.scrollY - headerHeight - 20;
+            window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+        }, 100);
+    }
 }
 
 // Initialize content loader when DOM is ready

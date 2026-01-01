@@ -23,14 +23,15 @@ const PlatformIcons = {
         'Bandsintown': 'bandsintown'
     },
 
-    renderStreamingLink(platform, url, isIcon = false, title = null) {
+    renderStreamingLink(platform, url, isIcon = false, title = null, basePath = '') {
         const iconPath = this.iconMap[platform];
         const displayTitle = title || platform;
-        
-        if (isIcon && iconPath) {
+        const fullIconPath = iconPath ? basePath + iconPath : null;
+
+        if (isIcon && fullIconPath) {
             return `
                 <a href="${url}" class="streaming-icon ${platform}" target="_blank" rel="noopener" title="${displayTitle}">
-                    <img src="${iconPath}" alt="${displayTitle}" />
+                    <img src="${fullIconPath}" alt="${displayTitle}" />
                 </a>
             `;
         } else if (isIcon) {
@@ -49,17 +50,18 @@ const PlatformIcons = {
         }
     },
 
-    renderStreamingIcon(platform, url) {
-        return this.renderStreamingLink(platform, url, true);
+    renderStreamingIcon(platform, url, basePath = '') {
+        return this.renderStreamingLink(platform, url, true, null, basePath);
     },
 
-    renderReleaseStreamingLink(platform, url) {
+    renderReleaseStreamingLink(platform, url, basePath = '') {
         const iconPath = this.iconMap[platform];
-        
-        if (iconPath) {
+        const fullIconPath = iconPath ? basePath + iconPath : null;
+
+        if (fullIconPath) {
             return `
                 <a href="${url}" class="release-streaming-link ${platform}" target="_blank" rel="noopener" title="${platform}">
-                    <img src="${iconPath}" alt="${platform}" />
+                    <img src="${fullIconPath}" alt="${platform}" />
                 </a>
             `;
         } else {
@@ -71,32 +73,34 @@ const PlatformIcons = {
         }
     },
 
-    renderTikTok(socialMedia) {
+    renderTikTok(socialMedia, basePath = '') {
         const iconPath = this.iconMap['tiktok'];
+        const fullIconPath = basePath + iconPath;
         return `
             <a href="${socialMedia.url}" class="social-icon tiktok" target="_blank" rel="noopener" title="${socialMedia.platform}">
                 <div class="tiktok-3d-container">
-                    <img src="${iconPath}" alt="${socialMedia.platform}" class="tiktok-red" />
-                    <img src="${iconPath}" alt="${socialMedia.platform}" class="tiktok-cyan" />
-                    <img src="${iconPath}" alt="${socialMedia.platform}" class="tiktok-white" />
+                    <img src="${fullIconPath}" alt="${socialMedia.platform}" class="tiktok-red" />
+                    <img src="${fullIconPath}" alt="${socialMedia.platform}" class="tiktok-cyan" />
+                    <img src="${fullIconPath}" alt="${socialMedia.platform}" class="tiktok-white" />
                 </div>
             </a>
         `;
     },
 
-    renderSocialIcon(socialMedia) {
+    renderSocialIcon(socialMedia, basePath = '') {
         const platformKey = this.socialIconMap[socialMedia.platform];
         const iconPath = this.iconMap[platformKey];
-        
+
         // Special handling for TikTok
         if (platformKey === 'tiktok') {
-            return this.renderTikTok(socialMedia);
+            return this.renderTikTok(socialMedia, basePath);
         }
-        
+
         if (iconPath) {
+            const fullIconPath = basePath + iconPath;
             return `
                 <a href="${socialMedia.url}" class="social-icon ${platformKey}" target="_blank" rel="noopener" title="${socialMedia.platform}">
-                    <img src="${iconPath}" alt="${socialMedia.platform}" />
+                    <img src="${fullIconPath}" alt="${socialMedia.platform}" />
                 </a>
             `;
         } else {

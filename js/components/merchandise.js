@@ -41,7 +41,7 @@ const MerchandiseComponent = {
                 return this.transformBigCartelData(data.items);
             } catch (error) {
                 console.error('Failed to load static merchandise data:', error);
-                return { sectionTitle: "Merchandise", items: [] };
+                return { sectionTitle: "Store", items: [] };
             }
         }
 
@@ -64,7 +64,7 @@ const MerchandiseComponent = {
             return await response.json();
         } catch (error) {
             console.error('Failed to load merchandise data:', error);
-            return { sectionTitle: "Merchandise", items: [] };
+            return { sectionTitle: "Store", items: [] };
         }
     },
 
@@ -82,7 +82,7 @@ const MerchandiseComponent = {
         if (!Array.isArray(products)) return null;
 
         return {
-            sectionTitle: "Merchandise",
+            sectionTitle: "Store",
             items: products.map(product => {
                 // Get images
                 const images = product.images ? product.images.map(img => img.url) : [];
