@@ -2,16 +2,10 @@
   "sectionTitle": "Extras",
   "items": [
     {
-      "id": "ep-stems",
-      "title": "EP Stems",
-      "description": "Download stems for remixing",
-      "downloadUrl": "assets/extras/stems.zip",
-      "type": "download"
-    },
-    {
       "id": "guillotine-vst",
       "title": "Guillotine VST",
       "description": "Free saturation plugin based on the band t-shirt design",
+      "image": "assets/extras/guillotine-preview.png",
       "linkUrl": "plugin/",
       "type": "link"
     }

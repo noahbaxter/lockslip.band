@@ -5,10 +5,18 @@ const ExtrasComponent = {
         const url = isDownload ? item.downloadUrl : item.linkUrl;
         const buttonText = isDownload ? 'Download' : 'View';
         const downloadAttr = isDownload ? 'download' : '';
-        const targetAttr = isDownload ? '' : '';
+
+        const imageHTML = item.image ? `
+            <div class="extras-card-image">
+                <a href="${url}">
+                    <img src="${item.image}" alt="${item.title}">
+                </a>
+            </div>
+        ` : '';
 
         return `
             <div class="extras-card" data-item-id="${item.id}">
+                ${imageHTML}
                 <div class="extras-card-content">
                     <h3>${item.title}</h3>
                     <p>${item.description}</p>

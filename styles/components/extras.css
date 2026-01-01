@@ -1,17 +1,17 @@
 /* Extras Component */
 .extras-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex;
+    justify-content: center;
     gap: 2rem;
 }
 
 .extras-card {
     border: 1px solid var(--border-color);
     background: rgba(0, 0, 0, 0.3);
-    padding: 2rem;
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    max-width: 320px;
     transition: all 0.2s ease;
 }
 
@@ -20,20 +20,34 @@
     box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
 }
 
+.extras-card-image {
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.extras-card-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.2s ease;
+}
+
+.extras-card:hover .extras-card-image img {
+    transform: scale(1.02);
+}
+
 .extras-card-content h3 {
     color: var(--text-color);
     margin-bottom: 0.5rem;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
 }
 
 .extras-card-content p {
     color: var(--text-muted);
-    margin-bottom: 1.5rem;
-    font-size: 0.9rem;
-}
-
-.extras-card-action {
-    margin-top: auto;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
 }
 
 .extras-card-action .btn {
@@ -42,7 +56,7 @@
 }
 
 @media (max-width: 768px) {
-    .extras-grid {
-        grid-template-columns: 1fr;
+    .extras-card {
+        max-width: 100%;
     }
 }
