@@ -53,9 +53,10 @@ class UIHelpers {
 
             if (targetElement) {
                 e.preventDefault();
-                
+
                 const headerHeight = getHeaderHeight();
-                const targetPosition = targetElement.offsetTop - headerHeight - 20; // Extra 20px padding
+                const rect = targetElement.getBoundingClientRect();
+                const targetPosition = rect.top + window.scrollY - headerHeight - 20;
 
                 window.scrollTo({
                     top: targetPosition,

@@ -47,7 +47,7 @@ const MediaComponent = {
         }
 
         return `
-            <div class="media-section">
+            <div class="media-section" id="photos">
                 <h3>${photos.sectionTitle}</h3>
                 <div class="photo-grid">
                     ${photos.gallery.map((photo, index) => this.renderPhotoCard(photo, index)).join('')}
@@ -58,7 +58,7 @@ const MediaComponent = {
 
     renderVideosSection(videos) {
         return `
-            <div class="media-section">
+            <div class="media-section" id="videos">
                 <h3>${videos.sectionTitle}</h3>
                 <div class="video-grid">
                     ${videos.items.map(video => this.renderVideoCard(video)).join('')}
