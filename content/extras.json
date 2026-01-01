@@ -4,7 +4,7 @@
     {
       "id": "guillotine-vst",
       "title": "Guillotine VST",
-      "description": "Free saturation plugin based on the band t-shirt design",
+      "description": "Free digital clipper based on the \"Guillotine Blueprint\" t-shirt design",
       "image": "assets/extras/guillotine-preview.png",
       "linkUrl": "plugin/",
       "type": "link"
