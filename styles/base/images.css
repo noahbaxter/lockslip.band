@@ -1,0 +1,30 @@
+/* Injected placeholder for image loading */
+.img-placeholder {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, var(--border-color), var(--section-alt));
+    border: 1px solid var(--border-color);
+    transition: opacity 0.3s ease-in-out;
+    z-index: 0;
+}
+
+/* Merch carousel - work with .active system */
+.carousel-images {
+    background: linear-gradient(45deg, var(--border-color), var(--section-alt));
+    border: 1px solid var(--border-color);
+}
+
+.carousel-images.img-loaded {
+    background: none;
+    border: none;
+}
+
+/* Carousel images: only show when both active AND loaded */
+.carousel-image {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.carousel-image.active.img-ready {
+    opacity: 1;
+}

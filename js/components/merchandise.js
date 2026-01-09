@@ -146,11 +146,10 @@ const MerchandiseComponent = {
                 <div class="merch-image-container">
                     <div class="merch-image-carousel" data-item-id="${item.id}">
                         <div class="carousel-images">
-                            <img src="${item.images[0]}" 
-                                 alt="${item.name}" 
+                            <img src="${item.images[0]}"
+                                 alt="${item.name}"
                                  class="carousel-image active"
-                                 data-index="0"
-                                 onerror="this.style.display='none'">
+                                 data-index="0">
                         </div>
                     </div>
                 </div>
@@ -164,11 +163,10 @@ const MerchandiseComponent = {
                     <button class="carousel-nav next" onclick="navigateItemCarousel('${item.id}', 1)">›</button>
                     <div class="carousel-images">
                         ${item.images.map((image, index) => `
-                            <img src="${image}" 
-                                 alt="${item.name} - Image ${index + 1}" 
+                            <img src="${image}"
+                                 alt="${item.name} - Image ${index + 1}"
                                  class="carousel-image ${index === 0 ? 'active' : ''}"
-                                 data-index="${index}"
-                                 onerror="this.style.display='none'">
+                                 data-index="${index}">
                         `).join('')}
                     </div>
                     <div class="carousel-dots">

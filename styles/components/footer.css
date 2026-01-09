@@ -1,5 +1,7 @@
 /* Footer Component */
 footer {
+    position: relative;
+    z-index: 2;
     background: var(--primary-color);
     color: var(--text-color);
     margin-top: 0;

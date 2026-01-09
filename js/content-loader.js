@@ -31,6 +31,7 @@ class ContentLoader {
             UIHelpers.setupHeroBioFade();
             UIHelpers.setupSmoothScrolling();
             this.handleInitialHash();
+            ImageLoader.init();
         } catch (error) {
             console.error('Error loading content:', error);
             UIHelpers.showError();
@@ -95,11 +96,13 @@ class ContentLoader {
             try {
                 const merchHTML = await MerchandiseComponent.renderAsync();
                 merchSection.innerHTML = merchHTML;
+                ImageLoader.refresh(merchSection);
             } catch (error) {
                 console.error('Failed to render merchandise:', error);
                 // Fallback to static data if available
                 if (this.merchandise) {
                     merchSection.innerHTML = MerchandiseComponent.render(this.merchandise);
+                    ImageLoader.refresh(merchSection);
                 } else {
                     merchSection.innerHTML = `
                         <div class="container">
@@ -187,6 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Listen for view changes and re-render shows section
     window.addEventListener('showViewChanged', () => {
         contentLoader.renderShows();
+        ImageLoader.refresh();
     });
 });
 

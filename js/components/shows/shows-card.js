@@ -56,7 +56,7 @@ const ShowsCard = {
 
         return `
             <div class="show-poster-preview" onclick="openPosterModal(${posterIndex})">
-                <img src="${show.poster}" alt="${show.venue} poster" onerror="this.parentElement.style.display='none'">
+                <img src="${show.poster}" alt="${show.venue} poster">
                 <div class="poster-overlay">
                     <span class="poster-zoom-icon">
                         <img src="assets/icons/zoom.svg" alt="Zoom" />
@@ -143,7 +143,7 @@ const ShowsCard = {
 
         return `
             <div class="tour-poster-preview" onclick="openPosterModal(${tourPosterIndex})">
-                <img src="${tour.poster}" alt="${tour.name} poster" onerror="this.parentElement.style.display='none'">
+                <img src="${tour.poster}" alt="${tour.name} poster">
                 <div class="poster-overlay">
                     <span class="poster-zoom-icon">
                         <img src="assets/icons/zoom.svg" alt="Zoom" />

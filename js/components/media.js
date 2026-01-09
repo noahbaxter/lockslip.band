@@ -4,7 +4,7 @@ const MediaComponent = {
         return `
             <div class="photo-card" data-photo-index="${index}" onclick="photoModal.open(${index})">
                 <div class="photo-placeholder">
-                    ${photo.image ? `<img src="${photo.image}" alt="${photo.venue} - ${photo.location}" onerror="this.style.display='none'">` : ''}
+                    ${photo.image ? `<img src="${photo.image}" alt="${photo.venue} - ${photo.location}">` : ''}
                 </div>
             </div>
         `;
@@ -15,7 +15,7 @@ const MediaComponent = {
             <div class="video-card" data-video-id="${video.id}">
                 <div class="video-thumbnail">
                     <a href="${video.url}" target="_blank" rel="noopener">
-                        ${video.thumbnail ? `<img src="${video.thumbnail}" alt="${video.title}" onerror="this.style.display='none'">` : ''}
+                        ${video.thumbnail ? `<img src="${video.thumbnail}" alt="${video.title}">` : ''}
                         <div class="video-play-overlay">▶</div>
                     </a>
                 </div>
@@ -31,7 +31,7 @@ const MediaComponent = {
         return `
             <div class="logo-card" data-logo-id="${logo.id}">
                 <div class="logo-preview">
-                    <img src="${logo.file}" alt="${logo.title}" onerror="this.style.display='none'">
+                    <img src="${logo.file}" alt="${logo.title}">
                 </div>
                 <div class="logo-download">
                     <a href="${logo.file}" download class="btn small">DOWNLOAD</a>
