@@ -21,7 +21,7 @@ const HeaderComponent = {
         label: 'Extras',
         href: `${basePath}#extras`,
         submenu: [
-          { label: 'Plugin', href: `${basePath}plugin/` }
+          { label: 'Guillotine', href: `${basePath}plugin/` }
         ]
       }
     ];

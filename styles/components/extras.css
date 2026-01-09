@@ -50,8 +50,7 @@
     line-height: 1.5;
 }
 
-.extras-card-action .btn {
-    width: 100%;
+.extras-card-action {
     text-align: center;
 }
 
