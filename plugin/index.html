@@ -57,16 +57,6 @@
       font-size: 0.95rem;
     }
 
-    /* Actions */
-    .plugin-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-    .plugin-actions a {
-      text-align: center;
-    }
-
     /* Plugin link styling */
     .plugin-link {
       color: inherit;
@@ -91,14 +81,6 @@
       .plugin-sidebar {
         width: 100%;
         padding: 0 1.5rem;
-      }
-      .plugin-actions {
-        flex-direction: row;
-        justify-content: center;
-      }
-      .plugin-actions a {
-        flex: 1;
-        max-width: 200px;
       }
     }
   </style>
@@ -128,9 +110,44 @@
           Inspired by the "Guillotine Blueprint" shirt design by Amanda Duvail, <strong>Guillotine</strong> is the first release from <strong><a href="https://dichoticstudios.com" target="_blank" rel="noopener" class="plugin-link">Dichotic Studios</a></strong>, available now free for macOS, Windows, and Linux.
         </p>
 
-        <div class="plugin-actions">
-          <a href="https://github.com/noahbaxter/guillotine/releases" target="_blank" rel="noopener" class="btn primary">Download</a>
-          <a href="https://github.com/noahbaxter/guillotine" target="_blank" rel="noopener" class="btn secondary">View Source</a>
+        <div class="download-section">
+          <div class="download-header">
+            <h4>Download</h4>
+            <span class="download-version">v1.0.0</span>
+          </div>
+
+          <div class="download-links">
+            <a href="https://pub-b82e8190aadf4695a10d612bef9e77e3.r2.dev/Guillotine-macOS.pkg" class="download-link">
+              <img src="../assets/icons/os/macos.svg" alt="macOS" class="download-icon" />
+              <div class="download-text">
+                <span class="download-platform">macOS</span>
+                <span class="download-subtitle">Universal (Intel + Apple Silicon)</span>
+              </div>
+              <span class="download-arrow">↓</span>
+            </a>
+
+            <a href="https://pub-b82e8190aadf4695a10d612bef9e77e3.r2.dev/Guillotine-Windows.exe" class="download-link">
+              <img src="../assets/icons/os/windows.svg" alt="Windows" class="download-icon" />
+              <div class="download-text">
+                <span class="download-platform">Windows</span>
+                <span class="download-subtitle">64-bit</span>
+              </div>
+              <span class="download-arrow">↓</span>
+            </a>
+
+            <a href="https://pub-b82e8190aadf4695a10d612bef9e77e3.r2.dev/Guillotine-Linux-x64.zip" class="download-link">
+              <img src="../assets/icons/os/linux.svg" alt="Linux" class="download-icon" />
+              <div class="download-text">
+                <span class="download-platform">Linux</span>
+                <span class="download-subtitle">x64</span>
+              </div>
+              <span class="download-arrow">↓</span>
+            </a>
+          </div>
+
+          <div class="download-footer">
+            <a href="https://github.com/noahbaxter/guillotine" target="_blank" rel="noopener" class="btn secondary">View Source</a>
+          </div>
         </div>
       </div>
     </div>

@@ -22,6 +22,7 @@
 @import url('styles/components/footer.css');
 @import url('styles/components/modal.css');
 @import url('styles/components/social-icons.css');
+@import url('styles/components/downloads.css');
 
 /* Image loading placeholders - load last to override */
 @import url('styles/base/images.css');
