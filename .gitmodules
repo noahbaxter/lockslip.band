@@ -1,0 +1,3 @@
+[submodule "guillotine"]
+	path = guillotine
+	url = https://github.com/noahbaxter/guillotine.git
