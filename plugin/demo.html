@@ -47,13 +47,6 @@
     let audioPos = 0;
     const DOWNSAMPLE = 128;
 
-    function createEnvelopeBlob() {
-      const buffer = new ArrayBuffer(BUFFER_SIZE * 4 + 4);
-      new Float32Array(buffer, 0, BUFFER_SIZE).set(envelope);
-      new DataView(buffer).setUint32(BUFFER_SIZE * 4, writePos, true);
-      return new Blob([buffer], { type: 'application/octet-stream' });
-    }
-
     // Load the plugin UI with defaults injected BEFORE main.js runs
     async function loadPlugin() {
       const [htmlResponse, versionResponse] = await Promise.all([
@@ -79,8 +72,24 @@
         zoom: DEMO_CONFIG.zoom,
       };
 
+      // Inject fetch override BEFORE main.js runs to intercept envelope.bin polling
+      const fetchOverride = `
+        <script>
+          window.__getEnvelope = null;
+          const _fetch = window.fetch.bind(window);
+          window.fetch = function(url, opts) {
+            if (typeof url === 'string' && url.endsWith('envelope.bin')) {
+              const buf = window.__getEnvelope ? window.__getEnvelope() : new ArrayBuffer(1604);
+              return Promise.resolve(new Response(buf, { status: 200 }));
+            }
+            return _fetch(url, opts);
+          };
+        <\/script>
+      `;
+
       const injection = `
         <base href="/guillotine/web/">
+        ${fetchOverride}
         <script>window.GUILLOTINE_DEFAULTS = ${JSON.stringify(defaults)};<\/script>
       `;
       html = html.replace('<head>', '<head>' + injection);
@@ -99,13 +108,12 @@
         const win = iframe.contentWindow;
         const doc = iframe.contentDocument;
 
-        // Override fetch to intercept envelope.bin requests
-        const originalFetch = win.fetch.bind(win);
-        win.fetch = (url, options) => {
-          if (typeof url === 'string' && url.endsWith('envelope.bin')) {
-            return Promise.resolve(new Response(createEnvelopeBlob(), { status: 200 }));
-          }
-          return originalFetch(url, options);
+        // Connect envelope getter (fetch override was injected in HTML)
+        win.__getEnvelope = () => {
+          const buffer = new ArrayBuffer(BUFFER_SIZE * 4 + 4);
+          new Float32Array(buffer, 0, BUFFER_SIZE).set(envelope);
+          new DataView(buffer).setUint32(BUFFER_SIZE * 4, writePos, true);
+          return buffer;
         };
 
         // Trigger the guillotine cut after delay
