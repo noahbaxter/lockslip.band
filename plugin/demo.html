@@ -85,7 +85,12 @@
       `;
       html = html.replace('<head>', '<head>' + injection);
       html = html.replace('<span id="version-num"></span>', `<span id="version-num">v${version}</span>`);
-      html = html.replace('src="main.js"', 'src="/guillotine/web/main.js"');
+
+      // srcdoc ignores <base> for resource loading - rewrite all relative URLs to absolute
+      html = html.replace(/href="main\.css"/g, 'href="/guillotine/web/main.css"');
+      html = html.replace(/src="main\.js"/g, 'src="/guillotine/web/main.js"');
+      html = html.replace(/src="assets\//g, 'src="/guillotine/web/assets/');
+      html = html.replace(/url\(assets\//g, 'url(/guillotine/web/assets/');
 
       const iframe = document.getElementById('plugin');
       iframe.srcdoc = html;
