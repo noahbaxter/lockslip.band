@@ -11,28 +11,32 @@
   </style>
 </head>
 <body>
-  <iframe id="plugin" src="/guillotine/web/index.html"></iframe>
+  <iframe id="plugin"></iframe>
   <script>
     // ============================================
     // DEMO CONFIG - edit these values as needed
     // ============================================
     const DEMO_CONFIG = {
       // Delay before triggering the guillotine cut (ms)
-      cutDelay: 3000,
+      cutDelay: 2000,
 
-      // Knob values (use null to keep default)
-      ceiling: -0.3,         // dB (-24 to 0)
-      inputGain: 6.0,        // dB (-24 to 24)
+      // Knob values
+      ceiling: -13,           // dB (-60 to 0)
+      inputGain: 0.0,        // dB (-24 to 24)
       outputGain: 0.0,       // dB (-24 to 24)
       dryWet: 100,           // % (0 to 100)
-      curve: 0,              // 0=Hard, 1=Cubic, 2=Quintic, 3=Tanh, 4=Arctan, 5=Knee, 6=T2
-      curveExponent: 1.0,    // exponent for curve (0.1 to 10)
-      oversampling: 1,       // 0=1x, 1=2x, 2=4x, 3=8x, 4=16x, 5=32x
+      curve: 0,              // 0=Hard, 1=Quint, 2=Cubic, 3=Tanh, 4=Atan, 5=Knee, 6=T2
+      curveExponent: 1.0,    // exponent for Knee/T2 (1.0 to 4.0)
+      oversampling: 2,       // 0=1x, 1=2x, 2=4x, 3=8x, 4=16x, 5=32x
 
-      // Toggles (use null to keep default)
-      truePeak: false,       // true peak clipping
+      // Toggles
+      truePeak: true,        // true peak clipping
       filterType: 0,         // 0=min-phase, 1=linear-phase
-      stereoMode: 0,         // 0=L/R, 1=M/S, 2=stereo-link
+      stereoMode: 0,         // 0=stereo-link, 1=L/R, 2=M/S
+      bypass: true,          // start with blade up (true) or down (false)
+
+      // View settings
+      zoom: -24,             // Microscope zoom in dB (-12, -24, -36, -48, -60)
     };
     // ============================================
 
@@ -50,50 +54,61 @@
       return new Blob([buffer], { type: 'application/octet-stream' });
     }
 
-    const iframe = document.getElementById('plugin');
-    iframe.addEventListener('load', () => {
-      const win = iframe.contentWindow;
-      const doc = iframe.contentDocument;
+    // Load the plugin UI with defaults injected BEFORE main.js runs
+    async function loadPlugin() {
+      const [htmlResponse, versionResponse] = await Promise.all([
+        fetch('/guillotine/web/index.html'),
+        fetch('/guillotine/VERSION')
+      ]);
+      let html = await htmlResponse.text();
+      const version = (await versionResponse.text()).trim();
 
-      // Override fetch to intercept envelope.bin
-      const originalFetch = win.fetch.bind(win);
-      win.fetch = (url, options) => {
-        if (typeof url === 'string' && url.endsWith('envelope.bin')) {
-          return Promise.resolve(new Response(createEnvelopeBlob(), { status: 200 }));
-        }
-        return originalFetch(url, options);
+      // Inject GUILLOTINE_DEFAULTS and base href before </head>
+      const defaults = {
+        bypass: DEMO_CONFIG.bypass,
+        ceiling: DEMO_CONFIG.ceiling,
+        inputGain: DEMO_CONFIG.inputGain,
+        outputGain: DEMO_CONFIG.outputGain,
+        dryWet: DEMO_CONFIG.dryWet,
+        curve: DEMO_CONFIG.curve,
+        curveExponent: DEMO_CONFIG.curveExponent,
+        oversampling: DEMO_CONFIG.oversampling,
+        truePeak: DEMO_CONFIG.truePeak,
+        filterType: DEMO_CONFIG.filterType,
+        stereoMode: DEMO_CONFIG.stereoMode,
+        zoom: DEMO_CONFIG.zoom,
       };
 
-      // Wait for app to initialize, then apply config
-      const applyConfig = () => {
-        const app = win.guillotineApp;
-        if (!app) {
-          setTimeout(applyConfig, 100);
-          return;
-        }
+      const injection = `
+        <base href="/guillotine/web/">
+        <script>window.GUILLOTINE_DEFAULTS = ${JSON.stringify(defaults)};<\/script>
+      `;
+      html = html.replace('<head>', '<head>' + injection);
+      html = html.replace('<span id="version-num"></span>', `<span id="version-num">v${version}</span>`);
 
-        // Apply knob values
-        if (DEMO_CONFIG.ceiling !== null) app.thresholdKnob?.setValue(DEMO_CONFIG.ceiling);
-        if (DEMO_CONFIG.inputGain !== null) app.inputGainKnob?.setValue(DEMO_CONFIG.inputGain);
-        if (DEMO_CONFIG.outputGain !== null) app.outputGainKnob?.setValue(DEMO_CONFIG.outputGain);
-        if (DEMO_CONFIG.dryWet !== null) app.drywetKnob?.setValue(DEMO_CONFIG.dryWet);
-        if (DEMO_CONFIG.curve !== null) app.curveKnob?.setValue(DEMO_CONFIG.curve);
-        if (DEMO_CONFIG.curveExponent !== null) app.curveExponentKnob?.setValue(DEMO_CONFIG.curveExponent);
-        if (DEMO_CONFIG.oversampling !== null) app.oversamplingKnob?.setValue(DEMO_CONFIG.oversampling);
+      const iframe = document.getElementById('plugin');
+      iframe.srcdoc = html;
 
-        // Apply toggles
-        if (DEMO_CONFIG.truePeak !== null) app.trueclipToggle?.setState(DEMO_CONFIG.truePeak ? 1 : 0);
-        if (DEMO_CONFIG.filterType !== null) app.filterTypeToggle?.setState(DEMO_CONFIG.filterType);
-        if (DEMO_CONFIG.stereoMode !== null) app.stereoModeToggle?.setState(DEMO_CONFIG.stereoMode);
-      };
-      setTimeout(applyConfig, 500);
+      iframe.addEventListener('load', () => {
+        const win = iframe.contentWindow;
+        const doc = iframe.contentDocument;
 
-      // Trigger the guillotine cut after delay
-      setTimeout(() => {
-        const clickZone = doc.getElementById('click-zone-guillotine');
-        if (clickZone) clickZone.click();
-      }, DEMO_CONFIG.cutDelay);
-    });
+        // Override fetch to intercept envelope.bin requests
+        const originalFetch = win.fetch.bind(win);
+        win.fetch = (url, options) => {
+          if (typeof url === 'string' && url.endsWith('envelope.bin')) {
+            return Promise.resolve(new Response(createEnvelopeBlob(), { status: 200 }));
+          }
+          return originalFetch(url, options);
+        };
+
+        // Trigger the guillotine cut after delay
+        setTimeout(() => {
+          const clickZone = doc.getElementById('click-zone-guillotine');
+          if (clickZone) clickZone.click();
+        }, DEMO_CONFIG.cutDelay);
+      });
+    }
 
     async function loadAudio() {
       const response = await fetch('/plugin/assets/demo-loop.mp3');
@@ -122,6 +137,7 @@
       requestAnimationFrame(animate);
     }
 
+    loadPlugin();
     loadAudio();
   </script>
 </body>
