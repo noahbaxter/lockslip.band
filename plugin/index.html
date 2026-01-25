@@ -113,7 +113,7 @@
         <div class="download-section">
           <div class="download-header">
             <h4>Download</h4>
-            <span class="download-version">v1.1.1</span>
+            <span class="download-version"></span>
           </div>
 
           <div class="download-links">
@@ -152,5 +152,10 @@
       </div>
     </div>
   </main>
+  <script>
+    fetch('/guillotine/VERSION')
+      .then(r => r.text())
+      .then(v => document.querySelector('.download-version').textContent = 'v' + v.trim());
+  </script>
 </body>
 </html>
