@@ -3,86 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <base href="/guillotine/web/">
   <title>Guillotine Demo</title>
-  <link rel="stylesheet" href="main.css">
+  <style>
+    * { margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; }
+    iframe { width: 100%; height: 100%; border: none; }
+  </style>
 </head>
-<body class="loading">
-  <!-- SVG filters for CRT effects -->
-  <svg style="position: absolute; width: 0; height: 0;">
-    <defs>
-      <filter id="crt-aberration" x="-10%" y="-10%" width="120%" height="120%">
-        <feOffset in="SourceGraphic" dx="-1" dy="0" result="red-shift">
-          <animate attributeName="dx" values="-1;-1.5;-1" dur="4s" repeatCount="indefinite" />
-        </feOffset>
-        <feColorMatrix in="red-shift" type="matrix" result="red"
-          values="1 0 0 0 0
-                  0 0 0 0 0
-                  0 0 0 0 0
-                  0 0 0 1 0" />
-        <feColorMatrix in="SourceGraphic" type="matrix" result="green"
-          values="0 0 0 0 0
-                  0 1 0 0 0
-                  0 0 0 0 0
-                  0 0 0 1 0" />
-        <feOffset in="SourceGraphic" dx="1" dy="0" result="blue-shift">
-          <animate attributeName="dx" values="1;1.5;1" dur="3s" repeatCount="indefinite" />
-        </feOffset>
-        <feColorMatrix in="blue-shift" type="matrix" result="blue"
-          values="0 0 0 0 0
-                  0 0 0 0 0
-                  0 0 1 0 0
-                  0 0 0 1 0" />
-        <feBlend in="red" in2="green" mode="screen" result="rg" />
-        <feBlend in="rg" in2="blue" mode="screen" />
-      </filter>
-    </defs>
-  </svg>
-  <div id="app">
-    <div id="left-panel">
-      <div id="plugin-title">
-        <div id="plugin-logo" class="text-mask deltable" style="--mask-src: url(/assets/branding/logo.png)"></div>
-      </div>
-      <div id="lockslip-text">
-        <div class="text-mask deltable" style="--mask-src: url(/assets/branding/lockslip.png)"></div>
-      </div>
-      <div id="guillotine-container">
-        <div id="drywet-container"></div>
-        <div id="guillotine-side" class="deltable">
-          <img class="guillotine-side__img guillotine-side__img--main" src="assets/guillotine/side-fill.png" alt="">
-          <img class="guillotine-side__img guillotine-side__img--outline" src="assets/guillotine/side-outline.png" alt="">
-        </div>
-        <div id="ceiling-container"></div>
-        <div id="click-zone-guillotine"></div>
-        <div id="click-zone-lever"></div>
-      </div>
-      <div id="delta-text">
-        <div class="text-mask" style="--mask-src: url(/assets/branding/decorative-2.png)"></div>
-      </div>
-      <div id="version-tag"><span id="version-num"></span></div>
-      <div id="andy-sig" class="text-mask" style="--mask-src: url(/assets/branding/signature.png)"></div>
-    </div>
-    <div id="right-panel">
-      <div id="microscope-wrapper">
-        <div id="microscope-container">
-          <span id="label-top" class="microscope-label">0dB</span>
-        </div>
-      </div>
-      <div id="controls-row">
-        <div id="toggles-column"></div>
-        <div id="knobs-wrapper">
-          <div id="main-knobs"></div>
-          <div id="gain-knobs">
-            <div id="input-knob-container"></div>
-            <div id="output-knob-container"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <script type="module" src="main.js"></script>
-  <script type="module">
-    // Demo envelope generator - creates fake envelope.bin data from demo audio
+<body>
+  <iframe id="plugin" src="/guillotine/web/index.html"></iframe>
+  <script>
+    // ============================================
+    // DEMO CONFIG - edit these values as needed
+    // ============================================
+    const DEMO_CONFIG = {
+      // Delay before triggering the guillotine cut (ms)
+      cutDelay: 3000,
+
+      // Knob values (use null to keep default)
+      ceiling: -0.3,         // dB (-24 to 0)
+      inputGain: 6.0,        // dB (-24 to 24)
+      outputGain: 0.0,       // dB (-24 to 24)
+      dryWet: 100,           // % (0 to 100)
+      curve: 0,              // 0=Hard, 1=Cubic, 2=Quintic, 3=Tanh, 4=Arctan, 5=Knee, 6=T2
+      curveExponent: 1.0,    // exponent for curve (0.1 to 10)
+      oversampling: 1,       // 0=1x, 1=2x, 2=4x, 3=8x, 4=16x, 5=32x
+
+      // Toggles (use null to keep default)
+      truePeak: false,       // true peak clipping
+      filterType: 0,         // 0=min-phase, 1=linear-phase
+      stereoMode: 0,         // 0=L/R, 1=M/S, 2=stereo-link
+    };
+    // ============================================
+
     const BUFFER_SIZE = 400;
     const envelope = new Float32Array(BUFFER_SIZE);
     let writePos = 0;
@@ -90,46 +43,72 @@
     let audioPos = 0;
     const DOWNSAMPLE = 128;
 
-    // Create a Blob URL that serves our generated envelope data
     function createEnvelopeBlob() {
       const buffer = new ArrayBuffer(BUFFER_SIZE * 4 + 4);
-      const floats = new Float32Array(buffer, 0, BUFFER_SIZE);
-      const view = new DataView(buffer);
-      floats.set(envelope);
-      view.setUint32(BUFFER_SIZE * 4, writePos, true);
+      new Float32Array(buffer, 0, BUFFER_SIZE).set(envelope);
+      new DataView(buffer).setUint32(BUFFER_SIZE * 4, writePos, true);
       return new Blob([buffer], { type: 'application/octet-stream' });
     }
 
-    // Override fetch to intercept envelope.bin requests
-    const originalFetch = window.fetch;
-    window.fetch = function(url, options) {
-      if (typeof url === 'string' && url.endsWith('envelope.bin')) {
-        return Promise.resolve(new Response(createEnvelopeBlob(), {
-          status: 200,
-          headers: { 'Content-Type': 'application/octet-stream' }
-        }));
-      }
-      return originalFetch.call(this, url, options);
-    };
+    const iframe = document.getElementById('plugin');
+    iframe.addEventListener('load', () => {
+      const win = iframe.contentWindow;
+      const doc = iframe.contentDocument;
+
+      // Override fetch to intercept envelope.bin
+      const originalFetch = win.fetch.bind(win);
+      win.fetch = (url, options) => {
+        if (typeof url === 'string' && url.endsWith('envelope.bin')) {
+          return Promise.resolve(new Response(createEnvelopeBlob(), { status: 200 }));
+        }
+        return originalFetch(url, options);
+      };
+
+      // Wait for app to initialize, then apply config
+      const applyConfig = () => {
+        const app = win.guillotineApp;
+        if (!app) {
+          setTimeout(applyConfig, 100);
+          return;
+        }
+
+        // Apply knob values
+        if (DEMO_CONFIG.ceiling !== null) app.thresholdKnob?.setValue(DEMO_CONFIG.ceiling);
+        if (DEMO_CONFIG.inputGain !== null) app.inputGainKnob?.setValue(DEMO_CONFIG.inputGain);
+        if (DEMO_CONFIG.outputGain !== null) app.outputGainKnob?.setValue(DEMO_CONFIG.outputGain);
+        if (DEMO_CONFIG.dryWet !== null) app.drywetKnob?.setValue(DEMO_CONFIG.dryWet);
+        if (DEMO_CONFIG.curve !== null) app.curveKnob?.setValue(DEMO_CONFIG.curve);
+        if (DEMO_CONFIG.curveExponent !== null) app.curveExponentKnob?.setValue(DEMO_CONFIG.curveExponent);
+        if (DEMO_CONFIG.oversampling !== null) app.oversamplingKnob?.setValue(DEMO_CONFIG.oversampling);
+
+        // Apply toggles
+        if (DEMO_CONFIG.truePeak !== null) app.trueclipToggle?.setState(DEMO_CONFIG.truePeak ? 1 : 0);
+        if (DEMO_CONFIG.filterType !== null) app.filterTypeToggle?.setState(DEMO_CONFIG.filterType);
+        if (DEMO_CONFIG.stereoMode !== null) app.stereoModeToggle?.setState(DEMO_CONFIG.stereoMode);
+      };
+      setTimeout(applyConfig, 500);
+
+      // Trigger the guillotine cut after delay
+      setTimeout(() => {
+        const clickZone = doc.getElementById('click-zone-guillotine');
+        if (clickZone) clickZone.click();
+      }, DEMO_CONFIG.cutDelay);
+    });
 
     async function loadAudio() {
-      try {
-        const response = await originalFetch('/plugin/assets/demo-loop.mp3');
-        const arrayBuffer = await response.arrayBuffer();
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-        const channelData = audioBuffer.getChannelData(0);
-        audioData = new Float32Array(channelData.length);
-        for (let i = 0; i < channelData.length; i++) {
-          audioData[i] = Math.abs(channelData[i]);
-        }
-        generateFromAudio();
-      } catch (e) {
-        console.error('Failed to load demo audio:', e);
+      const response = await fetch('/plugin/assets/demo-loop.mp3');
+      const arrayBuffer = await response.arrayBuffer();
+      const audioContext = new AudioContext();
+      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+      const channelData = audioBuffer.getChannelData(0);
+      audioData = new Float32Array(channelData.length);
+      for (let i = 0; i < channelData.length; i++) {
+        audioData[i] = Math.abs(channelData[i]);
       }
+      animate();
     }
 
-    function generateFromAudio() {
+    function animate() {
       if (!audioData) return;
       for (let i = 0; i < 2; i++) {
         let sum = 0;
@@ -140,15 +119,10 @@
         writePos = (writePos + 1) % BUFFER_SIZE;
         audioPos = (audioPos + DOWNSAMPLE) % audioData.length;
       }
-      requestAnimationFrame(generateFromAudio);
+      requestAnimationFrame(animate);
     }
 
-    setTimeout(loadAudio, 500);
-
-    // Load version from repo
-    originalFetch('/guillotine/VERSION')
-      .then(r => r.text())
-      .then(v => document.getElementById('version-num').textContent = v.trim());
+    loadAudio();
   </script>
 </body>
 </html>
