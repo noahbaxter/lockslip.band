@@ -3,26 +3,118 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/guillotine/web/">
   <title>Guillotine Demo</title>
-  <style>
-    * { margin: 0; padding: 0; }
-    html, body { width: 100%; height: 100%; overflow: hidden; }
-    iframe { width: 100%; height: 100%; border: none; }
-  </style>
+  <link rel="stylesheet" href="main.css">
 </head>
-<body>
-  <iframe id="plugin-frame" src="../guillotine/web/index.html"></iframe>
-  <script>
-    const BUFFER_SIZE = 512;
-    const preClip = new Float32Array(BUFFER_SIZE);
+<body class="loading">
+  <!-- SVG filters for CRT effects -->
+  <svg style="position: absolute; width: 0; height: 0;">
+    <defs>
+      <filter id="crt-aberration" x="-10%" y="-10%" width="120%" height="120%">
+        <feOffset in="SourceGraphic" dx="-1" dy="0" result="red-shift">
+          <animate attributeName="dx" values="-1;-1.5;-1" dur="4s" repeatCount="indefinite" />
+        </feOffset>
+        <feColorMatrix in="red-shift" type="matrix" result="red"
+          values="1 0 0 0 0
+                  0 0 0 0 0
+                  0 0 0 0 0
+                  0 0 0 1 0" />
+        <feColorMatrix in="SourceGraphic" type="matrix" result="green"
+          values="0 0 0 0 0
+                  0 1 0 0 0
+                  0 0 0 0 0
+                  0 0 0 1 0" />
+        <feOffset in="SourceGraphic" dx="1" dy="0" result="blue-shift">
+          <animate attributeName="dx" values="1;1.5;1" dur="3s" repeatCount="indefinite" />
+        </feOffset>
+        <feColorMatrix in="blue-shift" type="matrix" result="blue"
+          values="0 0 0 0 0
+                  0 0 0 0 0
+                  0 0 1 0 0
+                  0 0 0 1 0" />
+        <feBlend in="red" in2="green" mode="screen" result="rg" />
+        <feBlend in="rg" in2="blue" mode="screen" />
+      </filter>
+    </defs>
+  </svg>
+  <div id="app">
+    <div id="left-panel">
+      <div id="plugin-title">
+        <div id="plugin-logo" class="text-mask deltable" style="--mask-src: url(/assets/branding/logo.png)"></div>
+      </div>
+      <div id="lockslip-text">
+        <div class="text-mask deltable" style="--mask-src: url(/assets/branding/lockslip.png)"></div>
+      </div>
+      <div id="guillotine-container">
+        <div id="drywet-container"></div>
+        <div id="guillotine-side" class="deltable">
+          <img class="guillotine-side__img guillotine-side__img--main" src="assets/guillotine/side-fill.png" alt="">
+          <img class="guillotine-side__img guillotine-side__img--outline" src="assets/guillotine/side-outline.png" alt="">
+        </div>
+        <div id="ceiling-container"></div>
+        <div id="click-zone-guillotine"></div>
+        <div id="click-zone-lever"></div>
+      </div>
+      <div id="delta-text">
+        <div class="text-mask" style="--mask-src: url(/assets/branding/decorative-2.png)"></div>
+      </div>
+      <div id="version-tag"><span id="version-num"></span></div>
+      <div id="andy-sig" class="text-mask" style="--mask-src: url(/assets/branding/signature.png)"></div>
+    </div>
+    <div id="right-panel">
+      <div id="microscope-wrapper">
+        <div id="microscope-container">
+          <span id="label-top" class="microscope-label">0dB</span>
+        </div>
+      </div>
+      <div id="controls-row">
+        <div id="toggles-column"></div>
+        <div id="knobs-wrapper">
+          <div id="main-knobs"></div>
+          <div id="gain-knobs">
+            <div id="input-knob-container"></div>
+            <div id="output-knob-container"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="main.js"></script>
+  <script type="module">
+    // Demo envelope generator - creates fake envelope.bin data from demo audio
+    const BUFFER_SIZE = 400;
+    const envelope = new Float32Array(BUFFER_SIZE);
     let writePos = 0;
     let audioData = null;
     let audioPos = 0;
     const DOWNSAMPLE = 128;
 
+    // Create a Blob URL that serves our generated envelope data
+    function createEnvelopeBlob() {
+      const buffer = new ArrayBuffer(BUFFER_SIZE * 4 + 4);
+      const floats = new Float32Array(buffer, 0, BUFFER_SIZE);
+      const view = new DataView(buffer);
+      floats.set(envelope);
+      view.setUint32(BUFFER_SIZE * 4, writePos, true);
+      return new Blob([buffer], { type: 'application/octet-stream' });
+    }
+
+    // Override fetch to intercept envelope.bin requests
+    const originalFetch = window.fetch;
+    window.fetch = function(url, options) {
+      if (typeof url === 'string' && url.endsWith('envelope.bin')) {
+        return Promise.resolve(new Response(createEnvelopeBlob(), {
+          status: 200,
+          headers: { 'Content-Type': 'application/octet-stream' }
+        }));
+      }
+      return originalFetch.call(this, url, options);
+    };
+
     async function loadAudio() {
       try {
-        const response = await fetch('assets/demo-loop.mp3');
+        const response = await originalFetch('/plugin/assets/demo-loop.mp3');
         const arrayBuffer = await response.arrayBuffer();
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
@@ -44,18 +136,19 @@
         for (let j = 0; j < DOWNSAMPLE; j++) {
           sum += audioData[(audioPos + j) % audioData.length];
         }
-        preClip[writePos] = Math.min(1, (sum / DOWNSAMPLE) * 2.5 + 0.05);
+        envelope[writePos] = Math.min(1, (sum / DOWNSAMPLE) * 2.5 + 0.05);
         writePos = (writePos + 1) % BUFFER_SIZE;
         audioPos = (audioPos + DOWNSAMPLE) % audioData.length;
-      }
-      const iframe = document.getElementById('plugin-frame');
-      if (iframe.contentWindow?.updateEnvelope) {
-        iframe.contentWindow.updateEnvelope({ preClip, writePos });
       }
       requestAnimationFrame(generateFromAudio);
     }
 
     setTimeout(loadAudio, 500);
+
+    // Load version from repo
+    originalFetch('/guillotine/VERSION')
+      .then(r => r.text())
+      .then(v => document.getElementById('version-num').textContent = v.trim());
   </script>
 </body>
 </html>
