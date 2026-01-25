@@ -85,6 +85,7 @@
       `;
       html = html.replace('<head>', '<head>' + injection);
       html = html.replace('<span id="version-num"></span>', `<span id="version-num">v${version}</span>`);
+      html = html.replace('src="main.js"', 'src="/guillotine/web/main.js"');
 
       const iframe = document.getElementById('plugin');
       iframe.srcdoc = html;
