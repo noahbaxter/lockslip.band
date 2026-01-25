@@ -102,7 +102,6 @@
       html = html.replace(/url\(assets\//g, 'url(/guillotine/web/assets/');
 
       const iframe = document.getElementById('plugin');
-      iframe.srcdoc = html;
 
       iframe.addEventListener('load', () => {
         const win = iframe.contentWindow;
@@ -122,6 +121,8 @@
           if (clickZone) clickZone.click();
         }, DEMO_CONFIG.cutDelay);
       });
+
+      iframe.srcdoc = html;
     }
 
     async function loadAudio() {
