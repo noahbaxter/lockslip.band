@@ -90,6 +90,7 @@
       const injection = `
         <base href="/guillotine/web/">
         ${fetchOverride}
+        <style>body { opacity: 1 !important; }</style>
         <script>window.GUILLOTINE_DEFAULTS = ${JSON.stringify(defaults)};<\/script>
       `;
       html = html.replace('<head>', '<head>' + injection);
@@ -152,7 +153,7 @@
       requestAnimationFrame(animate);
     }
 
-    loadPlugin();
+    loadPlugin().catch(err => console.error('loadPlugin failed:', err));
     loadAudio();
   </script>
 </body>
