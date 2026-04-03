@@ -128,6 +128,11 @@ components/
 4. **Media**: Edit `content/media.json`, add files to respective image folders
 
 ### Adding New Shows
+When asked to add a show, check `git status` for new untracked poster files in `assets/show-posters/`. Read the poster image to extract: date, venue, location, bands, and any ticket/event info. Ask the user for anything the poster doesn't make clear (ticket links, band order, etc).
+
+**Poster filenames** follow `YYYY_MM_DD.{jpg,png,jpeg}` format.
+
+**Show entry format** — append to the `shows` array in `content/shows.json`:
 ```json
 {
   "id": "2025-01-15",
@@ -139,6 +144,8 @@ components/
   "ticketsUrl": "https://tickets.example.com"
 }
 ```
+
+**Fields**: `id` matches the date (`YYYY-MM-DD`). `event` is optional (for named fests/events). `ticketsUrl` is optional. Band order is openers first, headliner last (bottom-to-top from the poster). Strip tracking params from URLs.
 
 ### Merchandise Configuration
 The merchandise component supports both Big Cartel API integration and manual JSON management:

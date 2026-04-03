@@ -462,6 +462,15 @@
       "location": "St. Louis, MO",
       "poster": "assets/show-posters/2025_09_13.jpg",
       "bands": ["Blistered Spirit", "Direct Measure", "Lockslip", "Lower Heaven", "Church Tongue"]
+    },
+    {
+      "id": "2026-04-25",
+      "date": { "month": "APR", "day": "25", "year": "2026" },
+      "venue": "The Sardine",
+      "location": "San Pedro, CA",
+      "poster": "assets/show-posters/2026_04_25.jpg",
+      "ticketsUrl": "https://www.instagram.com/p/DWO_rLAjePb/",
+      "bands": ["Bastos", "Lockslip", "Pain Spiral", "Endless Struggle", "Desecratory", "Contract Killer", "Desmadre"]
     }
   ],
   "tours": [
