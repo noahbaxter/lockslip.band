@@ -471,6 +471,16 @@
       "poster": "assets/show-posters/2026_04_25.jpg",
       "ticketsUrl": "https://www.instagram.com/p/DWO_rLAjePb/",
       "bands": ["Bastos", "Lockslip", "Pain Spiral", "Endless Struggle", "Desecratory", "Contract Killer", "Desmadre"]
+    },
+    {
+      "id": "2026-08-01",
+      "date": { "month": "AUG", "day": "01", "year": "2026" },
+      "event": "North West Hardcore Fest",
+      "venue": "The Off Beat",
+      "location": "Portland, OR",
+      "poster": "assets/show-posters/2026_08_01.jpg",
+      "ticketsUrl": "https://friendsofnoise.org/event/8-1-8-2-north-west-hardcore-fest/",
+      "bands": ["As the Life Leaves Your Eyes", "Anubi", "The Flail", "Cherub Chains", "Staple", "Sceuomeat", "Rise Up", "Sewn Shut", "Iron Front", "Under Negative Intent", "Lockslip", "Empty Shell Casing", "Barrio Slam", "xSERAPHx", "Balmora", "Point of Contact", "All Out War"]
     }
   ],
   "tours": [
