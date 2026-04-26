@@ -15,12 +15,15 @@ Starts local development server on port 8000 with CORS headers for JSON loading.
 # One-time setup
 python3 -m venv image_optimizer_env
 source image_optimizer_env/bin/activate
-pip install Pillow pillow-heif
+pip install -r requirements.txt
 
-# Optimize images
+# Optimize images (no args = runs repo defaults: show-posters @ 1600/q85, releases @ 1200/q85)
+# Files already at-or-below the target dimensions are skipped — no churn on re-runs.
 source image_optimizer_env/bin/activate
-python optimize_images.py assets/show-posters -q 80 --max-width 800
-python optimize_images.py assets/releases -q 85 --max-width 600
+python optimize_images.py
+
+# Or target a specific folder with custom settings:
+python optimize_images.py assets/merch -q 85 --max-width 1000
 ```
 
 ## Architecture Overview
@@ -193,8 +196,9 @@ const USE_BIG_CARTEL = false; // Manual JSON only
 
 ### Performance Optimization
 - **Images**: Use `optimize_images.py` script before committing
-- **Show posters**: Target 800x800px max, 80% quality
-- **Merch photos**: Target 600x600px max, 85% quality
+- **Show posters**: Target 1600x1600px max, 85% quality (sharp in fullscreen modal)
+- **Releases**: Target 1200x1200px max, 85% quality
+- **Merch photos**: Target 1000x1000px max, 85% quality
 - **Consider WebP**: Add WebP conversion for better compression
 
 ## Technical Considerations
