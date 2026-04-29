@@ -1,3 +1,6 @@
 [submodule "guillotine"]
 	path = guillotine
 	url = https://github.com/noahbaxter/guillotine.git
+[submodule "octopus"]
+	path = octopus
+	url = https://github.com/noahbaxter/octopus.git

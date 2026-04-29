@@ -26,6 +26,7 @@ jobs:
         with:
           submodules: recursive
           lfs: true
+          token: ${{ secrets.SUBMODULE_TOKEN }}
 
       - name: Pull LFS files in submodules
         run: |
