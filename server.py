@@ -15,17 +15,71 @@ PORT = 8000
 WATCH_DIRS = ['.', 'js', 'styles', 'content', 'assets']
 WATCH_EXTENSIONS = {'.js', '.css', '.json', '.html', '.md'}
 
-class ReuseAddrTCPServer(socketserver.TCPServer):
-    """Allow immediate server restart by reusing the port"""
+class ReuseAddrTCPServer(socketserver.ThreadingTCPServer):
+    """Allow immediate server restart by reusing the port, threaded for concurrent requests"""
     allow_reuse_address = True
+    daemon_threads = True
 
 class CustomHandler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
-        # Add CORS headers to allow local JSON loading
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type')
         super().end_headers()
+
+    def log_message(self, format, *args):
+        short_path = self.path.split('?')[0]
+        if len(args) >= 2:
+            status = args[1]
+            range_header = self.headers.get('Range', '') if hasattr(self, 'headers') else ''
+            size_info = ''
+            try:
+                path = self.translate_path(self.path)
+                if os.path.isfile(path):
+                    size_mb = os.path.getsize(path) / 1024 / 1024
+                    if size_mb > 0.1:
+                        size_info = f' ({size_mb:.1f}MB)'
+            except Exception:
+                pass
+            range_info = f' Range:{range_header}' if range_header else ''
+            print(f"  {status} {short_path}{size_info}{range_info}")
+        else:
+            print(f"  {format % args}")
+
+    def do_GET(self):
+        range_header = self.headers.get('Range')
+        if not range_header:
+            return super().do_GET()
+
+        path = self.translate_path(self.path)
+        try:
+            f = open(path, 'rb')
+        except OSError:
+            self.send_error(404)
+            return
+
+        with f:
+            file_size = os.path.getsize(path)
+            range_spec = range_header.replace('bytes=', '')
+            start_str, end_str = range_spec.split('-', 1)
+            start = int(start_str) if start_str else 0
+            end = int(end_str) if end_str else file_size - 1
+            end = min(end, file_size - 1)
+            length = end - start + 1
+
+            self.send_response(206)
+            ctype = self.guess_type(path)
+            self.send_header('Content-Type', ctype)
+            self.send_header('Content-Range', f'bytes {start}-{end}/{file_size}')
+            self.send_header('Content-Length', str(length))
+            self.send_header('Accept-Ranges', 'bytes')
+            self.end_headers()
+
+            f.seek(start)
+            try:
+                self.wfile.write(f.read(length))
+            except (ConnectionResetError, BrokenPipeError):
+                pass
 
 class FileWatcher:
     """Watch for file changes and store modification times"""
