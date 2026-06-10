@@ -473,6 +473,15 @@
       "bands": ["Bastos", "Lockslip", "Pain Spiral", "Endless Struggle", "Desecratory", "Contract Killer", "Desmadre"]
     },
     {
+      "id": "2026-07-09",
+      "date": { "month": "JUL", "day": "09", "year": "2026" },
+      "venue": "Oblivion",
+      "location": "Los Angeles, CA",
+      "poster": "assets/show-posters/2026_07_09.jpg",
+      "ticketsUrl": "https://dice.fm/partner/tickets/event/nvd9lq-cyborg-octopus-fervence-elder-devil-lockslip-9th-jul-oblivion-los-angeles-tickets",
+      "bands": ["Lockslip", "Elder Devil", "Cyborg Octopus", "Fervence"]
+    },
+    {
       "id": "2026-08-01",
       "date": { "month": "AUG", "day": "01", "year": "2026" },
       "event": "North West Hardcore Fest",
@@ -481,6 +490,15 @@
       "poster": "assets/show-posters/2026_08_01.jpg",
       "ticketsUrl": "https://friendsofnoise.org/event/8-1-8-2-north-west-hardcore-fest/",
       "bands": ["As the Life Leaves Your Eyes", "Anubi", "The Flail", "Cherub Chains", "Staple", "Sceuomeat", "Rise Up", "Sewn Shut", "Iron Front", "Under Negative Intent", "Lockslip", "Empty Shell Casing", "Barrio Slam", "xSERAPHx", "Balmora", "Point of Contact", "All Out War"]
+    },
+    {
+      "id": "2026-10-23",
+      "date": { "month": "OCT", "day": "23", "year": "2026" },
+      "event": "The FEST 24",
+      "location": "Gainesville, FL",
+      "poster": "assets/show-posters/2026_10_23.jpg",
+      "ticketsUrl": "https://wl.eventim.us/event/The-FEST-24/685111?afflky=TheFest",
+      "bands": ["Lockslip", "Sparta", "A Wilhelm Scream", "The Flatliners", "Small Brown Bike", "Home Front", "Torche", "Bear vs. Shark", "Nerf Herder", "Texas is the Reason", "The Impossibles", "Pulley", "Hey Mercedes", "Algernon Cadwallader", "Lagwagon", "PUP", "The Bouncing Souls"]
     }
   ],
   "tours": [
