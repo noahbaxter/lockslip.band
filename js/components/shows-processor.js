@@ -52,8 +52,8 @@ class ShowsProcessor {
         // Process tours and get processed tours with show objects
         const { processedTours, tourShowIds } = this.processTours(showsData.tours, allShowsById);
 
-        // Get individual shows (those not part of any tour)
-        const individualShows = showsData.shows.filter(show => !tourShowIds.has(show.id));
+        // Get individual shows (those not part of any tour), excluding hidden shows
+        const individualShows = showsData.shows.filter(show => !tourShowIds.has(show.id) && !show.hidden);
 
         // Categorize shows and tours
         const categorizedIndividualShows = individualShows.map(show => this.categorizeShow(show));
@@ -76,10 +76,10 @@ class ShowsProcessor {
         if (tours) {
             tours.forEach(tour => {
                 if (tour.shows && tour.shows.length > 0) {
-                    // Map show IDs to actual show objects
+                    // Map show IDs to actual show objects, excluding hidden shows
                     const tourShows = tour.shows
                         .map(showId => allShowsById[showId])
-                        .filter(show => show); // Filter out any missing shows
+                        .filter(show => show && !show.hidden); // Filter out missing or hidden shows
                     
                     if (tourShows.length > 0) {
                         processedTours.push({
@@ -109,14 +109,21 @@ class ShowsProcessor {
 
     // Helper function to categorize tours
     categorizeTour(tour) {
-        const categorizedTourShows = tour.shows.map(show => this.categorizeShow(show));
+        const categorizedTourShows = tour.shows.map(show => {
+            const categorized = this.categorizeShow(show);
+            // Add tour poster as fallback if show doesn't have its own poster
+            if (!categorized.poster && tour.poster) {
+                categorized.poster = tour.poster;
+            }
+            return categorized;
+        });
         const tourStartDate = this.parseMonthYear(tour.startDate.month, tour.startDate.day, tour.startDate.year);
         const tourEndDate = this.parseMonthYear(tour.endDate.month, tour.endDate.day, tour.endDate.year);
-        
+
         // Tour is past only if it ended before today (ongoing and future tours are upcoming)
         const dayAfterTourEnds = new Date(tourEndDate);
         dayAfterTourEnds.setDate(dayAfterTourEnds.getDate() + 1);
-        
+
         return {
             ...tour,
             shows: categorizedTourShows,

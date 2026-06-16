@@ -87,119 +87,6 @@
       "bands": ["Last Remorse", "Polish", "Flak", "Lockslip", "Watch You Fall"]
     },
     {
-      "id": "2024-09-07",
-      "date": {
-        "month": "SEP",
-        "day": "07",
-        "year": "2024"
-      },
-      "venue": "The Lodge Room",
-      "location": "Los Angeles, CA",
-      "poster": "assets/show-posters/2024_09_07.jpg",
-      "bands": ["DJ GMO", "Lockslip", "Blimp", "Time Warp", "Dummy"]
-    },
-    {
-      "id": "2025-03-09",
-      "date": {
-        "month": "MAR",
-        "day": "09",
-        "year": "2025"
-      },
-      "venue": "Programme Skate & Sound",
-      "location": "Fullerton, CA",
-      "poster": "assets/show-posters/2025_03_09.jpg",
-      "bands": ["Bloodguilt", "Darasuum", "Lockslip"]
-    },
-    {
-      "id": "2025-04-23",
-      "date": {
-        "month": "APR",
-        "day": "23",
-        "year": "2025"
-      },
-      "venue": "The Midnight Hour",
-      "location": "Los Angeles, CA",
-      "poster": "assets/show-posters/2025_04_23.jpg",
-      "bands": ["Lockslip", "Baori", "Ruin", "Face Facts", "Indication"]
-    },
-    {
-      "id": "2025-06-20",
-      "date": {
-        "month": "JUN",
-        "day": "20",
-        "year": "2025"
-      },
-      "venue": "Chain Reaction",
-      "location": "Anaheim, CA",
-      "poster": "assets/show-posters/2025_06_20.jpg",
-      "bands": ["Lockslip", "Cel Damage", "Gxllium", "Duck Duck Goose", "Heavy Heavy Low Low"]
-
-    },
-    {
-      "id": "2025-06-21",
-      "date": {
-        "month": "JUN",
-        "day": "21",
-        "year": "2025"
-      },
-      "venue": "The Haven",
-      "location": "Pomona, CA",
-      "poster": "assets/show-posters/2025_06_21.jpg",
-      "bands": ["Amputation", "StealthX", "Lockslip", "Duhkha", "Dying Breath", "Adjudicator", "Ruin"]
-    },
-    {
-      "id": "2025-07-12",
-      "date": {
-        "month": "JUL",
-        "day": "12",
-        "year": "2025"
-      },
-      "event": "Mathcore Index Fest 2025",
-      "venue": "924 Gilman Street",
-      "location": "Berkeley, CA",
-      "poster": "assets/show-posters/2025_07_12.jpg",
-      "bands": ["Carmen Sixteen", "The Arson Choir", "Rob Ford Explorer", "Lockslip", "The God Awful Truth", "Steaksauce Mustache", "Black Sheep Wall", "Missouri Executive Order 44"]
-    },
-    {
-      "id": "2025-07-29",
-      "date": {
-        "month": "JUL",
-        "day": "29",
-        "year": "2025"
-      },
-      "venue": "Brick by Brick",
-      "location": "San Diego, CA",
-      "poster": "assets/show-posters/2025_07_29.jpg",
-      "bands": ["The Undertaking", "Lockslip", "Hong Kong Fuck You", "Better Lovers"]
-    },
-    {
-      "id": "2025-09-20",
-      "date": {
-        "month": "SEP",
-        "day": "20",
-        "year": "2025"
-      },
-      "event": "Within These Walls",
-      "venue": "The Nile",
-      "location": "Mesa, AZ",
-      "ticketsUrl": "https://www.eventim.us/event/within-these-walls-2025/644859",
-      "poster": "assets/show-posters/2025_09_20.jpg",
-      "bands": ["End of Dayz", "Contention", "Entry", "Torena", "Common Wounds", "See It Through", "Price of Life", "Lockslip", "Such Gold", "Apex Predators", "The Beautiful Ones", "Shutdown", "Bleeding Through", "The Warriors", "Desmadre", "Twitching Tongues", "Bane"]
-    },
-    {
-      "id": "2025-11-10",
-      "date": {
-        "month": "NOV",
-        "day": "10",
-        "year": "2025"
-      },
-      "venue": "The Roxy",
-      "location": "Los Angeles, CA",
-      "ticketsUrl": "https://www.theroxy.com/events/detail/?event_id=1112741",
-      "poster": "assets/show-posters/2025_11_10.jpg",
-      "bands": ["Lockslip", "7d7d", "Many Eyes", "The Barbarians of California"]
-    },
-    {
       "id": "2024-08-08",
       "date": {
         "month": "AUG",
@@ -318,6 +205,92 @@
       "location": "Las Vegas, NV",
       "poster": "assets/show-posters/2024_08_17.jpg",
       "bands": ["Species", "Overexposed", "Lockslip"]
+    },
+    {
+      "id": "2024-09-07",
+      "date": {
+        "month": "SEP",
+        "day": "07",
+        "year": "2024"
+      },
+      "venue": "The Lodge Room",
+      "location": "Los Angeles, CA",
+      "poster": "assets/show-posters/2024_09_07.jpg",
+      "bands": ["DJ GMO", "Lockslip", "Blimp", "Time Warp", "Dummy"]
+    },
+    {
+      "id": "2025-03-09",
+      "date": {
+        "month": "MAR",
+        "day": "09",
+        "year": "2025"
+      },
+      "venue": "Programme Skate & Sound",
+      "location": "Fullerton, CA",
+      "poster": "assets/show-posters/2025_03_09.jpg",
+      "bands": ["Bloodguilt", "Darasuum", "Lockslip"]
+    },
+    {
+      "id": "2025-04-23",
+      "date": {
+        "month": "APR",
+        "day": "23",
+        "year": "2025"
+      },
+      "venue": "The Midnight Hour",
+      "location": "Los Angeles, CA",
+      "poster": "assets/show-posters/2025_04_23.jpg",
+      "bands": ["Lockslip", "Baori", "Ruin", "Face Facts", "Indication"]
+    },
+    {
+      "id": "2025-06-20",
+      "date": {
+        "month": "JUN",
+        "day": "20",
+        "year": "2025"
+      },
+      "venue": "Chain Reaction",
+      "location": "Anaheim, CA",
+      "poster": "assets/show-posters/2025_06_20.jpg",
+      "bands": ["Lockslip", "Cel Damage", "Gxllium", "Duck Duck Goose", "Heavy Heavy Low Low"]
+
+    },
+    {
+      "id": "2025-06-21",
+      "date": {
+        "month": "JUN",
+        "day": "21",
+        "year": "2025"
+      },
+      "venue": "The Haven",
+      "location": "Pomona, CA",
+      "poster": "assets/show-posters/2025_06_21.jpg",
+      "bands": ["Amputation", "StealthX", "Lockslip", "Duhkha", "Dying Breath", "Adjudicator", "Ruin"]
+    },
+    {
+      "id": "2025-07-12",
+      "date": {
+        "month": "JUL",
+        "day": "12",
+        "year": "2025"
+      },
+      "event": "Mathcore Index Fest 2025",
+      "venue": "924 Gilman Street",
+      "location": "Berkeley, CA",
+      "poster": "assets/show-posters/2025_07_12.jpg",
+      "bands": ["Carmen Sixteen", "The Arson Choir", "Rob Ford Explorer", "Lockslip", "The God Awful Truth", "Steaksauce Mustache", "Black Sheep Wall", "Missouri Executive Order 44"]
+    },
+    {
+      "id": "2025-07-29",
+      "date": {
+        "month": "JUL",
+        "day": "29",
+        "year": "2025"
+      },
+      "venue": "Brick by Brick",
+      "location": "San Diego, CA",
+      "poster": "assets/show-posters/2025_07_29.jpg",
+      "bands": ["The Undertaking", "Lockslip", "Hong Kong Fuck You", "Better Lovers"]
     },
     {
       "id": "2025-08-30",
@@ -464,6 +437,33 @@
       "bands": ["Blistered Spirit", "Direct Measure", "Lockslip", "Lower Heaven", "Church Tongue"]
     },
     {
+      "id": "2025-09-20",
+      "date": {
+        "month": "SEP",
+        "day": "20",
+        "year": "2025"
+      },
+      "event": "Within These Walls",
+      "venue": "The Nile",
+      "location": "Mesa, AZ",
+      "ticketsUrl": "https://www.eventim.us/event/within-these-walls-2025/644859",
+      "poster": "assets/show-posters/2025_09_20.jpg",
+      "bands": ["End of Dayz", "Contention", "Entry", "Torena", "Common Wounds", "See It Through", "Price of Life", "Lockslip", "Such Gold", "Apex Predators", "The Beautiful Ones", "Shutdown", "Bleeding Through", "The Warriors", "Desmadre", "Twitching Tongues", "Bane"]
+    },
+    {
+      "id": "2025-11-10",
+      "date": {
+        "month": "NOV",
+        "day": "10",
+        "year": "2025"
+      },
+      "venue": "The Roxy",
+      "location": "Los Angeles, CA",
+      "ticketsUrl": "https://www.theroxy.com/events/detail/?event_id=1112741",
+      "poster": "assets/show-posters/2025_11_10.jpg",
+      "bands": ["Lockslip", "7d7d", "Many Eyes", "The Barbarians of California"]
+    },
+    {
       "id": "2026-04-25",
       "date": { "month": "APR", "day": "25", "year": "2026" },
       "venue": "The Sardine",
@@ -482,6 +482,22 @@
       "bands": ["Lockslip", "Elder Devil", "Cyborg Octopus", "Fervence"]
     },
     {
+      "id": "2026-07-30",
+      "date": {"month": "JUL", "day": "30", "year": "2026"},
+      "venue": "TBD",
+      "location": "San Francisco Bay Area, CA",
+      "bands": ["Lockslip", "Initiate"],
+      "hidden": true
+    },
+    {
+      "id": "2026-07-31",
+      "date": {"month": "JUL", "day": "31", "year": "2026"},
+      "venue": "TBD",
+      "location": "Reno, NV",
+      "bands": ["Lockslip", "Initiate"],
+      "hidden": true
+    },
+    {
       "id": "2026-08-01",
       "date": { "month": "AUG", "day": "01", "year": "2026" },
       "event": "North West Hardcore Fest",
@@ -490,6 +506,46 @@
       "poster": "assets/show-posters/2026_08_01.jpg",
       "ticketsUrl": "https://friendsofnoise.org/event/8-1-8-2-north-west-hardcore-fest/",
       "bands": ["As the Life Leaves Your Eyes", "Anubi", "The Flail", "Cherub Chains", "Staple", "Sceuomeat", "Rise Up", "Sewn Shut", "Iron Front", "Under Negative Intent", "Lockslip", "Empty Shell Casing", "Barrio Slam", "xSERAPHx", "Balmora", "Point of Contact", "All Out War"]
+    },
+    {
+      "id": "2026-08-03",
+      "date": {"month": "AUG", "day": "03", "year": "2026"},
+      "venue": "The Cobalt",
+      "location": "Vancouver, BC",
+      "poster": "assets/show-posters/2026_08_03.jpg",
+      "bands": ["The July Effect", "Sword of Damocles", "False Body", "Lockslip"]
+    },
+    {
+      "id": "2026-08-04",
+      "date": {"month": "AUG", "day": "04", "year": "2026"},
+      "venue": "TBD",
+      "location": "Kelowna, BC",
+      "bands": ["Lockslip"],
+      "hidden": true
+    },
+    {
+      "id": "2026-08-06",
+      "date": {"month": "AUG", "day": "06", "year": "2026"},
+      "venue": "TBD",
+      "location": "Lethbridge, AB",
+      "bands": ["Lockslip"],
+      "hidden": true
+    },
+    {
+      "id": "2026-08-07",
+      "date": {"month": "AUG", "day": "07", "year": "2026"},
+      "venue": "TBD",
+      "location": "Calgary, AB",
+      "bands": ["Lockslip"],
+      "hidden": true
+    },
+    {
+      "id": "2026-08-08",
+      "date": {"month": "AUG", "day": "08", "year": "2026"},
+      "venue": "TBD",
+      "location": "Edmonton, AB",
+      "bands": ["Lockslip"],
+      "hidden": true
     },
     {
       "id": "2026-10-23",
@@ -502,6 +558,25 @@
     }
   ],
   "tours": [
+    {
+      "id": "summer-weekender-2024",
+      "name": "Summer Weekender 2024",
+      "startDate": {
+        "month": "JUL",
+        "day": "27",
+        "year": "2024"
+      },
+      "endDate": {
+        "month": "JUL",
+        "day": "28",
+        "year": "2024"
+      },
+      "poster": "assets/show-posters/2024_07_27 - 1Weekender.jpg",
+      "shows": [
+        "2024-07-27",
+        "2024-07-28"
+      ]
+    },
     {
       "id": "west-coast-2024",
       "name": "West Coast Tour",
@@ -576,22 +651,25 @@
       ]
     },
     {
-      "id": "summer-weekender-2024",
-      "name": "Summer Weekender 2024",
+      "id": "summer-2026",
+      "name": "Summer Tour 2026",
       "startDate": {
-        "month": "JUL",
-        "day": "27",
-        "year": "2024"
+        "month": "AUG",
+        "day": "03",
+        "year": "2026"
       },
       "endDate": {
-        "month": "JUL",
-        "day": "28",
-        "year": "2024"
+        "month": "AUG",
+        "day": "08",
+        "year": "2026"
       },
-      "poster": "assets/show-posters/2024_07_27 - 1Weekender.jpg",
+      "poster": "assets/show-posters/2026_summer_tour_poster.png",
       "shows": [
-        "2024-07-27",
-        "2024-07-28"
+        "2026-08-03",
+        "2026-08-04",
+        "2026-08-06",
+        "2026-08-07",
+        "2026-08-08"
       ]
     }
   ]
