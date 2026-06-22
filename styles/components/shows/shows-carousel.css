@@ -196,6 +196,87 @@
     color: var(--accent-color);
 }
 
+/* ==================== POSTER-LESS FALLBACK CARD ==================== */
+
+.carousel-poster-fallback {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem;
+    gap: 0.3rem;
+    background:
+        repeating-linear-gradient(45deg, rgba(255, 0, 0, 0.05) 0 12px, transparent 12px 24px),
+        #0a0a0a;
+}
+
+.carousel-poster-fallback .cpf-month { color: var(--accent-color); font-weight: 800; letter-spacing: 0.15em; }
+.carousel-poster-fallback .cpf-day { font-size: 4rem; font-weight: 900; line-height: 0.9; color: var(--secondary-color); }
+.carousel-poster-fallback .cpf-venue { font-size: 1.3rem; font-weight: 800; margin-top: 0.5rem; color: var(--secondary-color); }
+.carousel-poster-fallback .cpf-location { color: var(--text-dark); font-size: 0.95rem; }
+.carousel-poster-fallback .cpf-rule { width: 40px; height: 2px; background: var(--accent-color); margin: 0.8rem 0; }
+.carousel-poster-fallback .cpf-bands { font-size: 0.9rem; color: var(--text-light); line-height: 1.5; }
+.carousel-poster-fallback .cpf-note { margin-top: 0.8rem; font-size: 0.7rem; letter-spacing: 0.15em; color: #666; text-transform: uppercase; }
+
+.tba-note { color: #888; font-style: italic; }
+
+/* ==================== TOUR GROUPING ==================== */
+
+.tour-group {
+    position: relative;
+    border-top: 4px double var(--border-color-faded);
+    border-bottom: 4px double var(--border-color-faded);
+}
+
+/* Adjacent tours share a single divider instead of stacking four lines */
+.tour-group + .tour-group { border-top: none; }
+
+/* Accent rail down the left of the whole group (overlay, no layout shift) */
+.tour-group::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: var(--accent-color);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.tour-group .carousel-row:last-child { border-bottom: none; }
+
+.carousel-row.carousel-tour-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.6rem;
+    height: auto;
+    padding: 0.7rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.tour-header-name {
+    color: var(--accent-color);
+    font-size: 1.02rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.tour-header-meta { margin-left: auto; color: var(--text-dark); font-size: 0.72rem; white-space: nowrap; }
+.tour-header-meta .n { color: var(--accent-color); font-weight: 700; }
+
+.carousel-row.tour-subrow { background: rgba(255, 255, 255, 0.05); }
+
+/* Active highlight must beat the tour-subrow / tour-header backgrounds */
+.carousel-list .carousel-row.active { background: rgba(255, 0, 0, 0.22); }
+
 /* Progress bar */
 .carousel-progress {
     height: 4px;

@@ -4,14 +4,14 @@ const ShowsCarousel = {
     currentIndex: 0,
     timer: null,
     paused: false,
-    shows: [],
-    formatBands: null, // Callback to format band list
+    shows: [],          // ordered slides: shows + tour headers
+    formatBands: null,  // Callback to format band list
 
     // Initialize carousel with shows
     init(futureItems) {
-        if (futureItems.length === 0) return;
+        if (!this.shows || this.shows.length === 0) return;
         this.currentIndex = 0;
-        this.start(futureItems.length);
+        this.start(this.shows.length);
     },
 
     // Start auto-play carousel with 5s cycle
@@ -47,29 +47,36 @@ const ShowsCarousel = {
 
     // Update carousel display (poster, rows, progress)
     updateDisplay() {
-        if (this.currentIndex < this.shows.length) {
-            const show = this.shows[this.currentIndex];
+        if (this.currentIndex >= this.shows.length) return;
 
-            // Update poster image
-            const posterImg = document.querySelector('.carousel-poster img');
-            if (posterImg && show.poster) {
-                posterImg.src = show.poster;
+        const slide = this.shows[this.currentIndex];
+
+        // Swap the big pane. For poster->poster changes, mutate the existing <img> src
+        // instead of replacing the markup — recreating the node forces a reload and a
+        // visible flicker. Only rebuild when switching to/from the fallback card.
+        const poster = document.querySelector('.carousel-poster');
+        if (poster) {
+            const img = poster.querySelector('img');
+            if (slide.poster && img) {
+                if (img.getAttribute('src') !== slide.poster) img.src = slide.poster;
+            } else {
+                poster.innerHTML = this.bigPaneHtml(slide);
             }
+        }
 
-            // Highlight correct row
-            const rows = document.querySelectorAll('.carousel-row');
-            rows.forEach((row, index) => {
-                row.classList.toggle('active', index === this.currentIndex);
-            });
+        // Highlight correct row
+        const rows = document.querySelectorAll('.carousel-row');
+        rows.forEach((row, index) => {
+            row.classList.toggle('active', index === this.currentIndex);
+        });
 
-            // Update progress bar (only if not paused)
-            if (!this.paused) {
-                const progressBar = document.querySelector('.carousel-progress-fill');
-                if (progressBar) {
-                    progressBar.style.animation = 'none';
-                    void progressBar.offsetWidth;
-                    progressBar.style.animation = '';
-                }
+        // Update progress bar (only if not paused)
+        if (!this.paused) {
+            const progressBar = document.querySelector('.carousel-progress-fill');
+            if (progressBar) {
+                progressBar.style.animation = 'none';
+                void progressBar.offsetWidth;
+                progressBar.style.animation = '';
             }
         }
     },
@@ -105,6 +112,7 @@ const ShowsCarousel = {
 
     // Set carousel to specific show
     setShow(index) {
+        if (index === this.currentIndex) return; // no-op repeats (hover fires per child) cause flicker
         this.currentIndex = index;
         this.updateDisplay();
     },
@@ -126,68 +134,64 @@ const ShowsCarousel = {
         }
     },
 
-    // Render carousel HTML
-    render(futureItems, showsWithPosters = [], formatBandsFn = null) {
-        if (futureItems.length === 0) {
-            return '';
+    // Band list with optional "+ more TBA" note
+    bandsWithTba(show) {
+        let html = this.formatBands ? this.formatBands(show.bands) : '';
+        if (show.moreBandsTba) html += ' <span class="tba-note">+ more TBA</span>';
+        return html;
+    },
+
+    // Data used to render the poster-less fallback card
+    fallbackData(show) {
+        return {
+            month: show.date.month,
+            day: show.date.day,
+            venue: show.event || show.venue,
+            location: show.location,
+            bandsHtml: this.bandsWithTba(show)
+        };
+    },
+
+    // Big pane markup: poster image, or a styled fallback card
+    bigPaneHtml(slide) {
+        if (slide.poster) {
+            return `<img src="${slide.poster}" alt="Show poster" loading="lazy">`;
+        }
+        const f = slide.fallback;
+        return `
+            <div class="carousel-poster-fallback">
+                <span class="cpf-month">${f.month}</span>
+                <span class="cpf-day">${f.day}</span>
+                <span class="cpf-venue">${f.venue}</span>
+                <span class="cpf-location">${f.location}</span>
+                <span class="cpf-rule"></span>
+                <span class="cpf-bands">${f.bandsHtml}</span>
+                <span class="cpf-note">Poster TBA</span>
+            </div>`;
+    },
+
+    // A single show row
+    renderRow(show, index, showsWithPosters, isSub) {
+        const ticketButton = show.ticketsUrl
+            ? `<a href="${show.ticketsUrl}" class="carousel-row-ticket" target="_blank" rel="noopener" onclick="event.stopPropagation()">TICKETS</a>`
+            : '';
+
+        const posterIndex = showsWithPosters.findIndex(s => s.id === show.id);
+
+        // Click: tickets > poster modal > select in carousel
+        let clickHandler;
+        if (show.ticketsUrl) {
+            clickHandler = `onclick="window.open('${show.ticketsUrl}', '_blank')"`;
+        } else if (posterIndex !== -1) {
+            clickHandler = `onclick="openPosterModal(${posterIndex})"`;
+        } else {
+            clickHandler = `onclick="ShowsCarousel.setShow(${index})"`;
         }
 
-        // Store format bands callback
-        this.formatBands = formatBandsFn;
-
-        // Extract all individual shows from future items, sorting within each tour by date
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        const allShows = [];
-        futureItems.forEach(item => {
-            if (item.type === 'show') {
-                allShows.push(item.data);
-            } else if (item.type === 'tour') {
-                // Determine if tour is past or future based on first show date
-                const isTourPast = item.data.shows.length > 0 && new Date(item.data.shows[0].showDate) < today;
-                // Sort tour shows: past shows descending (newest first), future shows ascending (earliest first)
-                const sortedTourShows = [...item.data.shows].sort((a, b) => {
-                    return isTourPast ? (b.showDate - a.showDate) : (a.showDate - b.showDate);
-                });
-                sortedTourShows.forEach(show => allShows.push(show));
-            }
-        });
-
-        // Store for access by carousel controls
-        this.shows = allShows;
-
-        if (allShows.length === 0) {
-            return '';
-        }
-
-        const firstShow = allShows[0];
-        if (!firstShow.poster) return ''; // No carousel without poster
-
-        // Build rows with ticket button
-        const rows = allShows.map((show, index) => {
-            const ticketButton = show.ticketsUrl ? `<a href="${show.ticketsUrl}" class="carousel-row-ticket" target="_blank" rel="noopener">TICKETS</a>` : '';
-
-            // Find the poster index for this show
-            const posterIndex = showsWithPosters.findIndex(s => s.id === show.id);
-
-            // Determine click behavior: tickets > modal > carousel change
-            let clickHandler;
-            if (show.ticketsUrl) {
-                clickHandler = `onclick="window.open('${show.ticketsUrl}', '_blank')"`;
-            } else if (posterIndex !== -1) {
-                clickHandler = `onclick="openPosterModal(${posterIndex})"`;
-            } else {
-                clickHandler = `onclick="ShowsCarousel.setShow(${index})"`;
-            }
-
-            const hoverHandler = `onmouseover="ShowsCarousel.setShow(${index})"`;
-            const pauseHandler = `onmouseenter="ShowsCarousel.pause()" onmouseleave="ShowsCarousel.resume()"`;
-
-            const bandsHtml = this.formatBands ? this.formatBands(show.bands) : '';
-
-            return `
-            <div class="carousel-row ${index === 0 ? 'active' : ''}" ${clickHandler} ${hoverHandler} ${pauseHandler}>
+        return `
+            <div class="carousel-row ${index === 0 ? 'active' : ''} ${isSub ? 'tour-subrow' : ''}" ${clickHandler}
+                 onmouseover="ShowsCarousel.setShow(${index})"
+                 onmouseenter="ShowsCarousel.pause()" onmouseleave="ShowsCarousel.resume()">
                 <div class="carousel-row-date">
                     <span class="month">${show.date.month}</span>
                     <span class="day">${show.date.day}</span>
@@ -196,14 +200,79 @@ const ShowsCarousel = {
                     <div class="venue">${show.event || show.venue}</div>
                     <div class="location">${show.location}</div>
                 </div>
-                <div class="carousel-row-bands">${bandsHtml}</div>
+                <div class="carousel-row-bands">${this.bandsWithTba(show)}</div>
                 ${ticketButton}
-            </div>
-        `;
-        }).join('');
+            </div>`;
+    },
 
-        // Only show progress bar if there are multiple shows
-        const progressBar = allShows.length > 1 ? `
+    // A tour header row (drives the tour poster)
+    renderTourHeader(tour, index, count, dates, showsWithPosters) {
+        const posterIndex = showsWithPosters.findIndex(s => s.id === tour.id);
+        const clickHandler = posterIndex !== -1
+            ? `onclick="openPosterModal(${posterIndex})"`
+            : `onclick="ShowsCarousel.setShow(${index})"`;
+
+        return `
+            <div class="carousel-row carousel-tour-header ${index === 0 ? 'active' : ''}" ${clickHandler}
+                 onmouseover="ShowsCarousel.setShow(${index})"
+                 onmouseenter="ShowsCarousel.pause()" onmouseleave="ShowsCarousel.resume()">
+                <span class="tour-header-name">${tour.name}</span>
+                <span class="tour-header-meta">${dates} · <span class="n">${count} shows</span></span>
+            </div>`;
+    },
+
+    // Render carousel HTML
+    render(futureItems, showsWithPosters = [], formatBandsFn = null) {
+        if (!futureItems || futureItems.length === 0) return '';
+
+        this.formatBands = formatBandsFn;
+
+        const slides = [];
+        let listHtml = '';
+
+        // Push a show slide and return its row markup
+        const addShow = (show, isSub) => {
+            const index = slides.length;
+            slides.push({
+                id: show.id,
+                poster: show.poster || null,
+                ticketsUrl: show.ticketsUrl || null,
+                fallback: this.fallbackData(show)
+            });
+            return this.renderRow(show, index, showsWithPosters, isSub);
+        };
+
+        futureItems.forEach(item => {
+            if (item.type === 'show') {
+                listHtml += addShow(item.data, false);
+            } else if (item.type === 'tour') {
+                const tour = item.data;
+                const tourShows = [...tour.shows].sort((a, b) => a.showDate - b.showDate);
+                const dates = `${tour.startDate.month} ${tour.startDate.day} – ${tour.endDate.month} ${tour.endDate.day}`;
+
+                // Tour header slide shows the tour poster
+                const headerIndex = slides.length;
+                slides.push({
+                    id: tour.id,
+                    poster: tour.poster || null,
+                    ticketsUrl: null,
+                    fallback: { month: tour.startDate.month, day: tour.startDate.day, venue: tour.name, location: dates, bandsHtml: `${tourShows.length} shows` }
+                });
+
+                let subRows = '';
+                tourShows.forEach(show => { subRows += addShow(show, true); });
+
+                listHtml += `<div class="tour-group">${this.renderTourHeader(tour, headerIndex, tourShows.length, dates, showsWithPosters)}${subRows}</div>`;
+            }
+        });
+
+        if (slides.length === 0) return '';
+
+        // Store for access by carousel controls
+        this.shows = slides;
+
+        // Only show progress bar if there are multiple slides
+        const progressBar = slides.length > 1 ? `
                 <div class="carousel-progress">
                     <div class="carousel-progress-fill"></div>
                 </div>
@@ -213,10 +282,10 @@ const ShowsCarousel = {
             <div class="shows-section upcoming-section">
                 <div class="upcoming-carousel">
                     <div class="carousel-poster" onclick="ShowsCarousel.openPosterModal()">
-                        <img src="${firstShow.poster}" alt="Show poster" loading="lazy">
+                        ${this.bigPaneHtml(slides[0])}
                     </div>
                     <div class="carousel-list">
-                        ${rows}
+                        ${listHtml}
                     </div>
                 </div>
                 ${progressBar}
