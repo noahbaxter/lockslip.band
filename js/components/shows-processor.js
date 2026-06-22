@@ -75,21 +75,27 @@ class ShowsProcessor {
         
         if (tours) {
             tours.forEach(tour => {
-                if (tour.shows && tour.shows.length > 0) {
-                    // Map show IDs to actual show objects, excluding hidden shows
-                    const tourShows = tour.shows
-                        .map(showId => allShowsById[showId])
-                        .filter(show => show && !show.hidden); // Filter out missing or hidden shows
-                    
-                    if (tourShows.length > 0) {
-                        processedTours.push({
-                            ...tour,
-                            shows: tourShows
-                        });
-                        
-                        // Track which shows are part of tours
-                        tour.shows.forEach(showId => tourShowIds.add(showId));
-                    }
+                if (!tour.shows || tour.shows.length === 0) return;
+
+                // Claim every show ID in this tour up front, so these shows never leak
+                // into the individual-shows list — even when the tour or some of its
+                // shows are hidden.
+                tour.shows.forEach(showId => tourShowIds.add(showId));
+
+                // Hidden tour: drop it entirely. Its shows are already claimed above,
+                // so none of them render individually either.
+                if (tour.hidden) return;
+
+                // Map show IDs to actual show objects, excluding individually hidden shows
+                const tourShows = tour.shows
+                    .map(showId => allShowsById[showId])
+                    .filter(show => show && !show.hidden);
+
+                if (tourShows.length > 0) {
+                    processedTours.push({
+                        ...tour,
+                        shows: tourShows
+                    });
                 }
             });
         }
