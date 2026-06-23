@@ -495,7 +495,8 @@
       "venue": "4th St Coffee Bar",
       "location": "Reno, NV",
       "poster": "assets/show-posters/2026_07_31.jpg",
-      "bands": ["Malice", "Brusher", "Resurrection", "Faraway", "Lockslip", "Scalp"]
+      "bands": ["Malice", "Brusher", "Resurrection", "Faraway", "Lockslip", "Scalp"],
+      "ticketsUrl": "https://www.eventbrite.com/e/scalp-lockslip-far-away-resurrection-4th-st-coffee-bar-tickets-1992217757943"
     },
     {
       "id": "2026-08-01",
