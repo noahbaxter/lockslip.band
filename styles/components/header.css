@@ -15,17 +15,22 @@ header {
 
 nav {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    /* Middle column is kept clear for the centered logo so the left links and
+       right icons can never slide under it. */
+    grid-template-columns: 1fr var(--logo-reserve) 1fr;
     align-items: center;
     max-height: 70px;
     margin: 0 auto;
     padding: 0 20px;
-    gap: 2rem;
+    gap: 1.5rem;
     position: relative;
 }
 
+.nav-links { grid-column: 1; }
+.streaming-icons { grid-column: 3; }
+
 .logo {
-    height: 150px;
+    height: var(--logo-height);
     z-index: var(--z-logo);
     position: absolute;
     left: 50%;
@@ -343,143 +348,66 @@ nav {
     box-shadow: 0 0 20px var(--accent-color);
     transform: translateY(-2px);
 }
-@media (max-width: 1220px) {
-    .streaming-icons {
-        gap: 0.7rem;
-    }
-    
-    .icon-separator {
-        margin: 0 0.7rem;
-        font-size: 0.95rem;
-    }
-    
-    .streaming-icon,
-    .social-icon {
-        width: 26px;
-        height: 26px;
-    }
-    
-    .tiktok-3d-container {
-        width: 26px;
-        height: 26px;
-    }
-}
 
-@media (max-width: 1115px) {
-    .streaming-icons {
-        gap: 0.6rem;
-    }
-    
-    .icon-separator {
-        margin: 0 0.6rem;
-        font-size: 0.9rem;
-    }
-    
-    .streaming-icon,
-    .social-icon {
-        width: 24px;
-        height: 24px;
-    }
-    
-    .tiktok-3d-container {
-        width: 24px;
-        height: 24px;
-    }
-}
+/* ============================================================
+   HEADER RESPONSIVE
+   The centered logo sits in a reserved middle grid column, so narrowing the
+   viewport just shrinks the logo (--logo-height/--logo-reserve), the link text
+   and the icons — the inline nav stays usable down to 768px, then folds into
+   the hamburger overlay. Non-overlap is verified by tests/header-overlap.spec.
+   ============================================================ */
 
-@media (max-width: 1000px) {
-    .nav-links {
-        gap: 1rem;
-    }
+/* Large laptop: shrink the logo/text and drop the icon row to a useful subset
+   (bandcamp, spotify, youtube, instagram) instead of cramming the full set. */
+@media (max-width: 1200px) {
+    :root { --logo-height: 124px; --logo-reserve: 188px; }
 
-    .nav-links a {
-        font-size: 0.8rem;
-    }
-    
-    .streaming-icons {
-        gap: 0.5rem;
-    }
-    
-    .icon-separator {
-        margin: 0 0.5rem;
-        font-size: 0.9rem;
-    }
-    
-    .streaming-icon,
-    .social-icon {
-        width: 22px;
-        height: 22px;
-    }
-    
-    .tiktok-3d-container {
-        width: 22px;
-        height: 22px;
-    }
-}
+    header { padding: 1.1rem 0; }
 
-@media (max-width: 890px) {
-    .nav-links {
-        gap: 0.8rem;
-    }
-
-    .nav-links a {
-        font-size: 0.75rem;
-    }
-    
-    .streaming-icons {
-        gap: 0.4rem;
-    }
-    
-    .icon-separator {
-        margin: 0 0.4rem;
-        font-size: 0.85rem;
-    }
-    
-    .streaming-icon,
-    .social-icon {
-        width: 20px;
-        height: 20px;
-    }
-    
-    .tiktok-3d-container {
-        width: 20px;
-        height: 20px;
-    }
-}
-/* Mobile responsive */
-@media (max-width: 768px) {
-    header {
-        height: var(--nav-height-mobile);
-    }
-
-    .nav-links,
-    .streaming-icons {
+    .streaming-icons .streaming-icon.apple,
+    .streaming-icons .social-icon:not(.instagram),
+    .streaming-icons .icon-separator {
         display: none;
     }
-    
+
+    .nav-links { gap: 1.2rem; }
+    .nav-links a { font-size: 0.95rem; }
+    .streaming-icons { gap: 0.6rem; }
+}
+
+/* Small laptop / large tablet: tighter still */
+@media (max-width: 1000px) {
+    :root { --logo-height: 104px; --logo-reserve: 150px; }
+
+    header { padding: 0.85rem 0; }
+
+    .nav-links { gap: 0.85rem; }
+    .nav-links a { font-size: 0.88rem; letter-spacing: 0.5px; }
+    .streaming-icons { gap: 0.45rem; }
+    .streaming-icon,
+    .social-icon { width: 26px; height: 26px; }
+}
+
+/* Tablet: smallest inline logo before the hamburger takes over */
+@media (max-width: 880px) {
+    :root { --logo-height: 92px; --logo-reserve: 120px; }
+
+    header { padding: 0.7rem 0; }
+
+    .nav-links { gap: 0.6rem; }
+    .nav-links a { font-size: 0.8rem; letter-spacing: 0.3px; }
+}
+
+/* Mobile: fold into the hamburger overlay */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    /* .streaming-icons is hidden by social-icons.css at <=768 (it owns that
+       element with !important). */
+
     .mobile-menu-toggle {
         display: flex;
-    }
-    
-    .logo {
-        max-height: var(--nav-logo-height-mobile);
-        top: 10px;
-    }
-    
-    .streaming-links {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 0.5rem;
-    }
-
-    .container {
-        padding: 0 15px;
-    }
-    
-    nav {
-        padding: 0 15px;
-    }
-    
-    .mobile-menu-toggle {
         position: absolute;
         top: 50%;
         right: 20px;
@@ -487,6 +415,24 @@ nav {
         z-index: var(--z-header-toggle);
     }
 
+    /* Logo keeps the same size + centered overhang as the smallest inline tier;
+       only the links/icons swap out for the hamburger. The min-height replaces
+       the height the icon row used to give the bar so the logo still centers. */
+    nav {
+        grid-template-columns: 1fr;
+        padding: 0 15px;
+        min-height: 32px;
+    }
+
+    .container {
+        padding: 0 15px;
+    }
+
+    .streaming-links {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.5rem;
+    }
+
     .mobile-streaming-icons {
         gap: 1rem;
     }
@@ -505,31 +451,29 @@ nav {
     .mobile-streaming-icons .tiktok-3d-container {
         width: 26px;
         height: 26px;
-    }
-
-    .mobile-streaming-icons {
-        gap: 1rem;
     }
 }
 
-@media (max-width: 500px) {
-    .mobile-streaming-icons .icon-separator {
-        margin: 0 0.3rem;
-        font-size: 0.9rem;
-    }
-
-    .mobile-streaming-icons .streaming-icon,
-    .mobile-streaming-icons .social-icon {
-        width: 22px;
-        height: 22px;
-    }
-
-    .mobile-streaming-icons .tiktok-3d-container {
-        width: 22px;
-        height: 22px;
-    }
-
+/* Small phones: tighter overlay icons */
+@media (max-width: 480px) {
     .mobile-streaming-icons {
         gap: 0.8rem;
     }
+
+    .mobile-streaming-icons .icon-separator {
+        margin: 0 0.3rem;
+        font-size: 0.9rem;
+    }
+
+    .mobile-streaming-icons .streaming-icon,
+    .mobile-streaming-icons .social-icon {
+        width: 22px;
+        height: 22px;
+    }
+
+    .mobile-streaming-icons .tiktok-3d-container {
+        width: 22px;
+        height: 22px;
+    }
 }
+

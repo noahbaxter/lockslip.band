@@ -48,8 +48,14 @@
     --section-alt: var(--primary-color);
 
     --nav-height: 50px;
-    --nav-height-mobile: 60px;
-    --nav-logo-height-mobile: 100px;
+    /* Mobile bar height — matches the smallest inline tier so the logo overhang
+       and bar don't jump when the nav folds into the hamburger. */
+    --nav-height-mobile: 54px;
+    /* Centered logo: --logo-height is the overhanging image, --logo-reserve is
+       the grid column kept clear for it so side nav can't slide under. Both are
+       reassigned per breakpoint in header.css so they shrink together. */
+    --logo-height: 150px;
+    --logo-reserve: 240px;
     
     /* Carousel Variables */
     --carousel-items-per-view: 3;

@@ -152,9 +152,13 @@
 
 .streaming-icons {
     justify-content: flex-end;
+    /* Header row stays on one line and just tightens as it shrinks (the shrink
+       steps live in header.css); it must never wrap to a second row. */
+    flex-wrap: nowrap;
 }
 
-/* Hide streaming icons on mobile - they appear in mobile menu instead */
+/* Hide inline streaming icons once the nav folds into the hamburger (<=768) —
+   they appear in the mobile menu instead. Above this they shrink but stay. */
 @media (max-width: 768px) {
     .streaming-icons {
         display: none !important;
