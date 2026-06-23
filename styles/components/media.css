@@ -65,7 +65,8 @@
     z-index: 2;
 }
 
-.photo-placeholder:hover .photo-download {
+.photo-placeholder:hover .photo-download,
+.logo-card:hover .photo-download {
     opacity: 1;
 }
 
@@ -206,8 +207,4 @@
 
 .logo-card:hover .logo-preview img {
     transform: scale(1.05);
-}
-
-.logo-download {
-    padding: 1rem;
 }

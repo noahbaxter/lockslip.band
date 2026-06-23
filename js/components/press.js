@@ -49,9 +49,9 @@ const PressComponent = {
                     <div class="press-bio">${this.renderBio(press.bio)}</div>
                     ${this.renderBandPhotos(press.bandPhotos)}
                 </section>
+                ${media && media.logos ? MediaComponent.renderLogosSection(media.logos) : ''}
                 ${media && media.photos ? MediaComponent.renderPhotosSection(media.photos) : ''}
                 ${media && media.videos ? MediaComponent.renderVideosSection(media.videos) : ''}
-                ${media && media.logos ? MediaComponent.renderLogosSection(media.logos) : ''}
             </div>
         `;
     }

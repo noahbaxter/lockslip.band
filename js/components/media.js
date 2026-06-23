@@ -44,9 +44,7 @@ const MediaComponent = {
             <div class="logo-card" data-logo-id="${logo.id}">
                 <div class="logo-preview">
                     <img src="${logo.file}" alt="${logo.title}">
-                </div>
-                <div class="logo-download">
-                    <a href="${logo.file}" download class="btn small">DOWNLOAD</a>
+                    <a class="photo-download" href="${logo.file}" download title="Download logo" aria-label="Download logo">${DOWNLOAD_ICON_SVG}</a>
                 </div>
             </div>
         `;
