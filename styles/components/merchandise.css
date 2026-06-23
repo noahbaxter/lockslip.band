@@ -33,7 +33,7 @@
 
 .merch-carousel-track {
     display: flex;
-    transition: transform 0.3s ease;
+    transition: var(--transition-transform-slow);
     gap: var(--carousel-gap);
 }
 
@@ -53,7 +53,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
     backdrop-filter: blur(4px);
 }
 
@@ -79,7 +79,7 @@
     padding: var(--merch-item-padding);
     margin: 0 auto;
     text-align: center;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
     flex: 0 0 var(--carousel-item-width);
     width: 300px;
     display: flex;
@@ -144,7 +144,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
     opacity: 0;
     pointer-events: none;
     backdrop-filter: blur(3px);
@@ -179,7 +179,7 @@
     border: none;
     background: var(--text-dark);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
 }
 
 .carousel-dot.active {
@@ -196,7 +196,7 @@
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    transition: transform 0.3s ease;
+    transition: var(--transition-transform-slow);
 }
 
 
@@ -270,7 +270,7 @@
     letter-spacing: 0.5px;
     border-radius: 0;
     cursor: default;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
     min-width: 35px;
     text-align: center;
     margin-left: -1px;
@@ -288,13 +288,13 @@
 }
 
 .size-btn.in-stock {
-    background: rgba(255, 0, 0, 0.2);
+    background: var(--accent-glow);
     color: var(--secondary-color);
     border-color: var(--accent-color);
 }
 
 .size-btn.out-of-stock {
-    background: rgba(0, 0, 0, 0.3);
+    background: var(--scrim);
     color: var(--text-dark);
     border-color: rgba(255, 255, 255, 0.1);
     opacity: 0.5;

@@ -27,19 +27,19 @@
     justify-content: center;
     overflow: hidden;
     border: 1px solid var(--border-color);
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
 }
 
 .photo-placeholder:hover {
     border-color: var(--accent-color);
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+    box-shadow: 0 0 15px var(--accent-glow);
 }
 
 .photo-placeholder img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: var(--transition-transform-slow);
 }
 
 .photo-placeholder:hover img {
@@ -90,13 +90,13 @@
 
 .video-card {
     border: 1px solid var(--border-color);
-    transition: all 0.2s ease;
-    background: rgba(0, 0, 0, 0.3);
+    transition: var(--standard-transition);
+    background: var(--scrim);
 }
 
 .video-card:hover {
     border-color: var(--accent-color);
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+    box-shadow: 0 0 15px var(--accent-glow);
 }
 
 .video-thumbnail {
@@ -119,7 +119,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: var(--transition-transform-slow);
 }
 
 .video-thumbnail:hover img {
@@ -140,7 +140,7 @@
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
 }
 
 .video-thumbnail:hover .video-play-overlay {
@@ -178,13 +178,13 @@
 .logo-card {
     text-align: center;
     border: 1px solid var(--border-color);
-    transition: all 0.2s ease;
-    background: rgba(0, 0, 0, 0.3);
+    transition: var(--standard-transition);
+    background: var(--scrim);
 }
 
 .logo-card:hover {
     border-color: var(--accent-color);
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+    box-shadow: 0 0 15px var(--accent-glow);
 }
 
 .logo-preview {
@@ -195,14 +195,14 @@
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--surface-light);
 }
 
 .logo-preview img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    transition: transform 0.2s ease;
+    transition: var(--transition-transform);
 }
 
 .logo-card:hover .logo-preview img {

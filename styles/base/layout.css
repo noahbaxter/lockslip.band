@@ -61,7 +61,7 @@ section::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--scrim-soft);
     pointer-events: none;
     z-index: 1;
 }
@@ -77,8 +77,8 @@ section::before {
     z-index: 10;
     transition: opacity 0.3s ease;
     padding: 2rem;
-    background: rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(255, 0, 0, 0.3);
+    background: var(--scrim-strong);
+    border: 1px solid var(--accent-glow-strong);
     backdrop-filter: blur(10px);
 }
 

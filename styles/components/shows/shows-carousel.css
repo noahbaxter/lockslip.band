@@ -39,7 +39,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: var(--scrim-strong);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -120,7 +120,7 @@
 }
 
 .carousel-row:hover {
-    background: rgba(255, 0, 0, 0.1);
+    background: var(--accent-tint);
 }
 
 .carousel-row.active {
@@ -277,7 +277,7 @@
     gap: 0.6rem;
     height: auto;
     padding: 0.7rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--surface-light);
 }
 
 .tour-header-name {
@@ -291,7 +291,7 @@
 .tour-header-meta { margin-left: auto; color: var(--text-dark); font-size: 0.72rem; white-space: nowrap; }
 .tour-header-meta .n { color: var(--accent-color); font-weight: 700; }
 
-.carousel-row.tour-subrow { background: rgba(255, 255, 255, 0.05); }
+.carousel-row.tour-subrow { background: var(--surface-light); }
 
 /* Active highlight must beat the tour-subrow / tour-header backgrounds */
 .carousel-list .carousel-row.active { background: rgba(255, 0, 0, 0.22); }
@@ -299,7 +299,7 @@
 /* Progress bar */
 .carousel-progress {
     height: 4px;
-    background: rgba(255, 0, 0, 0.1);
+    background: var(--accent-tint);
     border-top: 1px solid var(--border-color);
     overflow: hidden;
 }

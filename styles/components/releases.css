@@ -79,10 +79,10 @@
     gap: 0.8rem;
     text-decoration: none;
     color: var(--text-color);
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
     padding: 1rem;
     border-radius: 6px;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--surface-light);
     min-width: 120px;
 }
 
@@ -91,7 +91,7 @@
     height: 60px;
     object-fit: contain;
     border-radius: 4px;
-    transition: transform 0.2s ease;
+    transition: var(--transition-transform);
 }
 
 .physical-link-text {

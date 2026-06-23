@@ -7,17 +7,17 @@
 
 .extras-card {
     border: 1px solid var(--border-color);
-    background: rgba(0, 0, 0, 0.3);
+    background: var(--scrim);
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     max-width: 320px;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
 }
 
 .extras-card:hover {
     border-color: var(--accent-color);
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+    box-shadow: 0 0 15px var(--accent-glow);
 }
 
 .extras-card-image {
@@ -30,7 +30,7 @@
     width: 100%;
     height: auto;
     display: block;
-    transition: transform 0.2s ease;
+    transition: var(--transition-transform);
 }
 
 .extras-card:hover .extras-card-image img {

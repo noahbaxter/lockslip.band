@@ -11,7 +11,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 2000;
+    z-index: var(--z-modal);
     background: rgba(0, 0, 0, 0.95);
     align-items: center;
     justify-content: center;
@@ -60,7 +60,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
     backdrop-filter: blur(4px);
 }
 
@@ -87,7 +87,7 @@
     justify-content: center;
     z-index: 2;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
     backdrop-filter: blur(4px);
 }
 
@@ -121,7 +121,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
     backdrop-filter: blur(4px);
 }
 
@@ -149,7 +149,7 @@
     max-height: 80vh;
     object-fit: contain;
     border: 3px solid var(--border-color);
-    box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+    box-shadow: 0 0 30px var(--accent-glow-strong);
 }
 
 /* Image width overrides */
@@ -167,11 +167,11 @@
     color: var(--text-color);
     max-height: 70vh;
     padding: 2rem;
-    background: rgba(0, 0, 0, 0.8);
+    background: var(--scrim-heavy);
     border: 1px solid var(--border-color);
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: var(--accent-color) rgba(0, 0, 0, 0.3);
+    scrollbar-color: var(--accent-color) var(--scrim);
 }
 
 /* Info width overrides */
@@ -191,7 +191,7 @@
 
 .poster-modal-info::-webkit-scrollbar-track,
 .photo-modal-info::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.3);
+    background: var(--scrim);
 }
 
 .poster-modal-info::-webkit-scrollbar-thumb,
@@ -299,7 +299,7 @@
     text-decoration: none;
     text-transform: uppercase;
     font-weight: 600;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
     cursor: pointer;
     max-width: 140px;
 }
@@ -322,7 +322,7 @@
 .photo-modal-photographer a {
     color: var(--accent-color);
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
     font-weight: 600;
 }
 
@@ -396,7 +396,7 @@
         min-height: auto;
         max-height: 40vh;
         overflow-y: auto;
-        background: rgba(0, 0, 0, 0.8);
+        background: var(--scrim-heavy);
         border: 1px solid var(--border-color);
         -webkit-overflow-scrolling: touch;
     }

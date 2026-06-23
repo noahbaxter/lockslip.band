@@ -8,7 +8,7 @@
 
 .card-base:hover {
     border-color: var(--accent-color);
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+    box-shadow: 0 0 15px var(--accent-glow);
 }
 
 /* Common hover effects for interactive elements */
@@ -24,11 +24,11 @@
 
 /* Common box shadows */
 .glow-hover:hover {
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+    box-shadow: 0 0 15px var(--accent-glow);
 }
 
 .glow-hover-strong:hover {
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+    box-shadow: 0 0 15px var(--accent-glow-strong);
 }
 
 /* Common transforms */
@@ -67,7 +67,7 @@
 
 /* Background patterns */
 .semi-transparent-bg {
-    background: rgba(0, 0, 0, 0.3);
+    background: var(--scrim);
 }
 
 /* Layout helpers */

@@ -61,12 +61,12 @@
     align-items: center;
     padding: 2rem;
     border: 2px solid var(--border-color);
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
 }
 
 .desktop-show:hover {
     border-color: var(--accent-color);
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+    box-shadow: 0 0 15px var(--accent-glow);
 }
 
 .desktop-show.past-show {
@@ -168,19 +168,19 @@
     cursor: pointer;
     border: 2px solid var(--border-color);
     overflow: hidden;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
 }
 
 .desktop-show .show-poster-preview:hover {
     border-color: var(--accent-color);
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+    box-shadow: 0 0 15px var(--accent-glow-strong);
 }
 
 .desktop-show .show-poster-preview img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: var(--transition-transform-slow);
 }
 
 .desktop-show .show-poster-preview:hover img {
@@ -191,14 +191,14 @@
 .mobile-show {
     border: 2px solid var(--border-color);
     padding: 1.5rem;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
     position: relative;
     overflow: hidden;
 }
 
 .mobile-show:hover {
     border-color: var(--accent-color);
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+    box-shadow: 0 0 15px var(--accent-glow);
 }
 
 .mobile-show.past-show {
@@ -233,19 +233,19 @@
     cursor: pointer;
     border: 1px solid var(--border-color);
     overflow: hidden;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
 }
 
 .mobile-show .show-poster-preview:hover {
     border-color: var(--accent-color);
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+    box-shadow: 0 0 15px var(--accent-glow-strong);
 }
 
 .mobile-show .show-poster-preview img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: var(--transition-transform-slow);
 }
 
 .mobile-show .show-poster-preview:hover img {
@@ -357,7 +357,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: var(--scrim-strong);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -376,7 +376,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
 }
 
 .poster-zoom-icon img {
@@ -410,7 +410,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 2rem;
-    background: rgba(0, 0, 0, 0.3);
+    background: var(--scrim);
 }
 
 .tour-info h4 {
@@ -441,20 +441,20 @@
     cursor: pointer;
     border: 1px solid var(--border-color);
     overflow: hidden;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
     flex-shrink: 0;
 }
 
 .tour-poster-preview:hover {
     border-color: var(--accent-color);
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+    box-shadow: 0 0 15px var(--accent-glow-strong);
 }
 
 .tour-poster-preview img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: var(--transition-transform-slow);
 }
 
 .tour-poster-preview:hover img {
@@ -541,7 +541,7 @@
 }
 
 .show-past-shows-btn {
-    background: rgba(0, 0, 0, 0.8);
+    background: var(--scrim-heavy);
     border: 1px solid var(--border-color);
     color: var(--text-color);
     padding: 1rem 2rem;
@@ -550,7 +550,7 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -559,13 +559,13 @@
 
 .show-past-shows-btn:hover {
     border-color: var(--accent-color);
-    background: rgba(255, 0, 0, 0.1);
+    background: var(--accent-tint);
     transform: scale(1.02);
 }
 
 .toggle-arrow {
     font-size: 0.8rem;
-    transition: transform 0.2s ease;
+    transition: var(--transition-transform);
 }
 
 .past-shows-content {
@@ -586,7 +586,7 @@
     background: transparent;
     color: var(--text-dark);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
     font-size: 0.9rem;
     text-transform: uppercase;
     font-weight: 600;
@@ -633,7 +633,7 @@
 .poster-grid-item:hover {
     transform: translateY(-8px) scale(1.02);
     border-color: var(--accent-color);
-    box-shadow: 0 8px 25px rgba(255, 0, 0, 0.3);
+    box-shadow: 0 8px 25px var(--accent-glow-strong);
     z-index: 10;
 }
 
@@ -683,7 +683,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--surface-light);
     color: var(--text-dark);
     text-align: center;
     padding: 1rem;
@@ -743,7 +743,7 @@
         aspect-ratio: 3/4;
         border: 1px solid var(--border-color);
         overflow: hidden;
-        transition: all 0.2s ease;
+        transition: var(--standard-transition);
     }
 
     .tour-poster-preview img {
@@ -794,7 +794,7 @@
 .shows-table {
     width: 100%;
     border-collapse: collapse;
-    background: rgba(0, 0, 0, 0.3);
+    background: var(--scrim);
     border: 1px solid var(--border-color-faded);
     table-layout: auto;
 }
@@ -836,7 +836,7 @@
     text-decoration: none;
     text-transform: uppercase;
     font-weight: 600;
-    transition: all 0.2s ease;
+    transition: var(--standard-transition);
     cursor: pointer;
 }
 
@@ -875,7 +875,7 @@
 }
 
 .show-table-row:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--surface-light);
 }
 
 .show-table-row.future-show {

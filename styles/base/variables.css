@@ -1,14 +1,47 @@
+/* ============================================================
+   RESPONSIVE BREAKPOINTS — LEGEND
+   CSS custom properties can't be used inside @media queries, so
+   these are documentation only. Keep the @media values in the
+   stylesheets in sync with this scale:
+
+     mobile   <= 480px    small phones
+     tablet   <= 768px    phones / small tablets  (main mobile cutover)
+     laptop   <= 1024px   large tablets / small laptops
+     desktop  >= 1280px   full desktop
+
+   Component-specific (documented where used):
+     header nav collapses to the hamburger at <= 1200px
+   ============================================================ */
+
 :root {
     --primary-color: #000000;
     --secondary-color: #ffffff;
     --accent-color: #ff0000;
-    --accent-color-background: rgba(255, 0, 0, 0.1);
-    --dark-background: rgba(0, 0, 0, 0.3);
     --text-color: #ffffff;
     --text-dark: #cccccc;
     --border-color: #ff0000;
     --border-color-faded: rgba(255, 0, 0, 0.7);
-    
+
+    /* Accent (red) at common alphas — glows, tints, fills */
+    --accent-glow-strong: rgba(255, 0, 0, 0.3);
+    --accent-glow: rgba(255, 0, 0, 0.2);
+    --accent-tint: rgba(255, 0, 0, 0.1);
+    --accent-color-background: var(--accent-tint);
+
+    /* Neutral scrims / overlays */
+    --scrim-heavy: rgba(0, 0, 0, 0.8);
+    --scrim-strong: rgba(0, 0, 0, 0.7);
+    --scrim-soft: rgba(0, 0, 0, 0.4);
+    --scrim: rgba(0, 0, 0, 0.3);
+    --dark-background: var(--scrim);
+    --surface-light: rgba(255, 255, 255, 0.05);
+
+    /* Global stacking order (component-local z-indexes stay inline) */
+    --z-header: 1000;
+    --z-header-toggle: 1001;
+    --z-logo: 1002;
+    --z-modal: 2000;
+
     /* Aliases for clarity */
     --background-color: var(--primary-color);
     --text-light: var(--text-color);
@@ -56,13 +89,15 @@
     
     /* Component Variables */
     --merch-item-padding: 1rem;
-    --merch-item-bg: rgba(0, 0, 0, 0.3);
+    --merch-item-bg: var(--scrim);
     --merch-image-height: 350px;
     --merch-image-height-mobile: 200px;
-    
+
     /* Common Properties */
     --standard-border: 1px solid var(--border-color);
     --standard-transition: all 0.2s ease;
+    --transition-transform: transform 0.2s ease;
+    --transition-transform-slow: transform 0.3s ease;
     --photo-gap: 2rem;
 
     /* Common Shows Styling Variables */
