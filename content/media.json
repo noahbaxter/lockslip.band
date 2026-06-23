@@ -93,10 +93,11 @@
       },
       {
         "id": "logo-alt",
-        "title": "Alternative Logo", 
+        "title": "Alternative Logo",
         "description": "Alternative styling variation",
         "file": "assets/logos/lockslip-logo-alt.png",
-        "size": "High Resolution PNG"
+        "size": "High Resolution PNG",
+        "hidden": true
       }
     ]
   }

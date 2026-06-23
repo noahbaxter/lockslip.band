@@ -82,7 +82,7 @@ const MediaComponent = {
             <div class="media-section" id="logos">
                 <h3>${logos.sectionTitle}</h3>
                 <div class="logos-grid">
-                    ${logos.items.map(logo => this.renderLogoCard(logo)).join('')}
+                    ${logos.items.filter(logo => !logo.hidden).map(logo => this.renderLogoCard(logo)).join('')}
                 </div>
             </div>
         `;

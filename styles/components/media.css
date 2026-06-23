@@ -171,8 +171,9 @@
 /* Logos Grid */
 .logos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 260px));
     gap: 2rem;
+    justify-content: center;
 }
 
 .logo-card {
