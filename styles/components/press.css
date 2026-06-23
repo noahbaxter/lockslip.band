@@ -9,17 +9,62 @@ body.press-page main {
     margin-bottom: 3.5rem;
 }
 
-/* Intro: bio on the left, band photos on the right */
+/* Intro: bio on the left, band photos on the right. Proportional columns so
+   the photos scale down with the viewport instead of crushing the bio. */
 .press-intro {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
     gap: 2.5rem;
-    align-items: center;
+    align-items: start;
     margin-bottom: 3.5rem;
 }
 
 .press-bio {
     margin: 0;
+}
+
+/* Logos: a row of two below the bio + band photos, plain marks (no card
+   chrome, no header). Each box hugs its logo so the download button stays at
+   the logo's corner. */
+.press-logos {
+    display: flex;
+    width: 100%;
+    max-width: 1000px;
+    align-items: center;
+    justify-content: space-around;
+    gap: 4rem;
+    margin: 0 auto 3.5rem;
+}
+
+.press-logos .logo-card,
+.press-logos .logo-card:hover {
+    border: none;
+    background: none;
+    box-shadow: none;
+    transition: none;
+}
+
+.press-logos .logo-preview {
+    height: 180px;
+    width: auto;
+    padding: 0;
+    background: none;
+    justify-content: center;
+}
+
+.press-logos .logo-preview img {
+    max-height: 100%;
+    width: auto;
+}
+
+.press-logos .photo-download {
+    width: 26px;
+    height: 26px;
+}
+
+.press-logos .photo-download svg {
+    width: 13px;
+    height: 13px;
 }
 
 .press-bio p {
@@ -39,31 +84,41 @@ body.press-page main {
    press.json sets each frame's ratio. */
 .band-photo-grid {
     display: flex;
-    gap: 1rem;
-    align-items: center;
+    gap: var(--photo-gap);
+    align-items: flex-start;
+}
+
+/* Each card grows by its aspect ratio so the photos fill the row at any width
+   with differing widths but equal heights */
+.band-photo-grid .photo-card {
+    flex: var(--ar, 1) 1 0;
+    min-width: 0;
 }
 
 .band-photo-grid .photo-placeholder {
-    height: 240px;
-    width: auto;
+    width: 100%;
+    height: auto;
     aspect-ratio: 4 / 5;
-    margin-bottom: 0;
 }
 
-@media (max-width: 768px) {
+/* Tablet: bio reflows above the band photos (photos stay side by side) */
+@media (max-width: 1024px) {
     .press-intro {
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
+}
 
+/* Mobile: stack the band photos too */
+@media (max-width: 768px) {
     .band-photo-grid {
         flex-direction: column;
         align-items: stretch;
     }
 
-    .band-photo-grid .photo-placeholder {
-        width: 100%;
-        height: auto;
+    /* Stacked: each photo is full width, so don't grow by aspect ratio */
+    .band-photo-grid .photo-card {
+        flex: 0 0 auto;
     }
 
     .press-bio p {

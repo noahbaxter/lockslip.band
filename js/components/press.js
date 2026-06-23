@@ -40,16 +40,26 @@ const PressComponent = {
         `;
     },
 
+    // Logos tucked under the bio, no section header
+    renderLogos(logos) {
+        if (!logos || !logos.items) return '';
+        const items = logos.items.filter(l => !l.hidden);
+        if (items.length === 0) return '';
+        return `<div class="press-logos">${items.map(l => MediaComponent.renderLogoCard(l)).join('')}</div>`;
+    },
+
     render(press, media) {
         if (!press) return '';
         return `
             <div class="container">
                 <h2>${press.sectionTitle}</h2>
                 <section class="press-intro">
-                    <div class="press-bio">${this.renderBio(press.bio)}</div>
+                    <div class="press-intro-left">
+                        <div class="press-bio">${this.renderBio(press.bio)}</div>
+                    </div>
                     ${this.renderBandPhotos(press.bandPhotos)}
                 </section>
-                ${media && media.logos ? MediaComponent.renderLogosSection(media.logos) : ''}
+                ${media ? this.renderLogos(media.logos) : ''}
                 ${media && media.photos ? MediaComponent.renderPhotosSection(media.photos) : ''}
                 ${media && media.videos ? MediaComponent.renderVideosSection(media.videos) : ''}
             </div>

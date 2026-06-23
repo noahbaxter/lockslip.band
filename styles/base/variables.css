@@ -63,6 +63,7 @@
     /* Common Properties */
     --standard-border: 1px solid var(--border-color);
     --standard-transition: all 0.2s ease;
+    --photo-gap: 2rem;
 
     /* Common Shows Styling Variables */
     --show-padding-standard: 1rem;

@@ -3,6 +3,17 @@ const DOWNLOAD_ICON_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentC
 
 // Media Component
 const MediaComponent = {
+    // Turn an aspect string ("4 / 5", "0.8") into a width/height number
+    aspectToNumber(aspect) {
+        const str = String(aspect).trim();
+        if (str.includes('/')) {
+            const [w, h] = str.split('/').map(n => parseFloat(n));
+            return h ? w / h : 1;
+        }
+        const n = parseFloat(str);
+        return n || 1;
+    },
+
     renderPhotoCard(photo, index, modalName = 'photoModal') {
         const downloadUrl = photo.hires || photo.image;
         const alt = photo.venue ? `${photo.venue} - ${photo.location}` : 'Lockslip band photo';
@@ -12,8 +23,10 @@ const MediaComponent = {
         // Optional per-image frame overrides: aspect ratio of the frame, crop position of the image
         const frameStyle = photo.aspect ? ` style="aspect-ratio:${photo.aspect}"` : '';
         const imgStyle = photo.objectPosition ? ` style="object-position:${photo.objectPosition}"` : '';
+        // Expose the numeric width/height ratio so stacked layouts can size cards by it
+        const cardStyle = photo.aspect ? ` style="--ar:${this.aspectToNumber(photo.aspect)}"` : '';
         return `
-            <div class="photo-card" data-photo-index="${index}" onclick="${modalName}.open(${index})">
+            <div class="photo-card" data-photo-index="${index}"${cardStyle} onclick="${modalName}.open(${index})">
                 <div class="photo-placeholder"${frameStyle}>
                     ${photo.image ? `<img src="${photo.image}" alt="${alt}"${imgStyle}>` : ''}
                     ${download}
