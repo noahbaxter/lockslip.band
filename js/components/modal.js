@@ -40,6 +40,7 @@ class Modal {
             <div class="${classPrefix}-overlay"></div>
             <div class="${classPrefix}-content">
                 <button class="${classPrefix}-close" onclick="${this.config.modalId}.close()">&times;</button>
+                ${this.config.getDownload ? `<a class="${classPrefix}-download" download title="Download photo" aria-label="Download photo" onclick="event.stopPropagation()">${DOWNLOAD_ICON_SVG}</a>` : ''}
                 <button class="${classPrefix}-nav prev" onclick="${this.config.modalId}.navigate(-1)">‹</button>
                 <button class="${classPrefix}-nav next" onclick="${this.config.modalId}.navigate(1)">›</button>
                 <img class="${classPrefix}-image" src="" alt="Item">
@@ -102,6 +103,18 @@ class Modal {
         // Update info using config renderer
         if (infoEl) {
             infoEl.innerHTML = this.config.renderInfo(item, this);
+        }
+
+        // Update download link (fullscreen button, useful on mobile where hover isn't available)
+        const downloadEl = this.modal.querySelector(`.${classPrefix}-download`);
+        if (downloadEl && this.config.getDownload) {
+            const url = this.config.getDownload(item);
+            if (url) {
+                downloadEl.setAttribute('href', url);
+                downloadEl.style.display = 'flex';
+            } else {
+                downloadEl.style.display = 'none';
+            }
         }
 
         // Update counter

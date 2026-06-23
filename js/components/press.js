@@ -5,6 +5,7 @@ const bandPhotoModal = new Modal({
     modalId: 'bandPhotoModal',
     classPrefix: 'photo-modal',
     getAlt: () => 'Lockslip band photo',
+    getDownload: (photo) => photo.hires || photo.image,
     renderInfo: (photo) => {
         if (!photo.credit) return '';
         const credit = photo.creditUrl
@@ -20,17 +21,6 @@ const PressComponent = {
         return (Array.isArray(bio) ? bio : [bio]).map(p => `<p>${p}</p>`).join('');
     },
 
-    renderBandPhoto(photo, index) {
-        return `
-            <figure class="band-photo">
-                <div class="band-photo-img" onclick="bandPhotoModal.open(${index})">
-                    <img src="${photo.image}" alt="Lockslip band photo" loading="lazy">
-                    <a class="band-photo-download" href="${photo.hires}" download title="Download hi-res photo" onclick="event.stopPropagation()">↓</a>
-                </div>
-            </figure>
-        `;
-    },
-
     renderBandPhotos(bandPhotos) {
         if (!bandPhotos || !bandPhotos.items || bandPhotos.items.length === 0) return '';
 
@@ -42,9 +32,10 @@ const PressComponent = {
         }));
         bandPhotoModal.setData(items);
 
+        // Use the same photo-card template as the live photos
         return `
             <div class="band-photo-grid">
-                ${items.map((p, i) => this.renderBandPhoto(p, i)).join('')}
+                ${items.map((p, i) => MediaComponent.renderPhotoCard(p, i, 'bandPhotoModal')).join('')}
             </div>
         `;
     },

@@ -7,6 +7,8 @@ const photoModal = new Modal({
         return `${photo.venue} - ${photo.location} - ${photo.photographer}`;
     },
 
+    getDownload: (photo) => photo.hires || photo.image,
+
     renderInfo: (photo, modal) => {
         let html = '';
 

@@ -47,6 +47,39 @@
     transform: scale(1.02);
 }
 
+/* Hover download icon (bottom-right): red square by default, white when the icon itself is hovered */
+.photo-download {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-color);
+    color: var(--secondary-color);
+    border-radius: 0;
+    opacity: 0;
+    transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+    z-index: 2;
+}
+
+.photo-placeholder:hover .photo-download {
+    opacity: 1;
+}
+
+.photo-download:hover {
+    background: var(--secondary-color);
+    color: var(--accent-color);
+}
+
+.photo-download svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
 /* Videos Grid */
 .video-grid {
     display: grid;

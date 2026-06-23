@@ -34,60 +34,20 @@ body.press-page main {
     color: var(--text-dark);
 }
 
-/* Band photos: side by side at equal height (handles mixed orientations) */
+/* Band photos use the shared photo-card template (see media.css), laid out at
+   equal height so a wider photo simply takes more width. Per-image "aspect" in
+   press.json sets each frame's ratio. */
 .band-photo-grid {
     display: flex;
-    flex-wrap: wrap;
     gap: 1rem;
-}
-
-.band-photo {
-    margin: 0;
-}
-
-.band-photo-img {
-    position: relative;
-    border: 2px solid var(--border-color);
-    overflow: hidden;
-    background: #0a0a0a;
-    cursor: pointer;
-    height: 240px;
-}
-
-.band-photo-img img {
-    height: 100%;
-    width: auto;
-    display: block;
-}
-
-/* Hi-res download — appears bottom-right on hover */
-.band-photo-download {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    width: 34px;
-    height: 34px;
-    display: flex;
     align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.7);
-    color: var(--secondary-color);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
-    font-size: 1.2rem;
-    line-height: 1;
-    text-decoration: none;
-    opacity: 0;
-    transition: opacity 0.15s ease, background 0.15s ease;
 }
 
-.band-photo-img:hover .band-photo-download {
-    opacity: 1;
-}
-
-.band-photo-download:hover {
-    background: var(--accent-color);
-    border-color: var(--accent-color);
+.band-photo-grid .photo-placeholder {
+    height: 240px;
+    width: auto;
+    aspect-ratio: 4 / 5;
+    margin-bottom: 0;
 }
 
 @media (max-width: 768px) {
@@ -96,15 +56,12 @@ body.press-page main {
         gap: 1.5rem;
     }
 
-    .band-photo {
-        width: 100%;
+    .band-photo-grid {
+        flex-direction: column;
+        align-items: stretch;
     }
 
-    .band-photo-img {
-        height: auto;
-    }
-
-    .band-photo-img img {
+    .band-photo-grid .photo-placeholder {
         width: 100%;
         height: auto;
     }
