@@ -9,21 +9,13 @@ const HeaderComponent = {
       { label: 'Shows', href: `${basePath}#shows` },
       { label: 'Store', href: `${basePath}#store` },
       {
-        label: 'Media',
-        href: `${basePath}#media`,
-        submenu: [
-          { label: 'Photos', href: `${basePath}#photos` },
-          { label: 'Videos', href: `${basePath}#videos` },
-          { label: 'Logos', href: `${basePath}#logos` }
-        ]
-      },
-      {
         label: 'Extras',
         href: `${basePath}#extras`,
         submenu: [
           { label: 'Guillotine', href: `${basePath}plugin/` }
         ]
-      }
+      },
+      { label: 'Press', href: `${basePath}press/` }
     ];
 
     const navLinksHTML = navItems.map(item => {

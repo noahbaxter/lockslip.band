@@ -6,17 +6,19 @@ class ContentLoader {
         this.merchandise = null;
         this.media = null;
         this.extras = null;
+        this.press = null;
     }
 
     async loadAllContent() {
         try {
-            const [config, releases, shows, merchandise, media, extras] = await Promise.all([
+            const [config, releases, shows, merchandise, media, extras, press] = await Promise.all([
                 this.loadJSON('content/site-config.json'),
                 this.loadJSON('content/releases.json'),
                 this.loadJSON('content/shows.json'),
                 this.loadJSON('content/merchandise.json'),
                 this.loadJSON('content/media.json'),
-                this.loadJSON('content/extras.json')
+                this.loadJSON('content/extras.json'),
+                this.loadJSON('content/press.json')
             ]);
 
             this.config = config;
@@ -25,6 +27,7 @@ class ContentLoader {
             this.merchandise = merchandise;
             this.media = media;
             this.extras = extras;
+            this.press = press;
 
             this.renderAllContent();
             UIHelpers.updateCopyrightYear();
@@ -47,6 +50,7 @@ class ContentLoader {
     }
 
     renderAllContent() {
+        this.renderHeroBio();
         this.renderStreamingLinks();
         this.renderReleases();
         this.renderShows();
@@ -58,6 +62,13 @@ class ContentLoader {
         this.renderStreamingIcons();
     }
 
+
+    renderHeroBio() {
+        const heroBio = document.querySelector('.hero-bio-content');
+        if (heroBio && this.press && this.press.heroBio) {
+            heroBio.innerHTML = `<p>${this.press.heroBio}</p>`;
+        }
+    }
 
     renderStreamingLinks() {
         const streamingContainer = document.querySelector('.streaming-links');
