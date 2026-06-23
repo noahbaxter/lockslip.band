@@ -60,26 +60,45 @@
     height: 100%;
 }
 
+/* List + custom scroll indicator sit side by side; the indicator lives to the
+   right of the bordered list, always visible. */
+.carousel-list-wrap {
+    display: flex;
+    align-items: stretch;
+    gap: 0.6rem;
+    min-height: 0;
+}
+
 .carousel-list {
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 0;
     border: 1px solid var(--border-color);
     overflow-y: auto;
     max-height: 500px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent-color) rgba(0, 0, 0, 0.3);
+    /* Native bar hidden — the custom .carousel-scrollbar replaces it */
+    scrollbar-width: none;
 }
 
 .carousel-list::-webkit-scrollbar {
-    width: 6px;
+    display: none;
 }
 
-.carousel-list::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1);
+/* Custom always-visible scroll indicator to the right of the list. The track
+   is invisible — only the thumb shows, so it reads as a floating bar. */
+.carousel-scrollbar {
+    flex: 0 0 6px;
+    position: relative;
 }
 
-.carousel-list::-webkit-scrollbar-thumb {
+.carousel-scrollbar-thumb {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 100%;
     background: var(--accent-color);
     border-radius: 3px;
 }

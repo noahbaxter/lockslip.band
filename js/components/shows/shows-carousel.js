@@ -11,7 +11,67 @@ const ShowsCarousel = {
     init(futureItems) {
         if (!this.shows || this.shows.length === 0) return;
         this.currentIndex = 0;
-        this.start(this.shows.length);
+        this.setupScrollbar();
+        this.setupVisibilityObserver();
+    },
+
+    // Only auto-advance while the carousel is on screen, so the first time a
+    // user sees it they land on show #1, not a random one based on elapsed time.
+    setupVisibilityObserver() {
+        const el = document.querySelector('.upcoming-carousel');
+        if (!el) return;
+        if (typeof IntersectionObserver === 'undefined') {
+            this.start(this.shows.length);
+            return;
+        }
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    if (!this.timer) this.start(this.shows.length);
+                } else {
+                    this.stop();
+                    const progressBar = document.querySelector('.carousel-progress-fill');
+                    if (progressBar) {
+                        progressBar.style.animation = 'none';
+                        progressBar.style.width = '0%';
+                    }
+                }
+            });
+        }, { threshold: 0.35 });
+        observer.observe(el);
+    },
+
+    // Wire the custom scroll indicator to the list's scroll position
+    setupScrollbar() {
+        const list = document.querySelector('.carousel-list');
+        if (!list) return;
+        list.addEventListener('scroll', () => this.updateScrollbar());
+        window.addEventListener('resize', () => this.updateScrollbar());
+        this.updateScrollbar();
+    },
+
+    // Size and position the indicator thumb to mirror the scroll position
+    updateScrollbar() {
+        const list = document.querySelector('.carousel-list');
+        const track = document.querySelector('.carousel-scrollbar');
+        const thumb = document.querySelector('.carousel-scrollbar-thumb');
+        if (!list || !track || !thumb) return;
+
+        const ratio = list.clientHeight / list.scrollHeight;
+        if (ratio >= 1) {
+            // Nothing to scroll: hide the indicator entirely
+            track.style.display = 'none';
+            return;
+        }
+        track.style.display = '';
+
+        const trackH = track.clientHeight;
+        const thumbH = Math.max(trackH * ratio, 24);
+        const maxScroll = list.scrollHeight - list.clientHeight;
+        const maxThumbTop = trackH - thumbH;
+        const top = maxScroll > 0 ? (list.scrollTop / maxScroll) * maxThumbTop : 0;
+        thumb.style.height = `${thumbH}px`;
+        thumb.style.top = `${top}px`;
     },
 
     // Start auto-play carousel with 5s cycle
@@ -69,6 +129,22 @@ const ShowsCarousel = {
         rows.forEach((row, index) => {
             row.classList.toggle('active', index === this.currentIndex);
         });
+
+        // Keep the highlighted row in view: scroll the list (not the page) only
+        // when the active row sits above or below the visible area.
+        const list = document.querySelector('.carousel-list');
+        const activeRow = rows[this.currentIndex];
+        if (list && activeRow) {
+            const listRect = list.getBoundingClientRect();
+            const rowRect = activeRow.getBoundingClientRect();
+            let delta = 0;
+            if (rowRect.top < listRect.top) {
+                delta = rowRect.top - listRect.top;
+            } else if (rowRect.bottom > listRect.bottom) {
+                delta = rowRect.bottom - listRect.bottom;
+            }
+            if (delta !== 0) list.scrollBy({ top: delta, behavior: 'smooth' });
+        }
 
         // Update progress bar (only if not paused)
         if (!this.paused) {
@@ -284,8 +360,13 @@ const ShowsCarousel = {
                     <div class="carousel-poster" onclick="ShowsCarousel.openPosterModal()">
                         ${this.bigPaneHtml(slides[0])}
                     </div>
-                    <div class="carousel-list">
-                        ${listHtml}
+                    <div class="carousel-list-wrap">
+                        <div class="carousel-list">
+                            ${listHtml}
+                        </div>
+                        <div class="carousel-scrollbar">
+                            <div class="carousel-scrollbar-thumb"></div>
+                        </div>
                     </div>
                 </div>
                 ${progressBar}
