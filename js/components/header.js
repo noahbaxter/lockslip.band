@@ -8,13 +8,7 @@ const HeaderComponent = {
       { label: 'Music', href: `${basePath}#music` },
       { label: 'Shows', href: `${basePath}#shows` },
       { label: 'Store', href: `${basePath}#store` },
-      {
-        label: 'Extras',
-        href: `${basePath}#extras`,
-        submenu: [
-          { label: 'Guillotine', href: `${basePath}plugin/` }
-        ]
-      },
+      { label: 'Plugin', href: `${basePath}plugin/` },
       { label: 'Press', href: `${basePath}press/` }
     ];
 
