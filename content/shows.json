@@ -529,16 +529,16 @@
       "date": {"month": "AUG", "day": "04", "year": "2026"},
       "venue": "TBD",
       "location": "Kelowna, BC",
-      "bands": ["Lockslip"],
-      "hidden": true
+      "bands": ["False Body", "Lockslip"],
+      "moreBandsTba": true
     },
     {
       "id": "2026-08-06",
       "date": {"month": "AUG", "day": "06", "year": "2026"},
       "venue": "TBD",
       "location": "Lethbridge, AB",
-      "bands": ["Lockslip"],
-      "hidden": true
+      "bands": ["False Body", "Lockslip"],
+      "moreBandsTba": true
     },
     {
       "id": "2026-08-07",
@@ -554,8 +554,8 @@
       "date": {"month": "AUG", "day": "08", "year": "2026"},
       "venue": "TBD",
       "location": "Edmonton, AB",
-      "bands": ["Lockslip"],
-      "hidden": true
+      "bands": ["False Body", "Lockslip"],
+      "moreBandsTba": true
     },
     {
       "id": "2026-10-23",
