@@ -527,10 +527,10 @@
     {
       "id": "2026-08-04",
       "date": {"month": "AUG", "day": "04", "year": "2026"},
-      "venue": "TBD",
+      "venue": "Dunnenzies Downtown",
       "location": "Kelowna, BC",
-      "bands": ["False Body", "Lockslip"],
-      "moreBandsTba": true
+      "poster": "assets/show-posters/2026_08_04.jpg",
+      "bands": ["Lakeside Amusement Park", "False Body", "Lockslip"]
     },
     {
       "id": "2026-08-06",
