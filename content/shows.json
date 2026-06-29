@@ -484,10 +484,11 @@
     {
       "id": "2026-07-30",
       "date": {"month": "JUL", "day": "30", "year": "2026"},
-      "venue": "924 Gilman St",
+      "venue": "924 Gilman Street",
       "location": "Berkeley, CA",
-      "bands": ["Lockslip", "Scalp"],
-      "moreBandsTba": true
+      "poster": "assets/show-posters/2026_07_30.jpg",
+      "ticketsUrl": "https://app.showslinger.com/v4/r-n-rg-presents-scalp",
+      "bands": ["Etch", "Identity Crisis", "Doomsday", "Lockslip", "Scalp"]
     },
     {
       "id": "2026-07-31",
@@ -535,10 +536,10 @@
     {
       "id": "2026-08-06",
       "date": {"month": "AUG", "day": "06", "year": "2026"},
-      "venue": "TBD",
+      "venue": "Slice",
       "location": "Lethbridge, AB",
-      "bands": ["False Body", "Lockslip"],
-      "moreBandsTba": true
+      "poster": "assets/show-posters/2026_08_06.jpg",
+      "bands": ["Euthanize", "Entwine", "Abrupt Decay", "False Body", "Lockslip"]
     },
     {
       "id": "2026-08-07",
@@ -552,10 +553,10 @@
     {
       "id": "2026-08-08",
       "date": {"month": "AUG", "day": "08", "year": "2026"},
-      "venue": "TBD",
+      "venue": "99ten",
       "location": "Edmonton, AB",
-      "bands": ["False Body", "Lockslip"],
-      "moreBandsTba": true
+      "poster": "assets/show-posters/2026_08_08.jpg",
+      "bands": ["Ember", "Path of Vengeance", "False Body", "Lockslip"]
     },
     {
       "id": "2026-10-23",
