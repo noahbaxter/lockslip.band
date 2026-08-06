@@ -45,27 +45,20 @@ const MerchandiseComponent = {
             }
         }
 
-        // Big Cartel mode with fallback
         try {
-            // First try to load from Big Cartel
             const bigCartelData = await this.fetchFromBigCartel();
             if (bigCartelData && bigCartelData.items && bigCartelData.items.length > 0) {
                 console.log('Using Big Cartel merchandise data');
                 return bigCartelData;
             }
         } catch (error) {
-            console.warn('Big Cartel API failed, falling back to static JSON:', error);
+            console.warn('Big Cartel API unavailable:', error);
         }
 
-        // Fallback to static JSON
-        try {
-            console.log('Using static merchandise data (fallback)');
-            const response = await fetch('content/merchandise.json');
-            return await response.json();
-        } catch (error) {
-            console.error('Failed to load merchandise data:', error);
-            return { sectionTitle: "Store", items: [] };
-        }
+        // Every product links back to Big Cartel to check out, so when their API is
+        // down the whole purchase path is down with it. Say so rather than render a
+        // stale catalog nobody can actually buy from.
+        return { sectionTitle: "Store", items: [], unavailable: true };
     },
 
     async fetchFromBigCartel() {
@@ -258,6 +251,18 @@ const MerchandiseComponent = {
 
     render(merchandise) {
         if (!merchandise) return '';
+
+        if (merchandise.unavailable) {
+            return `
+                <div class="container">
+                    <h2>${merchandise.sectionTitle}</h2>
+                    <div class="empty-state">
+                        <p>Store is currently unavailable, sorry.</p>
+                        <p class="empty-state-sub">Check back soon!</p>
+                    </div>
+                </div>
+            `;
+        }
 
         const displayItems = merchandise.items.filter(item => !item.hidden);
 
