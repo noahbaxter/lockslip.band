@@ -167,22 +167,30 @@ class ShowsProcessor {
                     shows: pastShows,
                     actuallyPast: true
                 };
-                pastItems.push({ 
-                    type: 'tour', 
-                    data: pastTour, 
-                    sortDate: tour.tourEndDate 
+                // Sort by the last show that actually happened, not the tour's end
+                // date — an ongoing tour ends in the future and would sort ahead of
+                // everything else in the past list.
+                pastItems.push({
+                    type: 'tour',
+                    data: pastTour,
+                    sortDate: new Date(Math.max(...pastShows.map(show => this.getTimestamp(show.showDate))))
                 });
                 
                 // Add future portion to future items
                 const futureTour = {
                     ...tour,
                     shows: futureShows,
-                    actuallyPast: false
+                    actuallyPast: false,
+                    // Tour is already underway, so the carousel counts what's left
+                    // rather than the full run.
+                    inProgress: true
                 };
-                futureItems.push({ 
-                    type: 'tour', 
-                    data: futureTour, 
-                    sortDate: tour.tourStartDate 
+                // Likewise, sort by the next show still to come rather than the
+                // tour's start date, which is already behind us.
+                futureItems.push({
+                    type: 'tour',
+                    data: futureTour,
+                    sortDate: new Date(Math.min(...futureShows.map(show => this.getTimestamp(show.showDate))))
                 });
             } else {
                 // Tour is completely past or future, add as normal
@@ -206,20 +214,31 @@ class ShowsProcessor {
     // Collect all shows with posters for navigation in chronological order
     collectShowsWithPosters(pastItems, futureItems) {
         const showsWithPosters = [];
+        const seenIds = new Set();
         const today = new Date();
         today.setHours(0, 0, 0, 0);
+
+        // A tour that's mid-run is split across pastItems and futureItems, so its
+        // poster would otherwise be emitted twice under the same id. Everything
+        // downstream looks posters up by id, so a duplicate renders twice and both
+        // copies open the first one.
+        const push = entry => {
+            if (seenIds.has(entry.id)) return;
+            seenIds.add(entry.id);
+            showsWithPosters.push(entry);
+        };
 
         // Combine all items and sort chronologically (oldest first)
         const allItems = [...pastItems, ...futureItems].sort((a, b) => a.sortDate - b.sortDate);
 
         allItems.forEach(item => {
             if (item.type === 'show' && item.data.poster) {
-                showsWithPosters.push(item.data);
+                push(item.data);
             } else if (item.type === 'tour') {
                 const tour = item.data;
 
                 // Tour poster always comes first, then shows in chronological order
-                if (tour.poster) showsWithPosters.push({...tour, isTourPoster: true, tourId: tour.id});
+                if (tour.poster) push({...tour, isTourPoster: true, tourId: tour.id});
 
                 const tourShowsWithPosters = tour.shows
                     .filter(show => show.poster)
@@ -229,9 +248,7 @@ class ShowsProcessor {
                         return dateA - dateB; // Ascending (oldest first)
                     });
 
-                tourShowsWithPosters.forEach(show => {
-                    showsWithPosters.push(show);
-                });
+                tourShowsWithPosters.forEach(push);
             }
         });
 

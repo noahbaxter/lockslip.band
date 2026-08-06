@@ -282,7 +282,7 @@ const ShowsCarousel = {
     },
 
     // A tour header row (drives the tour poster)
-    renderTourHeader(tour, index, count, dates, showsWithPosters) {
+    renderTourHeader(tour, index, countLabel, dates, showsWithPosters) {
         const posterIndex = showsWithPosters.findIndex(s => s.id === tour.id);
         const clickHandler = posterIndex !== -1
             ? `onclick="openPosterModal(${posterIndex})"`
@@ -293,7 +293,7 @@ const ShowsCarousel = {
                  onmouseover="ShowsCarousel.setShow(${index})"
                  onmouseenter="ShowsCarousel.pause()" onmouseleave="ShowsCarousel.resume()">
                 <span class="tour-header-name">${tour.name}</span>
-                <span class="tour-header-meta">${dates} · <span class="n">${count} shows</span></span>
+                <span class="tour-header-meta">${dates} · <span class="n">${countLabel}</span></span>
             </div>`;
     },
 
@@ -325,6 +325,8 @@ const ShowsCarousel = {
                 const tour = item.data;
                 const tourShows = [...tour.shows].sort((a, b) => a.showDate - b.showDate);
                 const dates = `${tour.startDate.month} ${tour.startDate.day} – ${tour.endDate.month} ${tour.endDate.day}`;
+                // A tour already underway only carries its remaining shows here
+                const countLabel = `${tourShows.length} show${tourShows.length === 1 ? '' : 's'}${tour.inProgress ? ' left' : ''}`;
 
                 // Tour header slide shows the tour poster
                 const headerIndex = slides.length;
@@ -332,13 +334,13 @@ const ShowsCarousel = {
                     id: tour.id,
                     poster: tour.poster || null,
                     ticketsUrl: null,
-                    fallback: { month: tour.startDate.month, day: tour.startDate.day, venue: tour.name, location: dates, bandsHtml: `${tourShows.length} shows` }
+                    fallback: { month: tour.startDate.month, day: tour.startDate.day, venue: tour.name, location: dates, bandsHtml: countLabel }
                 });
 
                 let subRows = '';
                 tourShows.forEach(show => { subRows += addShow(show, true); });
 
-                listHtml += `<div class="tour-group">${this.renderTourHeader(tour, headerIndex, tourShows.length, dates, showsWithPosters)}${subRows}</div>`;
+                listHtml += `<div class="tour-group">${this.renderTourHeader(tour, headerIndex, countLabel, dates, showsWithPosters)}${subRows}</div>`;
             }
         });
 
