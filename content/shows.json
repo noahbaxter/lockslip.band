@@ -559,6 +559,15 @@
       "bands": ["Ember", "Path of Vengeance", "False Body", "Lockslip"]
     },
     {
+      "id": "2026-08-22",
+      "date": {"month": "AUG", "day": "22", "year": "2026"},
+      "venue": "Transplants Brewing",
+      "location": "Palmdale, CA",
+      "poster": "assets/show-posters/2026_08_22.jpg",
+      "ticketsUrl": "https://www.ticketweb.com/event/squid-pisser-lockslip-transplants-brewing-company-tickets/14964913",
+      "bands": ["Prolapsed Catholic", "Nine Necks", "Lockslip", "Squid Pisser"]
+    },
+    {
       "id": "2026-10-23",
       "date": { "month": "OCT", "day": "23", "year": "2026" },
       "event": "The FEST 24",
