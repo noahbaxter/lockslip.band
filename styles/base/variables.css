@@ -47,6 +47,11 @@
     --text-light: var(--text-color);
     --section-alt: var(--primary-color);
 
+    /* Live height of the fixed header, remeasured by ShowsScrollNav on resize.
+       This is the fallback for first paint. Anything that sticks or scrolls
+       into view offsets by it so the header can't cover it. */
+    --header-height: 72px;
+
     --nav-height: 50px;
     /* Mobile bar height — matches the smallest inline tier so the logo overhang
        and bar don't jump when the nav folds into the hamburger. */
@@ -63,6 +68,32 @@
     /* Poster Grid Variables */
     --poster-grid-columns-desktop: 5;
     --poster-grid-columns-mobile: 2;
+    /* Left gutter for the jump arrows, and the height of a year label. */
+    --poster-rail-width: 3.5rem;
+    --poster-rail-gap: 0.6rem;
+    --poster-nav-size: calc(var(--poster-rail-width) - var(--poster-rail-gap));
+    --poster-nav-inset: 1.5rem;
+    --poster-year-head-h: 2.6rem;
+    /* Measured at runtime by ShowsScrollNav; fallbacks are for first paint. */
+    --poster-toggle-h: 46px;
+    --poster-row-h: 0px;
+    /* The two lines everything in the poster wall pins to. --poster-line-top is
+       where the year rule sits, --poster-content-top the first readable pixel
+       below it. Anything that sticks, jumps, or measures "is this clipped"
+       derives from these rather than re-adding the parts itself. */
+    --poster-line-top: calc(var(--header-height) + var(--poster-toggle-h));
+    --poster-content-top: calc(var(--poster-line-top) + var(--poster-year-head-h));
+    /* Floor for the down arrow: never closer to the rule than the second row.
+       Doesn't bind on a tall window; on a short one it stops the arrow creeping
+       up toward the rule. */
+    --poster-nav-floor: calc(var(--poster-content-top) + var(--poster-row-h));
+    /* Hover popout. The glow reaches --poster-glow-blur minus its offset above
+       the poster, which is why it can graze the year rule. */
+    --poster-popout-lift: 8px;
+    --poster-popout-time: 0.22s;
+    --poster-glow-blur: 25px;
+    --poster-glow-offset: 8px;
+
     --carousel-gap: 2rem;
     --carousel-item-width: calc(100% / var(--carousel-items-per-view) - (var(--carousel-gap) * (var(--carousel-items-per-view) - 1) / var(--carousel-items-per-view)));
     --carousel-container-padding: 80px;

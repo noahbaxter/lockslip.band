@@ -612,29 +612,268 @@
     color: var(--text-light);
 }
 
-/* Poster Grid View */
+/* Poster Grid View
+   One continuous grid for every past poster, so rows always fill and the
+   mosaic never breaks at a year boundary. Year context comes from a single
+   floating label whose text swaps as you scroll, plus an accent edge on the
+   first poster of each year. */
 .poster-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 0;
-    margin-top: 2rem;
+}
+
+/* Left gutter holds the jump arrows. */
+.poster-grid-wrap {
+    position: relative;
+    padding-left: var(--poster-rail-width);
+}
+
+/* Bounds the sticky label: the wrap minus one poster row, so the line comes
+   to rest sitting on top of the last row instead of riding over it.
+   --poster-row-h is measured by ShowsScrollNav. */
+.poster-year-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calc(100% - var(--poster-row-h, 0px));
+    pointer-events: none;
+}
+
+/* Reserves the flow space the absolutely-positioned label doesn't occupy. */
+.poster-year-head {
+    height: var(--poster-year-head-h);
+}
+
+.poster-year-indicator {
+    position: sticky;
+    top: var(--poster-line-top);
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    height: var(--poster-year-head-h);
+    background: var(--background-color);
+    /* Opaque to the cursor: without this you can hover a poster through the
+       rule, i.e. hover something that isn't really visible. */
+    pointer-events: auto;
+}
+
+/* The rule takes everything the year label doesn't, and the track spans the
+   wrap's padding box, so the rule lines up exactly with the poster columns
+   and the year itself sits out in the gutter beside them. */
+.poster-year-indicator::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-color-faded);
+}
+
+
+.poster-year-indicator span {
+    flex: none;
+    width: var(--poster-rail-width);
+    padding-right: 0.6rem;
+    font-family: 'Arial Black', Helvetica, Arial, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    color: var(--accent-color);
+}
+
+/* Jump arrows. Sticky inside the wrap and pushed to opposite ends of it, so
+   up rides the top of the viewport and down rides the bottom, and both stop
+   dead at the edges of the poster wall instead of following you down the page. */
+.poster-grid-rail {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: var(--poster-rail-width);
+    z-index: 20;
+    pointer-events: none;
+}
+
+/* Down holds one screen position and only fades. The box runs a viewport past
+   the end of the wall so the sticky bottom edge is never reached while the
+   page can still scroll, which is what would otherwise make the arrow slide up
+   as the wall ends.
+
+   It starts below the year rule rather than at 0. A sticky element cannot rise
+   above its own box, and that floor is the structural guarantee that the arrow
+   can never end up level with the rule while the rule is still unpinned near
+   the bottom of the window. */
+.poster-rail-track-down {
+    position: absolute;
+    top: var(--poster-year-head-h);
+    left: 0;
+    right: 0;
+    height: calc(100% + 200vh);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-right: var(--poster-rail-gap);
+}
+
+.poster-nav-btn {
+    pointer-events: auto;
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-color);
+    border: 1px solid var(--border-color-faded);
+    color: var(--text-dark);
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: var(--standard-transition);
+}
+
+/* Parented to the year rule itself rather than given its own sticky range.
+   The two then pin and release as one unit, and the arrow can't drift up into
+   the year band on the way. */
+.poster-nav-btn[data-dir="up"] {
+    position: absolute;
+    top: calc(100% + 0.75rem);
+    left: 0;
+    width: var(--poster-nav-size);
+}
+
+.poster-nav-btn[data-dir="down"] {
+    position: sticky;
+    /* Three limits, smallest wins:
+         1. --poster-nav-inset, the normal resting gap off the window bottom
+         2. keep the arrow below --poster-nav-floor, clamped at 0 so a window
+            too short for the floor pins it to the bottom edge instead of
+            flinging it off screen
+         3. a hard stop at --poster-content-top: it may never rise level with
+            the year rule, whatever the window height */
+    bottom: min(
+        var(--poster-nav-inset),
+        max(0px, calc(100vh - var(--poster-nav-size) - var(--poster-nav-floor))),
+        calc(100vh - var(--poster-nav-size) - var(--poster-content-top))
+    );
+}
+
+/* Nothing to jump to when that end of the wall is already on screen. */
+.poster-nav-btn.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.poster-nav-btn:hover {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--text-light);
+}
+
+/* Keeps the view switcher reachable from anywhere in the wall. */
+.past-shows-section .shows-view-toggle {
+    position: sticky;
+    top: var(--header-height);
+    z-index: 25;
+    background: var(--background-color);
+    padding: 0.5rem 0;
 }
 
 .poster-grid-item {
     aspect-ratio: 3/4;
     border: none;
-    overflow: hidden;
     cursor: pointer;
-    transition: all 0.3s ease;
+    /* An explicit 0 rather than auto: the delayed z-index transition below only
+       runs between integers, and auto is not one, so with auto the browser
+       skips it and the poster drops behind the rule the instant you unhover. */
+    z-index: 0;
+    transition: transform var(--poster-popout-time) ease-out,
+                box-shadow var(--poster-popout-time) ease-out;
     position: relative;
     background: var(--background-color);
 }
 
+.poster-grid-thumb {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+
+/* Date and city, scrimmed over the bottom of the poster on hover. Same
+   treatment as the tickets button on upcoming posters. */
+.poster-grid-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    padding: 2.5rem 0.7rem 0.7rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 35%, rgba(0, 0, 0, 0.75) 60%, transparent);
+    opacity: 0;
+    transition: opacity 0.18s ease-out;
+    pointer-events: none;
+}
+
+.poster-grid-item:hover .poster-grid-caption {
+    opacity: 1;
+}
+
+
+.poster-caption-date {
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    color: var(--accent-color);
+    text-transform: uppercase;
+}
+
+.poster-caption-place {
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+    color: var(--secondary-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* No hover to reveal it on touch, and a tap opens the modal instead. */
+@media (hover: none) {
+    .poster-grid-caption {
+        display: none;
+    }
+}
+
+
 .poster-grid-item:hover {
-    transform: translateY(-8px) scale(1.02);
+    transform: translateY(calc(-1 * var(--poster-popout-lift))) scale(1.02);
     border-color: var(--accent-color);
-    box-shadow: 0 8px 25px var(--accent-glow-strong);
+    box-shadow: 0 var(--poster-glow-offset) var(--poster-glow-blur) var(--accent-glow-strong);
+    /* Above its neighbours but below the year rule (20) and the view toggle
+       (25). A poster caught half under the sticky chrome reads as tucked
+       behind it rather than punching through it. */
     z-index: 10;
+    /* Raise immediately on the way in; the delay above only applies on the
+       way out. */
+    transition: transform var(--poster-popout-time) ease-out,
+                box-shadow var(--poster-popout-time) ease-out,
+                z-index 0s;
+}
+
+/* ...except when it is sitting flush against the line, where being behind the
+   rule is exactly what clipped the popout. Then it may draw over the rule: it
+   rises --poster-popout-overhang, and the red line sits at the middle of the
+   rule's box, so the poster still stops short of it. ShowsScrollNav sets this
+   only while the poster is clear of the line, so one that's half under the
+   chrome mid-scroll still tucks behind. */
+/* Not gated on :hover. The raise has to outlast the cursor, or the poster
+   drops behind the rule while it is still shrinking and the shrink itself
+   looks clipped. ShowsScrollNav owns the timing: it holds this for the length
+   of the transition after you leave, and strips it the instant the poster
+   stops being clear of the line, so it can never cross the line while raised. */
+.poster-grid-item.can-overlap {
+    z-index: 30;
 }
 
 .poster-grid-item.past-show {
