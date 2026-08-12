@@ -9,14 +9,29 @@ body.press-page main {
     margin-bottom: 3.5rem;
 }
 
-/* Intro: bio on the left, band photos on the right. Proportional columns so
-   the photos scale down with the viewport instead of crushing the bio. */
+/* Intro: one grid of six equal cells, three across. The bio takes the top-left
+   two and the four photos fill the rest, so they wrap it in an L and the block
+   still squares off. A short bio then reads as a deliberate notch in the tiling
+   rather than as a column with nothing under it. */
 .press-intro {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
-    gap: 2.5rem;
-    align-items: start;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
     margin-bottom: 3.5rem;
+}
+
+/* The photo cards become cells of the grid above rather than of a grid of their
+   own, which is what lets them flow around the bio. */
+.band-photo-grid {
+    display: contents;
+}
+
+.press-intro-left {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+    /* Room off the edges the photos meet, so the text is not flush to them. */
+    padding: 0 2.5rem 2.5rem 0;
 }
 
 .press-bio {
@@ -83,11 +98,8 @@ body.press-page main {
    one solid rectangle: identical cells, no gaps. Every cell being the same
    shape is what lets the block have square corners, and the cost is that each
    photograph is cropped to fit it. Hovering pays that back. */
-.band-photo-grid {
+.press-intro {
     --band-tile-ar: 0.8;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
 }
 
 .band-photo-grid .photo-card {
@@ -113,6 +125,7 @@ body.press-page main {
     transform: translate(-50%, -50%);
     transition: width var(--poster-popout-time) ease-out,
                 height var(--poster-popout-time) ease-out,
+                transform var(--poster-popout-time) ease-out,
                 box-shadow var(--poster-popout-time) ease-out;
 }
 
@@ -127,25 +140,35 @@ body.press-page main {
     box-shadow: 0 var(--poster-glow-offset) var(--poster-glow-blur) var(--poster-glow-spread) var(--glow-raised);
 }
 
-/* Cancels the scale the photo grid uses; here the frame itself grows, and a
-   scale on top would re-crop what the growth just revealed. */
+/* Pops the same distance as every other image on the site. It rides on top of
+   the growth above without re-cropping anything: once the frame matches the
+   photograph, scaling both together only enlarges. The translate has to be
+   repeated or the frame would jump out of its cell. */
 .band-photo-grid .photo-placeholder:hover {
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(1.04);
 }
 
-/* Tablet: bio reflows above the band photos (photos stay side by side) */
+/* Tablet: two across, bio spanning the full first row. Still an L, just a
+   shallower one, and the cells stay big enough to read. */
 @media (max-width: 1024px) {
     .press-intro {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .press-intro-left {
+        padding: 0 0 1.5rem;
     }
 }
 
 /* Mobile: one column, and no hover to un-crop with, so each photo keeps its
    own shape rather than being tiled and cropped. */
 @media (max-width: 768px) {
-    .band-photo-grid {
+    .press-intro {
         grid-template-columns: 1fr;
+    }
+
+    .press-intro-left {
+        grid-column: auto;
     }
 
     .band-photo-grid .photo-card {
