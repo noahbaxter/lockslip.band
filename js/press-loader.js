@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (footer && config) footer.innerHTML = FooterComponent.render(config);
 
         UIHelpers.updateCopyrightYear();
+        PressComponent.setTrueRatios();
         if (window.ImageLoader) ImageLoader.init();
     } catch (err) {
         console.error('Failed to load press content:', err);

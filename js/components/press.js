@@ -19,11 +19,12 @@ const PressComponent = {
     renderBandPhotos(bandPhotos) {
         if (!bandPhotos || !bandPhotos.items || bandPhotos.items.length === 0) return '';
 
-        // Attach the shared credit to each item so the modal can show it fullscreen
+        // The set credit is the default; an item that names its own photographer
+        // keeps it, which is why the spread comes second.
         const items = bandPhotos.items.map(p => ({
-            ...p,
             credit: bandPhotos.credit,
-            creditUrl: bandPhotos.creditUrl
+            creditUrl: bandPhotos.creditUrl,
+            ...p
         }));
         bandPhotoModal.setData(items);
 
@@ -33,6 +34,21 @@ const PressComponent = {
                 ${items.map((p, i) => MediaComponent.renderPhotoCard(p, i, 'bandPhotoModal')).join('')}
             </div>
         `;
+    },
+
+    // The JSON aspect is the tile's crop, not the photograph's shape, so the
+    // real ratio is read off each image once it decodes. Hovering grows the
+    // frame to it, the way the poster wall un-crops a poster.
+    setTrueRatios(root = document) {
+        root.querySelectorAll('.band-photo-grid .photo-card img').forEach((img) => {
+            const apply = () => {
+                if (!img.naturalWidth || !img.naturalHeight) return;
+                const card = img.closest('.photo-card');
+                if (card) card.style.setProperty('--true-ar', img.naturalWidth / img.naturalHeight);
+            };
+            if (img.complete) apply();
+            else img.addEventListener('load', apply, { once: true });
+        });
     },
 
     // Logos tucked under the bio, no section header

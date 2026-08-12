@@ -79,26 +79,58 @@ body.press-page main {
     color: var(--text-dark);
 }
 
-/* Band photos use the shared photo-card template (see media.css), laid out at
-   equal height so a wider photo simply takes more width. Per-image "aspect" in
-   press.json sets each frame's ratio. */
+/* Band photos use the shared photo-card template (see media.css), tiled into
+   one solid rectangle: identical cells, no gaps. Every cell being the same
+   shape is what lets the block have square corners, and the cost is that each
+   photograph is cropped to fit it. Hovering pays that back. */
 .band-photo-grid {
-    display: flex;
-    gap: var(--photo-gap);
-    align-items: flex-start;
+    --band-tile-ar: 0.8;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
 }
 
-/* Each card grows by its aspect ratio so the photos fill the row at any width
-   with differing widths but equal heights */
 .band-photo-grid .photo-card {
-    flex: var(--ar, 1) 1 0;
+    position: relative;
+    aspect-ratio: var(--band-tile-ar);
     min-width: 0;
 }
 
+/* Above its neighbours once grown, or it would be cropped by whichever cell
+   happens to paint later. */
+.band-photo-grid .photo-card:hover {
+    z-index: 3;
+}
+
+/* Centred in the cell so growing in either direction spreads both ways rather
+   than shunting the photo off one edge. */
 .band-photo-grid .photo-placeholder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
     width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 5;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    transition: width var(--poster-popout-time) ease-out,
+                height var(--poster-popout-time) ease-out,
+                box-shadow var(--poster-popout-time) ease-out;
+}
+
+/* Grown to the photograph's own ratio, which takes the crop off: whichever side
+   it needs gets bigger and the other holds at cell size, so nothing is ever
+   squeezed. --true-ar is measured off the decoded image by PressComponent;
+   until it lands the fallback is the cell's ratio, so an undecoded photo simply
+   does not grow. Same mechanism as the poster wall. */
+.band-photo-grid .photo-card:hover .photo-placeholder {
+    width: max(100%, calc(var(--true-ar, var(--band-tile-ar)) / var(--band-tile-ar) * 100%));
+    height: max(100%, calc(var(--band-tile-ar) / var(--true-ar, var(--band-tile-ar)) * 100%));
+    box-shadow: 0 var(--poster-glow-offset) var(--poster-glow-blur) var(--poster-glow-spread) var(--glow-raised);
+}
+
+/* Cancels the scale the photo grid uses; here the frame itself grows, and a
+   scale on top would re-crop what the growth just revealed. */
+.band-photo-grid .photo-placeholder:hover {
+    transform: translate(-50%, -50%);
 }
 
 /* Tablet: bio reflows above the band photos (photos stay side by side) */
@@ -109,16 +141,24 @@ body.press-page main {
     }
 }
 
-/* Mobile: stack the band photos too */
+/* Mobile: one column, and no hover to un-crop with, so each photo keeps its
+   own shape rather than being tiled and cropped. */
 @media (max-width: 768px) {
     .band-photo-grid {
-        flex-direction: column;
-        align-items: stretch;
+        grid-template-columns: 1fr;
     }
 
-    /* Stacked: each photo is full width, so don't grow by aspect ratio */
     .band-photo-grid .photo-card {
-        flex: 0 0 auto;
+        aspect-ratio: auto;
+    }
+
+    .band-photo-grid .photo-placeholder {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        height: auto;
+        aspect-ratio: var(--true-ar, var(--band-tile-ar));
     }
 
     .press-bio p {
