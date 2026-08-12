@@ -31,6 +31,15 @@ main > section:first-child {
     padding-top: calc(var(--header-height) + 50px);
 }
 
+/* The poster wall's arrow track is absolutely positioned and deliberately runs
+   200vh past the wall, so the sticky arrow never reaches its own bottom edge.
+   Absolute boxes still count toward scroll height, which left the page running
+   that far past the footer. Clip contains it without creating a scroll
+   container, so the arrow still sticks to the viewport. */
+main {
+    overflow: clip;
+}
+
 @media (max-width: 768px) {
     html {
         scroll-padding-top: calc(var(--nav-height-mobile) + 20px);
