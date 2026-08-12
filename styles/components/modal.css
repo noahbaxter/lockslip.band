@@ -144,12 +144,14 @@
 }
 
 /* Image - Base shared styles */
+/* Unframed on a dimmed backdrop: the art carries its own edge, and the shadow
+   below is what lifts it off the overlay. */
 .poster-modal-image,
 .photo-modal-image {
     max-height: 80vh;
     object-fit: contain;
-    border: 3px solid var(--border-color);
-    box-shadow: 0 0 30px var(--accent-glow-strong);
+    border: none;
+    box-shadow: 0 0 40px 10px var(--glow-raised);
 }
 
 /* Image width overrides */
@@ -168,10 +170,10 @@
     max-height: 70vh;
     padding: 2rem;
     background: var(--scrim-heavy);
-    border: 1px solid var(--border-color);
+    border: var(--hairline-border);
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: var(--accent-color) var(--scrim);
+    scrollbar-color: var(--surface-raised) var(--scrim);
 }
 
 /* Info width overrides */
@@ -269,7 +271,7 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     text-align: center;
-    border-top: 1px solid var(--border-color);
+    border-top: var(--hairline-border);
     padding-top: 1rem;
 }
 
@@ -329,7 +331,6 @@
 .photo-modal-photographer a:hover {
     color: var(--secondary-color);
     text-decoration: underline;
-    box-shadow: 0 0 10px var(--accent-color);
 }
 
 /* ==================== RESPONSIVE: DESKTOP ==================== */
@@ -397,7 +398,7 @@
         max-height: 40vh;
         overflow-y: auto;
         background: var(--scrim-heavy);
-        border: 1px solid var(--border-color);
+        border: var(--hairline-border);
         -webkit-overflow-scrolling: touch;
     }
 

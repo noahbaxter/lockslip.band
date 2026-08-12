@@ -52,7 +52,7 @@ const PressComponent = {
         if (!press) return '';
         return `
             <div class="container">
-                ${UIHelpers.sectionHeader(press.sectionTitle)}
+                <h2>${press.sectionTitle}</h2>
                 <section class="press-intro">
                     <div class="press-intro-left">
                         <div class="press-bio">${this.renderBio(press.bio)}</div>

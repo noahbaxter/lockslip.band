@@ -3,47 +3,56 @@
     margin-bottom: 4rem;
 }
 
-/* Photos Grid */
+/* Photos Grid. Butted together into one mosaic, the way the poster wall is:
+   the photographs are their own edges, so a gap between them only breaks the
+   block up. The video grid below keeps its gap, since those cards carry a title
+   on a grey panel and would otherwise read as part of the same run of images. */
 .photo-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--photo-gap);
+    gap: 0;
     margin-bottom: 3rem;
 }
 
 .photo-card {
     text-align: center;
     cursor: pointer;
+    /* Raised on hover, so the popped photo covers its neighbours rather than
+       being clipped by whichever happens to paint later. */
+    position: relative;
 }
 
+.photo-card:hover {
+    z-index: 2;
+}
+
+/* Unframed, like the poster wall: the photograph is its own edge. */
 .photo-placeholder {
     width: 100%;
     height: 250px;
-    background: linear-gradient(45deg, var(--border-color), var(--section-alt));
+    background: linear-gradient(45deg, var(--surface-raised), var(--section-alt));
     border-radius: 0;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    border: 1px solid var(--border-color);
-    transition: var(--standard-transition);
+    border: none;
+    /* Same pop and timing as the poster wall, so images behave identically
+       wherever they appear rather than each grid having its own feel. */
+    transition: transform var(--poster-popout-time) ease-out,
+                box-shadow var(--poster-popout-time) ease-out;
 }
 
 .photo-placeholder:hover {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 15px var(--accent-glow);
+    transform: scale(1.04);
+    box-shadow: 0 var(--poster-glow-offset) var(--poster-glow-blur) var(--poster-glow-spread) var(--glow-raised);
 }
 
 .photo-placeholder img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: var(--transition-transform-slow);
-}
-
-.photo-placeholder:hover img {
-    transform: scale(1.02);
 }
 
 /* Hover download icon (bottom-right): red square by default, white when the icon itself is hovered */
@@ -89,14 +98,13 @@
 }
 
 .video-card {
-    border: 1px solid var(--border-color);
+    border: none;
     transition: var(--standard-transition);
-    background: var(--scrim);
+    background: var(--surface-card);
 }
 
 .video-card:hover {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 15px var(--accent-glow);
+    box-shadow: 0 0 20px 4px var(--glow-raised);
 }
 
 .video-thumbnail {
@@ -104,7 +112,7 @@
     width: 100%;
     height: 200px;
     overflow: hidden;
-    background: linear-gradient(45deg, var(--border-color), var(--section-alt));
+    background: linear-gradient(45deg, var(--surface-raised), var(--section-alt));
 }
 
 .video-thumbnail a {
@@ -177,14 +185,13 @@
 
 .logo-card {
     text-align: center;
-    border: 1px solid var(--border-color);
+    border: none;
     transition: var(--standard-transition);
-    background: var(--scrim);
+    background: var(--surface-card);
 }
 
 .logo-card:hover {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 15px var(--accent-glow);
+    box-shadow: 0 0 20px 4px var(--glow-raised);
 }
 
 .logo-preview {
