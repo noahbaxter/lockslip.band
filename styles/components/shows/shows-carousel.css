@@ -90,6 +90,12 @@
    both halves of the section read as one system. Not sticky: unlike the wall,
    nothing scrolls under it. Overrides the section's own h3 treatment, which is
    sized for a standalone heading. */
+/* The booking line below sets its own spacing; leaving a margin here would
+   collapse with it and win. */
+.upcoming-section {
+    margin-bottom: 0;
+}
+
 .upcoming-section .shows-line {
     display: flex;
     align-items: center;

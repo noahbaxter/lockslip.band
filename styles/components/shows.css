@@ -499,11 +499,14 @@
     margin-right: -1rem;
 }
 
+/* Sits between the carousel and the wall, and owns both gaps: the section above
+   gives up its bottom margin (below) so these two don't collapse together and
+   leave the top gap stuck at whatever that margin happened to be. One value
+   here now moves the line evenly. */
 .booking-info {
     text-align: center;
     color: var(--text-dark);
-    margin-top: 0rem;
-    margin-bottom: 3rem;
+    margin: 2rem 0;
     font-size: 0.9rem;
     font-weight: 600;
     text-transform: uppercase;

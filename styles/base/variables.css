@@ -68,9 +68,10 @@
     /* Poster Grid Variables */
     --poster-grid-columns-desktop: 5;
     --poster-grid-columns-mobile: 2;
-    /* The year label's slot, which is what decides where the rule starts. Fixed:
-       "2026" needs the same room at every width. */
-    --poster-rail-width: 3.5rem;
+    /* The year label's slot, which is what decides where the readout and rule
+       start. Fixed: "2026" needs the same room at every width, and a little
+       over its own width so the year isn't touching the date beside it. */
+    --poster-rail-width: 4rem;
     --poster-rail-gap: 0.6rem;
     /* Arrows step up with the window in fixed sizes (see the steps at the foot
        of this file): big enough to hit on a wide screen, small enough not to
