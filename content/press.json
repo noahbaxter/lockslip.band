@@ -16,15 +16,15 @@
         "objectPosition": "center 100%"
       },
       {
-        "image": "assets/band-photos/lockslip-press-2.jpg",
-        "hires": "assets/band-photos/hires/lockslip-press-2.jpg",
-        "aspect": "3 / 2"
-      },
-      {
         "image": "assets/band-photos/lockslip-press-3.jpg",
         "hires": "assets/band-photos/hires/lockslip-press-3.jpg",
         "aspect": "2 / 3",
         "credit": "Harper King"
+      },
+      {
+        "image": "assets/band-photos/lockslip-press-2.jpg",
+        "hires": "assets/band-photos/hires/lockslip-press-2.jpg",
+        "aspect": "3 / 2"
       },
       {
         "image": "assets/band-photos/lockslip-press-4.jpg",
