@@ -1,0 +1,35 @@
+/* Section Header
+   A red label with a rule running out to the edge, the same line the shows
+   section already uses for UPCOMING and for the poster wall's year. Replaces
+   the big centered white h2 so every section is introduced the same way.
+   Metrics come from the same --poster-year-* variables, so if that line moves
+   these move with it. */
+.section-line {
+    display: flex;
+    align-items: center;
+    gap: var(--poster-rail-gap);
+    height: var(--poster-year-head-h);
+    padding: var(--poster-year-pad-top) 0 0;
+    margin: 0 0 2rem;
+    /* Overrides the standalone-heading h2 treatment in typography.css. */
+    font-size: var(--text-label);
+    line-height: var(--poster-year-line-h);
+    text-align: left;
+    letter-spacing: normal;
+}
+
+.section-line-label {
+    flex: none;
+    font-family: 'Arial Black', Helvetica, Arial, sans-serif;
+    font-size: var(--text-label);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-color);
+}
+
+.section-line-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--border-color-faded);
+}

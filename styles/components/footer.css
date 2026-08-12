@@ -10,7 +10,7 @@ footer {
 
 .footer-content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(15.625rem, 1fr));
     gap: 3rem;
     padding: 4rem 0 2rem 0;
 }
@@ -21,7 +21,7 @@ footer {
     font-size: 1.3rem;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: var(--track);
 }
 
 .footer-section p {
@@ -39,7 +39,7 @@ footer {
 
 .footer-section a:hover {
     color: var(--secondary-color);
-    text-shadow: 0 0 5px var(--accent-color);
+    text-shadow: 0 0 0.3125rem var(--accent-color);
 }
 
 .social-links {
@@ -58,7 +58,7 @@ footer {
 
 .newsletter-signup input {
     flex: 1;
-    padding: 12px 15px;
+    padding: 0.75rem 0.9375rem;
     border: 1px solid var(--border-color);
     border-radius: 0;
     background: var(--section-alt);
@@ -69,7 +69,7 @@ footer {
 .newsletter-signup input:focus {
     outline: none;
     border-color: var(--accent-color);
-    box-shadow: 0 0 5px var(--accent-glow-strong);
+    box-shadow: 0 0 0.3125rem var(--accent-glow-strong);
 }
 
 .footer-bottom {

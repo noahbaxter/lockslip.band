@@ -1,0 +1,256 @@
+/* News Component */
+
+/* Banner: the announcement graphics overlapping like a fanned stack. The panel
+   width is fixed, so the panels hold one height at every viewport, and a
+   narrowing column is absorbed by the panels sliding further over each other
+   rather than by all of them getting shorter.
+     overlap = (column - count * panel) / (count - 1)
+   which is the algebra for n fixed-width panels spanning the column across n-1
+   seams. It stays negative, and so an overlap rather than a gap, as long as
+   count * --news-panel-w exceeds the column, which the 75rem container cap
+   guarantees for any announcement of three images or more. */
+.news-banner {
+    --news-panel-w: 17.5rem;
+    display: flex;
+}
+
+.news-banner-image {
+    flex: 0 0 var(--news-panel-w);
+    display: block;
+    overflow: hidden;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font: inherit;
+    /* Descending, so the fan runs left over right: panel 1 sits above 2, 2
+       above 3, and so on. Source order alone would paint the reverse. */
+    position: relative;
+    z-index: calc(var(--news-banner-count) - var(--news-banner-index));
+    transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+}
+
+.news-banner-image + .news-banner-image {
+    margin-left: calc(
+        (100% - var(--news-banner-count) * var(--news-panel-w))
+        / (var(--news-banner-count) - 1)
+    );
+}
+
+.news-banner-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+}
+
+/* Hover pulls the panel clear of the stack so the covered part is readable.
+   The shadow is what separates it from whatever it is now sitting on top of. */
+.news-banner-image:hover,
+.news-banner-image:focus-visible {
+    z-index: calc(var(--news-banner-count) + 1);
+    transform: scale(1.04);
+    box-shadow: var(--shadow-raise-md);
+}
+
+/* Info line in the shared photo lightbox */
+.news-modal-headline {
+    font-weight: var(--show-font-weight-extra-bold);
+    color: var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: var(--track);
+    margin-bottom: 0.5rem;
+}
+
+/* Same lifted surface as a release card, so a post reads as one object with the
+   banner sitting flush along its top edge. */
+.news-featured {
+    background: var(--surface-card);
+}
+
+.news-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 1rem;
+    padding: 2.5rem 2rem;
+}
+
+/* Matches .release-date so dates read the same across the site. */
+.news-date,
+.news-archive-date {
+    color: var(--text-dark);
+    font-size: var(--text-base);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--track);
+    white-space: nowrap;
+}
+
+.news-featured h3 {
+    margin: 0;
+}
+
+/* Roughly half the column at full expand, as a fixed measure rather than a
+   fraction: the line length that reads well there keeps reading well as the
+   column narrows, and it stops forcing a half-width sliver on a phone. */
+.news-body {
+    max-width: 36.25rem;
+    margin: 0;
+}
+
+.news-body p {
+    color: var(--text-dark);
+    line-height: 1.6;
+    margin: 0 0 1rem;
+}
+
+.news-body p:last-child {
+    margin-bottom: 0;
+}
+
+/* The label's own words, kept in their lowercase, marked as theirs. */
+.news-body-quoted {
+    /* Accent, not a neutral hairline: this bar marks whose words these are, so
+       it is doing the same job as a section label rather than boxing content. */
+    border-left: var(--standard-border);
+    padding-left: 1.5rem;
+    text-align: left;
+}
+
+.news-body-quoted cite {
+    display: block;
+    margin-top: 1rem;
+    color: var(--secondary-color);
+    font-style: normal;
+    font-weight: var(--show-font-weight-bold);
+    font-size: var(--text-sm);
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+}
+
+.news-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.news-links .social-icon {
+    width: 2.1875rem;
+    height: 2.1875rem;
+}
+
+/* The B is a bare letterform, so it's cropped tight and overruns its box a
+   little to read at the same size as the glyphs beside it, which sit inset. */
+.news-links .social-icon.bleakhouse {
+    overflow: visible;
+}
+
+.news-links .social-icon.bleakhouse img {
+    width: 112%;
+    height: 112%;
+    margin: -6%;
+    object-fit: contain;
+}
+
+.news-links .social-icon.bleakhouse:hover img {
+    filter: brightness(0) saturate(100%) invert(11%) sepia(100%) saturate(7378%) hue-rotate(4deg) brightness(97%) contrast(118%);
+}
+
+.news-archive {
+    margin-top: 4rem;
+    border-top: var(--standard-border);
+    padding-top: 2rem;
+}
+
+.news-archive h4 {
+    margin-bottom: 1.5rem;
+}
+
+.news-archive ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.news-archive-item {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--surface-light);
+}
+
+.news-archive-date {
+    flex: 0 0 11rem;
+}
+
+.news-archive-headline {
+    color: var(--text-color);
+    font-weight: var(--show-font-weight-bold);
+    letter-spacing: var(--track);
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    /* No overlap at phone width: there is no hover to pull a panel forward, so
+       the strip scrolls sideways with each panel whole and snapped. */
+    .news-banner {
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .news-banner::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Keeps --news-panel-w rather than sizing off the viewport, so the panels
+       are exactly as tall here as they are above the breakpoint and nothing
+       resizes at the moment the row stops overlapping and starts scrolling.
+
+       Panels settle centred, except the two on the ends: centring those would
+       ask the strip to scroll past its own start or finish, which it cannot do,
+       so they pin to their own edge and leave no dead space beside them. */
+    .news-banner-image {
+        scroll-snap-align: center;
+    }
+
+    .news-banner-image:first-child {
+        scroll-snap-align: start;
+    }
+
+    .news-banner-image:last-child {
+        scroll-snap-align: end;
+    }
+
+    .news-banner-image + .news-banner-image {
+        margin-left: 0;
+    }
+
+    .news-banner-image:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+    .news-content {
+        padding: 2rem 1.25rem;
+    }
+
+    .news-body-quoted {
+        padding-left: 1rem;
+    }
+
+    .news-archive-item {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .news-archive-date {
+        flex: none;
+    }
+}

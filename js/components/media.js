@@ -71,7 +71,7 @@ const MediaComponent = {
 
         return `
             <div class="media-section" id="photos">
-                <h3>${photos.sectionTitle}</h3>
+                ${UIHelpers.sectionHeader(photos.sectionTitle)}
                 <div class="photo-grid">
                     ${photos.gallery.map((photo, index) => this.renderPhotoCard(photo, index)).join('')}
                 </div>
@@ -82,7 +82,7 @@ const MediaComponent = {
     renderVideosSection(videos) {
         return `
             <div class="media-section" id="videos">
-                <h3>${videos.sectionTitle}</h3>
+                ${UIHelpers.sectionHeader(videos.sectionTitle)}
                 <div class="video-grid">
                     ${videos.items.map(video => this.renderVideoCard(video)).join('')}
                 </div>
@@ -93,7 +93,7 @@ const MediaComponent = {
     renderLogosSection(logos) {
         return `
             <div class="media-section" id="logos">
-                <h3>${logos.sectionTitle}</h3>
+                ${UIHelpers.sectionHeader(logos.sectionTitle)}
                 <div class="logos-grid">
                     ${logos.items.filter(logo => !logo.hidden).map(logo => this.renderLogoCard(logo)).join('')}
                 </div>
@@ -106,7 +106,7 @@ const MediaComponent = {
         
         return `
             <div class="container">
-                <h2>${media.sectionTitle}</h2>
+                ${UIHelpers.sectionHeader(media.sectionTitle)}
                 ${this.renderPhotosSection(media.photos)}
                 ${this.renderVideosSection(media.videos)}
                 ${this.renderLogosSection(media.logos)}

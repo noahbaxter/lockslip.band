@@ -3,47 +3,56 @@
     margin-bottom: 4rem;
 }
 
-/* Photos Grid */
+/* Photos Grid. Butted together into one mosaic, the way the poster wall is:
+   the photographs are their own edges, so a gap between them only breaks the
+   block up. The video grid below keeps its gap, since those cards carry a title
+   on a grey panel and would otherwise read as part of the same run of images. */
 .photo-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--photo-gap);
+    grid-template-columns: repeat(auto-fit, minmax(18.75rem, 1fr));
+    gap: 0;
     margin-bottom: 3rem;
 }
 
 .photo-card {
     text-align: center;
     cursor: pointer;
+    /* Raised on hover, so the popped photo covers its neighbours rather than
+       being clipped by whichever happens to paint later. */
+    position: relative;
 }
 
+.photo-card:hover {
+    z-index: 2;
+}
+
+/* Unframed, like the poster wall: the photograph is its own edge. */
 .photo-placeholder {
     width: 100%;
-    height: 250px;
-    background: linear-gradient(45deg, var(--border-color), var(--section-alt));
+    height: 15.625rem;
+    background: linear-gradient(45deg, var(--surface-raised), var(--section-alt));
     border-radius: 0;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    border: 1px solid var(--border-color);
-    transition: var(--standard-transition);
+    border: none;
+    /* Same pop and timing as the poster wall, so images behave identically
+       wherever they appear rather than each grid having its own feel. */
+    transition: transform var(--poster-popout-time) ease-out,
+                box-shadow var(--poster-popout-time) ease-out;
 }
 
 .photo-placeholder:hover {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 15px var(--accent-glow);
+    transform: scale(1.04);
+    box-shadow: 0 var(--poster-glow-offset) var(--poster-glow-blur) var(--poster-glow-spread) var(--glow-raised);
 }
 
 .photo-placeholder img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: var(--transition-transform-slow);
-}
-
-.photo-placeholder:hover img {
-    transform: scale(1.02);
 }
 
 /* Hover download icon (bottom-right): red square by default, white when the icon itself is hovered */
@@ -51,8 +60,8 @@
     position: absolute;
     bottom: 0;
     right: 0;
-    width: 38px;
-    height: 38px;
+    width: 2.375rem;
+    height: 2.375rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -60,7 +69,7 @@
     color: var(--secondary-color);
     border-radius: 0;
     opacity: 0;
-    transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+    transition: opacity var(--t-fast) var(--ease), background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
     z-index: 2;
 }
 
@@ -75,36 +84,35 @@
 }
 
 .photo-download svg {
-    width: 16px;
-    height: 16px;
+    width: 1rem;
+    height: 1rem;
     display: block;
 }
 
 /* Videos Grid */
 .video-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(18.75rem, 1fr));
     gap: var(--photo-gap);
     margin-bottom: 3rem;
 }
 
 .video-card {
-    border: 1px solid var(--border-color);
+    border: none;
     transition: var(--standard-transition);
-    background: var(--scrim);
+    background: var(--surface-card);
 }
 
 .video-card:hover {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 15px var(--accent-glow);
+    box-shadow: var(--shadow-raise-sm);
 }
 
 .video-thumbnail {
     position: relative;
     width: 100%;
-    height: 200px;
+    height: 12.5rem;
     overflow: hidden;
-    background: linear-gradient(45deg, var(--border-color), var(--section-alt));
+    background: linear-gradient(45deg, var(--surface-raised), var(--section-alt));
 }
 
 .video-thumbnail a {
@@ -119,11 +127,16 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: var(--transition-transform-slow);
+    /* Same curve and distance as the photo grid and the poster wall. These ran
+       at 0.3s and 1.05 while the photos ran at 0.22s and 1.04, which is what
+       made them feel like a different control. Opacity is repeated from
+       .img-fade because this rule replaces it rather than adding to it. */
+    transition: transform var(--poster-popout-time) ease-out,
+                opacity var(--t-slow) ease-in-out;
 }
 
 .video-thumbnail:hover img {
-    transform: scale(1.05);
+    transform: scale(1.04);
 }
 
 .video-play-overlay {
@@ -131,15 +144,15 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(255, 0, 0, 0.8);
+    background: var(--accent-a80);
     color: var(--secondary-color);
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    border-radius: var(--radius-pill);
+    width: 3.75rem;
+    height: 3.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: var(--text-3xl);
     transition: var(--standard-transition);
 }
 
@@ -154,43 +167,42 @@
 
 .video-info h4 {
     color: var(--secondary-color);
-    font-size: 1.1rem;
+    font-size: var(--text-xl);
     font-weight: 700;
     margin-bottom: 0.5rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: var(--track);
 }
 
 .video-info p {
     color: var(--text-dark);
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     line-height: 1.5;
 }
 
 /* Logos Grid */
 .logos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 260px));
+    grid-template-columns: repeat(auto-fit, minmax(12.5rem, 16.25rem));
     gap: 2rem;
     justify-content: start;
 }
 
 .logo-card {
     text-align: center;
-    border: 1px solid var(--border-color);
+    border: none;
     transition: var(--standard-transition);
-    background: var(--scrim);
+    background: var(--surface-card);
 }
 
 .logo-card:hover {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 15px var(--accent-glow);
+    box-shadow: var(--shadow-raise-sm);
 }
 
 .logo-preview {
     position: relative;
     width: 100%;
-    height: 150px;
+    height: 9.375rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -202,9 +214,10 @@
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    transition: var(--transition-transform);
+    transition: transform var(--poster-popout-time) ease-out,
+                opacity var(--t-slow) ease-in-out;
 }
 
 .logo-card:hover .logo-preview img {
-    transform: scale(1.05);
+    transform: scale(1.04);
 }

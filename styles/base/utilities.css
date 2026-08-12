@@ -8,7 +8,7 @@
 
 .card-base:hover {
     border-color: var(--accent-color);
-    box-shadow: 0 0 15px var(--accent-glow);
+    box-shadow: var(--glow-accent);
 }
 
 /* Common hover effects for interactive elements */
@@ -19,16 +19,16 @@
 
 .interactive:hover {
     color: var(--accent-color);
-    text-shadow: 0 0 10px var(--accent-color);
+    text-shadow: 0 0 0.625rem var(--accent-color);
 }
 
 /* Common box shadows */
 .glow-hover:hover {
-    box-shadow: 0 0 15px var(--accent-glow);
+    box-shadow: var(--glow-accent);
 }
 
 .glow-hover-strong:hover {
-    box-shadow: 0 0 15px var(--accent-glow-strong);
+    box-shadow: var(--glow-accent-strong);
 }
 
 /* Common transforms */
@@ -42,11 +42,11 @@
 }
 
 .letter-spaced {
-    letter-spacing: 1px;
+    letter-spacing: var(--track);
 }
 
 .letter-spaced-wide {
-    letter-spacing: 2px;
+    letter-spacing: var(--track-wide);
 }
 
 /* Positioning utilities */
@@ -102,6 +102,6 @@
 
 .grid-auto-fit {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(11.25rem, 1fr));
     gap: 1rem;
 }

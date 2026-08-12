@@ -11,7 +11,8 @@ const PlatformIcons = {
         facebook: 'assets/social/facebook.svg',
         tiktok: 'assets/social/tiktok.svg',
         email: 'assets/social/email.svg',
-        bandsintown: 'assets/social/bandsintown.svg'
+        bandsintown: 'assets/social/bandsintown.svg',
+        bleakhouse: 'assets/social/bleakhouse.png'
     },
 
     socialIconMap: {

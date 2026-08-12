@@ -30,8 +30,12 @@ const ImageLoader = {
         placeholder.className = 'img-placeholder';
         img.parentElement.insertBefore(placeholder, img);
 
+        // The fade is a class, not an inline transition. Inline wins over every
+        // stylesheet, so setting it here used to wipe out any transition a
+        // component had declared on the same image, which is why hover zooms on
+        // the video and logo thumbnails snapped instead of easing.
         img.style.opacity = '0';
-        img.style.transition = 'opacity 0.3s ease-in-out';
+        img.classList.add('img-fade');
 
         const reveal = () => {
             img.style.opacity = '1';

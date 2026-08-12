@@ -32,7 +32,6 @@ const ShowsComponent = {
 
         const html = `
             <div class="container">
-                <h2>${shows.sectionTitle}</h2>
                 ${upcomingContent}
                 <p class="booking-info">${this.renderBookingInfo(shows, config)}</p>
                 ${pastContent}

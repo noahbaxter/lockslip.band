@@ -1,22 +1,48 @@
 /* Press Kit Page */
 
+/* No top padding: the first section already clears the fixed header on its own
+   (see layout.css), and adding it here stacked a second header's worth of empty
+   band above the title. */
 body.press-page main {
-    padding-top: 120px;
     padding-bottom: 4rem;
+}
+
+/* The page title, not a section heading, so it does not need a section
+   heading's drop beneath it. */
+body.press-page #press > .container > h2 {
+    margin-bottom: 2rem;
 }
 
 .press-section {
     margin-bottom: 3.5rem;
 }
 
-/* Intro: bio on the left, band photos on the right. Proportional columns so
-   the photos scale down with the viewport instead of crushing the bio. */
+/* Intro: one grid of six equal cells, three across. The bio takes the top-left
+   two and the four photos fill the rest, so they wrap it in an L and the block
+   still squares off. A short bio then reads as a deliberate notch in the tiling
+   rather than as a column with nothing under it. */
 .press-intro {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
-    gap: 2.5rem;
-    align-items: start;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    /* It is a <section>, so it inherits the global 50px block padding on top of
+       the page section that already has its own. Nothing sits in that band. */
+    padding: 0;
     margin-bottom: 3.5rem;
+}
+
+/* The photo cards become cells of the grid above rather than of a grid of their
+   own, which is what lets them flow around the bio. */
+.band-photo-grid {
+    display: contents;
+}
+
+.press-intro-left {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+    /* Room off the edges the photos meet, so the text is not flush to them. */
+    padding: 0 2.5rem 2.5rem 0;
 }
 
 .press-bio {
@@ -29,7 +55,7 @@ body.press-page main {
 .press-logos {
     display: flex;
     width: 100%;
-    max-width: 1000px;
+    max-width: 62.5rem;
     align-items: center;
     justify-content: space-around;
     gap: 4rem;
@@ -45,7 +71,7 @@ body.press-page main {
 }
 
 .press-logos .logo-preview {
-    height: 180px;
+    height: 11.25rem;
     width: auto;
     padding: 0;
     background: none;
@@ -58,19 +84,19 @@ body.press-page main {
 }
 
 .press-logos .photo-download {
-    width: 26px;
-    height: 26px;
+    width: 1.625rem;
+    height: 1.625rem;
 }
 
 .press-logos .photo-download svg {
-    width: 13px;
-    height: 13px;
+    width: 0.8125rem;
+    height: 0.8125rem;
 }
 
 .press-bio p {
     color: var(--text-light);
     line-height: 1.7;
-    font-size: 1.05rem;
+    font-size: var(--text-label);
     margin: 0 0 1rem;
 }
 
@@ -79,49 +105,101 @@ body.press-page main {
     color: var(--text-dark);
 }
 
-/* Band photos use the shared photo-card template (see media.css), laid out at
-   equal height so a wider photo simply takes more width. Per-image "aspect" in
-   press.json sets each frame's ratio. */
-.band-photo-grid {
-    display: flex;
-    gap: var(--photo-gap);
-    align-items: flex-start;
+/* Band photos use the shared photo-card template (see media.css), tiled into
+   one solid rectangle: identical cells, no gaps. Every cell being the same
+   shape is what lets the block have square corners, and the cost is that each
+   photograph is cropped to fit it. Hovering pays that back. */
+/* Square rather than 4:5. Three tall cells across put the block near a full
+   screen high, most of it black beside a three-line bio; square holds the
+   rectangle and the L while taking ~12.5rem off the height. The extra crop it
+   costs each portrait is given back on hover. */
+.press-intro {
+    --band-tile-ar: 1;
 }
 
-/* Each card grows by its aspect ratio so the photos fill the row at any width
-   with differing widths but equal heights */
 .band-photo-grid .photo-card {
-    flex: var(--ar, 1) 1 0;
+    position: relative;
+    aspect-ratio: var(--band-tile-ar);
     min-width: 0;
 }
 
-.band-photo-grid .photo-placeholder {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 5;
+/* Above its neighbours once grown, or it would be cropped by whichever cell
+   happens to paint later. */
+.band-photo-grid .photo-card:hover {
+    z-index: 3;
 }
 
-/* Tablet: bio reflows above the band photos (photos stay side by side) */
+/* Centred in the cell so growing in either direction spreads both ways rather
+   than shunting the photo off one edge. */
+.band-photo-grid .photo-placeholder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    transition: width var(--poster-popout-time) ease-out,
+                height var(--poster-popout-time) ease-out,
+                transform var(--poster-popout-time) ease-out,
+                box-shadow var(--poster-popout-time) ease-out;
+}
+
+/* Grown to the photograph's own ratio, which takes the crop off: whichever side
+   it needs gets bigger and the other holds at cell size, so nothing is ever
+   squeezed. --true-ar is measured off the decoded image by PressComponent;
+   until it lands the fallback is the cell's ratio, so an undecoded photo simply
+   does not grow. Same mechanism as the poster wall. */
+.band-photo-grid .photo-card:hover .photo-placeholder {
+    width: max(100%, calc(var(--true-ar, var(--band-tile-ar)) / var(--band-tile-ar) * 100%));
+    height: max(100%, calc(var(--band-tile-ar) / var(--true-ar, var(--band-tile-ar)) * 100%));
+    box-shadow: 0 var(--poster-glow-offset) var(--poster-glow-blur) var(--poster-glow-spread) var(--glow-raised);
+}
+
+/* Pops the same distance as every other image on the site. It rides on top of
+   the growth above without re-cropping anything: once the frame matches the
+   photograph, scaling both together only enlarges. The translate has to be
+   repeated or the frame would jump out of its cell. */
+.band-photo-grid .photo-placeholder:hover {
+    transform: translate(-50%, -50%) scale(1.04);
+}
+
+/* Tablet: two across, bio spanning the full first row. Still an L, just a
+   shallower one, and the cells stay big enough to read. */
 @media (max-width: 1024px) {
     .press-intro {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .press-intro-left {
+        padding: 0 0 1.5rem;
     }
 }
 
-/* Mobile: stack the band photos too */
+/* Mobile: one column, and no hover to un-crop with, so each photo keeps its
+   own shape rather than being tiled and cropped. */
 @media (max-width: 768px) {
-    .band-photo-grid {
-        flex-direction: column;
-        align-items: stretch;
+    .press-intro {
+        grid-template-columns: 1fr;
     }
 
-    /* Stacked: each photo is full width, so don't grow by aspect ratio */
+    .press-intro-left {
+        grid-column: auto;
+    }
+
     .band-photo-grid .photo-card {
-        flex: 0 0 auto;
+        aspect-ratio: auto;
+    }
+
+    .band-photo-grid .photo-placeholder {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        height: auto;
+        aspect-ratio: var(--true-ar, var(--band-tile-ar));
     }
 
     .press-bio p {
-        font-size: 1rem;
+        font-size: var(--text-lg);
     }
 }

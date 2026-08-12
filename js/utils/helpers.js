@@ -9,29 +9,10 @@ class UIHelpers {
         }
     }
 
-    // Setup hero bio fade animation on scroll
-    static setupHeroBioFade() {
-        const heroBioOverlay = document.querySelector('.hero-bio-overlay');
-        if (!heroBioOverlay) return;
-
-        const handleScroll = () => {
-            const scrollY = window.scrollY;
-            const windowHeight = window.innerHeight;
-            const fadeStart = windowHeight * 0.1; // Start fading after 10% of viewport height
-            const fadeEnd = windowHeight * 0.6;   // Completely faded by 60% of viewport height
-
-            if (scrollY <= fadeStart) {
-                heroBioOverlay.style.opacity = '1';
-            } else if (scrollY >= fadeEnd) {
-                heroBioOverlay.style.opacity = '0';
-            } else {
-                const fadeProgress = (scrollY - fadeStart) / (fadeEnd - fadeStart);
-                heroBioOverlay.style.opacity = (1 - fadeProgress).toString();
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        handleScroll(); // Initialize on load
+    // Section heading: red label plus a rule out to the edge. One place so
+    // every section is introduced identically.
+    static sectionHeader(title) {
+        return `<h2 class="section-line"><span class="section-line-label">${title}</span><i class="section-line-rule"></i></h2>`;
     }
 
     // Setup smooth scrolling with header offset

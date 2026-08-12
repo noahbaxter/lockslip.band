@@ -46,22 +46,22 @@
 .poster-modal-close,
 .photo-modal-close {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 1.25rem;
+    right: 1.25rem;
     background: var(--nav-btn-bg);
     color: var(--nav-btn-color);
     border: var(--nav-btn-border);
-    font-size: 2rem;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+    font-size: var(--text-4xl);
+    width: 3.125rem;
+    height: 3.125rem;
+    border-radius: var(--radius-pill);
     cursor: pointer;
     z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: var(--standard-transition);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(0.25rem);
 }
 
 .poster-modal-close:hover,
@@ -75,11 +75,11 @@
 /* Fullscreen download button (left of the close button) */
 .photo-modal-download {
     position: absolute;
-    top: 20px;
-    right: 80px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+    top: 1.25rem;
+    right: 5rem;
+    width: 3.125rem;
+    height: 3.125rem;
+    border-radius: var(--radius-pill);
     background: var(--accent-color);
     color: var(--secondary-color);
     display: flex;
@@ -88,7 +88,7 @@
     z-index: 2;
     text-decoration: none;
     transition: var(--standard-transition);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(0.25rem);
 }
 
 .photo-modal-download:hover {
@@ -98,8 +98,8 @@
 }
 
 .photo-modal-download svg {
-    width: 22px;
-    height: 22px;
+    width: 1.375rem;
+    height: 1.375rem;
     display: block;
 }
 
@@ -122,7 +122,12 @@
     align-items: center;
     justify-content: center;
     transition: var(--standard-transition);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(0.25rem);
+    /* Centring the flex line box is not the same as centring the chevron. The
+       glyph's ink runs from 1.2rem above the baseline to 1.4px above it, so its
+       middle sits 0.092em below the line box's and the arrow reads low. Half
+       this padding is exactly that offset, taken back off the bottom. */
+    padding-bottom: 0.185em;
 }
 
 .poster-modal-nav:hover,
@@ -135,21 +140,23 @@
 
 .poster-modal-nav.prev,
 .photo-modal-nav.prev {
-    left: 5px;
+    left: 0.3125rem;
 }
 
 .poster-modal-nav.next,
 .photo-modal-nav.next {
-    right: 5px;
+    right: 0.3125rem;
 }
 
 /* Image - Base shared styles */
+/* Unframed on a dimmed backdrop: the art carries its own edge, and the shadow
+   below is what lifts it off the overlay. */
 .poster-modal-image,
 .photo-modal-image {
     max-height: 80vh;
     object-fit: contain;
-    border: 3px solid var(--border-color);
-    box-shadow: 0 0 30px var(--accent-glow-strong);
+    border: none;
+    box-shadow: var(--shadow-raise-lg);
 }
 
 /* Image width overrides */
@@ -168,25 +175,31 @@
     max-height: 70vh;
     padding: 2rem;
     background: var(--scrim-heavy);
-    border: 1px solid var(--border-color);
+    border: var(--hairline-border);
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: var(--accent-color) var(--scrim);
+    scrollbar-color: var(--surface-raised) var(--scrim);
 }
 
 /* Info width overrides */
 .poster-modal-info {
-    max-width: 300px;
+    max-width: 18.75rem;
 }
 
+/* A photo caption is four short lines, so it wants less room and less weight
+   than the poster modal's tracklist. Centred as a block: the counter was
+   already centred and everything above it was not, which read as a misaligned
+   panel rather than two deliberate alignments. */
 .photo-modal-info {
-    max-width: 280px;
+    max-width: 15rem;
+    padding: 1.25rem 1.25rem 1.4rem;
+    text-align: center;
 }
 
 /* Scrollbar styling - shared */
 .poster-modal-info::-webkit-scrollbar,
 .photo-modal-info::-webkit-scrollbar {
-    width: 6px;
+    width: 0.375rem;
 }
 
 .poster-modal-info::-webkit-scrollbar-track,
@@ -197,7 +210,7 @@
 .poster-modal-info::-webkit-scrollbar-thumb,
 .photo-modal-info::-webkit-scrollbar-thumb {
     background: var(--accent-color);
-    border-radius: 3px;
+    border-radius: var(--radius-xs);
 }
 
 /* ==================== SHARED INFO TEXT STYLES ==================== */
@@ -208,17 +221,18 @@
     color: var(--accent-color);
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: var(--track);
     margin-bottom: 1rem;
 }
 
 /* Date size overrides */
 .poster-modal-date {
-    font-size: 1.1rem;
+    font-size: var(--text-xl);
 }
 
 .photo-modal-date {
-    font-size: 1rem;
+    font-size: var(--text-sm);
+    margin-bottom: 0.6rem;
 }
 
 /* Venue - Shared base */
@@ -227,17 +241,17 @@
     font-weight: 800;
     color: var(--secondary-color);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: var(--track);
     margin-bottom: 0.5rem;
 }
 
 /* Venue size overrides */
 .poster-modal-venue {
-    font-size: 1.5rem;
+    font-size: var(--text-3xl);
 }
 
 .photo-modal-venue {
-    font-size: 1.3rem;
+    font-size: var(--text-label);
 }
 
 /* Location - Shared base */
@@ -246,30 +260,30 @@
     color: var(--text-dark);
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: var(--track);
     margin-bottom: 1rem;
 }
 
 /* Location size overrides */
 .poster-modal-location {
-    font-size: 1rem;
+    font-size: var(--text-lg);
 }
 
 .photo-modal-location {
-    font-size: 0.95rem;
-    margin-bottom: 1.5rem;
+    font-size: var(--text-md);
+    margin-bottom: 1rem;
 }
 
 /* Counter - Identical, merged */
 .poster-modal-counter,
 .photo-modal-counter {
     color: var(--text-dark);
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: var(--track);
     text-align: center;
-    border-top: 1px solid var(--border-color);
+    border-top: var(--hairline-border);
     padding-top: 1rem;
 }
 
@@ -279,7 +293,7 @@
     color: var(--text-light);
     line-height: 1.5;
     margin-bottom: 1rem;
-    font-size: 0.9rem;
+    font-size: var(--text-base);
 }
 
 .poster-modal-tickets {
@@ -289,34 +303,34 @@
 
 .poster-modal-tickets-btn {
     display: inline-block;
-    padding: 10px 20px;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
+    padding: 0.625rem 1.25rem;
+    font-size: var(--text-sm);
+    letter-spacing: var(--track);
     background: var(--accent-color);
     color: var(--secondary-color);
     border: none;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     text-decoration: none;
     text-transform: uppercase;
     font-weight: 600;
     transition: var(--standard-transition);
     cursor: pointer;
-    max-width: 140px;
+    max-width: 8.75rem;
 }
 
 .poster-modal-tickets-btn:hover {
     background: var(--secondary-color);
     color: var(--accent-color);
-    box-shadow: 0 0 15px var(--accent-color);
+    box-shadow: var(--glow-accent-hard);
 }
 
 /* ==================== PHOTO-MODAL UNIQUE STYLES ==================== */
 
 .photo-modal-photographer {
     color: var(--text-light);
-    font-size: 0.9rem;
+    font-size: var(--text-sm);
     line-height: 1.5;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .photo-modal-photographer a {
@@ -329,7 +343,6 @@
 .photo-modal-photographer a:hover {
     color: var(--secondary-color);
     text-decoration: underline;
-    box-shadow: 0 0 10px var(--accent-color);
 }
 
 /* ==================== RESPONSIVE: DESKTOP ==================== */
@@ -343,20 +356,20 @@
     .poster-modal-close,
     .photo-modal-close {
         position: fixed;
-        top: 20px;
-        right: 20px;
+        top: 1.25rem;
+        right: 1.25rem;
     }
 
     .poster-modal-nav.prev,
     .photo-modal-nav.prev {
         position: fixed;
-        left: 20px;
+        left: 1.25rem;
     }
 
     .poster-modal-nav.next,
     .photo-modal-nav.next {
         position: fixed;
-        right: 20px;
+        right: 1.25rem;
     }
 }
 
@@ -397,7 +410,7 @@
         max-height: 40vh;
         overflow-y: auto;
         background: var(--scrim-heavy);
-        border: 1px solid var(--border-color);
+        border: var(--hairline-border);
         -webkit-overflow-scrolling: touch;
     }
 
@@ -405,11 +418,11 @@
     .poster-modal-close,
     .photo-modal-close {
         position: fixed;
-        font-size: 1.5rem;
-        width: 40px;
-        height: 40px;
-        top: 10px;
-        right: 10px;
+        font-size: var(--text-3xl);
+        width: 2.5rem;
+        height: 2.5rem;
+        top: 0.625rem;
+        right: 0.625rem;
     }
 
     /* Hide nav buttons on mobile */
@@ -443,7 +456,7 @@
         font-weight: 800;
         color: var(--accent-color) !important;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: var(--track);
         margin-bottom: 0.4rem;
         line-height: 1.2;
     }
@@ -465,7 +478,7 @@
         color: var(--text-light);
         line-height: 1.4;
         margin-bottom: 0.8rem;
-        font-size: 0.7rem;
+        font-size: var(--text-2xs);
     }
 
     .poster-modal-tickets {
@@ -473,15 +486,15 @@
     }
 
     .poster-modal-tickets-btn {
-        padding: 8px 16px;
-        font-size: 0.7rem;
-        letter-spacing: 0.5px;
+        padding: 0.5rem 1rem;
+        font-size: var(--text-2xs);
+        letter-spacing: var(--track-tight);
     }
 
     /* Photo-modal mobile unique */
     .photo-modal-photographer {
         color: var(--text-light);
-        font-size: 0.75rem;
+        font-size: var(--text-xs);
         line-height: 1.4;
         margin-bottom: 1rem;
     }

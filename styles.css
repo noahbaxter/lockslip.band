@@ -13,6 +13,8 @@
 
 /* Component Styles */
 @import url('styles/components/header.css');
+@import url('styles/components/section-header.css');
+@import url('styles/components/news.css');
 @import url('styles/components/releases.css');
 @import url('styles/components/shows.css');
 @import url('styles/components/shows/shows-carousel.css');

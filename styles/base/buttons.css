@@ -1,9 +1,9 @@
 /* Button Component Styles */
 .btn {
     display: inline-block;
-    padding: 10px 20px;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
+    padding: 0.625rem 1.25rem;
+    font-size: var(--text-sm);
+    letter-spacing: var(--track);
     text-decoration: none;
     border-radius: 0;
     font-weight: 700;
@@ -19,7 +19,7 @@
 .btn:hover {
     background: var(--secondary-color);
     color: var(--accent-color);
-    box-shadow: 0 0 15px var(--accent-color);
+    box-shadow: var(--glow-accent-hard);
 }
 
 .btn.primary {
@@ -31,7 +31,7 @@
 .btn.primary:hover {
     background: var(--secondary-color);
     color: var(--accent-color);
-    box-shadow: 0 0 20px var(--accent-color);
+    box-shadow: var(--glow-accent-wide);
     transform: translateY(-1px);
 }
 
@@ -44,7 +44,7 @@
 .btn.secondary:hover {
     background: var(--secondary-color);
     color: var(--primary-color);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 1.25rem rgba(255, 255, 255, 0.3);
 }
 
 /* .btn.small is now same as base .btn - kept for backward compatibility */
@@ -102,7 +102,7 @@
     background: var(--secondary-color);
     color: var(--accent-color);
     border-color: var(--secondary-color);
-    box-shadow: 0 0 15px var(--accent-color);
+    box-shadow: var(--glow-accent-hard);
 }
 
 /* Black button with red border */
@@ -116,12 +116,12 @@
     background: var(--accent-color);
     color: var(--secondary-color);
     border-color: var(--accent-color);
-    box-shadow: 0 0 15px var(--accent-color);
+    box-shadow: var(--glow-accent-hard);
 }
 
 /* Mobile responsive */
 @media (max-width: 768px) {
     .btn {
-        width: 200px;
+        width: 12.5rem;
     }
 }

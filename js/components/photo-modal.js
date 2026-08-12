@@ -1,3 +1,42 @@
+// Caption for any photo lightbox. Every field is optional, so a gallery that
+// carries only a credit (the band shots) and one that carries full show
+// metadata (the live shots) both render through this rather than each modal
+// growing its own version that then drifts.
+function renderPhotoCaption(photo, modal) {
+    const parts = [];
+
+    const date = photo.date && new Date(photo.date);
+    if (date && !isNaN(date)) {
+        const formatted = date.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+        parts.push(`<div class="photo-modal-date">${formatted}</div>`);
+    }
+
+    if (photo.venue) parts.push(`<div class="photo-modal-venue">${photo.venue}</div>`);
+    if (photo.location) parts.push(`<div class="photo-modal-location">${photo.location}</div>`);
+
+    // Live shots name the photographer per image; band shots share one credit
+    // across the set.
+    const name = photo.photographer || photo.credit;
+    const nameUrl = photo.url || photo.creditUrl;
+    if (name) {
+        const credit = nameUrl
+            ? `<a href="${nameUrl}" target="_blank" rel="noopener">${name}</a>`
+            : name;
+        parts.push(`<div class="photo-modal-photographer">Photo by ${credit}</div>`);
+    }
+
+    // Pointless on a gallery of one, where there is nothing to page through.
+    if (modal.data.length > 1) {
+        parts.push(`<p class="photo-modal-counter">${modal.currentIndex + 1} of ${modal.data.length}</p>`);
+    }
+
+    return parts.join('');
+}
+
 // Photo Modal - Uses generic Modal component with photo-specific rendering
 const photoModal = new Modal({
     modalId: 'photoModal',
@@ -9,34 +48,7 @@ const photoModal = new Modal({
 
     getDownload: (photo) => photo.hires || photo.image,
 
-    renderInfo: (photo, modal) => {
-        let html = '';
-
-        // Date
-        const photoDate = new Date(photo.date);
-        const formattedDate = photoDate.toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric'
-        });
-        html += `<div class="photo-modal-date">${formattedDate}</div>`;
-
-        // Venue and location
-        html += `<div class="photo-modal-venue">${photo.venue}</div>`;
-        html += `<div class="photo-modal-location">${photo.location}</div>`;
-
-        // Photographer with attribution link
-        if (photo.url) {
-            html += `<div class="photo-modal-photographer">Photo by <a href="${photo.url}" target="_blank" rel="noopener">${photo.photographer}</a></div>`;
-        } else {
-            html += `<div class="photo-modal-photographer">Photo by ${photo.photographer}</div>`;
-        }
-
-        // Counter
-        html += `<p class="photo-modal-counter">${modal.currentIndex + 1} of ${modal.data.length}</p>`;
-
-        return html;
-    }
+    renderInfo: renderPhotoCaption
 });
 
 // Legacy global functions for backwards compatibility

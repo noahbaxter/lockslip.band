@@ -1,6 +1,5 @@
 {
   "sectionTitle": "PRESS KIT",
-  "heroBio": "Lockslip is an LA based metallic hardcore band composed of vocalist Sara G, guitarists TJ Jaeger and Nick Pinder, bassist Enrique Isla-Eisenacher, and drummer Noah Baxter.",
   "bio": [
     "Lockslip is a metallic hardcore band from Los Angeles. They released their self-titled debut EP in 2024, which blends punishing breakdowns, complex rhythms, and nonstop ferocity.",
     "Lockslip is vocalist Sara G, guitarists TJ Jaeger and Nick Pinder, bassist Enrique Isla-Eisenacher, and drummer Noah Baxter."
@@ -17,9 +16,21 @@
         "objectPosition": "center 100%"
       },
       {
+        "image": "assets/band-photos/lockslip-press-3.jpg",
+        "hires": "assets/band-photos/hires/lockslip-press-3.jpg",
+        "aspect": "2 / 3",
+        "credit": "Harper King"
+      },
+      {
         "image": "assets/band-photos/lockslip-press-2.jpg",
         "hires": "assets/band-photos/hires/lockslip-press-2.jpg",
         "aspect": "3 / 2"
+      },
+      {
+        "image": "assets/band-photos/lockslip-press-4.jpg",
+        "hires": "assets/band-photos/hires/lockslip-press-4.jpg",
+        "aspect": "5 / 7",
+        "credit": "Harper King"
       }
     ]
   }

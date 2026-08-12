@@ -5,6 +5,7 @@ const HeaderComponent = {
     const { basePath = '' } = options;
 
     const navItems = [
+      { label: 'News', href: `${basePath}#news` },
       { label: 'Music', href: `${basePath}#music` },
       { label: 'Shows', href: `${basePath}#shows` },
       { label: 'Store', href: `${basePath}#store` },

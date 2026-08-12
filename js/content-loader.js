@@ -7,18 +7,20 @@ class ContentLoader {
         this.media = null;
         this.extras = null;
         this.press = null;
+        this.news = null;
     }
 
     async loadAllContent() {
         try {
-            const [config, releases, shows, merchandise, media, extras, press] = await Promise.all([
+            const [config, releases, shows, merchandise, media, extras, press, news] = await Promise.all([
                 this.loadJSON('content/site-config.json'),
                 this.loadJSON('content/releases.json'),
                 this.loadJSON('content/shows.json'),
                 this.loadJSON('content/merchandise.json'),
                 this.loadJSON('content/media.json'),
                 this.loadJSON('content/extras.json'),
-                this.loadJSON('content/press.json')
+                this.loadJSON('content/press.json'),
+                this.loadJSON('content/news.json')
             ]);
 
             this.config = config;
@@ -28,10 +30,10 @@ class ContentLoader {
             this.media = media;
             this.extras = extras;
             this.press = press;
+            this.news = news;
 
             this.renderAllContent();
             UIHelpers.updateCopyrightYear();
-            UIHelpers.setupHeroBioFade();
             UIHelpers.setupSmoothScrolling();
             this.handleInitialHash();
             ImageLoader.init();
@@ -50,8 +52,8 @@ class ContentLoader {
     }
 
     renderAllContent() {
-        this.renderHeroBio();
         this.renderStreamingLinks();
+        this.renderNews();
         this.renderReleases();
         this.renderShows();
         this.renderMerchandise();
@@ -63,10 +65,10 @@ class ContentLoader {
     }
 
 
-    renderHeroBio() {
-        const heroBio = document.querySelector('.hero-bio-content');
-        if (heroBio && this.press && this.press.heroBio) {
-            heroBio.innerHTML = `<p>${this.press.heroBio}</p>`;
+    renderNews() {
+        const newsSection = document.getElementById('news');
+        if (newsSection && this.news) {
+            newsSection.innerHTML = NewsComponent.render(this.news);
         }
     }
 
@@ -103,7 +105,7 @@ class ContentLoader {
         const merchSection = document.getElementById('store');
         if (merchSection) {
             // Show loading state
-            merchSection.innerHTML = '<div class="container"><h2>Store</h2><p>Loading merchandise...</p></div>';
+            merchSection.innerHTML = `<div class="container">${UIHelpers.sectionHeader('Store')}<p>Loading merchandise...</p></div>`;
 
             try {
                 const merchHTML = await MerchandiseComponent.renderAsync();
@@ -118,7 +120,7 @@ class ContentLoader {
                 } else {
                     merchSection.innerHTML = `
                         <div class="container">
-                            <h2>Store</h2>
+                            ${UIHelpers.sectionHeader("Store")}
                             <div class="empty-state">
                                 <p>Sorry but no merch items are currently in stock.</p>
                                 <p class="empty-state-sub">Please check back soon!</p>

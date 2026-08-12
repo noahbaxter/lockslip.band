@@ -1,0 +1,36 @@
+{
+  "sectionTitle": "NEWS",
+  "items": [
+    {
+      "id": "bleakhouse-signing",
+      "date": { "month": "August", "day": "12", "year": "2026" },
+      "headline": "LOCKSLIP SIGNS TO BLEAKHOUSE",
+      "body": [
+        "we are very pleased to welcome LOCKSLIP to the team here at bleakhouse",
+        "LOCKSLIP is a metallic hardcore band based out of Los Angeles. with full force, they bring you feedback-laden anguish that is palpable in both recording and performance",
+        "with one self released EP under their belt and shows on the horizon, we are proud to be working with them for future releases"
+      ],
+      "attribution": "Bleakhouse",
+      "images": [
+        "assets/news/2026-08-12-bleakhouse-1.jpg",
+        "assets/news/2026-08-12-bleakhouse-2.jpg",
+        "assets/news/2026-08-12-bleakhouse-3.jpg",
+        "assets/news/2026-08-12-bleakhouse-4.jpg",
+        "assets/news/2026-08-12-bleakhouse-5.jpg"
+      ],
+      "links": [
+        {
+          "name": "Announcement",
+          "url": "https://www.instagram.com/p/Db8fYX5meMC/",
+          "icon": "instagram"
+        },
+        {
+          "name": "Bleakhouse",
+          "url": "https://bleakhouse.co/",
+          "icon": "bleakhouse"
+        }
+      ],
+      "hidden": false
+    }
+  ]
+}
