@@ -100,7 +100,7 @@ const NewsComponent = {
 
         // The banner runs full width, so only the text around it is contained.
         return `
-            <div class="container"><h2>${news.sectionTitle}</h2></div>
+            <div class="container">${UIHelpers.sectionHeader(news.sectionTitle)}</div>
             ${this.renderFeatured(items[0])}
             ${archive ? `<div class="container">${archive}</div>` : ''}
         `;

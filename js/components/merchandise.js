@@ -255,7 +255,7 @@ const MerchandiseComponent = {
         if (merchandise.unavailable) {
             return `
                 <div class="container">
-                    <h2>${merchandise.sectionTitle}</h2>
+                    ${UIHelpers.sectionHeader(merchandise.sectionTitle)}
                     <div class="empty-state">
                         <p>Store is currently unavailable, sorry.</p>
                         <p class="empty-state-sub">Check back soon!</p>
@@ -270,7 +270,7 @@ const MerchandiseComponent = {
         if (displayItems.length === 0) {
             return `
                 <div class="container">
-                    <h2>${merchandise.sectionTitle}</h2>
+                    ${UIHelpers.sectionHeader(merchandise.sectionTitle)}
                     <div class="empty-state">
                         <p>Sorry, no items are in stock at this moment.</p>
                         <p class="empty-state-sub">Check back soon for new releases!</p>
@@ -284,7 +284,7 @@ const MerchandiseComponent = {
         if (shouldUseCollectionCarousel) {
             return `
                 <div class="container">
-                    <h2>${merchandise.sectionTitle}</h2>
+                    ${UIHelpers.sectionHeader(merchandise.sectionTitle)}
                     <div class="merch-collection-carousel">
                         <button class="collection-nav prev desktop-only" onclick="navigateCollectionCarousel(-1)">‹</button>
                         <button class="collection-nav next desktop-only" onclick="navigateCollectionCarousel(1)">›</button>
@@ -303,7 +303,7 @@ const MerchandiseComponent = {
         } else {
             return `
                 <div class="container">
-                    <h2>${merchandise.sectionTitle}</h2>
+                    ${UIHelpers.sectionHeader(merchandise.sectionTitle)}
                     <div class="merch-grid">
                         ${displayItems.map(item => this.renderMerchItem(item)).join('')}
                     </div>

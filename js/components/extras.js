@@ -33,7 +33,7 @@ const ExtrasComponent = {
 
         return `
             <div class="container">
-                <h2>${extras.sectionTitle}</h2>
+                ${UIHelpers.sectionHeader(extras.sectionTitle)}
                 <div class="extras-grid">
                     ${extras.items.map(item => this.renderCard(item)).join('')}
                 </div>

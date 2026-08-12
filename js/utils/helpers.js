@@ -9,6 +9,12 @@ class UIHelpers {
         }
     }
 
+    // Section heading: red label plus a rule out to the edge. One place so
+    // every section is introduced identically.
+    static sectionHeader(title) {
+        return `<h2 class="section-line"><span class="section-line-label">${title}</span><i class="section-line-rule"></i></h2>`;
+    }
+
     // Setup smooth scrolling with header offset
     static setupSmoothScrolling() {
         // Get header height for offset calculation

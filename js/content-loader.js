@@ -105,7 +105,7 @@ class ContentLoader {
         const merchSection = document.getElementById('store');
         if (merchSection) {
             // Show loading state
-            merchSection.innerHTML = '<div class="container"><h2>Store</h2><p>Loading merchandise...</p></div>';
+            merchSection.innerHTML = `<div class="container">${UIHelpers.sectionHeader('Store')}<p>Loading merchandise...</p></div>`;
 
             try {
                 const merchHTML = await MerchandiseComponent.renderAsync();
@@ -120,7 +120,7 @@ class ContentLoader {
                 } else {
                     merchSection.innerHTML = `
                         <div class="container">
-                            <h2>Store</h2>
+                            ${UIHelpers.sectionHeader("Store")}
                             <div class="empty-state">
                                 <p>Sorry but no merch items are currently in stock.</p>
                                 <p class="empty-state-sub">Please check back soon!</p>

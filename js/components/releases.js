@@ -79,7 +79,7 @@ const ReleasesComponent = {
         
         return `
             <div class="container">
-                <h2>MUSIC</h2>
+                ${UIHelpers.sectionHeader("MUSIC")}
                 <div class="releases">
                     <div class="release-list">
                         ${releases.releases.map(release => this.renderRelease(release)).join('')}
