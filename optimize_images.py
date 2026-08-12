@@ -10,6 +10,7 @@ Optimizes show posters and other images for web use by:
 
 import os
 import sys
+from io import BytesIO
 from PIL import Image, ImageOps
 import pillow_heif
 from pathlib import Path
@@ -76,10 +77,20 @@ def optimize_image(input_path, output_path, max_width=1200, max_height=1200, qua
 
             if convert_to_webp:
                 final_output = output_path.with_suffix('.webp')
-                img.save(final_output, 'WebP', quality=quality, optimize=True)
+                buf = BytesIO()
+                img.save(buf, 'WebP', quality=quality, optimize=True)
             else:
                 final_output = output_path.with_suffix('.jpg')
-                img.save(final_output, 'JPEG', quality=quality, optimize=True)
+                buf = BytesIO()
+                img.save(buf, 'JPEG', quality=quality, optimize=True)
+
+            # A re-encode that doesn't shrink the file is pure churn: bigger bytes,
+            # lossier pixels. Keep the source instead.
+            if buf.tell() >= os.path.getsize(input_path):
+                print(f"  Keeping original ({input_size_kb:.1f}KB): re-encode was {buf.tell() / 1024:.1f}KB")
+                return True
+
+            final_output.write_bytes(buf.getvalue())
 
         # Remove source if format/extension changed
         if input_path.resolve() != final_output.resolve() and input_path.exists():
