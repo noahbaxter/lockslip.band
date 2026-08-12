@@ -14,15 +14,10 @@
     display: grid;
     grid-template-columns: 350px 1fr;
     gap: 3rem;
-    border: var(--standard-border);
-    transition: var(--standard-transition);
+    border: none;
+    background: var(--surface-card);
     position: relative;
     overflow: hidden;
-}
-
-.release-item:hover {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 20px var(--accent-color-background);
 }
 
 .release-artwork {

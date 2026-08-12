@@ -6,18 +6,12 @@
 }
 
 .extras-card {
-    border: 1px solid var(--border-color);
-    background: var(--scrim);
+    border: none;
+    background: var(--surface-card);
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     max-width: 320px;
-    transition: var(--standard-transition);
-}
-
-.extras-card:hover {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 15px var(--accent-glow);
 }
 
 .extras-card-image {

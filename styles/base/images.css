@@ -1,9 +1,11 @@
 /* Injected placeholder for image loading */
+/* Neutral while loading: a red box flashing in every image slot on first paint
+   was the loudest red on the page, for something that means nothing. */
 .img-placeholder {
     position: absolute;
     inset: 0;
-    background: linear-gradient(45deg, var(--border-color), var(--section-alt));
-    border: 1px solid var(--border-color);
+    background: linear-gradient(45deg, var(--surface-raised), var(--section-alt));
+    border: none;
     transition: opacity 0.3s ease-in-out;
     z-index: 0;
 }

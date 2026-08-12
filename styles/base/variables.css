@@ -138,9 +138,22 @@
     
     /* Component Variables */
     --merch-item-padding: 1rem;
-    --merch-item-bg: var(--scrim);
+    --merch-item-bg: var(--surface-card);
     --merch-image-height: 350px;
     --merch-image-height-mobile: 200px;
+
+    /* Cards separate by sitting on a slightly lifted surface rather than inside
+       a drawn box, the way the poster wall separates by the art's own edges.
+       Red is then spent on two things only: the label that names a section, and
+       anything you click, so the red that remains is always a signal. Cards do
+       not brighten on hover: the tile is not the click target, the button
+       inside it is. --surface-raised is the same lift used where something is
+       genuinely sitting on top, such as the loading placeholder. */
+    --surface-card: rgba(255, 255, 255, 0.045);
+    --surface-raised: rgba(255, 255, 255, 0.08);
+    /* Kept for the few places that still want a drawn edge (size chips butt
+       against each other, so they need a division a surface can't give). */
+    --hairline-border: 1px solid rgba(255, 255, 255, 0.14);
 
     /* Common Properties */
     --standard-border: 1px solid var(--border-color);

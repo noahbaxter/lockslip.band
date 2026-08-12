@@ -75,7 +75,7 @@
 /* Merch Item */
 .merch-item {
     background: var(--merch-item-bg);
-    border: 1px solid var(--border-color);
+    border: none;
     padding: var(--merch-item-padding);
     margin: 0 auto;
     text-align: center;
