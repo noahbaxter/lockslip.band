@@ -86,6 +86,36 @@
     display: none;
 }
 
+/* Introduced by the same label-and-rule the poster wall uses for its year, so
+   both halves of the section read as one system. Not sticky: unlike the wall,
+   nothing scrolls under it. Overrides the section's own h3 treatment, which is
+   sized for a standalone heading. */
+/* The booking line below sets its own spacing; leaving a margin here would
+   collapse with it and win. */
+.upcoming-section {
+    margin-bottom: 0;
+}
+
+.upcoming-section .shows-line {
+    display: flex;
+    align-items: center;
+    height: var(--poster-year-head-h);
+    padding: var(--poster-year-pad-top) 0 0;
+    margin: 0;
+    line-height: var(--poster-year-line-h);
+}
+
+.upcoming-section .shows-line-label {
+    flex: none;
+    margin-left: var(--poster-rail-inset);
+    padding-right: var(--poster-rail-gap);
+    font-family: 'Arial Black', Helvetica, Arial, sans-serif;
+    font-size: 1.05rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    color: var(--accent-color);
+}
+
 /* Custom always-visible scroll indicator to the right of the list. The track
    is invisible — only the thumb shows, so it reads as a floating bar. */
 .carousel-scrollbar {

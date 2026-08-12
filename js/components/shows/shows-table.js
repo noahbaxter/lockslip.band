@@ -48,11 +48,23 @@ const ShowsTable = {
         `;
     },
 
+    // Rides the right end of the rule in both views, so switching never moves it.
     renderPastViewToggle() {
         return `
             <div class="shows-view-toggle">
-                <button class="view-toggle-btn ${this.pastShowsView === 'grid' ? 'active' : ''}" onclick="ShowsComponent.setPastView('grid')">Posters</button>
+                <button class="view-toggle-btn ${this.pastShowsView === 'grid' ? 'active' : ''}" onclick="ShowsComponent.setPastView('grid')">Poster</button>
                 <button class="view-toggle-btn ${this.pastShowsView === 'table' ? 'active' : ''}" onclick="ShowsComponent.setPastView('table')">Table</button>
+            </div>
+        `;
+    },
+
+    // The poster wall carries the toggle on its year rule; the table has no such
+    // line, so it gets a bare one to keep the control in the same place.
+    renderTableLine() {
+        return `
+            <div class="shows-view-line">
+                <i class="shows-line-rule"></i>
+                ${this.renderPastViewToggle()}
             </div>
         `;
     },
@@ -82,8 +94,7 @@ const ShowsTable = {
 
         return `
             <div class="shows-section past-shows-section">
-                <h3>PAST</h3>
-                ${this.renderPastViewToggle()}
+                ${this.renderTableLine()}
                 <div class="shows-table-container">
                     <table class="shows-table">
                         <tr class="table-header">

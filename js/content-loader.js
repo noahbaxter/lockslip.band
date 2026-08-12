@@ -95,6 +95,7 @@ class ContentLoader {
 
             const showsHTML = ShowsComponent.render(this.shows, this.config, futureItems, pastItems, showsWithPosters);
             showsSection.innerHTML = showsHTML;
+            ShowsScrollNav.refresh();
         }
     }
 
