@@ -572,25 +572,52 @@
     transition: all 0.3s ease;
 }
 
-/* View Toggle */
+/* Rides above the line rather than inside it, so a popped-out poster (30) passes
+   under the switcher instead of over it. Overlays the rule's right end on its
+   own backing rather than reserving room in the flex row, so nothing needs to
+   know how wide the buttons are. Pulled back over the line it follows, costing
+   no flow space of its own. */
+.poster-year-controls {
+    position: sticky;
+    top: var(--poster-line-top);
+    z-index: 40;
+    margin-top: calc(-1 * var(--poster-year-head-h));
+    height: var(--poster-year-head-h);
+    padding-top: var(--poster-year-pad-top);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    line-height: var(--poster-year-line-h);
+    pointer-events: none;
+}
+
+.poster-year-controls .shows-view-toggle {
+    background: var(--background-color);
+    pointer-events: auto;
+}
+
+/* View Toggle. Sits at the far right of the rule, past the jump arrow, so it
+   lands in the same spot in both views. */
 .shows-view-toggle {
     display: flex;
-    margin-top: 0;
-    margin-bottom: 0;
-    justify-content: center;
+    flex: none;
+    margin: 0;
+    padding-left: var(--poster-rail-gap);
 }
 
 .view-toggle-btn {
-    padding: 0.5rem 1rem;
+    padding: 0.2rem 0.55rem;
     border: 1px solid var(--border-color-faded);
     background: transparent;
     color: var(--text-dark);
     cursor: pointer;
     transition: var(--standard-transition);
-    font-size: 0.9rem;
+    /* Matched to the year label beside it rather than to body copy. */
+    font-size: 0.82rem;
+    line-height: var(--poster-year-line-h);
     text-transform: uppercase;
     font-weight: 600;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.1em;
 }
 
 .view-toggle-btn:first-child {
@@ -649,10 +676,14 @@
 .poster-year-indicator {
     position: sticky;
     top: var(--poster-line-top);
+    /* Over a resting poster, under a popped-out one (30). The wall passes
+       behind the line until you hover, and a hovered poster rides up over it
+       and stops at the rule. */
     z-index: 20;
     display: flex;
     align-items: center;
     height: var(--poster-year-head-h);
+    padding-top: var(--poster-year-pad-top);
     /* Explicit, so the half-leading above the caps is a whole number. */
     line-height: var(--poster-year-line-h);
     background: var(--background-color);
@@ -663,8 +694,13 @@
 
 /* The rule takes everything the labels don't, and the track spans the wrap's
    padding box, so it lines up exactly with the poster columns and the year
-   sits out in the gutter beside them. */
-.poster-year-rule {
+   sits out in the gutter beside them.
+
+   .poster-year-rule is the wall's own and stays unique to it, so anything
+   looking the wall up by that class finds one element. Every other line uses
+   .shows-line-rule for the same 1px. */
+.poster-year-rule,
+.shows-line-rule {
     flex: 1;
     height: 1px;
     background: var(--border-color-faded);
@@ -798,13 +834,19 @@
     color: var(--text-light);
 }
 
-/* Keeps the view switcher reachable from anywhere in the wall. */
-.past-shows-section .shows-view-toggle {
+/* The table's stand-in for the poster wall's year rule: same height, same
+   sticky offset, same toggle on the right, minus the year and the readout.
+   Keeps the switcher reachable from anywhere in a long table. */
+.shows-view-line {
     position: sticky;
-    top: var(--header-height);
+    top: var(--poster-line-top);
     z-index: 25;
+    display: flex;
+    align-items: center;
+    height: var(--poster-year-head-h);
+    padding-top: var(--poster-year-pad-top);
+    line-height: var(--poster-year-line-h);
     background: var(--background-color);
-    padding: 0.5rem 0;
 }
 
 .poster-grid-item {
@@ -853,9 +895,9 @@
 .poster-grid-item:hover {
     transform: translateY(calc(-1 * var(--poster-popout-lift))) scale(1.02);
     border-color: var(--accent-color);
-    /* Above its neighbours but below the year rule (20) and the view toggle
-       (25). A poster caught half under the sticky chrome reads as tucked
-       behind it rather than punching through it. */
+    /* Above its neighbours but below the line (40). A poster caught half under
+       the sticky chrome reads as tucked behind it rather than punching
+       through it. */
     z-index: 10;
     /* Raise immediately on the way in; the delay above only applies on the
        way out. */
@@ -863,17 +905,15 @@
                 z-index 0s;
 }
 
-/* ...except when it is sitting flush against the line, where being behind the
-   rule is exactly what clipped the popout. Then it may draw over the rule: it
-   rises --poster-popout-overhang, and the red line sits at the middle of the
-   rule's box, so the poster still stops short of it. ShowsScrollNav sets this
-   only while the poster is clear of the line, so one that's half under the
-   chrome mid-scroll still tucks behind. */
-/* Not gated on :hover. The raise has to outlast the cursor, or the poster
-   drops behind the rule while it is still shrinking and the shrink itself
-   looks clipped. ShowsScrollNav owns the timing: it holds this for the length
-   of the transition after you leave, and strips it the instant the poster
-   stops being clear of the line, so it can never cross the line while raised. */
+/* A poster clear of the line outranks its neighbours outright, so a popout that
+   spreads over them is never sliced by the one it grew across. The line still
+   wins at 40; this orders posters against each other, not against the chrome.
+
+   Not gated on :hover. The raise has to outlast the cursor, or the poster drops
+   behind its neighbour while it is still shrinking and the shrink itself looks
+   clipped. ShowsScrollNav owns the timing: it holds this for the length of the
+   transition after you leave, and strips it the instant the poster stops being
+   clear of the line. */
 .poster-grid-item.can-overlap {
     z-index: 30;
 }
@@ -957,14 +997,12 @@
         transform: translateY(-4px) scale(1.01);
     }
 
-    .shows-view-toggle {
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-
+    /* Year, arrow and toggle all share the line here, so the buttons give up
+       what padding they can rather than squeezing the rule out entirely. */
     .view-toggle-btn {
-        padding: 0.6rem 0.8rem;
-        font-size: 0.8rem;
+        padding: 0.2rem 0.4rem;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
     }
 }
 

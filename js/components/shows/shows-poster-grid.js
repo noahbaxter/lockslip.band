@@ -108,6 +108,7 @@ const ShowsPosterGrid = {
                         <i class="poster-year-rule"></i>
                         <button type="button" class="poster-nav-btn" data-dir="up" aria-label="Jump to newest past show">&uarr;</button>
                     </div>
+                    <div class="poster-year-controls">${ShowsTable.renderPastViewToggle()}</div>
                 </div>
                 <div class="poster-year-head"></div>
                 <div class="poster-grid">${items}</div>

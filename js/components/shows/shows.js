@@ -24,8 +24,6 @@ const ShowsComponent = {
             if (pastItems.length > 0) {
                 pastContent = `
                     <div class="shows-section past-shows-section">
-                        <h3>PAST</h3>
-                        ${ShowsTable.renderPastViewToggle()}
                         ${ShowsPosterGrid.renderPosterGrid(pastItems, showsWithPosters)}
                     </div>
                 `;

@@ -74,17 +74,18 @@
     --poster-nav-size: calc(var(--poster-rail-width) - var(--poster-rail-gap));
     --poster-nav-inset: 1.5rem;
     /* Whole pixels, evenly split by the line height, so the centred rule lands
-       on a pixel boundary rather than a half one. */
-    --poster-year-head-h: 42px;
+       on a pixel boundary rather than a half one. The pad is border-box, so it
+       comes off the top and leaves that split alone. */
+    --poster-year-head-h: 50px;
+    --poster-year-pad-top: 8px;
     --poster-year-line-h: 20px;
     /* Measured at runtime by ShowsScrollNav; fallbacks are for first paint. */
-    --poster-toggle-h: 46px;
     --poster-row-h: 0px;
     /* The two lines everything in the poster wall pins to. --poster-line-top is
        where the year rule sits, --poster-content-top the first readable pixel
        below it. Anything that sticks, jumps, or measures "is this clipped"
        derives from these rather than re-adding the parts itself. */
-    --poster-line-top: calc(var(--header-height) + var(--poster-toggle-h));
+    --poster-line-top: var(--header-height);
     --poster-content-top: calc(var(--poster-line-top) + var(--poster-year-head-h));
     /* Floor for the down arrow: never closer to the rule than the second row.
        Doesn't bind on a tall window; on a short one it stops the arrow creeping

@@ -7,7 +7,7 @@
 // from separators between the rows.
 //
 // Also owns the measured layout vars the sticky offsets depend on, since the
-// header and view toggle both change height across breakpoints.
+// header changes height across breakpoints.
 
 const ShowsScrollNav = {
     // Re-resolved on every render; see refresh().
@@ -139,12 +139,6 @@ const ShowsScrollNav = {
         if (header) {
             const height = header.getBoundingClientRect().height;
             if (height > 0) this.setVar('--header-height', height);
-        }
-
-        const toggle = document.querySelector('.past-shows-section .shows-view-toggle');
-        if (toggle) {
-            const height = toggle.getBoundingClientRect().height;
-            if (height > 0) this.setVar('--poster-toggle-h', height);
         }
 
         const item = document.querySelector('.poster-grid-item');
