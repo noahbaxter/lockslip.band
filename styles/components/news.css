@@ -51,7 +51,7 @@
 .news-banner-image:focus-visible {
     z-index: calc(var(--news-banner-count) + 1);
     transform: scale(1.04);
-    box-shadow: 0 0 30px 6px rgba(0, 0, 0, 0.85);
+    box-shadow: 0 0 30px 6px var(--glow-raised);
 }
 
 /* Info line in the shared photo lightbox */

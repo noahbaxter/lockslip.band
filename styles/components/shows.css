@@ -957,7 +957,7 @@
 .poster-grid-item:hover .poster-grid-thumb {
     width: max(100%, calc(var(--poster-ar, 0.75) / 0.75 * 100%));
     height: max(100%, calc(0.75 / var(--poster-ar, 0.75) * 100%));
-    box-shadow: 0 var(--poster-glow-offset) var(--poster-glow-blur) var(--accent-glow-strong);
+    box-shadow: 0 var(--poster-glow-offset) var(--poster-glow-blur) var(--poster-glow-spread) var(--glow-raised);
 }
 
 

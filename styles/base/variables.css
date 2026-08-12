@@ -105,6 +105,9 @@
     --poster-popout-time: 0.22s;
     --poster-glow-blur: 25px;
     --poster-glow-offset: 8px;
+    /* Spread, so the dark reaches past the raised poster's own edge instead of
+       stopping at it and leaving the neighbour undimmed. */
+    --poster-glow-spread: 6px;
 
     --carousel-gap: 2rem;
     --carousel-item-width: calc(100% / var(--carousel-items-per-view) - (var(--carousel-gap) * (var(--carousel-items-per-view) - 1) / var(--carousel-items-per-view)));
@@ -151,6 +154,10 @@
        genuinely sitting on top, such as the loading placeholder. */
     --surface-card: rgba(255, 255, 255, 0.045);
     --surface-raised: rgba(255, 255, 255, 0.08);
+    /* Glow for a tile lifted above its neighbours. Black rather than accent:
+       what it sits on is other artwork, so darkening that is what separates the
+       two. A coloured halo tints the art around it instead. */
+    --glow-raised: rgba(0, 0, 0, 0.85);
     /* Kept for the few places that still want a drawn edge (size chips butt
        against each other, so they need a division a surface can't give). */
     --hairline-border: 1px solid rgba(255, 255, 255, 0.14);
