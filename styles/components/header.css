@@ -359,7 +359,7 @@ nav {
 
 /* Large laptop: shrink the logo/text and drop the icon row to a useful subset
    (bandcamp, spotify, youtube, instagram) instead of cramming the full set. */
-@media (max-width: 1200px) {
+@media (max-width: 1340px) {
     :root { --logo-height: 124px; --logo-reserve: 188px; }
 
     header { padding: 1.1rem 0; }
@@ -376,26 +376,26 @@ nav {
 }
 
 /* Small laptop / large tablet: tighter still */
-@media (max-width: 1000px) {
+@media (max-width: 1140px) {
     :root { --logo-height: 104px; --logo-reserve: 150px; }
 
     header { padding: 0.85rem 0; }
 
-    .nav-links { gap: 0.85rem; }
-    .nav-links a { font-size: 0.88rem; letter-spacing: 0.5px; }
+    .nav-links { gap: 0.6rem; }
+    .nav-links a { font-size: 0.84rem; letter-spacing: 0.5px; }
     .streaming-icons { gap: 0.45rem; }
     .streaming-icon,
     .social-icon { width: 26px; height: 26px; }
 }
 
 /* Tablet: smallest inline logo before the hamburger takes over */
-@media (max-width: 880px) {
+@media (max-width: 900px) {
     :root { --logo-height: 92px; --logo-reserve: 120px; }
 
     header { padding: 0.7rem 0; }
 
-    .nav-links { gap: 0.6rem; }
-    .nav-links a { font-size: 0.8rem; letter-spacing: 0.3px; }
+    .nav-links { gap: 0.4rem; }
+    .nav-links a { font-size: 0.72rem; letter-spacing: 0.3px; }
 }
 
 /* Mobile: fold into the hamburger overlay */
