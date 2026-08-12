@@ -167,7 +167,9 @@ def optimize_directory(input_dir, output_dir=None, max_width=1200, max_height=12
     print(f"\nOptimization complete: {successful} successful, {failed} failed")
 
 DEFAULT_PRESETS = [
-    {'input': 'assets/show-posters', 'max_width': 1600, 'max_height': 1600, 'quality': 85},
+    # 1920 matches both the tallest posters IG hands out and what a retina
+    # fullscreen modal (90vh @ 2-3x) can actually resolve.
+    {'input': 'assets/show-posters', 'max_width': 1920, 'max_height': 1920, 'quality': 85},
     {'input': 'assets/releases',     'max_width': 1200, 'max_height': 1200, 'quality': 85},
 ]
 

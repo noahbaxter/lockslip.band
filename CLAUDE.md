@@ -14,7 +14,7 @@ Starts local development server on port 8000 with CORS headers for JSON loading.
 ```bash
 # One-time setup: `venv` in the repo root creates .venv and installs requirements.txt
 
-# Optimize images (no args = runs repo defaults: show-posters @ 1600/q85, releases @ 1200/q85)
+# Optimize images (no args = runs repo defaults: show-posters @ 1920/q85, releases @ 1200/q85)
 # Files already at-or-below the target dimensions are skipped, no churn on re-runs.
 .venv/bin/python optimize_images.py
 
@@ -196,7 +196,8 @@ const USE_BIG_CARTEL = false; // Manual JSON only
 
 ### Performance Optimization
 - **Images**: Use `optimize_images.py` script before committing
-- **Show posters**: Target 1600x1600px max, 85% quality (sharp in fullscreen modal)
+- **Show posters**: Target 1920x1920px max, 85% quality. 1920 is what a retina fullscreen
+  modal (90vh at 2-3x) resolves, and the ceiling on what Instagram hands out anyway.
 - **Releases**: Target 1200x1200px max, 85% quality
 - **Merch photos**: Target 1000x1000px max, 85% quality
 - **Consider WebP**: Add WebP conversion for better compression
