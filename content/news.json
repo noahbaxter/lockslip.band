@@ -1,0 +1,36 @@
+{
+  "sectionTitle": "NEWS",
+  "items": [
+    {
+      "id": "bleakhouse-signing",
+      "date": { "month": "August", "day": "12", "year": "2026" },
+      "headline": "LOCKSLIP SIGNS TO BLEAKHOUSE",
+      "body": [
+        "we are very excited to finally announce los angeles based metallic hardcore band, lockslip, as an official bleakhouse artist.",
+        "this is one announcement of many to come as we welcome lockslip into the family and begin our work together.",
+        "welcome to bleakhouse."
+      ],
+      "attribution": "Bleakhouse",
+      "images": [
+        "assets/news/2026-08-12-bleakhouse-1.jpg",
+        "assets/news/2026-08-12-bleakhouse-2.jpg",
+        "assets/news/2026-08-12-bleakhouse-3.jpg",
+        "assets/news/2026-08-12-bleakhouse-4.jpg",
+        "assets/news/2026-08-12-bleakhouse-5.jpg"
+      ],
+      "links": [
+        {
+          "name": "Announcement",
+          "url": "https://www.instagram.com/p/Db8fYX5meMC/",
+          "icon": "instagram"
+        },
+        {
+          "name": "Bleakhouse",
+          "url": "https://bleakhouse.co/",
+          "icon": "bleakhouse"
+        }
+      ],
+      "hidden": false
+    }
+  ]
+}

@@ -9,31 +9,6 @@ class UIHelpers {
         }
     }
 
-    // Setup hero bio fade animation on scroll
-    static setupHeroBioFade() {
-        const heroBioOverlay = document.querySelector('.hero-bio-overlay');
-        if (!heroBioOverlay) return;
-
-        const handleScroll = () => {
-            const scrollY = window.scrollY;
-            const windowHeight = window.innerHeight;
-            const fadeStart = windowHeight * 0.1; // Start fading after 10% of viewport height
-            const fadeEnd = windowHeight * 0.6;   // Completely faded by 60% of viewport height
-
-            if (scrollY <= fadeStart) {
-                heroBioOverlay.style.opacity = '1';
-            } else if (scrollY >= fadeEnd) {
-                heroBioOverlay.style.opacity = '0';
-            } else {
-                const fadeProgress = (scrollY - fadeStart) / (fadeEnd - fadeStart);
-                heroBioOverlay.style.opacity = (1 - fadeProgress).toString();
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        handleScroll(); // Initialize on load
-    }
-
     // Setup smooth scrolling with header offset
     static setupSmoothScrolling() {
         // Get header height for offset calculation

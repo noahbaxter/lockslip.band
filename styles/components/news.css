@@ -1,0 +1,201 @@
+/* News Component */
+
+/* Banner: the announcement graphics butted edge to edge so the strip reads as
+   one long sideways picture. No borders, no gaps, nothing between panels. */
+.news-banner {
+    display: grid;
+    grid-template-columns: repeat(var(--news-banner-count), 1fr);
+    gap: 0;
+}
+
+.news-banner-image {
+    display: block;
+    overflow: hidden;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font: inherit;
+}
+
+.news-banner-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 4 / 5;
+    transition: filter 0.2s ease;
+}
+
+/* Brightness only: anything that moves an edge would show the seams. */
+.news-banner-image:hover img {
+    filter: brightness(1.15);
+}
+
+/* Info line in the shared photo lightbox */
+.news-modal-headline {
+    font-weight: var(--show-font-weight-extra-bold);
+    color: var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.news-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    padding-top: 3rem;
+}
+
+/* Matches .release-date so dates read the same across the site. */
+.news-date,
+.news-archive-date {
+    color: var(--text-dark);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+.news-featured h3 {
+    margin: 0;
+}
+
+.news-body {
+    max-width: 60ch;
+    margin: 0;
+}
+
+.news-body p {
+    color: var(--text-dark);
+    line-height: 1.6;
+    margin: 0 0 1rem;
+}
+
+.news-body p:last-child {
+    margin-bottom: 0;
+}
+
+/* The label's own words, kept in their lowercase, marked as theirs. */
+.news-body-quoted {
+    border-left: var(--standard-border);
+    padding-left: 1.5rem;
+    text-align: left;
+}
+
+.news-body-quoted cite {
+    display: block;
+    margin-top: 1rem;
+    color: var(--secondary-color);
+    font-style: normal;
+    font-weight: var(--show-font-weight-bold);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.news-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.news-links .social-icon {
+    width: 35px;
+    height: 35px;
+}
+
+/* The B is a bare letterform, so it's cropped tight and overruns its box a
+   little to read at the same size as the glyphs beside it, which sit inset. */
+.news-links .social-icon.bleakhouse {
+    overflow: visible;
+}
+
+.news-links .social-icon.bleakhouse img {
+    width: 112%;
+    height: 112%;
+    margin: -6%;
+    object-fit: contain;
+}
+
+.news-links .social-icon.bleakhouse:hover img {
+    filter: brightness(0) saturate(100%) invert(11%) sepia(100%) saturate(7378%) hue-rotate(4deg) brightness(97%) contrast(118%);
+}
+
+.news-archive {
+    margin-top: 4rem;
+    border-top: var(--standard-border);
+    padding-top: 2rem;
+}
+
+.news-archive h4 {
+    margin-bottom: 1.5rem;
+}
+
+.news-archive ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.news-archive-item {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--surface-light);
+}
+
+.news-archive-date {
+    flex: 0 0 11rem;
+}
+
+.news-archive-headline {
+    color: var(--text-color);
+    font-weight: var(--show-font-weight-bold);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    /* Five columns would be slivers at phone width, so the strip scrolls
+       sideways instead, still butted edge to edge. */
+    .news-banner {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .news-banner::-webkit-scrollbar {
+        display: none;
+    }
+
+    .news-banner-image {
+        flex: 0 0 62vw;
+        scroll-snap-align: start;
+    }
+
+    .news-content {
+        padding-top: 2rem;
+    }
+
+    .news-body-quoted {
+        padding-left: 1rem;
+    }
+
+    .news-archive-item {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .news-archive-date {
+        flex: none;
+    }
+}
