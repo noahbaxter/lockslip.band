@@ -13,14 +13,14 @@
 
 .download-header h4 {
     margin: 0;
-    font-size: 1rem;
+    font-size: var(--text-lg);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
 .download-version {
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     color: var(--text-dark);
     font-weight: 400;
 }
@@ -54,8 +54,8 @@
 
 /* OS Icon */
 .download-icon {
-    width: 28px;
-    height: 28px;
+    width: 1.75rem;
+    height: 1.75rem;
     filter: brightness(0) invert(1);
     transition: var(--standard-transition);
     flex-shrink: 0;
@@ -75,7 +75,7 @@
 }
 
 .download-subtitle {
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     color: var(--text-dark);
 }
 
@@ -109,7 +109,7 @@
 
     .download-link {
         flex: 1;
-        min-width: 150px;
+        min-width: 9.375rem;
         flex-direction: column;
         text-align: center;
         padding: 1rem;

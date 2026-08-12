@@ -10,20 +10,20 @@ h2 {
 }
 
 h3 {
-    font-size: 2rem;
+    font-size: var(--text-4xl);
     color: var(--secondary-color);
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: var(--track-wide);
 }
 
 h4 {
     margin: 0;
     color: var(--secondary-color);
-    font-size: 1.5rem;
+    font-size: var(--text-3xl);
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: var(--track);
 }
 
 .lockslip-highlight {
@@ -34,15 +34,15 @@ h4 {
 /* Mobile Typography */
 @media (max-width: 768px) {
     h2 {
-        font-size: 2rem;
+        font-size: var(--text-4xl);
     }
     
     h3 {
-        font-size: 1.2rem;
+        font-size: var(--text-2xl);
     }
     
     h4 {
-        font-size: 1.2rem;
+        font-size: var(--text-2xl);
     }
 }
 
@@ -50,6 +50,6 @@ h4 {
     h2 {
         font-size: 2.2rem;
         margin-bottom: 2rem;
-        letter-spacing: 2px;
+        letter-spacing: var(--track-wide);
     }
 }

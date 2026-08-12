@@ -3,14 +3,14 @@
 /* Base Icon Styles */
 .streaming-icon,
 .social-icon {
-    width: 30px;
-    height: 30px;
+    width: 1.875rem;
+    height: 1.875rem;
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
     color: var(--text-color);
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     font-weight: 700;
     transition: var(--standard-transition);
 }
@@ -64,8 +64,11 @@
     left: 0;
     right: 0;
     bottom: 0;
+    /* Instagram's own brand gradient. Deliberately literal and deliberately
+       exempt from the accent: it identifies them, not us, so it must not
+       retint when the site's colour changes. */
     background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     opacity: 0;
     z-index: 0;
 }
@@ -90,8 +93,8 @@
 
 .tiktok-3d-container {
     position: relative;
-    width: 30px;
-    height: 30px;
+    width: 1.875rem;
+    height: 1.875rem;
     display: flex;
     align-items: center;
     justify-content: center;

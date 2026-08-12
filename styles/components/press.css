@@ -55,7 +55,7 @@ body.press-page #press > .container > h2 {
 .press-logos {
     display: flex;
     width: 100%;
-    max-width: 1000px;
+    max-width: 62.5rem;
     align-items: center;
     justify-content: space-around;
     gap: 4rem;
@@ -71,7 +71,7 @@ body.press-page #press > .container > h2 {
 }
 
 .press-logos .logo-preview {
-    height: 180px;
+    height: 11.25rem;
     width: auto;
     padding: 0;
     background: none;
@@ -84,19 +84,19 @@ body.press-page #press > .container > h2 {
 }
 
 .press-logos .photo-download {
-    width: 26px;
-    height: 26px;
+    width: 1.625rem;
+    height: 1.625rem;
 }
 
 .press-logos .photo-download svg {
-    width: 13px;
-    height: 13px;
+    width: 0.8125rem;
+    height: 0.8125rem;
 }
 
 .press-bio p {
     color: var(--text-light);
     line-height: 1.7;
-    font-size: 1.05rem;
+    font-size: var(--text-label);
     margin: 0 0 1rem;
 }
 
@@ -111,7 +111,7 @@ body.press-page #press > .container > h2 {
    photograph is cropped to fit it. Hovering pays that back. */
 /* Square rather than 4:5. Three tall cells across put the block near a full
    screen high, most of it black beside a three-line bio; square holds the
-   rectangle and the L while taking ~200px off the height. The extra crop it
+   rectangle and the L while taking ~12.5rem off the height. The extra crop it
    costs each portrait is given back on hover. */
 .press-intro {
     --band-tile-ar: 1;
@@ -200,6 +200,6 @@ body.press-page #press > .container > h2 {
     }
 
     .press-bio p {
-        font-size: 1rem;
+        font-size: var(--text-lg);
     }
 }

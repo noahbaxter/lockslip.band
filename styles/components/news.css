@@ -7,10 +7,10 @@
      overlap = (column - count * panel) / (count - 1)
    which is the algebra for n fixed-width panels spanning the column across n-1
    seams. It stays negative, and so an overlap rather than a gap, as long as
-   count * --news-panel-w exceeds the column, which the 1200px container cap
+   count * --news-panel-w exceeds the column, which the 75rem container cap
    guarantees for any announcement of three images or more. */
 .news-banner {
-    --news-panel-w: 280px;
+    --news-panel-w: 17.5rem;
     display: flex;
 }
 
@@ -27,7 +27,7 @@
        above 3, and so on. Source order alone would paint the reverse. */
     position: relative;
     z-index: calc(var(--news-banner-count) - var(--news-banner-index));
-    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
 }
 
 .news-banner-image + .news-banner-image {
@@ -51,7 +51,7 @@
 .news-banner-image:focus-visible {
     z-index: calc(var(--news-banner-count) + 1);
     transform: scale(1.04);
-    box-shadow: 0 0 30px 6px var(--glow-raised);
+    box-shadow: var(--shadow-raise-md);
 }
 
 /* Info line in the shared photo lightbox */
@@ -59,7 +59,7 @@
     font-weight: var(--show-font-weight-extra-bold);
     color: var(--secondary-color);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: var(--track);
     margin-bottom: 0.5rem;
 }
 
@@ -82,10 +82,10 @@
 .news-date,
 .news-archive-date {
     color: var(--text-dark);
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: var(--track);
     white-space: nowrap;
 }
 
@@ -97,7 +97,7 @@
    fraction: the line length that reads well there keeps reading well as the
    column narrows, and it stops forcing a half-width sliver on a phone. */
 .news-body {
-    max-width: 580px;
+    max-width: 36.25rem;
     margin: 0;
 }
 
@@ -124,8 +124,8 @@
     color: var(--secondary-color);
     font-style: normal;
     font-weight: var(--show-font-weight-bold);
-    font-size: 0.8rem;
-    letter-spacing: 2px;
+    font-size: var(--text-sm);
+    letter-spacing: var(--track-wide);
     text-transform: uppercase;
 }
 
@@ -138,8 +138,8 @@
 }
 
 .news-links .social-icon {
-    width: 35px;
-    height: 35px;
+    width: 2.1875rem;
+    height: 2.1875rem;
 }
 
 /* The B is a bare letterform, so it's cropped tight and overruns its box a
@@ -189,7 +189,7 @@
 .news-archive-headline {
     color: var(--text-color);
     font-weight: var(--show-font-weight-bold);
-    letter-spacing: 1px;
+    letter-spacing: var(--track);
     text-transform: uppercase;
 }
 

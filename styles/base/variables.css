@@ -16,16 +16,54 @@
 :root {
     --primary-color: #000000;
     --secondary-color: #ffffff;
-    --accent-color: #ff0000;
     --text-color: #ffffff;
     --text-dark: #cccccc;
-    --border-color: #ff0000;
-    --border-color-faded: rgba(255, 0, 0, 0.7);
+    /* --text-muted was being referenced with a literal fallback and never
+       actually defined, so the fallback was doing all the work. */
+    --text-muted: #888888;
+    --text-faint: #666666;
+    /* Not quite the page black: a panel that should read as its own surface
+       without a border to say so. */
+    --surface-near-black: #0a0a0a;
 
-    /* Accent (red) at common alphas — glows, tints, fills */
-    --accent-glow-strong: rgba(255, 0, 0, 0.3);
-    --accent-glow: rgba(255, 0, 0, 0.2);
-    --accent-tint: rgba(255, 0, 0, 0.1);
+    /* ============================================================
+       THE ACCENT
+       This one value is the site's colour. Everything accented is
+       derived from it below, so swapping it here retints the whole
+       site: nav labels, section rules, buttons, glows, the lot.
+       Nothing anywhere else should name a colour literally.
+           --accent-color: #ff0000;   red     (current)
+           --accent-color: #1e6fff;   blue
+           --accent-color: #17c964;   green
+       ============================================================ */
+    --accent-color: #ff0000;
+
+    /* The accent at the alphas the site actually uses, mixed rather than
+       written out, so they follow --accent-color wherever it goes. Named for
+       weight, not for the number, so a component asks for the step it wants. */
+    --accent-a95: color-mix(in srgb, var(--accent-color) 95%, transparent);
+    --accent-a80: color-mix(in srgb, var(--accent-color) 80%, transparent);
+    --accent-a70: color-mix(in srgb, var(--accent-color) 70%, transparent);
+    --accent-a60: color-mix(in srgb, var(--accent-color) 60%, transparent);
+    --accent-a50: color-mix(in srgb, var(--accent-color) 50%, transparent);
+    --accent-a30: color-mix(in srgb, var(--accent-color) 30%, transparent);
+    --accent-a22: color-mix(in srgb, var(--accent-color) 22%, transparent);
+    --accent-a20: color-mix(in srgb, var(--accent-color) 20%, transparent);
+    --accent-a15: color-mix(in srgb, var(--accent-color) 15%, transparent);
+    --accent-a10: color-mix(in srgb, var(--accent-color) 10%, transparent);
+    --accent-a05: color-mix(in srgb, var(--accent-color) 5%, transparent);
+    --accent-a02: color-mix(in srgb, var(--accent-color) 2%, transparent);
+    /* Page-texture washes, far below the rest of the ladder. */
+    --accent-a01: color-mix(in srgb, var(--accent-color) 1%, transparent);
+    --accent-a008: color-mix(in srgb, var(--accent-color) 0.8%, transparent);
+
+    /* Semantic aliases. Components should reach for these first and drop to a
+       raw step only when none of them says the right thing. */
+    --border-color: var(--accent-color);
+    --border-color-faded: var(--accent-a70);
+    --accent-glow-strong: var(--accent-a30);
+    --accent-glow: var(--accent-a20);
+    --accent-tint: var(--accent-a10);
     --accent-color-background: var(--accent-tint);
 
     /* Neutral scrims / overlays */
@@ -52,22 +90,20 @@
        into view offsets by it so the header can't cover it. */
     --header-height: 72px;
 
-    --nav-height: 50px;
+    --nav-height: 3.125rem;
     /* Mobile bar height — matches the smallest inline tier so the logo overhang
        and bar don't jump when the nav folds into the hamburger. */
-    --nav-height-mobile: 54px;
+    --nav-height-mobile: 3.375rem;
     /* Centered logo: --logo-height is the overhanging image, --logo-reserve is
        the grid column kept clear for it so side nav can't slide under. Both are
        reassigned per breakpoint in header.css so they shrink together. */
-    --logo-height: 150px;
-    --logo-reserve: 240px;
+    --logo-height: 9.375rem;
+    --logo-reserve: 15rem;
     
     /* Carousel Variables */
     --carousel-items-per-view: 3;
 
     /* Poster Grid Variables */
-    --poster-grid-columns-desktop: 5;
-    --poster-grid-columns-mobile: 2;
     /* The year label's slot, which is what decides where the readout and rule
        start. Fixed: "2026" needs the same room at every width, and a little
        over its own width so the year isn't touching the date beside it. */
@@ -101,49 +137,48 @@
     --poster-nav-floor: calc(var(--poster-content-top) + var(--poster-row-h));
     /* Hover popout. The glow reaches --poster-glow-blur minus its offset above
        the poster, which is why it can graze the year rule. */
-    --poster-popout-lift: 8px;
+    --poster-popout-lift: 0.5rem;
     --poster-popout-time: 0.22s;
-    --poster-glow-blur: 25px;
-    --poster-glow-offset: 8px;
+    --poster-glow-blur: 1.5625rem;
+    --poster-glow-offset: 0.5rem;
     /* Spread, so the dark reaches past the raised poster's own edge instead of
        stopping at it and leaving the neighbour undimmed. */
-    --poster-glow-spread: 6px;
+    --poster-glow-spread: 0.375rem;
 
     --carousel-gap: 2rem;
     --carousel-item-width: calc(100% / var(--carousel-items-per-view) - (var(--carousel-gap) * (var(--carousel-items-per-view) - 1) / var(--carousel-items-per-view)));
-    --carousel-container-padding: 80px;
     
     /* Navigation Button Base Colors */
     --nav-btn-bg: rgba(0, 0, 0, 0.4);
     --nav-btn-color: rgba(255, 255, 255, 0.7);
     --nav-btn-border: 1px solid rgba(255, 255, 255, 0.2);
-    --nav-btn-hover-bg: rgba(255, 0, 0, 0.6);
+    --nav-btn-hover-bg: var(--accent-a60);
     --nav-btn-hover-color: var(--secondary-color);
-    --nav-btn-hover-border: rgba(255, 0, 0, 0.8);
+    --nav-btn-hover-border: var(--accent-a80);
     
     /* Collection Navigation (main carousel) */
-    --nav-btn-width: 30px;
-    --nav-btn-height: 40px;
+    --nav-btn-width: 1.875rem;
+    --nav-btn-height: 2.5rem;
     --nav-btn-font-size: 1.5rem;
-    --nav-btn-border-radius: 8px;
+    --nav-btn-border-radius: 0.5rem;
     
     /* Item Navigation (individual item carousels) */
-    --item-nav-btn-width: 24px;
-    --item-nav-btn-height: 40px;
+    --item-nav-btn-width: 1.5rem;
+    --item-nav-btn-height: 2.5rem;
     --item-nav-btn-font-size: 1.2rem;
-    --item-nav-btn-border-radius: 6px;
+    --item-nav-btn-border-radius: 0.375rem;
     
     /* Modal Navigation (poster modal) */
-    --modal-nav-btn-width: 40px;
-    --modal-nav-btn-height: 70px;
+    --modal-nav-btn-width: 2.5rem;
+    --modal-nav-btn-height: 4.375rem;
     --modal-nav-btn-font-size: 2.5rem;
-    --modal-nav-btn-border-radius: 10px;
+    --modal-nav-btn-border-radius: 0.625rem;
     
     /* Component Variables */
     --merch-item-padding: 1rem;
     --merch-item-bg: var(--surface-card);
-    --merch-image-height: 350px;
-    --merch-image-height-mobile: 200px;
+    --merch-image-height: 21.875rem;
+    --merch-image-height-mobile: 12.5rem;
 
     /* Cards separate by sitting on a slightly lifted surface rather than inside
        a drawn box, the way the poster wall separates by the art's own edges.
@@ -164,28 +199,90 @@
 
     /* Common Properties */
     --standard-border: 1px solid var(--border-color);
-    --standard-transition: all 0.2s ease;
-    --transition-transform: transform 0.2s ease;
-    --transition-transform-slow: transform 0.3s ease;
+    /* Motion. Three speeds and one easing, so everything that moves agrees:
+       --t-fast for a colour or opacity swap you should barely notice,
+       --t-base for the default, --t-slow for an image fading in after decode.
+       --poster-popout-time above is the odd one out on purpose: it is tuned to
+       the poster wall's settle logic, which measures against it. */
+    --t-fast: 0.15s;
+    --t-base: 0.2s;
+    --t-slow: 0.3s;
+    --ease: ease;
+
+    --standard-transition: all var(--t-base) var(--ease);
+    --transition-transform: transform var(--t-base) var(--ease);
+    --transition-transform-slow: transform var(--t-slow) var(--ease);
+
+    /* Type scale. Distinct sizes kept distinct: these are the sizes in use, not
+       a rounding of them, so nothing resizes by adopting the scale. */
+    --text-2xs: 0.7rem;
+    --text-xs: 0.75rem;
+    --text-sm: 0.8rem;
+    --text-md: 0.85rem;
+    --text-base: 0.9rem;
+    --text-lg: 1rem;
+    --text-xl: 1.1rem;
+    --text-3xs: 0.6rem;
+    --text-label: 1.05rem;
+    --text-2xl: 1.2rem;
+    --text-3xl: 1.5rem;
+    --text-4xl: 2rem;
+
+    /* Tracking. Uppercase labels carry most of the site's voice and they all
+       want one of these three. */
+    --track-tight: 0.5px;
+    --track: 1px;
+    --track-wide: 2px;
+
+    /* Glows. The blur was written out at twelve call sites that differed only
+       in how strong the colour was, so the shape lives here and the call site
+       picks a weight. One-off shadows stay where they are used: a token for a
+       single occurrence only hides it. */
+    --glow-accent: 0 0 0.9375rem var(--accent-glow);
+    --glow-accent-strong: 0 0 0.9375rem var(--accent-glow-strong);
+    --glow-accent-hard: 0 0 0.9375rem var(--accent-color);
+    --glow-accent-wide: 0 0 1.25rem var(--accent-color);
+
+    /* Dark glow under something lifted above its neighbours. Sized by how far
+       the thing has risen: a hovered tile, a popped poster, a modal image. */
+    --shadow-raise-sm: 0 0 1.25rem 0.25rem var(--glow-raised);
+    --shadow-raise-md: 0 0 1.875rem 0.375rem var(--glow-raised);
+    --shadow-raise-lg: 0 0 2.5rem 0.625rem var(--glow-raised);
+
+    /* Corner radii. Everything rounded picks one of these; the site is mostly
+       square, so these exist to stop one-off values drifting apart. */
+    --radius-xs: 0.1875rem;
+    --radius-sm: 0.25rem;
+    --radius-md: 0.375rem;
+    --radius-pill: 50%;
+
+    /* Stacking inside a section, below the page chrome above. These steps are
+       load-bearing rather than decorative: the poster wall compares them
+       against each other, so a hovered-but-clipped poster must land under
+       --z-wall-rule while a cleared one lands over it. Keep them distinct and
+       in this order; collapsing two onto one value lets a popout punch through
+       the year rule. tests/past-shows-nav.spec.js pins that relationship.
+       The bare 0/1/2 used to order siblings inside one component stay inline,
+       since they mean nothing outside it. */
+    --z-item-nav: 10;
+    --z-wall-popout: 10;
+    --z-wall-rule: 20;
+    --z-wall-toggle: 25;
+    --z-wall-popout-clear: 30;
+    --z-wall-chrome: 40;
+    --z-carousel-edge: 50;
+    --z-carousel-nav: 100;
+    --z-mobile-menu: 999;
     --photo-gap: 2rem;
 
     /* Common Shows Styling Variables */
-    --show-padding-standard: 1rem;
-    --show-padding-large: 1.5rem;
     --show-font-weight-bold: 600;
     --show-font-weight-extra-bold: 800;
-    --show-font-weight-heavy: 900;
-
-    /* Show Date Styling */
-    --show-date-month-color: var(--accent-color);
-    --show-date-day-color: var(--secondary-color);
-    --show-date-year-color: var(--text-dark);
 }
 
 @media (max-width: 768px) {
     :root {
         --carousel-items-per-view: 1;
-        --carousel-container-padding: 50px;
         --merch-item-padding: 0.75rem;
     }
 }

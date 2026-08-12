@@ -6,7 +6,7 @@
     inset: 0;
     background: linear-gradient(45deg, var(--surface-raised), var(--section-alt));
     border: none;
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity var(--t-slow) ease-in-out;
     z-index: 0;
 }
 
@@ -14,7 +14,7 @@
    must repeat opacity in their own transition, since the last declaration for a
    given element wins outright rather than merging. */
 .img-fade {
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity var(--t-slow) ease-in-out;
 }
 
 /* Merch carousel - work with .active system */
@@ -31,7 +31,7 @@
 /* Carousel images: only show when both active AND loaded */
 .carousel-image {
     opacity: 0;
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity var(--t-slow) ease-in-out;
 }
 
 .carousel-image.active.img-ready {

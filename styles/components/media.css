@@ -9,7 +9,7 @@
    on a grey panel and would otherwise read as part of the same run of images. */
 .photo-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(18.75rem, 1fr));
     gap: 0;
     margin-bottom: 3rem;
 }
@@ -29,7 +29,7 @@
 /* Unframed, like the poster wall: the photograph is its own edge. */
 .photo-placeholder {
     width: 100%;
-    height: 250px;
+    height: 15.625rem;
     background: linear-gradient(45deg, var(--surface-raised), var(--section-alt));
     border-radius: 0;
     position: relative;
@@ -60,8 +60,8 @@
     position: absolute;
     bottom: 0;
     right: 0;
-    width: 38px;
-    height: 38px;
+    width: 2.375rem;
+    height: 2.375rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -69,7 +69,7 @@
     color: var(--secondary-color);
     border-radius: 0;
     opacity: 0;
-    transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+    transition: opacity var(--t-fast) var(--ease), background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
     z-index: 2;
 }
 
@@ -84,15 +84,15 @@
 }
 
 .photo-download svg {
-    width: 16px;
-    height: 16px;
+    width: 1rem;
+    height: 1rem;
     display: block;
 }
 
 /* Videos Grid */
 .video-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(18.75rem, 1fr));
     gap: var(--photo-gap);
     margin-bottom: 3rem;
 }
@@ -104,13 +104,13 @@
 }
 
 .video-card:hover {
-    box-shadow: 0 0 20px 4px var(--glow-raised);
+    box-shadow: var(--shadow-raise-sm);
 }
 
 .video-thumbnail {
     position: relative;
     width: 100%;
-    height: 200px;
+    height: 12.5rem;
     overflow: hidden;
     background: linear-gradient(45deg, var(--surface-raised), var(--section-alt));
 }
@@ -132,7 +132,7 @@
        made them feel like a different control. Opacity is repeated from
        .img-fade because this rule replaces it rather than adding to it. */
     transition: transform var(--poster-popout-time) ease-out,
-                opacity 0.3s ease-in-out;
+                opacity var(--t-slow) ease-in-out;
 }
 
 .video-thumbnail:hover img {
@@ -144,15 +144,15 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(255, 0, 0, 0.8);
+    background: var(--accent-a80);
     color: var(--secondary-color);
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    border-radius: var(--radius-pill);
+    width: 3.75rem;
+    height: 3.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: var(--text-3xl);
     transition: var(--standard-transition);
 }
 
@@ -167,23 +167,23 @@
 
 .video-info h4 {
     color: var(--secondary-color);
-    font-size: 1.1rem;
+    font-size: var(--text-xl);
     font-weight: 700;
     margin-bottom: 0.5rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: var(--track);
 }
 
 .video-info p {
     color: var(--text-dark);
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     line-height: 1.5;
 }
 
 /* Logos Grid */
 .logos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 260px));
+    grid-template-columns: repeat(auto-fit, minmax(12.5rem, 16.25rem));
     gap: 2rem;
     justify-content: start;
 }
@@ -196,13 +196,13 @@
 }
 
 .logo-card:hover {
-    box-shadow: 0 0 20px 4px var(--glow-raised);
+    box-shadow: var(--shadow-raise-sm);
 }
 
 .logo-preview {
     position: relative;
     width: 100%;
-    height: 150px;
+    height: 9.375rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -215,7 +215,7 @@
     max-height: 100%;
     object-fit: contain;
     transition: transform var(--poster-popout-time) ease-out,
-                opacity 0.3s ease-in-out;
+                opacity var(--t-slow) ease-in-out;
 }
 
 .logo-card:hover .logo-preview img {
