@@ -653,33 +653,62 @@
     display: flex;
     align-items: center;
     height: var(--poster-year-head-h);
+    /* Explicit, so the half-leading above the caps is a whole number. */
+    line-height: var(--poster-year-line-h);
     background: var(--background-color);
     /* Opaque to the cursor: without this you can hover a poster through the
        rule, i.e. hover something that isn't really visible. */
     pointer-events: auto;
 }
 
-/* The rule takes everything the year label doesn't, and the track spans the
-   wrap's padding box, so the rule lines up exactly with the poster columns
-   and the year itself sits out in the gutter beside them. */
-.poster-year-indicator::after {
-    content: '';
+/* The rule takes everything the labels don't, and the track spans the wrap's
+   padding box, so it lines up exactly with the poster columns and the year
+   sits out in the gutter beside them. */
+.poster-year-rule {
     flex: 1;
     height: 1px;
     background: var(--border-color-faded);
 }
 
-
-.poster-year-indicator span {
+.poster-year-label {
     flex: none;
     width: var(--poster-rail-width);
-    padding-right: 0.6rem;
+    padding-right: var(--poster-rail-gap);
     font-family: 'Arial Black', Helvetica, Arial, sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 900;
     letter-spacing: 0.1em;
     color: var(--accent-color);
 }
+
+/* Hovered poster's date and city, read out beside the year rather than over
+   the art. Removed from flow when idle so the rule runs full width again. */
+.poster-year-detail {
+    display: none;
+    flex: none;
+    max-width: 60%;
+    padding-right: 1rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    /* Onto the year's cap line, which sits lower at the same size. */
+    position: relative;
+    top: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--secondary-color);
+}
+
+.poster-year-detail.is-shown {
+    display: block;
+}
+
+.poster-year-detail b {
+    color: var(--accent-color);
+    font-weight: 900;
+    letter-spacing: 0.1em;
+}
+
 
 /* Jump arrows. Sticky inside the wrap and pushed to opposite ends of it, so
    up rides the top of the viewport and down rides the bottom, and both stop
@@ -799,51 +828,6 @@
 }
 
 
-/* Date and city, scrimmed over the bottom of the poster on hover. Same
-   treatment as the tickets button on upcoming posters. */
-.poster-grid-caption {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-    padding: 2.5rem 0.7rem 0.7rem;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 35%, rgba(0, 0, 0, 0.75) 60%, transparent);
-    opacity: 0;
-    transition: opacity 0.18s ease-out;
-    pointer-events: none;
-}
-
-.poster-grid-item:hover .poster-grid-caption {
-    opacity: 1;
-}
-
-
-.poster-caption-date {
-    font-size: 0.78rem;
-    font-weight: 900;
-    letter-spacing: 0.1em;
-    color: var(--accent-color);
-    text-transform: uppercase;
-}
-
-.poster-caption-place {
-    font-size: 0.72rem;
-    letter-spacing: 0.03em;
-    color: var(--secondary-color);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-/* No hover to reveal it on touch, and a tap opens the modal instead. */
-@media (hover: none) {
-    .poster-grid-caption {
-        display: none;
-    }
-}
 
 
 .poster-grid-item:hover {

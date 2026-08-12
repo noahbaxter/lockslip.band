@@ -73,7 +73,10 @@
     --poster-rail-gap: 0.6rem;
     --poster-nav-size: calc(var(--poster-rail-width) - var(--poster-rail-gap));
     --poster-nav-inset: 1.5rem;
-    --poster-year-head-h: 2.6rem;
+    /* Whole pixels, evenly split by the line height, so the centred rule lands
+       on a pixel boundary rather than a half one. */
+    --poster-year-head-h: 42px;
+    --poster-year-line-h: 20px;
     /* Measured at runtime by ShowsScrollNav; fallbacks are for first paint. */
     --poster-toggle-h: 46px;
     --poster-row-h: 0px;

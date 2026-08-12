@@ -61,7 +61,7 @@ test('the year readout follows the posters under the label', async ({ page }) =>
   await page.setViewportSize({ width: 1280, height: 900 });
   await ready(page);
 
-  const label = page.locator('.poster-year-indicator span');
+  const label = page.locator('.poster-year-label');
   const off = await offset(page);
   const seen = [];
 
@@ -85,14 +85,15 @@ test('a poster opens the modal it belongs to', async ({ page }) => {
 
   const first = page.locator('.poster-grid-item').first();
   await first.hover();
-  const caption = (await first.locator('.poster-grid-caption').innerText()).replace(/\n/g, ' / ');
+  await page.waitForTimeout(300);
+  const readout = await page.locator('.poster-year-detail').innerText();
   await first.click();
   await page.waitForTimeout(500);
 
   const date = await page.locator('.poster-modal-date').innerText();
   const location = await page.locator('.poster-modal-location').innerText();
-  console.log('grid caption:', caption, '|| modal:', date, '/', location);
-  expect(caption.toUpperCase()).toContain(location.toUpperCase());
+  console.log('year rule readout:', readout, '|| modal:', date, '/', location);
+  expect(readout.toUpperCase()).toContain(location.toUpperCase());
 });
 
 test('the sticky chrome swallows hovers instead of passing them through', async ({ page }) => {
@@ -367,3 +368,56 @@ for (const edge of ['top', 'bottom']) {
     expect(leaks).toEqual([]);
   });
 }
+
+// mousemove stops firing once the cursor leaves the window, so the readout has
+// to be cleared some other way or it stays stuck on the last poster.
+test('the year rule readout collapses when nothing is hovered', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await ready(page);
+  await page.evaluate(() => document.querySelector('.poster-grid-wrap').scrollIntoView());
+  await page.evaluate(() => window.scrollBy(0, 700));
+  await page.waitForTimeout(400);
+
+  const state = () => page.evaluate(() => {
+    const d = document.querySelector('.poster-year-detail');
+    return {
+      ruleW: Math.round(document.querySelector('.poster-year-rule').getBoundingClientRect().width),
+      detailW: Math.round(d.getBoundingClientRect().width),
+      shown: d.classList.contains('is-shown'),
+    };
+  });
+
+  const idle = await state();
+  console.log('idle:     ', JSON.stringify(idle));
+  expect(idle.shown).toBe(false);
+
+  const i = await page.evaluate(() => {
+    const line = ShowsScrollNav.offset();
+    return [...document.querySelectorAll('.poster-grid-item')]
+      .findIndex(e => { const r = e.getBoundingClientRect(); return r.top > line + 4 && r.bottom < window.innerHeight - 4; });
+  });
+  const b = await page.locator('.poster-grid-item').nth(i).boundingBox();
+  await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2);
+  await page.waitForTimeout(500);
+  const hovered = await state();
+  console.log('hovered:  ', JSON.stringify(hovered));
+  expect(hovered.shown).toBe(true);
+  expect(hovered.ruleW, 'rule should give way to the readout').toBeLessThan(idle.ruleW - 100);
+
+  // the year label follows the hovered poster, so it can't disagree with the
+  // date beside it on a row that straddles a year boundary
+  const paired = await page.evaluate(() => ({
+    label: document.querySelector('.poster-year-label').textContent,
+    posterYear: document.querySelector('.poster-grid-item:hover')?.dataset.year,
+  }));
+  console.log('label vs hovered poster:', JSON.stringify(paired));
+  expect(paired.label).toBe(paired.posterYear);
+
+  await page.evaluate(() => document.dispatchEvent(new MouseEvent('mouseleave')));
+  await page.waitForTimeout(500);
+  const after = await state();
+  console.log('cursor gone:', JSON.stringify(after));
+  expect(after.shown, 'readout stuck after the cursor left the window').toBe(false);
+  expect(after.detailW).toBe(0);
+  expect(after.ruleW, 'rule did not go back to full width').toBe(idle.ruleW);
+});

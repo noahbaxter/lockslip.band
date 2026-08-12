@@ -13,6 +13,7 @@ const ShowsScrollNav = {
     // Re-resolved on every render; see refresh().
     indicatorBox: null,
     indicator: null,
+    detail: null,
     items: [],
     upBtn: null,
     downBtn: null,
@@ -80,6 +81,11 @@ const ShowsScrollNav = {
                     if (item) this.settle(item);
                 });
             }, { passive: true });
+
+            // mousemove stops firing once the cursor leaves the window, so
+            // without these the readout stays stuck on the last poster.
+            document.addEventListener('mouseleave', () => this.setHovered(null));
+            window.addEventListener('blur', () => this.setHovered(null));
         }
     },
 
@@ -152,7 +158,8 @@ const ShowsScrollNav = {
     // Called after every shows render; the view toggle replaces the section.
     refresh() {
         this.indicatorBox = document.querySelector('.poster-year-indicator');
-        this.indicator = this.indicatorBox && this.indicatorBox.querySelector('span');
+        this.indicator = document.querySelector('.poster-year-label');
+        this.detail = document.querySelector('.poster-year-detail');
         this.items = Array.from(document.querySelectorAll('.poster-grid-item'));
         this.upBtn = document.querySelector('.poster-nav-btn[data-dir="up"]');
         this.downBtn = document.querySelector('.poster-nav-btn[data-dir="down"]');
@@ -186,7 +193,7 @@ const ShowsScrollNav = {
 
         if (year !== this.year) {
             this.year = year;
-            this.indicator.textContent = year;
+            this.renderYear();
         }
 
         this.updateArrows(line);
@@ -198,6 +205,7 @@ const ShowsScrollNav = {
 
         const leaving = this.hovered;
         this.hovered = item;
+        this.showDetail(item);
 
         // Hold the one you left for the length of the shrink, so it isn't
         // dropped behind the rule while it is still animating down.
@@ -206,6 +214,23 @@ const ShowsScrollNav = {
             this.raised.set(leaving, setTimeout(() => this.lower(leaving), this.popoutMs()));
         }
         this.markOverlap();
+    },
+
+    // The hovered poster's date and city, read out beside the year rather than
+    // over the art. The year comes from the label, which follows the hovered
+    // poster while there is one so the two can't disagree on a boundary row.
+    showDetail(item) {
+        if (!this.detail) return;
+        if (item) {
+            this.detail.innerHTML = `<b>${item.dataset.date}</b> &middot; ${item.dataset.place}`;
+        }
+        this.detail.classList.toggle('is-shown', !!item);
+        this.renderYear();
+    },
+
+    renderYear() {
+        if (!this.indicator) return;
+        this.indicator.textContent = this.hovered ? this.hovered.dataset.year : this.year;
     },
 
     popoutMs() {

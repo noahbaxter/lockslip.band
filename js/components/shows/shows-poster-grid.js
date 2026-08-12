@@ -6,28 +6,30 @@ const ShowsPosterGrid = {
         return show.isTourPoster ? show.startDate.year : show.date.year;
     },
 
-    // Skim-layer caption shown under a poster on hover. The modal stays the
-    // full detail view; this is just enough to place the poster in time.
-    renderCaption(show) {
+    // Read out in the year rule on hover, so nothing covers the poster art. No
+    // year here: the label alongside it carries that. The modal stays the full
+    // detail view.
+    getCaption(show) {
         if (show.isTourPoster) {
-            const range = `${show.startDate.month} ${show.startDate.day} - ${show.endDate.month} ${show.endDate.day}`;
-            return `
-                <span class="poster-caption-date">${range} ${show.startDate.year}</span>
-                <span class="poster-caption-place">${show.name}</span>
-            `;
+            return {
+                date: `${show.startDate.month} ${show.startDate.day} - ${show.endDate.month} ${show.endDate.day}`,
+                place: show.name,
+            };
         }
-        return `
-            <span class="poster-caption-date">${show.date.month} ${show.date.day} ${show.date.year}</span>
-            <span class="poster-caption-place">${show.location}</span>
-        `;
+        return {
+            date: `${show.date.month} ${show.date.day}`,
+            place: show.location,
+        };
     },
 
     renderItem(show, posterIndex) {
+        const { date, place } = this.getCaption(show);
         return `
-            <div class="poster-grid-item past-show" data-year="${this.getYear(show)}" onclick="openPosterModal(${posterIndex})">
+            <div class="poster-grid-item past-show" data-year="${this.getYear(show)}"
+                 data-date="${date}" data-place="${place}"
+                 onclick="openPosterModal(${posterIndex})">
                 <div class="poster-grid-thumb">
                     <img src="${show.poster}" alt="Show poster" loading="lazy">
-                    <div class="poster-grid-caption">${this.renderCaption(show)}</div>
                 </div>
             </div>
         `;
@@ -84,7 +86,9 @@ const ShowsPosterGrid = {
                 ${this.renderRail()}
                 <div class="poster-year-track">
                     <div class="poster-year-indicator">
-                        <span>${firstYear}</span>
+                        <span class="poster-year-label">${firstYear}</span>
+                        <span class="poster-year-detail"></span>
+                        <i class="poster-year-rule"></i>
                         <button type="button" class="poster-nav-btn" data-dir="up" aria-label="Jump to newest past show">&uarr;</button>
                     </div>
                 </div>
