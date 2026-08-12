@@ -10,6 +10,13 @@
     z-index: 0;
 }
 
+/* Decode fade, applied by ImageLoader. Components that also animate an image
+   must repeat opacity in their own transition, since the last declaration for a
+   given element wins outright rather than merging. */
+.img-fade {
+    transition: opacity 0.3s ease-in-out;
+}
+
 /* Merch carousel - work with .active system */
 .carousel-images {
     background: linear-gradient(45deg, var(--border-color), var(--section-alt));

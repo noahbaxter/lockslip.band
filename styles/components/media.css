@@ -129,8 +129,10 @@
     object-fit: cover;
     /* Same curve and distance as the photo grid and the poster wall. These ran
        at 0.3s and 1.05 while the photos ran at 0.22s and 1.04, which is what
-       made them feel like a different control. */
-    transition: transform var(--poster-popout-time) ease-out;
+       made them feel like a different control. Opacity is repeated from
+       .img-fade because this rule replaces it rather than adding to it. */
+    transition: transform var(--poster-popout-time) ease-out,
+                opacity 0.3s ease-in-out;
 }
 
 .video-thumbnail:hover img {
@@ -212,7 +214,8 @@
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    transition: transform var(--poster-popout-time) ease-out;
+    transition: transform var(--poster-popout-time) ease-out,
+                opacity 0.3s ease-in-out;
 }
 
 .logo-card:hover .logo-preview img {
