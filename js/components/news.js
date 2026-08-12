@@ -1,8 +1,9 @@
 // News Component
 const NewsComponent = {
-    // Full-width strip of the announcement graphics, in the order they were
-    // posted. Scrolls sideways below the desktop breakpoint rather than
-    // shrinking five columns into slivers.
+    // Strip of the announcement graphics in the order they were posted, held to
+    // the same column as every other section. Panels overlap so they stay tall
+    // in that column instead of five short slivers; hovering pulls one forward.
+    // Scrolls sideways below the desktop breakpoint.
     renderBanner(images, headline) {
         if (!images || !images.length) return '';
 
@@ -11,7 +12,7 @@ const NewsComponent = {
         newsModal.setData(images.map(image => ({ image, headline })));
 
         const imagesHTML = images.map((image, index) => `
-            <button class="news-banner-image" onclick="openNewsModal(${index})" aria-label="${headline}, image ${index + 1}">
+            <button class="news-banner-image" style="--news-banner-index: ${index}" onclick="openNewsModal(${index})" aria-label="${headline}, image ${index + 1}">
                 <img src="${image}" alt="${headline}">
             </button>
         `).join('');
@@ -60,7 +61,7 @@ const NewsComponent = {
         return `
             <article class="news-featured" data-item-id="${item.id}">
                 ${this.renderBanner(item.images, item.headline)}
-                <div class="container news-content">
+                <div class="news-content">
                     ${this.renderDate(item.date)}
                     <h3>${item.headline}</h3>
                     ${this.renderBody(item)}
@@ -96,13 +97,12 @@ const NewsComponent = {
         const items = news.items.filter(item => !item.hidden);
         if (!items.length) return '';
 
-        const archive = this.renderArchive(items.slice(1));
-
-        // The banner runs full width, so only the text around it is contained.
         return `
-            <div class="container">${UIHelpers.sectionHeader(news.sectionTitle)}</div>
-            ${this.renderFeatured(items[0])}
-            ${archive ? `<div class="container">${archive}</div>` : ''}
+            <div class="container">
+                ${UIHelpers.sectionHeader(news.sectionTitle)}
+                ${this.renderFeatured(items[0])}
+                ${this.renderArchive(items.slice(1))}
+            </div>
         `;
     }
 };

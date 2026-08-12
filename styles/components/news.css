@@ -1,14 +1,21 @@
 /* News Component */
 
-/* Banner: the announcement graphics butted edge to edge so the strip reads as
-   one long sideways picture. No borders, no gaps, nothing between panels. */
+/* Banner: the announcement graphics overlapping like a fanned stack. The panel
+   width is fixed, so the panels hold one height at every viewport, and a
+   narrowing column is absorbed by the panels sliding further over each other
+   rather than by all of them getting shorter.
+     overlap = (column - count * panel) / (count - 1)
+   which is the algebra for n fixed-width panels spanning the column across n-1
+   seams. It stays negative, and so an overlap rather than a gap, as long as
+   count * --news-panel-w exceeds the column, which the 1200px container cap
+   guarantees for any announcement of three images or more. */
 .news-banner {
-    display: grid;
-    grid-template-columns: repeat(var(--news-banner-count), 1fr);
-    gap: 0;
+    --news-panel-w: 280px;
+    display: flex;
 }
 
 .news-banner-image {
+    flex: 0 0 var(--news-panel-w);
     display: block;
     overflow: hidden;
     padding: 0;
@@ -16,20 +23,35 @@
     background: none;
     cursor: pointer;
     font: inherit;
+    /* Descending, so the fan runs left over right: panel 1 sits above 2, 2
+       above 3, and so on. Source order alone would paint the reverse. */
+    position: relative;
+    z-index: calc(var(--news-banner-count) - var(--news-banner-index));
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.news-banner-image + .news-banner-image {
+    margin-left: calc(
+        (100% - var(--news-banner-count) * var(--news-panel-w))
+        / (var(--news-banner-count) - 1)
+    );
 }
 
 .news-banner-image img {
     display: block;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
     aspect-ratio: 4 / 5;
-    transition: filter 0.2s ease;
+    object-fit: cover;
 }
 
-/* Brightness only: anything that moves an edge would show the seams. */
-.news-banner-image:hover img {
-    filter: brightness(1.15);
+/* Hover pulls the panel clear of the stack so the covered part is readable.
+   The shadow is what separates it from whatever it is now sitting on top of. */
+.news-banner-image:hover,
+.news-banner-image:focus-visible {
+    z-index: calc(var(--news-banner-count) + 1);
+    transform: scale(1.04);
+    box-shadow: 0 0 30px 6px rgba(0, 0, 0, 0.85);
 }
 
 /* Info line in the shared photo lightbox */
@@ -41,13 +63,19 @@
     margin-bottom: 0.5rem;
 }
 
+/* Same lifted surface as a release card, so a post reads as one object with the
+   banner sitting flush along its top edge. */
+.news-featured {
+    background: var(--surface-card);
+}
+
 .news-content {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    text-align: left;
     gap: 1rem;
-    padding-top: 3rem;
+    padding: 2.5rem 2rem;
 }
 
 /* Matches .release-date so dates read the same across the site. */
@@ -65,8 +93,11 @@
     margin: 0;
 }
 
+/* Roughly half the column at full expand, as a fixed measure rather than a
+   fraction: the line length that reads well there keeps reading well as the
+   column narrows, and it stops forcing a half-width sliver on a phone. */
 .news-body {
-    max-width: 60ch;
+    max-width: 580px;
     margin: 0;
 }
 
@@ -163,10 +194,9 @@
 }
 
 @media (max-width: 768px) {
-    /* Five columns would be slivers at phone width, so the strip scrolls
-       sideways instead, still butted edge to edge. */
+    /* No overlap at phone width: there is no hover to pull a panel forward, so
+       the strip scrolls sideways with each panel whole and snapped. */
     .news-banner {
-        display: flex;
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
@@ -177,13 +207,36 @@
         display: none;
     }
 
+    /* Keeps --news-panel-w rather than sizing off the viewport, so the panels
+       are exactly as tall here as they are above the breakpoint and nothing
+       resizes at the moment the row stops overlapping and starts scrolling.
+
+       Panels settle centred, except the two on the ends: centring those would
+       ask the strip to scroll past its own start or finish, which it cannot do,
+       so they pin to their own edge and leave no dead space beside them. */
     .news-banner-image {
-        flex: 0 0 62vw;
+        scroll-snap-align: center;
+    }
+
+    .news-banner-image:first-child {
         scroll-snap-align: start;
     }
 
+    .news-banner-image:last-child {
+        scroll-snap-align: end;
+    }
+
+    .news-banner-image + .news-banner-image {
+        margin-left: 0;
+    }
+
+    .news-banner-image:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
     .news-content {
-        padding-top: 2rem;
+        padding: 2rem 1.25rem;
     }
 
     .news-body-quoted {
