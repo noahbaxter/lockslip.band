@@ -181,8 +181,14 @@
     max-width: 300px;
 }
 
+/* A photo caption is four short lines, so it wants less room and less weight
+   than the poster modal's tracklist. Centred as a block: the counter was
+   already centred and everything above it was not, which read as a misaligned
+   panel rather than two deliberate alignments. */
 .photo-modal-info {
-    max-width: 280px;
+    max-width: 240px;
+    padding: 1.25rem 1.25rem 1.4rem;
+    text-align: center;
 }
 
 /* Scrollbar styling - shared */
@@ -220,7 +226,8 @@
 }
 
 .photo-modal-date {
-    font-size: 1rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.6rem;
 }
 
 /* Venue - Shared base */
@@ -239,7 +246,7 @@
 }
 
 .photo-modal-venue {
-    font-size: 1.3rem;
+    font-size: 1.05rem;
 }
 
 /* Location - Shared base */
@@ -258,8 +265,8 @@
 }
 
 .photo-modal-location {
-    font-size: 0.95rem;
-    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
 }
 
 /* Counter - Identical, merged */
@@ -316,9 +323,9 @@
 
 .photo-modal-photographer {
     color: var(--text-light);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     line-height: 1.5;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .photo-modal-photographer a {
