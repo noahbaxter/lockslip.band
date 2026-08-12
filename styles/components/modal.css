@@ -123,6 +123,11 @@
     justify-content: center;
     transition: var(--standard-transition);
     backdrop-filter: blur(4px);
+    /* Centring the flex line box is not the same as centring the chevron. The
+       glyph's ink runs from 19.2px above the baseline to 1.4px above it, so its
+       middle sits 0.092em below the line box's and the arrow reads low. Half
+       this padding is exactly that offset, taken back off the bottom. */
+    padding-bottom: 0.185em;
 }
 
 .poster-modal-nav:hover,

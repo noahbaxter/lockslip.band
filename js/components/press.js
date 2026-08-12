@@ -6,13 +6,8 @@ const bandPhotoModal = new Modal({
     classPrefix: 'photo-modal',
     getAlt: () => 'Lockslip band photo',
     getDownload: (photo) => photo.hires || photo.image,
-    renderInfo: (photo) => {
-        if (!photo.credit) return '';
-        const credit = photo.creditUrl
-            ? `<a href="${photo.creditUrl}" target="_blank" rel="noopener">${photo.credit}</a>`
-            : photo.credit;
-        return `<div class="photo-modal-photographer">Photo by ${credit}</div>`;
-    }
+    // Same caption as the live shots; the fields these items lack drop out.
+    renderInfo: renderPhotoCaption
 });
 
 const PressComponent = {
