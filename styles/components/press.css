@@ -1,8 +1,16 @@
 /* Press Kit Page */
 
+/* No top padding: the first section already clears the fixed header on its own
+   (see layout.css), and adding it here stacked a second header's worth of empty
+   band above the title. */
 body.press-page main {
-    padding-top: 120px;
     padding-bottom: 4rem;
+}
+
+/* The page title, not a section heading, so it does not need a section
+   heading's drop beneath it. */
+body.press-page #press > .container > h2 {
+    margin-bottom: 2rem;
 }
 
 .press-section {
@@ -17,6 +25,9 @@ body.press-page main {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0;
+    /* It is a <section>, so it inherits the global 50px block padding on top of
+       the page section that already has its own. Nothing sits in that band. */
+    padding: 0;
     margin-bottom: 3.5rem;
 }
 
@@ -98,8 +109,12 @@ body.press-page main {
    one solid rectangle: identical cells, no gaps. Every cell being the same
    shape is what lets the block have square corners, and the cost is that each
    photograph is cropped to fit it. Hovering pays that back. */
+/* Square rather than 4:5. Three tall cells across put the block near a full
+   screen high, most of it black beside a three-line bio; square holds the
+   rectangle and the L while taking ~200px off the height. The extra crop it
+   costs each portrait is given back on hover. */
 .press-intro {
-    --band-tile-ar: 0.8;
+    --band-tile-ar: 1;
 }
 
 .band-photo-grid .photo-card {
