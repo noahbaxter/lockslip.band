@@ -105,9 +105,11 @@
     line-height: var(--poster-year-line-h);
 }
 
+/* Flush left, unlike the wall's year label: the wall insets its label to line
+   up with the jump arrows out in the gutter, and there are none here to line
+   up with, so the inset was just a gap. */
 .upcoming-section .shows-line-label {
     flex: none;
-    margin-left: var(--poster-rail-inset);
     padding-right: var(--poster-rail-gap);
     font-family: 'Arial Black', Helvetica, Arial, sans-serif;
     font-size: 1.05rem;

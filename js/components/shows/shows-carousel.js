@@ -358,7 +358,7 @@ const ShowsCarousel = {
 
         return `
             <div class="shows-section upcoming-section">
-                <h3 class="shows-line"><span class="shows-line-label">UPCOMING</span><i class="shows-line-rule"></i></h3>
+                <h3 class="shows-line"><span class="shows-line-label">UPCOMING SHOWS</span><i class="shows-line-rule"></i></h3>
                 <div class="upcoming-carousel">
                     <div class="carousel-poster" onclick="ShowsCarousel.openPosterModal()">
                         ${this.bigPaneHtml(slides[0])}
