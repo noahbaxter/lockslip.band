@@ -591,8 +591,10 @@
     pointer-events: none;
 }
 
+
+/* No backing of its own: a filled box here paints its padding over the art as
+   a black slab beside the buttons. The buttons carry their own. */
 .poster-year-controls .shows-view-toggle {
-    background: var(--background-color);
     pointer-events: auto;
 }
 
@@ -608,7 +610,8 @@
 .view-toggle-btn {
     padding: 0.2rem 0.55rem;
     border: 1px solid var(--border-color-faded);
-    background: transparent;
+    /* Same scrim as the jump arrows: readable over art without blacking it out. */
+    background: var(--scrim-strong);
     color: var(--text-dark);
     cursor: pointer;
     transition: var(--standard-transition);
@@ -650,11 +653,12 @@
     gap: 0;
 }
 
-/* Left gutter holds the jump arrows. */
+/* No gutter: the wall runs the full width and the jump arrows ride over the
+   art instead of sitting beside it. */
 .poster-grid-wrap {
     position: relative;
-    padding-left: var(--poster-rail-width);
 }
+
 
 /* Bounds the sticky label: the wrap minus one poster row, so the line comes
    to rest sitting on top of the last row instead of riding over it.
@@ -683,13 +687,46 @@
     display: flex;
     align-items: center;
     height: var(--poster-year-head-h);
-    padding-top: var(--poster-year-pad-top);
+    /* Left pad stands in for the year, which is drawn from the layer above. */
+    padding: var(--poster-year-pad-top) 0 0
+             calc(var(--poster-rail-inset) + var(--poster-rail-width));
     /* Explicit, so the half-leading above the caps is a whole number. */
     line-height: var(--poster-year-line-h);
     background: var(--background-color);
     /* Opaque to the cursor: without this you can hover a poster through the
        rule, i.e. hover something that isn't really visible. */
     pointer-events: auto;
+}
+
+/* Carries the line out to both window edges. Only as tall as the line, so the
+   wall itself is never masked: a popout may still spread into the margin lower
+   down, it just can't appear alongside the line and break its ends.
+
+   Drawn by the line rather than the controls layer, so it takes the line's own
+   depth: a resting poster passes behind it, a hovered one rides over it, same
+   as the band between the rule and the wall.
+
+   Widths are measured by ShowsScrollNav rather than set to 100vw, which would
+   paint the same but leave the document that much wider and scrollable
+   sideways. */
+.poster-year-indicator::before,
+.poster-year-indicator::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: var(--background-color);
+    pointer-events: none;
+}
+
+.poster-year-indicator::before {
+    right: 100%;
+    width: var(--poster-margin-left, 0px);
+}
+
+.poster-year-indicator::after {
+    left: 100%;
+    width: var(--poster-margin-right, 0px);
 }
 
 /* The rule takes everything the labels don't, and the track spans the wrap's
@@ -706,15 +743,23 @@
     background: var(--border-color-faded);
 }
 
+/* Lives in the controls layer, not the line itself: out in the margin it would
+   otherwise be painted over by the line's own mask, which sits above the art.
+   The line reserves its slot with padding instead. */
 .poster-year-label {
     flex: none;
+    /* Holds the toggle at the far end while this stays at the near one. */
+    margin-right: auto;
+    /* Matched to the arrows below it, so the year and the rail share one edge. */
+    margin-left: var(--poster-rail-inset);
     width: var(--poster-rail-width);
     padding-right: var(--poster-rail-gap);
     font-family: 'Arial Black', Helvetica, Arial, sans-serif;
-    font-size: 0.82rem;
+    font-size: 1.05rem;
     font-weight: 900;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     color: var(--accent-color);
+    pointer-events: auto;
 }
 
 /* Hovered poster's date and city, read out beside the year rather than over
@@ -748,14 +793,17 @@
 
 /* Jump arrows. Sticky inside the wrap and pushed to opposite ends of it, so
    up rides the top of the viewport and down rides the bottom, and both stop
-   dead at the edges of the poster wall instead of following you down the page. */
+   dead at the edges of the poster wall instead of following you down the page.
+
+   Over the art rather than beside it, and so over a popped-out poster (30)
+   too: an arrow a poster can swallow is an arrow you cannot press. */
 .poster-grid-rail {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 0;
-    width: var(--poster-rail-width);
-    z-index: 20;
+    left: var(--poster-rail-inset);
+    width: calc(var(--poster-nav-size) + var(--poster-rail-gap));
+    z-index: 40;
     pointer-events: none;
 }
 
@@ -787,22 +835,29 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--background-color);
+    /* Let the art read through: solid black over a poster is a hole in it. */
+    background: var(--scrim-strong);
     border: 1px solid var(--border-color-faded);
     color: var(--text-dark);
     font-size: 1rem;
     line-height: 1;
     cursor: pointer;
-    transition: var(--standard-transition);
+    /* Colours and the fade only. `all` would animate the arrow's size and
+       position too, so it slid across the screen on resize and drifted while
+       the sticky edge moved. */
+    transition: background-color 0.2s ease,
+                border-color 0.2s ease,
+                color 0.2s ease,
+                opacity 0.2s ease;
 }
 
-/* Parented to the year rule itself rather than given its own sticky range.
-   The two then pin and release as one unit, and the arrow can't drift up into
-   the year band on the way. */
+/* Parented to the controls layer, which shares the year line's box and sticky
+   range. The two then pin and release as one unit, the arrow can't drift up
+   into the year band on the way, and it rides above the art like the rail. */
 .poster-nav-btn[data-dir="up"] {
     position: absolute;
     top: calc(100% + 0.75rem);
-    left: 0;
+    left: var(--poster-rail-inset);
     width: var(--poster-nav-size);
 }
 
@@ -821,6 +876,19 @@
         calc(100vh - var(--poster-nav-size) - var(--poster-content-top))
     );
 }
+
+/* Once the page margin is wide enough to hold one, the arrows step out of the
+   wall entirely and stop covering art. Below this the margin is too narrow and
+   they ride over the posters instead. The year stays put either way: pulling it
+   out with them drags the readout and the rule along, and the line has to keep
+   the same span as the upcoming one above it. */
+@media (min-width: 1400px) {
+    .poster-grid-rail,
+    .poster-nav-btn[data-dir="up"] {
+        left: calc(-1 * (var(--poster-nav-size) + var(--poster-rail-inset)));
+    }
+}
+
 
 /* Nothing to jump to when that end of the wall is already on screen. */
 .poster-nav-btn.is-hidden {

@@ -103,12 +103,14 @@ const ShowsPosterGrid = {
                 ${this.renderRail()}
                 <div class="poster-year-track">
                     <div class="poster-year-indicator">
-                        <span class="poster-year-label">${firstYear}</span>
                         <span class="poster-year-detail"></span>
                         <i class="poster-year-rule"></i>
-                        <button type="button" class="poster-nav-btn" data-dir="up" aria-label="Jump to newest past show">&uarr;</button>
                     </div>
-                    <div class="poster-year-controls">${ShowsTable.renderPastViewToggle()}</div>
+                    <div class="poster-year-controls">
+                        <span class="poster-year-label">${firstYear}</span>
+                        <button type="button" class="poster-nav-btn" data-dir="up" aria-label="Jump to newest past show">&uarr;</button>
+                        ${ShowsTable.renderPastViewToggle()}
+                    </div>
                 </div>
                 <div class="poster-year-head"></div>
                 <div class="poster-grid">${items}</div>

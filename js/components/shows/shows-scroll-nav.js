@@ -143,6 +143,17 @@ const ShowsScrollNav = {
 
         const item = document.querySelector('.poster-grid-item');
         this.setVar('--poster-row-h', item ? item.getBoundingClientRect().height : 0);
+
+        // What's left of the window either side of the wall. The line's masks
+        // are cut to exactly this: a fixed 100vw would paint the same but push
+        // the document that much wider and let the page scroll sideways.
+        const grid = document.querySelector('.poster-grid');
+        if (grid) {
+            const box = grid.getBoundingClientRect();
+            const width = document.documentElement.clientWidth;
+            this.setVar('--poster-margin-left', Math.max(0, box.left));
+            this.setVar('--poster-margin-right', Math.max(0, width - box.right));
+        }
     },
 
     setVar(name, value) {

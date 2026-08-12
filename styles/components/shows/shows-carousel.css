@@ -101,11 +101,12 @@
 
 .upcoming-section .shows-line-label {
     flex: none;
+    margin-left: var(--poster-rail-inset);
     padding-right: var(--poster-rail-gap);
     font-family: 'Arial Black', Helvetica, Arial, sans-serif;
-    font-size: 0.82rem;
+    font-size: 1.05rem;
     font-weight: 900;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     color: var(--accent-color);
 }
 

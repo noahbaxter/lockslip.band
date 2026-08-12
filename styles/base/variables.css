@@ -68,11 +68,18 @@
     /* Poster Grid Variables */
     --poster-grid-columns-desktop: 5;
     --poster-grid-columns-mobile: 2;
-    /* Left gutter for the jump arrows, and the height of a year label. */
+    /* The year label's slot, which is what decides where the rule starts. Fixed:
+       "2026" needs the same room at every width. */
     --poster-rail-width: 3.5rem;
     --poster-rail-gap: 0.6rem;
-    --poster-nav-size: calc(var(--poster-rail-width) - var(--poster-rail-gap));
+    /* Arrows step up with the window in fixed sizes (see the steps at the foot
+       of this file): big enough to hit on a wide screen, small enough not to
+       swallow a poster on a narrow one. */
+    --poster-nav-size: 2.75rem;
     --poster-nav-inset: 1.5rem;
+    /* Holds the arrows and the year off the wall's left edge, so neither sits
+       exactly on the seam between the page and the first column. */
+    --poster-rail-inset: 0.7rem;
     /* Whole pixels, evenly split by the line height, so the centred rule lands
        on a pixel boundary rather than a half one. The pad is border-box, so it
        comes off the top and leaves that split alone. */
@@ -159,5 +166,20 @@
         --carousel-items-per-view: 1;
         --carousel-container-padding: 50px;
         --merch-item-padding: 0.75rem;
+    }
+}
+
+/* Jump-arrow sizes, in steps rather than scaled off the viewport, so the arrow
+   holds one size across a range instead of creeping on every resize. The floor
+   is a thumb-sized target; the ceiling is what a wide page margin can hold. */
+@media (min-width: 769px) {
+    :root {
+        --poster-nav-size: 3.5rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    :root {
+        --poster-nav-size: 3.5rem;
     }
 }
