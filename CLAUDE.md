@@ -12,18 +12,14 @@ Starts local development server on port 8000 with CORS headers for JSON loading.
 
 ### Image Optimization
 ```bash
-# One-time setup
-python3 -m venv image_optimizer_env
-source image_optimizer_env/bin/activate
-pip install -r requirements.txt
+# One-time setup: `venv` in the repo root creates .venv and installs requirements.txt
 
 # Optimize images (no args = runs repo defaults: show-posters @ 1600/q85, releases @ 1200/q85)
-# Files already at-or-below the target dimensions are skipped — no churn on re-runs.
-source image_optimizer_env/bin/activate
-python optimize_images.py
+# Files already at-or-below the target dimensions are skipped, no churn on re-runs.
+.venv/bin/python optimize_images.py
 
 # Or target a specific folder with custom settings:
-python optimize_images.py assets/merch -q 85 --max-width 1000
+.venv/bin/python optimize_images.py assets/merch -q 85 --max-width 1000
 ```
 
 ## Architecture Overview
@@ -131,9 +127,13 @@ components/
 4. **Media**: Edit `content/media.json`, add files to respective image folders
 
 ### Adding New Shows
-When asked to add a show, check `git status` for new untracked poster files in `assets/show-posters/`. Read the poster image to extract: date, venue, location, bands, and any ticket/event info. Ask the user for anything the poster doesn't make clear (ticket links, band order, etc).
+When asked to add a show, look for the poster: new untracked files in `assets/show-posters/` (`git status`), or the newest image in `~/Downloads/`. Read the poster image to extract: date, venue, location, bands, and any ticket/event info. Ask the user for anything the poster doesn't make clear (ticket links, band order, etc).
 
 **Poster filenames** follow `YYYY_MM_DD.{jpg,png,jpeg}` format.
+
+**Shows usually come from an Instagram post**: poster image plus caption text. The poster is the source of truth; the caption fills gaps (ticket vendor, set times, real names behind IG handles). When they disagree, trust the poster and flag the conflict instead of silently picking one. Check the date against the weekday printed on the poster.
+
+Copy the poster into `assets/show-posters/` as `YYYY_MM_DD.jpg` and run `optimize_images.py` before committing.
 
 **Show entry format** — append to the `shows` array in `content/shows.json`:
 ```json
