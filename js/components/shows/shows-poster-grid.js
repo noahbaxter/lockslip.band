@@ -22,6 +22,23 @@ const ShowsPosterGrid = {
         };
     },
 
+    // Posters are lazy, so most land long after this runs. Catch the ones
+    // already decoded and wait on the rest.
+    init() {
+        document.querySelectorAll('.poster-grid-item img').forEach((img) => {
+            if (img.complete) this.setRatio(img);
+            else img.addEventListener('load', () => this.setRatio(img), { once: true });
+        });
+    },
+
+    // The hover popout sheds the crop by growing to the poster's own ratio, and
+    // nothing in shows.json carries it. Only source is the decoded file.
+    setRatio(img) {
+        if (!img.naturalWidth || !img.naturalHeight) return;
+        const item = img.closest('.poster-grid-item');
+        if (item) item.style.setProperty('--poster-ar', img.naturalWidth / img.naturalHeight);
+    },
+
     renderItem(show, posterIndex) {
         const { date, place } = this.getCaption(show);
         return `

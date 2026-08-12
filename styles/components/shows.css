@@ -815,16 +815,36 @@
        runs between integers, and auto is not one, so with auto the browser
        skips it and the poster drops behind the rule the instant you unhover. */
     z-index: 0;
-    transition: transform var(--poster-popout-time) ease-out,
-                box-shadow var(--poster-popout-time) ease-out;
+    transition: transform var(--poster-popout-time) ease-out;
     position: relative;
     background: var(--background-color);
 }
 
+/* Cells are 3:4 and almost no poster is, so at rest the art is cropped to tile.
+   Anchored on both centre lines rather than the edges: growing on hover then
+   spreads over the neighbours evenly instead of shunting the art off one side. */
 .poster-grid-thumb {
     position: absolute;
-    inset: 0;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
     overflow: hidden;
+    transition: width var(--poster-popout-time) ease-out,
+                height var(--poster-popout-time) ease-out,
+                box-shadow var(--poster-popout-time) ease-out;
+}
+
+/* Grown to the art's own ratio, which takes the crop off. Whichever side the
+   art needs gets bigger and the other holds at cell size, so a poster taller
+   than the cell gains height instead of losing width. --poster-ar is read off
+   the decoded image by ShowsPosterGrid; until it lands the fallback is the
+   cell's own ratio, so a poster that hasn't loaded just doesn't grow. */
+.poster-grid-item:hover .poster-grid-thumb {
+    width: max(100%, calc(var(--poster-ar, 0.75) / 0.75 * 100%));
+    height: max(100%, calc(0.75 / var(--poster-ar, 0.75) * 100%));
+    box-shadow: 0 var(--poster-glow-offset) var(--poster-glow-blur) var(--accent-glow-strong);
 }
 
 
@@ -833,7 +853,6 @@
 .poster-grid-item:hover {
     transform: translateY(calc(-1 * var(--poster-popout-lift))) scale(1.02);
     border-color: var(--accent-color);
-    box-shadow: 0 var(--poster-glow-offset) var(--poster-glow-blur) var(--accent-glow-strong);
     /* Above its neighbours but below the year rule (20) and the view toggle
        (25). A poster caught half under the sticky chrome reads as tucked
        behind it rather than punching through it. */
@@ -841,7 +860,6 @@
     /* Raise immediately on the way in; the delay above only applies on the
        way out. */
     transition: transform var(--poster-popout-time) ease-out,
-                box-shadow var(--poster-popout-time) ease-out,
                 z-index 0s;
 }
 

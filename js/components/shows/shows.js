@@ -42,7 +42,10 @@ const ShowsComponent = {
         `;
 
         // Initialize carousel after render
-        setTimeout(() => ShowsCarousel.init(futureItems), 100);
+        setTimeout(() => {
+            ShowsCarousel.init(futureItems);
+            ShowsPosterGrid.init();
+        }, 100);
 
         return html;
     },
