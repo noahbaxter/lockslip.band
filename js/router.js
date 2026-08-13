@@ -157,7 +157,10 @@ const Router = {
         else window.scrollTo(0, 0);
 
         if (window.ImageLoader) ImageLoader.refresh(next.main);
-        if (window.ReleasesComponent) ReleasesComponent.fitDescriptions();
+        // typeof, not window.X: a const is a global binding but never a property
+        // of window, so this check was always false and the panel came back with
+        // its descriptions unfitted.
+        if (typeof ReleasesComponent !== 'undefined') ReleasesComponent.fitDescriptions();
     },
 
     async build(path) {

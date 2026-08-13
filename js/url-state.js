@@ -19,14 +19,18 @@
 // refines the current URL in place rather than filling history with tab flips.
 
 const UrlState = {
-    SECTIONS: ['news', 'music', 'shows', 'store', 'extras'],
+    // Read off the page: a section is linkable because it exists. Scoped to main
+    // so a modal or a control's id can't be linked to as if it were a place.
+    isSection(id) {
+        return Boolean(id && document.querySelector(`main section[id="${CSS.escape(id)}"]`));
+    },
 
     parse(hash = location.hash) {
         const [head, ...rest] = hash.replace(/^#\/?/, '').split('/')
             .filter(Boolean).map(decodeURIComponent);
 
         if (head === 'zen') return { zen: true, release: rest[0] || '' };
-        if (this.SECTIONS.includes(head)) return { section: head, release: rest[0] || '' };
+        if (this.isSection(head)) return { section: head, release: rest[0] || '' };
         return {};
     },
 
