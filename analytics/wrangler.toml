@@ -1,0 +1,13 @@
+name = "lockslip-stats"
+main = "worker.js"
+compatibility_date = "2026-08-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "lockslip-stats"
+# Filled in by `wrangler d1 create lockslip-stats`.
+database_id = "REPLACE_ME"
+
+# SALT is a secret, not a var: it is the only thing standing between the stored
+# hash and the IP that made it. Set it with
+#   wrangler secret put SALT
