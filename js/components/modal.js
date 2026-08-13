@@ -41,8 +41,8 @@ class Modal {
             <div class="${classPrefix}-content">
                 <button class="${classPrefix}-close" onclick="${this.config.modalId}.close()">&times;</button>
                 ${this.config.getDownload ? `<a class="${classPrefix}-download" download title="Download photo" aria-label="Download photo" onclick="event.stopPropagation()">${DOWNLOAD_ICON_SVG}</a>` : ''}
-                <button class="${classPrefix}-nav prev" onclick="${this.config.modalId}.navigate(-1)">‹</button>
-                <button class="${classPrefix}-nav next" onclick="${this.config.modalId}.navigate(1)">›</button>
+                <button class="${classPrefix}-nav prev" onclick="${this.config.modalId}.navigate(-1)">&larr;</button>
+                <button class="${classPrefix}-nav next" onclick="${this.config.modalId}.navigate(1)">&rarr;</button>
                 <img class="${classPrefix}-image" src="" alt="Item">
                 <div class="${classPrefix}-info"></div>
             </div>

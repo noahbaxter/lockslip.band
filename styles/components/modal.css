@@ -42,34 +42,16 @@
     gap: 2rem;
 }
 
-/* Close Button */
+/* Close Button. Same box as the arrows it shares the overlay with, since a
+   control that looks like nothing else on screen reads as something else. */
 .poster-modal-close,
 .photo-modal-close {
-    position: absolute;
     top: 1.25rem;
     right: 1.25rem;
-    background: var(--nav-btn-bg);
-    color: var(--nav-btn-color);
-    border: var(--nav-btn-border);
-    font-size: var(--text-4xl);
-    width: 3.125rem;
-    height: 3.125rem;
-    border-radius: var(--radius-pill);
-    cursor: pointer;
+    width: var(--poster-nav-size);
+    height: var(--poster-nav-size);
+    font-size: var(--text-3xl);
     z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--standard-transition);
-    backdrop-filter: blur(0.25rem);
-}
-
-.poster-modal-close:hover,
-.photo-modal-close:hover {
-    background: var(--nav-btn-hover-bg);
-    color: var(--nav-btn-hover-color);
-    border-color: var(--nav-btn-hover-border);
-    transform: scale(1.1);
 }
 
 /* Fullscreen download button (left of the close button) */
@@ -103,39 +85,13 @@
     display: block;
 }
 
-/* Navigation Buttons */
+/* Navigation Buttons. The look is shared with every other arrow, in
+   base/buttons.css; the same square box as the wall's, over the art. */
 .poster-modal-nav,
 .photo-modal-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--nav-btn-bg);
-    color: var(--nav-btn-color);
-    border: var(--nav-btn-border);
-    font-size: var(--modal-nav-btn-font-size);
-    width: var(--modal-nav-btn-width);
-    height: var(--modal-nav-btn-height);
-    border-radius: var(--modal-nav-btn-border-radius);
-    cursor: pointer;
+    width: var(--poster-nav-size);
+    height: var(--poster-nav-size);
     z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--standard-transition);
-    backdrop-filter: blur(0.25rem);
-    /* Centring the flex line box is not the same as centring the chevron. The
-       glyph's ink runs from 1.2rem above the baseline to 1.4px above it, so its
-       middle sits 0.092em below the line box's and the arrow reads low. Half
-       this padding is exactly that offset, taken back off the bottom. */
-    padding-bottom: 0.185em;
-}
-
-.poster-modal-nav:hover,
-.photo-modal-nav:hover {
-    background: var(--nav-btn-hover-bg);
-    color: var(--nav-btn-hover-color);
-    border-color: var(--nav-btn-hover-border);
-    transform: translateY(-50%) scale(1.05);
 }
 
 .poster-modal-nav.prev,

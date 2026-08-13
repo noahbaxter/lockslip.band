@@ -125,3 +125,59 @@
         width: 12.5rem;
     }
 }
+/* ============================================================
+   ARROWS
+   Every control that steps you through something: the poster
+   wall's jump arrows, the store row's, an item's own photos,
+   and the modals'. One look, so an arrow is recognisable as an
+   arrow wherever it turns up. Components set only size and
+   where it sits.
+
+   Dark rather than solid: these sit over artwork, and solid
+   black over a poster is a hole in it.
+   ============================================================ */
+.poster-nav-btn,
+.collection-nav,
+.poster-modal-nav,
+.photo-modal-nav,
+.poster-modal-close,
+.photo-modal-close {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--scrim-strong);
+    border: 1px solid var(--border-color-faded);
+    color: var(--text-dark);
+    line-height: 1;
+    cursor: pointer;
+    backdrop-filter: blur(0.25rem);
+    /* Colours and the fade only. `all` would animate size and position too, so
+       the wall's arrow slid across the screen on resize and drifted while its
+       sticky edge moved. */
+    transition: background-color var(--t-base) var(--ease),
+                border-color var(--t-base) var(--ease),
+                color var(--t-base) var(--ease),
+                opacity var(--t-base) var(--ease);
+}
+
+.poster-nav-btn:hover,
+.collection-nav:hover,
+.poster-modal-nav:hover,
+.photo-modal-nav:hover,
+.poster-modal-close:hover,
+.photo-modal-close:hover {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--text-light);
+}
+
+/* The ones sitting beside something, rather than pinned to a rail. Same arrows
+   as the wall's, turned on their side, so the whole site points with one glyph. */
+.collection-nav,
+.poster-modal-nav,
+.photo-modal-nav {
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: var(--nav-btn-font-size);
+}

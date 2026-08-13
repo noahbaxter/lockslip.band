@@ -4,9 +4,14 @@ class CarouselManager {
         this.currentCollectionIndex = 0;
     }
 
+    // The id sits on the carousel, not on something around it.
+    itemCarousel(itemId) {
+        return document.querySelector(`.merch-image-carousel[data-item-id="${itemId}"]`);
+    }
+
     // Navigate individual item carousel (merch item image carousel)
     navigateItemCarousel(itemId, direction) {
-        const carousel = document.querySelector(`[data-item-id="${itemId}"] .merch-image-carousel`);
+        const carousel = this.itemCarousel(itemId);
         if (!carousel) return;
         
         const images = carousel.querySelectorAll('.carousel-image');
@@ -29,12 +34,13 @@ class CarouselManager {
 
     // Go to specific item image
     goToItemImage(itemId, index) {
-        const carousel = document.querySelector(`[data-item-id="${itemId}"] .merch-image-carousel`);
+        const carousel = this.itemCarousel(itemId);
         if (!carousel) return;
-        
+
         const images = carousel.querySelectorAll('.carousel-image');
         const dots = carousel.querySelectorAll('.carousel-dot');
-        
+        if (!images[index]) return;
+
         // Update images
         images.forEach(img => img.classList.remove('active'));
         images[index].classList.add('active');

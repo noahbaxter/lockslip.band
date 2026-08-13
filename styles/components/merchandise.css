@@ -37,34 +37,13 @@
     gap: var(--carousel-gap);
 }
 
-/* Same box as the poster wall's jump arrows, and over the content like them.
-   Outside the carousel they were the first thing a narrow window cut off, and
-   an arrow off the edge of the screen is an arrow nobody can press. */
+/* The look lives with the other arrows in base/buttons.css; the row only says
+   how big it is and where it sits. Over the outer cards rather than beside them:
+   outside the carousel they were the first thing a narrow window cut off. */
 .collection-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--nav-btn-bg);
-    color: var(--nav-btn-color);
-    border: var(--nav-btn-border);
-    font-size: var(--nav-btn-font-size);
     width: var(--poster-nav-size);
     height: var(--poster-nav-size);
-    border-radius: var(--nav-btn-border-radius);
-    cursor: pointer;
     z-index: var(--z-carousel-nav);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--standard-transition);
-    backdrop-filter: blur(0.25rem);
-}
-
-.collection-nav:hover {
-    background: var(--nav-btn-hover-bg);
-    color: var(--nav-btn-hover-color);
-    border-color: var(--nav-btn-hover-border);
-    transform: translateY(-50%) scale(1.05);
 }
 
 .collection-nav.prev {
@@ -131,67 +110,49 @@
     opacity: 1;
 }
 
-.carousel-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--nav-btn-bg);
-    color: var(--nav-btn-color);
-    border: var(--nav-btn-border);
-    font-size: var(--item-nav-btn-font-size);
-    width: var(--item-nav-btn-width);
-    height: var(--item-nav-btn-height);
-    border-radius: var(--item-nav-btn-border-radius);
-    cursor: pointer;
-    z-index: var(--z-item-nav);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--standard-transition);
-    opacity: 0;
-    pointer-events: none;
-    backdrop-filter: blur(3px);
-}
-
-.carousel-nav:hover {
-    background: var(--nav-btn-hover-bg);
-    color: var(--nav-btn-hover-color);
-    border-color: var(--nav-btn-hover-border);
-    transform: translateY(-50%) scale(1.02);
-}
-
-.carousel-nav.prev {
-    left: 0.625rem;
-}
-
-.carousel-nav.next {
-    right: 0.625rem;
-}
-
+/* In the gap under the photo, which is always there, rather than over the art.
+   The row keeps its height whether or not the dots are showing, so nothing
+   shifts when they fade in. */
 .carousel-dots {
     display: flex;
     justify-content: center;
-    gap: 0.5rem;
-    margin-top: 0.625rem;
+    align-items: center;
+    height: 1.75rem;
+    gap: 0.15rem;
+    opacity: 0;
+    transition: opacity var(--t-base) var(--ease);
 }
 
+/* The dot is 0.7rem, the target is 1.75rem square. A dot you have to be precise
+   about is one a thumb cannot hit, so the button is padded out to a real target
+   and only its middle is painted. */
 .carousel-dot {
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: var(--radius-pill);
+    width: 1.75rem;
+    height: 1.75rem;
     border: none;
-    background: var(--text-dark);
+    background: none;
+    padding: 0;
     cursor: pointer;
-    transition: var(--standard-transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.carousel-dot.active {
-    background: var(--accent-color);
+.carousel-dot::after {
+    content: '';
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: var(--radius-pill);
+    background: var(--text-faint);
+    transition: background-color var(--t-base) var(--ease),
+                transform var(--t-base) var(--ease);
 }
 
-.carousel-dot:hover {
+.carousel-dot.active::after { background: var(--accent-color); }
+
+.carousel-dot:hover::after {
     background: var(--accent-color);
-    transform: scale(1.2);
+    transform: scale(1.25);
 }
 
 /* Single image fallback */
@@ -203,11 +164,9 @@
 }
 
 
-/* Show carousel arrows on image container hover only */
-.merch-image-container:hover .carousel-nav {
-    opacity: 1;
-    pointer-events: auto;
-}
+/* Only there when the card is worth stepping through, and only rendered at all
+   when the item has more than one photo. */
+.merch-image-container:hover .carousel-dots { opacity: 1; }
 
 /* Hide title navigation on desktop */
 @media (min-width: 769px) {
@@ -406,18 +365,8 @@
         background: linear-gradient(to left, var(--background-color) 0%, var(--background-color) 3%, transparent 100%);
     } */
     
-    /* Show image carousel arrows on mobile */
-    .merch-item .carousel-nav {
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    .carousel-nav.prev {
-        left: 0;
-    }
-    .carousel-nav.next {
-        right: 0;
-    }
+    /* No hover on a phone, so the dots are simply always there. */
+    .carousel-dots { opacity: 1; }
     
     /* Mobile item title - simplified */
     .merch-details h3 {
