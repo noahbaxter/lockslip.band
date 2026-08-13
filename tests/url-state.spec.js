@@ -68,14 +68,17 @@ test('the URL wins over the remembered record', async ({ page }) => {
 });
 
 test.describe('zen', () => {
+  // The EP, not the newest record: audio for anything unreleased comes from the
+  // private octopus submodule, so a test that plays it only passes on a machine
+  // that has those files.
   test('opening writes the record, closing backs out of it', async ({ page }) => {
-    await ready(page);
+    await ready(page, '/#music/ep-2024');
     await page.click('.release-item:not([hidden]) .ap-transport button:nth-child(2)');
     await page.waitForTimeout(500);
 
     await page.click('.np-open');
     await page.waitForTimeout(300);
-    expect(await hash(page)).toBe('#zen/the-conversation');
+    expect(await hash(page)).toBe('#zen/ep-2024');
     expect(await inZen(page)).toBe(true);
 
     await page.click('.np-zen-close');
