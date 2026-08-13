@@ -54,6 +54,20 @@
     right: var(--poster-rail-inset);
 }
 
+/* Same deal as the poster wall's jump arrows, at the same width: once the page
+   margin can hold one, the arrows step out of the carousel and stop covering
+   the outer cards. Below that the margin is too narrow and they ride over them
+   instead, which still beats being off the edge of the window. */
+@media (min-width: 1400px) {
+    .collection-nav.prev {
+        left: calc(-1 * (var(--poster-nav-size) + var(--poster-rail-inset)));
+    }
+
+    .collection-nav.next {
+        right: calc(-1 * (var(--poster-nav-size) + var(--poster-rail-inset)));
+    }
+}
+
 /* Merch Item */
 .merch-item {
     background: var(--merch-item-bg);
