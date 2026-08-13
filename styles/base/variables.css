@@ -78,7 +78,16 @@
     --z-header: 1000;
     --z-header-toggle: 1001;
     --z-logo: 1002;
+    /* Height of the now playing bar, zero while nothing is playing. Anything that
+       parks itself against the bottom of the window adds this so the bar does not
+       land on top of it. */
+    --np-bar-h: 0rem;
+
     --z-modal: 2000;
+    /* Above the modals: playback outlives whatever you opened over the page, so
+       the bar stays reachable until you stop it. */
+    --z-now-playing: 2100;
+    --z-zen: 2200;
 
     /* Aliases for clarity */
     --background-color: var(--primary-color);

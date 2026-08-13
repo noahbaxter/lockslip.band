@@ -77,6 +77,7 @@ const ReleasesComponent = {
                 baseUrl: release.audio.baseUrl,
                 tracks: release.audio.tracks,
                 coverImage: release.coverImage,
+                releaseTitle: release.title,
                 unavailableNote: release.audio.unavailableNote,
                 // One cover per modal. Paging between unrelated records is not
                 // navigation anyone asked for.

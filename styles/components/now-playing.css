@@ -1,0 +1,515 @@
+/* Now Playing bar and zen mode
+ *
+ * The bar spans the window rather than tucking into a corner: a corner widget
+ * reads as an ad and lands on top of whatever is in that corner, while a full
+ * width strip reads as transport and has room for the art, the title and the
+ * expand target. Tapping it opens zen mode, the way a phone's music app does.
+ */
+
+.np-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: var(--z-now-playing);
+    /* Matching side columns, so the transport sits on the window's centre line
+       rather than wherever the track title happens to end. */
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 1.25rem;
+    background: var(--surface-card);
+    border-top: 1px solid var(--accent-a20);
+    /* Over the content, not in the layout: the page keeps its own scroll height
+       and gains padding at the bottom instead (see .np-playing). */
+    backdrop-filter: blur(0.5rem);
+}
+
+.np-bar[hidden] { display: none; }
+
+/* Room to scroll past the bar, so the footer is never trapped underneath it, and
+   the height other components offset against. */
+body.np-playing {
+    --np-bar-h: 4.5rem;
+    padding-bottom: var(--np-bar-h);
+}
+
+.np-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent-a20);
+}
+
+.np-progress-fill {
+    height: 100%;
+    background: var(--accent-color);
+}
+
+.np-open {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    text-align: left;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.np-art {
+    width: 2.5rem;
+    height: 2.5rem;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    flex: none;
+}
+
+.np-art[hidden] { display: none; }
+
+.np-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+}
+
+.np-title {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.np-release {
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.np-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex: none;
+}
+
+.np-bar-end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.np-controls button,
+.np-bar-end button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.np-controls button:hover,
+.np-bar-end button:hover { color: var(--accent-color); }
+.np-controls svg,
+.np-bar-end svg { width: 1.25rem; height: 1.25rem; fill: currentColor; }
+.np-play svg { width: 1.5rem; height: 1.5rem; }
+
+/* Same trick as the card player: these are SVGs, so [hidden] never matches and
+   the state has to live on the button. */
+.np-play .np-icon-pause,
+.np-zen-play .np-icon-pause { display: none; }
+.np-play.is-playing .np-icon-play,
+.np-zen-play.is-playing .np-icon-play { display: none; }
+.np-play.is-playing .np-icon-pause,
+.np-zen-play.is-playing .np-icon-pause { display: block; }
+
+.np-stop { color: var(--text-faint); }
+.np-stop svg { width: 1rem; height: 1rem; }
+
+/* Zen mode: the site goes away and the record is the only thing on screen. */
+.np-zen {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-zen);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+    padding: 2rem 1.5rem 3rem;
+    background: var(--background-color);
+}
+
+.np-zen[hidden] { display: none; }
+
+/* The page underneath does not scroll while zen mode is up. */
+body.np-zen-open { overflow: hidden; }
+
+.np-zen-close {
+    position: absolute;
+    top: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3rem;
+    height: 2rem;
+    padding: 0;
+    background: none;
+    border: none;
+    color: var(--text-faint);
+    cursor: pointer;
+}
+
+.np-zen-close svg { width: 1.75rem; height: 1.75rem; }
+.np-zen-close:hover { color: var(--text-color); }
+
+/* Fixed box, not a max: the cover and the lyrics take exactly the same room, so
+   opening lyrics cannot move the transport underneath. */
+.np-zen-stage {
+    position: relative;
+    width: min(26rem, 80vw);
+    height: min(26rem, 50vh);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.np-zen-art {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    /* Neutral hairline, the same one the card player's cover uses. The accent
+       would put a red frame around artwork that is not red. */
+    border: var(--hairline-border);
+}
+
+.np-zen-art[hidden] { display: none; }
+
+/* Over the cover on a scrim, not in place of it. Black would hide the record you
+   are listening to; this keeps it behind the words. */
+.np-zen-lyrics {
+    position: absolute;
+    inset: 0;
+    padding: 1.25rem 1rem;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(0.25rem);
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-a30) transparent;
+    white-space: pre-line;
+    text-align: center;
+    line-height: 1.7;
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+.np-zen-lyrics[hidden] { display: none; }
+
+.np-zen-meta { text-align: center; }
+
+.np-zen-title {
+    font-size: var(--text-xl);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: var(--track);
+}
+
+.np-zen-release {
+    margin-top: 0.3rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+}
+
+.np-zen-seek {
+    width: min(26rem, 80vw);
+    height: 0.25rem;
+    background: var(--accent-a20);
+    cursor: pointer;
+}
+
+.np-zen-seek-fill {
+    height: 100%;
+    background: var(--accent-color);
+}
+
+.np-zen-times {
+    width: min(26rem, 80vw);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.6875rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-faint);
+}
+
+/* Three columns with matching sides, so prev/play/next sit on the centre line
+   whether or not the record has lyrics to offer. */
+.np-zen-transport {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    width: min(26rem, 80vw);
+}
+
+.np-zen-buttons {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* The lyrics button pushes out to the row's right edge, which is the same edge
+   the end time sits on, instead of crowding the transport. */
+.np-zen-side {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.np-zen-side:first-child { justify-content: flex-start; }
+
+.np-zen-transport button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.np-zen-transport svg { width: 1.75rem; height: 1.75rem; fill: currentColor; }
+.np-zen-play svg { width: 2.75rem; height: 2.75rem; }
+.np-zen-transport button:hover { color: var(--accent-color); }
+
+.np-zen-lyrics-toggle img {
+    width: 1.25rem;
+    height: 1.25rem;
+    filter: brightness(0) invert(1);
+    opacity: 0.55;
+}
+
+.np-zen-lyrics-toggle[hidden] { display: none; }
+.np-zen-lyrics-toggle.is-open img {
+    opacity: 1;
+    filter: brightness(0) saturate(100%) invert(16%) sepia(93%) saturate(7472%) hue-rotate(2deg) brightness(103%) contrast(118%);
+}
+
+@media (max-width: 768px) {
+    .np-bar { padding: 0.5rem 0.75rem; gap: 0.6rem; }
+    .np-title { font-size: 0.75rem; }
+    .np-release { display: none; }
+    .np-controls button,
+.np-bar-end button { width: 2rem; height: 2rem; }
+    body.np-playing { --np-bar-h: 4rem; }
+
+    .np-zen { gap: 1rem; padding: 3rem 1rem 2rem; }
+    .np-zen-stage { width: 100%; max-height: 45vh; }
+    .np-zen-art, .np-zen-lyrics { max-height: 45vh; }
+    .np-zen-seek, .np-zen-times { width: 100%; }
+    .np-zen-title { font-size: var(--text-lg); }
+}
+
+/* Track and release picker. Same overlay slot as the lyrics: the artwork is the
+   one place in zen mode with room for a list, and putting it anywhere else would
+   move the transport. */
+.np-bar-start {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-width: 0;
+}
+
+.np-queue {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex: none;
+    padding: 0;
+    background: none;
+    border: none;
+    color: var(--text-faint);
+    cursor: pointer;
+    transition: color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.np-queue:hover { color: var(--accent-color); }
+.np-queue svg { width: 1.25rem; height: 1.25rem; }
+
+.np-zen-queue svg { width: 1.25rem; height: 1.25rem; opacity: 0.55; }
+.np-zen-queue.is-open svg { opacity: 1; color: var(--accent-color); }
+
+.np-picker {
+    display: flex;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(0.25rem);
+}
+
+.np-picker[hidden] { display: none; }
+
+/* In zen mode it takes the artwork's slot. */
+.np-picker.is-in-zen {
+    position: absolute;
+    inset: 0;
+}
+
+/* Everywhere else it rises off the bar's left end, which is where the button
+   that opens it lives. */
+.np-picker.is-popover {
+    position: fixed;
+    left: 1.25rem;
+    bottom: calc(var(--np-bar-h) + 0.5rem);
+    z-index: var(--z-now-playing);
+    width: min(24rem, calc(100vw - 2.5rem));
+    /* Fixed, not a max: a 4-track EP and an 11-track LP open the same panel in the
+       same place. The list inside scrolls when it needs to. */
+    height: min(60vh, 24rem);
+    border: var(--hairline-border);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.55);
+    transform: translateY(0.75rem);
+    opacity: 0;
+    transition: transform 0.18s var(--ease), opacity 0.18s var(--ease);
+}
+
+.np-picker.is-popover.is-open {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.np-queue.is-open { color: var(--accent-color); }
+
+@media (prefers-reduced-motion: reduce) {
+    .np-picker.is-popover { transition: none; }
+}
+
+/* Underline tabs, the same shape as the release switcher in the Music section,
+   rather than outlined chips. Boxes inside a box read as clutter. */
+.np-picker-releases {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0 0.75rem;
+    border-bottom: 1px solid var(--accent-a20);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.np-picker-releases::-webkit-scrollbar { display: none; }
+
+.np-picker-release {
+    flex: none;
+    padding: 0.7rem 0 0.6rem;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    color: var(--text-faint);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.np-picker-release:hover { color: var(--text-color); }
+
+.np-picker-release.is-shown {
+    color: var(--text-color);
+    border-bottom-color: var(--accent-color);
+}
+
+/* The record that actually holds the audio, which need not be the one you are
+   browsing. A dot rather than a colour, so it reads next to the underline
+   instead of competing with it. */
+.np-picker-release.is-playing::before {
+    content: '';
+    display: inline-block;
+    width: 0.3rem;
+    height: 0.3rem;
+    margin-right: 0.4rem;
+    border-radius: 50%;
+    background: var(--accent-color);
+    vertical-align: middle;
+}
+
+.np-picker-tracks {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-a30) transparent;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.np-picker-track {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.8125rem;
+    border-bottom: 1px solid var(--accent-a10);
+    border-left: 2px solid transparent;
+    cursor: pointer;
+}
+
+.np-picker-track:hover { background: var(--accent-a05); }
+
+.np-picker-track.is-current {
+    color: var(--accent-color);
+    font-weight: 700;
+    border-left-color: var(--accent-color);
+    background: var(--accent-a05);
+}
+
+.np-picker-track.is-unavailable {
+    color: var(--text-faint);
+    cursor: default;
+}
+
+.np-picker-track.is-unavailable:hover { background: none; }
+
+.np-picker-num {
+    min-width: 1.6em;
+    text-align: right;
+    font-size: 0.6875rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-faint);
+}
+
+.np-picker-track.is-current .np-picker-num { color: var(--accent-color); }
+.np-picker-name { flex: 1; min-width: 0; }
+
+.np-picker-dur {
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-faint);
+}

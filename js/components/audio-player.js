@@ -60,14 +60,19 @@ const AudioPlayer = {
     initAll() {
         document.querySelectorAll('.audio-player[data-player]').forEach(el => {
             const data = this.pending[el.dataset.player];
-            if (data && !el.dataset.ready) this.instances.push(new PlayerInstance(el, data));
+            if (data && !el.dataset.ready) {
+                this.instances.push(new PlayerInstance(el, data, el.dataset.player));
+            }
         });
     }
 };
 
 class PlayerInstance {
-    constructor(root, data) {
+    constructor(root, data, id) {
         this.root = root;
+        // Which release this is, so the bar and zen mode can look up its lyrics.
+        this.id = id || '';
+        this.releaseTitle = data.releaseTitle || '';
         this.tracks = data.tracks || [];
         this.baseUrl = data.baseUrl || '';
         this.coverImage = data.coverImage || '';
@@ -307,6 +312,7 @@ class PlayerInstance {
         }
         this.setPlaying(false);
         this.renderTrack();
+        if (window.NowPlaying) NowPlaying.sync();
     }
 
     playTrack(i) {
@@ -379,6 +385,7 @@ class PlayerInstance {
         this.el.play.classList.toggle('is-playing', playing);
         this.el.play.setAttribute('aria-label', playing ? 'Pause' : 'Play');
         if (!playing) cancelAnimationFrame(this.raf);
+        if (window.NowPlaying) NowPlaying.sync();
     }
 
     renderTrack() {
@@ -426,6 +433,8 @@ class PlayerInstance {
         // record stopped there is no playing row.
         const row = this.stopped ? null : this.el.list.children[this.index];
         if (!row) return;
+        if (window.NowPlaying) NowPlaying.sync();
+
         const cell = row.querySelector('.ap-dur');
         cell.textContent = this.playable
             ? `${this.fmt(cur)} / ${this.fmt(dur)}`
