@@ -9,6 +9,19 @@
 // see BACKLOG.md.
 
 const AudioPlayer = {
+    // Drawn rather than an <img>, like every other control in here. A raster mark
+    // has to be tinted through a mask, which at 16px turns the lines and the note
+    // into one blob; a path takes currentColor and stays a drawing at any size.
+    LYRICS_ICON: `
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 6.5h9M4 11h7M4 15.5h5" stroke="currentColor" stroke-width="1.8"
+                  fill="none" stroke-linecap="round"/>
+            <path d="M17 17.5V5.5c1.9.5 3.1 1.7 3.5 3.2" stroke="currentColor" stroke-width="1.8"
+                  fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="14.7" cy="17.4" r="2.4" fill="currentColor"/>
+        </svg>
+    `,
+
     // Populated by ReleasesComponent.render() before the markup is inserted, then
     // drained by initAll(). Needed because rendering is string-templated, so there
     // is no element to hang data off until after innerHTML lands.
@@ -167,7 +180,7 @@ class PlayerInstance {
                     </span>
                     <button class="ap-lyrics" type="button" aria-pressed="false"
                             aria-label="Show lyrics" title="Lyrics" hidden>
-                        <img src="assets/icons/lyrics.png" alt="">
+                        ${AudioPlayer.LYRICS_ICON}
                     </button>
                 </div>
             </div>

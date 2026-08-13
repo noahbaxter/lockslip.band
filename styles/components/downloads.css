@@ -48,9 +48,14 @@
     background: var(--accent-color-background);
 }
 
-.download-link:hover .download-icon {
-    filter: brightness(0) saturate(100%) invert(19%) sepia(100%) saturate(7462%) hue-rotate(359deg) brightness(94%) contrast(117%);
+/* The whole row is the hover target, so the tint on the icon is driven from the
+   row rather than from the mark's own hover. */
+.download-mark {
+    display: flex;
+    flex-shrink: 0;
 }
+
+.download-link:hover .download-mark::after { opacity: 1; }
 
 /* OS Icon */
 .download-icon {

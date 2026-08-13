@@ -321,16 +321,17 @@
     border: none;
     cursor: pointer;
     opacity: 0.55;
-    transition: opacity 0.15s;
+    /* A button does not inherit colour: left alone it takes the UA's buttontext,
+       which is black, and the icon draws itself invisible on the card. */
+    color: var(--text-color);
+    transition: opacity var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
     -webkit-tap-highlight-color: transparent;
 }
 
-.ap-lyrics img {
+.ap-lyrics svg {
     width: 1rem;
     height: 1rem;
     display: block;
-    /* Source art is black on transparent. */
-    filter: brightness(0) invert(1);
 }
 
 .ap-lyrics:hover { opacity: 1; }
@@ -339,10 +340,9 @@
 .ap-lyrics:disabled,
 .ap-lyrics:disabled:hover { opacity: 0.2; cursor: default; }
 
-.ap-lyrics.is-open { opacity: 1; }
-
-.ap-lyrics.is-open img {
-    filter: brightness(0) saturate(100%) invert(16%) sepia(93%) saturate(7472%) hue-rotate(2deg) brightness(103%) contrast(118%);
+.ap-lyrics.is-open {
+    opacity: 1;
+    color: var(--accent-color);
 }
 
 .ap-lyrics[hidden] { display: none; }

@@ -392,18 +392,19 @@ body.np-zen-open { overflow: hidden; }
 .np-zen-play svg { width: 2.75rem; height: 2.75rem; }
 .np-zen-transport button:hover { color: var(--accent-color); }
 
-.np-zen-lyrics-toggle img {
+.np-zen-lyrics-toggle svg {
     width: 1.25rem;
     height: 1.25rem;
-    filter: brightness(0) invert(1);
     opacity: 0.55;
 }
 
 .np-zen-lyrics-toggle[hidden] { display: none; }
-.np-zen-lyrics-toggle.is-open img {
-    opacity: 1;
-    filter: brightness(0) saturate(100%) invert(16%) sepia(93%) saturate(7472%) hue-rotate(2deg) brightness(103%) contrast(118%);
+
+.np-zen-lyrics-toggle.is-open {
+    color: var(--accent-color);
 }
+
+.np-zen-lyrics-toggle.is-open svg { opacity: 1; }
 
 @media (max-width: 768px) {
     /* Taller than desktop in proportion: a thumb needs more to aim at than a

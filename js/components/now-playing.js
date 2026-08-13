@@ -105,8 +105,9 @@ const NowPlaying = {
                     </button>
                 </div>
                 <span class="np-zen-side">
-                    <button class="np-zen-lyrics-toggle" type="button" aria-pressed="false" aria-label="Show lyrics" hidden>
-                        <img src="assets/icons/lyrics.png" alt="">
+                    <button class="np-zen-lyrics-toggle" type="button" aria-pressed="false"
+                            aria-label="Show lyrics" hidden>
+                        ${AudioPlayer.LYRICS_ICON}
                     </button>
                 </span>
             </div>

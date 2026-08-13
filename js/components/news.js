@@ -24,12 +24,17 @@ const NewsComponent = {
         if (!links || !links.length) return '';
 
         // Icon-only, styled as the social icons in the header so the hover
-        // colors come along with them.
-        const linksHTML = links.map(link => `
-            <a href="${link.url}" class="social-icon ${link.icon}" target="_blank" rel="noopener" title="${link.name}">
-                <img src="${PlatformIcons.iconMap[link.icon]}" alt="${link.name}">
+        // colors come along with them, accent tinting for the unbranded ones
+        // included.
+        const linksHTML = links.map(link => {
+            const icon = PlatformIcons.iconMap[link.icon];
+            const mark = PlatformIcons.markAttrs(link.icon, icon);
+            return `
+            <a href="${link.url}" class="social-icon ${link.icon}${mark.className}" target="_blank" rel="noopener" title="${link.name}"${mark.style}>
+                <img src="${icon}" alt="${link.name}">
             </a>
-        `).join('');
+        `;
+        }).join('');
 
         return `<div class="news-links">${linksHTML}</div>`;
     },

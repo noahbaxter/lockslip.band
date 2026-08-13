@@ -157,8 +157,10 @@
     object-fit: contain;
 }
 
-.news-links .social-icon.bleakhouse:hover img {
-    filter: brightness(0) saturate(100%) invert(11%) sepia(100%) saturate(7378%) hue-rotate(4deg) brightness(97%) contrast(118%);
+/* The mark is drawn 112% and pulled back 6%, so the tint over it has to be the
+   same size or it lights up a smaller logo inside the logo. */
+.news-links .social-icon.bleakhouse::after {
+    inset: -6%;
 }
 
 .news-archive {

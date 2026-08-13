@@ -19,11 +19,13 @@
   align-items: flex-start;
 }
 
-/* Plugin frame container */
+/* Plugin frame container. The shadow is black rather than accent: it is there to
+   lift the frame off whatever is behind it, and a coloured halo tints that
+   instead of separating from it. */
 .plugin-frame-container {
   flex: 1;
   border: 1px solid #333;
-  box-shadow: 0 4px 30px rgba(255, 0, 0, 0.1);
+  box-shadow: var(--shadow-raise-md);
 }
 .plugin-frame {
   display: block;
