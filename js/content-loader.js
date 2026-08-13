@@ -27,6 +27,7 @@ class ContentLoader {
             this.releases = releases;
 
             await this.applyPrivateAudio();
+            await this.loadLyrics();
             this.shows = shows;
             this.merchandise = merchandise;
             this.media = media;
@@ -61,6 +62,21 @@ class ContentLoader {
         } catch (e) {
             // Nothing to do: no private sources means nothing extra is playable.
         }
+    }
+
+    // Public lyrics ship in content/lyrics.json. Unreleased ones come from the
+    // private octopus submodule, which 404s until that file is committed there.
+    async loadLyrics() {
+        const merged = {};
+        for (const url of ['content/lyrics.json', 'octopus/private-lyrics.json']) {
+            try {
+                const res = await fetch(url);
+                if (res.ok) Object.assign(merged, await res.json());
+            } catch (e) {
+                // A missing lyrics file just means no lyrics button.
+            }
+        }
+        ReleasesComponent.lyrics = merged;
     }
 
     async loadJSON(url) {

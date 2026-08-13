@@ -291,10 +291,33 @@
    there is room, and wrapping a title onto a second line shifts everything below it. */
 .release-header h4 { white-space: nowrap; }
 
-/* An unreleased record says so before its date. */
-.release-date.is-upcoming { color: var(--text-color); }
-
+/* An unreleased record says so before its date. Only the label is accented; the
+   date itself stays the same colour as every other release. */
 .release-date-label {
     color: var(--accent-color);
     font-weight: 700;
+}
+
+/* Lyrics take the description's place, so the column is used either way. */
+.release-lyrics[hidden] { display: none; }
+
+.release-lyrics-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.75rem;
+    color: var(--accent-color);
+}
+
+.release-lyrics-body {
+    white-space: pre-line;
+    color: var(--text-dark);
+    line-height: 1.65;
+    font-size: 0.9rem;
+}
+
+.release-lyrics-body.is-empty {
+    color: var(--text-faint);
+    font-style: italic;
 }

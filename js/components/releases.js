@@ -23,6 +23,48 @@ const ReleasesComponent = {
     // Self-hosted player when the release lists tracks, Bandcamp iframe otherwise.
     // Tracks without a baseUrl or file still render, just not playable, the way
     // Bandcamp lists a record before it is out.
+    // Lyrics for released records ship in content/lyrics.json. Unreleased ones come
+    // from the private octopus submodule, so nothing unpublished is in this repo.
+    lyrics: {},
+
+    lyricsFor(releaseId) {
+        return this.lyrics[releaseId];
+    },
+
+    showLyrics(release, trackIndex) {
+        const panel = document.querySelector(`.release-lyrics[data-lyrics-for="${release.id}"]`);
+        const description = panel && panel.parentElement.querySelector('.release-description');
+        if (!panel) return;
+
+        if (trackIndex === null) {
+            panel.hidden = true;
+            if (description) description.hidden = false;
+            return;
+        }
+
+        const set = this.lyricsFor(release.id) || {};
+        const track = release.audio.tracks[trackIndex];
+        const num = String(track.num);
+        const body = (set.tracks || {})[num];
+        const instrumental = (set.instrumental || []).includes(track.num);
+
+        panel.textContent = '';
+        const head = document.createElement('div');
+        head.className = 'release-lyrics-title';
+        head.textContent = track.name;
+        panel.appendChild(head);
+
+        const text = document.createElement('div');
+        text.className = 'release-lyrics-body';
+        if (body) text.textContent = body;
+        else if (instrumental) { text.classList.add('is-empty'); text.textContent = 'Instrumental'; }
+        else { text.classList.add('is-empty'); text.textContent = 'Lyrics not available yet'; }
+        panel.appendChild(text);
+
+        panel.hidden = false;
+        if (description) description.hidden = true;
+    },
+
     renderPlayer(release) {
         if (release.audio && release.audio.tracks && release.audio.tracks.length) {
             AudioPlayer.register(release.id, {
@@ -32,6 +74,8 @@ const ReleasesComponent = {
                 unavailableNote: release.audio.unavailableNote,
                 // One cover per modal. Paging between unrelated records is not
                 // navigation anyone asked for.
+                onLyrics: !this.lyricsFor(release.id) ? null
+                    : (trackIndex) => this.showLyrics(release, trackIndex),
                 onArtClick: !release.coverImage ? null : () => {
                     artworkModal.setData([{
                         image: release.coverImage,
@@ -107,6 +151,7 @@ const ReleasesComponent = {
                         ${this.renderStreamingLinks(release.streamingLinks)}
                     </div>
                     ${release.description ? `<p class="release-description">${release.description}</p>` : ''}
+                    <div class="release-lyrics" data-lyrics-for="${release.id}" hidden></div>
                     ${this.renderPhysicalLinks(release.physicalLinks)}
                 </div>
             </div>

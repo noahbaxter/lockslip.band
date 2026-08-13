@@ -43,6 +43,8 @@ RELEASES = {
         # Titles come from the filenames. Guest credits are not part of the title,
         # they render as a badge next to it, keyed by track number.
         "features": {1: "King Yosef", 7: "Kathryn Edwards", 10: "Todd Jones"},
+        # The master is filed as "Inglorius"; the record spells it Inglorious.
+        "names": {6: "Inglorious"},
     },
 }
 
@@ -100,6 +102,7 @@ def encode(key, outroot):
     cdn = json.loads(PREFIX_FILE.read_text())[key]
 
     features = cfg.get("features", {})
+    names = cfg.get("names", {})
 
     tracks = []
     print(f"\n{cfg['title']}  ({len(wavs)} tracks)")
@@ -119,7 +122,7 @@ def encode(key, outroot):
             )
         entry = {
             "num": num,
-            "name": title,
+            "name": names.get(num, title),
             "file": f"{cdn}/{dest.name}",
             "duration": duration(dest),
         }

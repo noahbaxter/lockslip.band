@@ -52,11 +52,14 @@
 /* Position */
 
 .ap-position {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    /* Inset so the bar doesn't run into the card edge the way the art does. */
+    /* Inset so the bar doesn't run into the card edge the way the art does, and
+       a fixed gutter on the right so the bar ends in the same place whatever the
+       track number is. */
     padding-left: 0.75rem;
+    padding-right: 3.25rem;
     margin-bottom: 0.6rem;
 }
 
@@ -97,7 +100,8 @@
 .ap-seek:hover .ap-seek-fill::after { opacity: 1; }
 
 .ap-counter {
-    flex: 0 0 auto;
+    position: absolute;
+    right: 0;
     color: var(--text-muted);
     font-size: 0.6875rem;
     letter-spacing: 0.06em;
@@ -271,18 +275,45 @@
     border: var(--hairline-border);
 }
 
-.ap-art-wrap.is-clickable {
-    cursor: pointer;
-    transition: border-color 0.15s;
-}
+.ap-art-wrap.is-clickable { cursor: pointer; }
 
-.ap-art-wrap.is-clickable:hover,
+/* Keyboard focus only. Hover deliberately leaves the border alone so covers
+   behave like every other image on the site. */
 .ap-art-wrap.is-clickable:focus-visible {
-    border-color: rgba(255, 255, 255, 0.4);
-    outline: none;
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
 }
 
 /* Scoped to the artwork modal so the photo galleries keep their current spacing.
    The last caption line carries a bottom margin that stacks on the container
    padding, leaving the block visibly bottom-heavy. */
 #artworkModal .photo-modal-info > *:last-child { margin-bottom: 0; }
+
+/* Lyrics toggle, sat with the transport rather than in the tracklist so it
+   always refers to whatever is playing. */
+.ap-lyrics {
+    align-self: flex-start;
+    margin-bottom: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    background: none;
+    border: var(--hairline-border);
+    color: var(--text-dark);
+    font: inherit;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.ap-lyrics:hover { color: var(--text-color); }
+
+.ap-lyrics.is-open {
+    color: var(--accent-color);
+    border-color: var(--accent-a50);
+}
+
+.ap-lyrics[hidden] { display: none; }
+

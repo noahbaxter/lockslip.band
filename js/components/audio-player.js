@@ -42,6 +42,8 @@ class PlayerInstance {
         this.preloadAbort = null;
         this.unavailableNote = data.unavailableNote || 'Not yet available';
         this.onArtClick = data.onArtClick || null;
+        this.onLyrics = data.onLyrics || null;
+        this.lyricsOpen = false;
 
         if (!this.tracks.length) return;
 
@@ -83,9 +85,12 @@ class PlayerInstance {
                     <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
                 </button>
             </div>
+            <button class="ap-lyrics" type="button" aria-pressed="false" hidden>Lyrics</button>
             <div class="ap-position">
                 <div class="ap-seek"><div class="ap-seek-fill"></div></div>
-                <span class="ap-counter"></span>
+                <span class="ap-counter">
+                    <span class="ap-counter-index"></span> / <span class="ap-counter-total"></span>
+                </span>
             </div>
             <div class="ap-list-wrap"><ol class="ap-list"></ol></div>
         `;
@@ -103,8 +108,26 @@ class PlayerInstance {
             next: this.root.querySelector('.ap-next'),
             listWrap: this.root.querySelector('.ap-list-wrap'),
             list: this.root.querySelector('.ap-list'),
+            lyrics: this.root.querySelector('.ap-lyrics'),
             counter: this.root.querySelector('.ap-counter'),
+            counterIndex: this.root.querySelector('.ap-counter-index'),
+            counterTotal: this.root.querySelector('.ap-counter-total'),
         };
+
+        this.el.counterTotal.textContent = this.tracks.length;
+        // Reserve the width of the widest index, so going 9 -> 10 doesn't shift
+        // the end of the seek bar.
+        this.el.counterIndex.style.minWidth = `${String(this.tracks.length).length}ch`;
+
+        if (this.onLyrics) {
+            this.el.lyrics.hidden = false;
+            this.el.lyrics.addEventListener('click', () => {
+                this.lyricsOpen = !this.lyricsOpen;
+                this.el.lyrics.classList.toggle('is-open', this.lyricsOpen);
+                this.el.lyrics.setAttribute('aria-pressed', String(this.lyricsOpen));
+                this.onLyrics(this.lyricsOpen ? this.index : null);
+            });
+        }
 
         if (!this.coverImage) this.el.artWrap.hidden = true;
         this.el.art.onerror = () => { this.el.artWrap.hidden = true; };
@@ -248,7 +271,7 @@ class PlayerInstance {
 
     renderTrack() {
         if (!this.playable) this.el.status.textContent = this.unavailableNote;
-        this.el.counter.textContent = `${this.index + 1} / ${this.tracks.length}`;
+        this.el.counterIndex.textContent = this.index + 1;
         [...this.el.list.children].forEach((li, i) => {
             li.classList.toggle('ap-active', i === this.index);
             // Rows that stopped playing go back to showing just their length.
@@ -257,6 +280,8 @@ class PlayerInstance {
             }
         });
         this.revealActive();
+        // Keep an open lyrics panel on the track you're actually hearing.
+        if (this.lyricsOpen && this.onLyrics) this.onLyrics(this.index);
         this.tick();
     }
 
