@@ -88,7 +88,11 @@
         ]
       },
       "hidden": false,
-      "coverImage": "assets/releases/2026-lp1-cover.jpg"
+      "coverImage": "assets/releases/2026-lp1-cover.jpg",
+      "artwork": {
+        "credit": "Emma Maatman",
+        "creditUrl": "https://www.instagram.com/emma.maatman/"
+      }
     },
     {
       "id": "ep-2024",
@@ -158,6 +162,10 @@
             "duration": 276.533
           }
         ]
+      },
+      "artwork": {
+        "credit": "James Hutton",
+        "creditUrl": "https://www.instagram.com/stitching_a_laugh_to_darkness/"
       }
     }
   ]
