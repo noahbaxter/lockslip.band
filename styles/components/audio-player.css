@@ -164,7 +164,11 @@
 .ap-list-wrap {
     height: 11rem;
     overflow-y: auto;
-    overscroll-behavior: contain;
+    /* Reserve the scrollbar's width whether or not it is showing, so a 4-track EP
+       and an 11-track LP put their rows in the same place. */
+    scrollbar-gutter: stable;
+    /* No overscroll-behavior: contain. It traps the wheel in here, so a 4-track
+       list that does not scroll at all still swallows the gesture. */
     scrollbar-width: thin;
     scrollbar-color: var(--accent-a30) transparent;
 }
