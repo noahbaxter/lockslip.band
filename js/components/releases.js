@@ -208,7 +208,8 @@ const ReleasesComponent = {
     renderSwitcher(list) {
         if (list.length < 2) return '';
         return `
-            <div class="release-switcher" role="tablist" aria-label="Releases">
+            <div class="release-switcher">
+              <div class="release-tabs" role="tablist" aria-label="Releases">
                 ${list.map((r, i) => `
                     <button class="release-tab${i === 0 ? ' is-active' : ''}"
                             type="button" role="tab"
@@ -219,17 +220,18 @@ const ReleasesComponent = {
                                  : `<span class="release-tab-year">Out soon</span>`}
                     </button>
                 `).join('')}
+              </div>
             </div>
         `;
     },
 
-    // The player sets the row height. A long blurb in a narrow column would push
-    // past it, growing the card or spilling out, so the type steps down until it
-    // fits rather than the layout giving way.
-    MIN_DESCRIPTION_PX: 13,
-
+    // The player sets the row height, and the content column is capped to it so a
+    // long blurb or an open lyrics panel can never grow the card. What does not
+    // fit scrolls inside the description; nothing gets scaled down to make it fit.
     fitDescriptions() {
-        // Single column on mobile, where the card is free to be any height.
+        // Single column on mobile, where the card is free to be any height. Must
+        // match the breakpoint in releases.css or the cap is applied to a layout
+        // that is no longer side by side.
         const stacked = window.matchMedia('(max-width: 768px)').matches;
 
         document.querySelectorAll('.release-item').forEach(item => {

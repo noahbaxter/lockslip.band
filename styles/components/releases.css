@@ -315,10 +315,21 @@
  * anything stacked below it, so these tabs are how you get between records.
  */
 .release-switcher {
-    display: flex;
-    gap: 0;
     margin-bottom: 2.5rem;
     border-bottom: 1px solid var(--accent-a20);
+}
+
+/* Equal columns, sized to the widest tab: the active underline is the same
+   length under every record instead of measuring out its title. The grid is
+   max-content wide so the tabs stay left, while the hairline above spans the card. */
+.release-tabs {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    justify-content: start;
+    gap: 2rem;
+    width: max-content;
+    max-width: 100%;
 }
 
 .release-tab {
@@ -326,8 +337,8 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 0.15rem;
-    padding: 0.75rem 1.25rem 0.7rem 0;
-    margin-right: 2rem;
+    padding: 0.75rem 0 0.7rem;
+    min-width: 0;
     background: none;
     border: none;
     border-bottom: 2px solid transparent;
@@ -366,7 +377,7 @@
 
 @media (max-width: 768px) {
     .release-switcher { margin-bottom: 1.75rem; }
-    .release-tab { margin-right: 1.25rem; padding-right: 0.5rem; }
+    .release-tabs { gap: 1.25rem; }
     .release-tab-title { font-size: 0.8125rem; }
 }
 
