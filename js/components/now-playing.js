@@ -36,12 +36,17 @@ const NowPlaying = {
                 <button class="np-queue" type="button" aria-label="Choose a track or release">
                     <svg viewBox="0 0 24 24"><path d="M4 6h11M4 12h11M4 18h8M17 12v7M17 12l4 2-4 2" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
                 </button>
-                <button class="np-open" type="button" aria-label="Open full screen player">
+                <button class="np-open" type="button" title="Open full screen player"
+                        aria-label="Open full screen player">
                     <img class="np-art" alt="">
                     <span class="np-text">
                         <span class="np-title"></span>
                         <span class="np-release"></span>
                     </span>
+                    <svg class="np-open-hint" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M7 14l5-5 5 5" stroke="currentColor" stroke-width="2" fill="none"
+                              stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                 </button>
             </div>
             <div class="np-controls">
@@ -208,10 +213,13 @@ const NowPlaying = {
 
         // A knob follows the pointer along the track so you can see where a click
         // would land before you commit to it.
+        // Pixels off the track's left edge, written straight to a transform. No
+        // rAF in between: the pointer event is already frame-aligned, and queuing
+        // it would put the marker a frame behind the cursor.
         const mark = (track, e) => {
             const rect = track.getBoundingClientRect();
-            const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width)) * 100;
-            track.style.setProperty('--np-hover', pct + '%');
+            const x = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+            track.style.setProperty('--np-hover-x', x + 'px');
         };
 
         [this.el.zenSeek, this.el.progress].forEach(track => {

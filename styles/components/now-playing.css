@@ -18,15 +18,20 @@
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     gap: 1rem;
-    padding: 0.6rem 1.25rem;
+    /* No vertical padding: the artwork is the bar's full height, so the row's
+       height is the artwork's and the text centres against it. */
+    height: var(--np-bar-h);
+    padding: 0 1.25rem 0 0;
     /* Its own surface, not a tint. --surface-card is 4.5% white, which reads fine
        over the page background and turns to mush over the poster wall, where the
        title ends up sitting on somebody's artwork. */
     background: rgba(0, 0, 0, 0.86);
     border-top: 1px solid var(--accent-a20);
+    /* Kept light: a wide blurred surface is repainted whenever anything over it
+       moves, and the alpha above is doing most of the work anyway. */
     /* Over the content, not in the layout: the page keeps its own scroll height
        and gains padding at the bottom instead (see .np-playing). */
-    backdrop-filter: blur(1rem);
+    backdrop-filter: blur(0.375rem);
 }
 
 .np-bar[hidden] { display: none; }
@@ -34,12 +39,15 @@
 /* Room to scroll past the bar, so the footer is never trapped underneath it, and
    the height other components offset against. */
 body.np-playing {
-    --np-bar-h: 4.5rem;
+    --np-bar-h: 5rem;
     padding-bottom: var(--np-bar-h);
 }
 
-/* Scrubbable, so it needs more than a 2px target. The bar itself stays 2px; the
-   padding around it is transparent and catches the pointer. */
+/* Scrubbable, so it needs more than a 2px target. The line stays 2px and the
+   transparent border under it catches the pointer.
+   All of that padding hangs below the line, none above: a transparent top border
+   pushes the drawn line down off the bar's own top border, and you get two
+   horizontal lines with a gap between them. */
 .np-progress {
     position: absolute;
     top: 0;
@@ -47,8 +55,7 @@ body.np-playing {
     right: 0;
     height: 2px;
     background: var(--accent-a20);
-    border-top: 0.7rem solid transparent;
-    border-bottom: 0.7rem solid transparent;
+    border-bottom: 1.375rem solid transparent;
     background-clip: padding-box;
     box-sizing: content-box;
     cursor: pointer;
@@ -65,13 +72,17 @@ body.np-playing {
     content: '';
     position: absolute;
     top: 50%;
-    left: var(--np-hover, 0%);
-    transform: translate(-50%, -50%);
+    left: 0;
+    /* translate, not left: moving it by a layout property re-lays out and, with a
+       blurred bar behind it, re-composites the whole strip on every pointer move,
+       which is what made the marker trail the cursor. */
+    transform: translate(calc(var(--np-hover-x, 0px) - 50%), -50%);
     width: 0.125rem;
-    height: 1.125rem;
+    height: 0.875rem;
     background: var(--text-color);
     opacity: 0;
     pointer-events: none;
+    will-change: transform;
     transition: opacity 0.15s;
 }
 
@@ -100,15 +111,35 @@ body.np-playing {
     -webkit-tap-highlight-color: transparent;
 }
 
+/* Square, the full height of the bar, hard against its top and bottom edges.
+   Measured off the bar rather than off --np-bar-h: the variable also feeds the
+   page's bottom padding, and if the two ever disagree the artwork hangs out of
+   the strip instead of filling it. */
+/* Square, the bar's full inner height, hard against its top and bottom edges.
+   Sized outright: an image is a replaced element, so neither a percentage height
+   nor align-self: stretch sizes it here, and it falls back to its natural 1197px.
+   The 1px is the bar's top border, which its fixed height includes. */
 .np-art {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: calc(var(--np-bar-h) - 1px);
+    height: calc(var(--np-bar-h) - 1px);
     object-fit: cover;
-    border-radius: var(--radius-sm);
+    border-radius: 0;
     flex: none;
 }
 
 .np-art[hidden] { display: none; }
+
+/* Says the strip opens into something. Without it the only clue that the artwork
+   is a button is the cursor, which you have to already be over to see. */
+.np-open-hint {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex: none;
+    color: var(--text-faint);
+    transition: color 0.15s;
+}
+
+.np-open:hover .np-open-hint { color: var(--accent-color); }
 
 .np-text {
     display: flex;
@@ -138,7 +169,7 @@ body.np-playing {
 .np-controls {
     display: flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.5rem;
     flex: none;
 }
 
@@ -163,8 +194,8 @@ body.np-playing {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2.75rem;
+    height: 2.75rem;
     padding: 0;
     background: none;
     border: none;
@@ -177,8 +208,8 @@ body.np-playing {
 .np-controls button:hover,
 .np-bar-end button:hover { color: var(--accent-color); }
 .np-controls svg,
-.np-bar-end svg { width: 1.25rem; height: 1.25rem; fill: currentColor; }
-.np-play svg { width: 1.5rem; height: 1.5rem; }
+.np-bar-end svg { width: 1.5rem; height: 1.5rem; fill: currentColor; }
+.np-play svg { width: 2rem; height: 2rem; }
 
 /* Same trick as the card player: these are SVGs, so [hidden] never matches and
    the state has to live on the button. */
@@ -190,7 +221,7 @@ body.np-playing {
 .np-zen-play.is-playing .np-icon-pause { display: block; }
 
 .np-stop { color: var(--text-faint); }
-.np-stop svg { width: 1rem; height: 1rem; }
+.np-stop svg { width: 1.25rem; height: 1.25rem; }
 
 /* Zen mode: the site goes away and the record is the only thing on screen. */
 .np-zen {
@@ -302,7 +333,10 @@ body.np-zen-open { overflow: hidden; }
     touch-action: none;
 }
 
-.np-zen-seek:hover { background: var(--accent-a30); }
+/* background-color, not background: the shorthand would reset background-clip to
+   border-box and paint the transparent hit padding, so the line appears to grow
+   on hover. */
+.np-zen-seek:hover { background-color: var(--accent-a30); }
 
 .np-zen-seek-fill {
     height: 100%;
@@ -373,13 +407,31 @@ body.np-zen-open { overflow: hidden; }
 }
 
 @media (max-width: 768px) {
-    .np-bar { padding: 0.5rem 0.75rem; gap: 0.6rem; }
+    /* Taller than desktop in proportion: a thumb needs more to aim at than a
+       cursor does, and the strip is the only way back into the player.
+       Columns stop matching here too. Centring the transport costs the left cell
+       half the width, and at 390px that leaves nothing for the track name, which
+       is the one thing the strip has to say. */
+    .np-bar {
+        grid-template-columns: minmax(0, 1fr) auto auto;
+        padding: 0 0.85rem 0 0;
+        gap: 0.7rem;
+    }
+
+    .np-bar-start { gap: 0.6rem; }
+    .np-queue { margin-left: 0.5rem; }
     .np-title { font-size: 0.75rem; }
     .np-release { display: none; }
     .np-time { display: none; }
+
+    /* Phone strip keeps what a thumb reaches for: play, skip forward, dismiss.
+       Previous lives one tap away in the full screen player, and the chevron is
+       redundant once the artwork is the biggest thing on the row. */
+    .np-prev { display: none; }
+    .np-open-hint { display: none; }
     .np-controls button,
 .np-bar-end button { width: 2rem; height: 2rem; }
-    body.np-playing { --np-bar-h: 4rem; }
+    body.np-playing { --np-bar-h: 4.75rem; }
 
     .np-zen { gap: 1rem; padding: 3rem 1rem 2rem; }
     .np-zen-stage { width: 100%; max-height: 45vh; }
@@ -391,19 +443,23 @@ body.np-zen-open { overflow: hidden; }
 /* Track and release picker. Same overlay slot as the lyrics: the artwork is the
    one place in zen mode with room for a list, and putting it anywhere else would
    move the transport. */
+/* Stretches, so the artwork inside it can be exactly the bar's inner height. */
 .np-bar-start {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    align-self: stretch;
+    gap: 0.75rem;
     min-width: 0;
 }
+
+.np-queue { margin-left: 1.25rem; }
 
 .np-queue {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
     flex: none;
     padding: 0;
     background: none;
@@ -415,7 +471,7 @@ body.np-zen-open { overflow: hidden; }
 }
 
 .np-queue:hover { color: var(--accent-color); }
-.np-queue svg { width: 1.25rem; height: 1.25rem; }
+.np-queue svg { width: 1.5rem; height: 1.5rem; }
 
 .np-zen-queue svg { width: 1.25rem; height: 1.25rem; opacity: 0.55; }
 .np-zen-queue.is-open svg { opacity: 1; color: var(--accent-color); }
