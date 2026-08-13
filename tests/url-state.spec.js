@@ -161,3 +161,30 @@ test('sections are read off the page, not a list', async ({ page }) => {
   }
   expect(await page.evaluate(() => UrlState.isSection('not-a-section'))).toBe(false);
 });
+
+// The press page has a <section id="press"> of its own. Once its panel is cached
+// it used to be mistaken for a section of the home page, so coming back to it a
+// second time showed the home page instead.
+for (const page_ of [
+  { link: '/press/', marker: '#press' },
+  { link: '/plugin/', marker: '.plugin-showcase' },
+]) {
+  test(`${page_.link} still shows itself after going home and back`, async ({ page }) => {
+    await ready(page);
+    const visible = () => page.evaluate(
+      m => !!document.querySelector(`main:not(.router-inactive) ${m}`), page_.marker);
+
+    await page.click(`.nav-links a[href="${page_.link}"]`);
+    await page.waitForTimeout(900);
+    expect(await visible()).toBe(true);
+
+    await page.click('a.logo');
+    await page.waitForTimeout(700);
+    expect(await visible()).toBe(false);
+
+    await page.click(`.nav-links a[href="${page_.link}"]`);
+    await page.waitForTimeout(900);
+    expect(await visible(), 'second visit fell back to the home panel').toBe(true);
+    expect(await at(page)).toBe(page_.link);
+  });
+}

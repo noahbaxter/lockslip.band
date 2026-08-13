@@ -51,11 +51,21 @@ const Router = {
         return path.endsWith('/') || path.endsWith('.html') ? path : path + '/';
     },
 
+    // The real pages. Anything else, including the plugin demo iframe and the
+    // hidden octopus page, navigates normally.
+    PAGES: ['/', '/press/', '/plugin/'],
+
     // /music, /music/the-conversation and /shows are all the home page: deploy
     // writes a copy of it at each. They have to collapse to one panel key, or
     // moving between sections would fetch and mount the home page again for each
     // one, and the player inside the first copy would keep the audio.
+    //
+    // A real page is itself first. The press page has a <section id="press"> of
+    // its own, so once its panel is cached, asking whether "press" is a section
+    // says yes and /press/ collapses onto the home key: going back to it then
+    // showed the home page.
     key(path) {
+        if (this.PAGES.includes(path)) return path;
         const first = path.split('/').filter(Boolean)[0];
         return typeof UrlState !== 'undefined' && UrlState.isSection(first) ? '/' : path;
     },
@@ -131,11 +141,10 @@ const Router = {
         this.go(url);
     },
 
-    // The three pages that share this shell, plus every section path, since deploy
-    // writes the home page at each of those too. Anything else, including the
-    // plugin demo iframe and the hidden octopus page, navigates normally.
+    // The pages that share this shell, plus every section path, since deploy
+    // writes the home page at each of those too.
     routable(path) {
-        return ['/', '/press/', '/plugin/'].includes(path) || this.key(path) === '/';
+        return this.PAGES.includes(path) || this.key(path) === '/';
     },
 
     async go(url) {
