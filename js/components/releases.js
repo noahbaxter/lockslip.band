@@ -105,24 +105,69 @@ const ReleasesComponent = {
         `;
     },
 
+    // Two kinds of tile. A vendor sells the record, so it gets its logo and a link.
+    // A format the band is putting out gets a photo of the thing itself, and until
+    // there is somewhere to buy it, no link.
     renderPhysicalLinks(physicalLinks) {
         if (!physicalLinks) return '';
-        
+
+        const list = Object.values(physicalLinks);
+        const products = list.some(l => l.image);
+        // Numbered over the ones with photos, which is the same list the modal
+        // wiring walks. Numbering over all of them would slip on a mixed record.
+        const photoIndex = new Map(list.filter(l => l.image).map((l, i) => [l, i]));
+
+        const tile = link => (link.image
+            ? `<img class="physical-link-photo" src="${link.image}" alt="${link.name}"
+                    data-product="${photoIndex.get(link)}" onerror="this.style.display='none'">`
+            : `<img src="${link.icon}" alt="${link.name}" onerror="this.style.display='none'">`
+        ) + `
+            <div class="physical-link-text">
+                <span class="physical-link-name">${link.name}</span>
+                <span class="physical-link-format">${link.format}</span>
+            </div>
+        `;
+
+        // One note for the section rather than a stripe of them, since a record
+        // reaches the shops all at once.
+        const soon = list.every(link => !link.url);
+
         return `
             <div class="physical-links-content">
-                <div class="physical-links-grid flex-center">
-                    ${Object.entries(physicalLinks).map(([key, link]) => `
-                        <a href="${link.url}" target="_blank" rel="noopener" class="physical-link">
-                            <img src="${link.icon}" alt="${link.name}" onerror="this.style.display='none'">
-                            <div class="physical-link-text">
-                                <span class="physical-link-name">${link.name}</span>
-                                <span class="physical-link-format">${link.format}</span>
-                            </div>
-                        </a>
-                    `).join('')}
+                ${soon ? '<div class="physical-links-note">Coming soon</div>' : ''}
+                <div class="physical-links-grid${products ? ' is-products' : ' flex-center'}">
+                    ${list.map(link => link.url
+                        ? `<a href="${link.url}" target="_blank" rel="noopener" class="physical-link">${tile(link)}</a>`
+                        : `<div class="physical-link is-pending">${tile(link)}</div>`
+                    ).join('')}
                 </div>
             </div>
         `;
+    },
+
+    // The tiles are small by necessity, so the photo opens full size. One format
+    // per modal, the same as the cover: you clicked the tape, not a slideshow of
+    // everything the record comes on.
+    initProductTiles(releases) {
+        const products = {};
+        (releases.releases || []).forEach(r => {
+            products[r.id] = Object.values(r.physicalLinks || {}).filter(l => l.image);
+        });
+
+        document.querySelectorAll('.release-item').forEach(item => {
+            const set = products[item.dataset.releaseId];
+            if (!set || !set.length) return;
+            item.querySelectorAll('.physical-link-photo').forEach(img => {
+                const link = set[Number(img.dataset.product)];
+                if (!link) return;
+                img.closest('.physical-link').classList.add('is-zoomable');
+                img.addEventListener('click', e => {
+                    e.preventDefault();
+                    artworkModal.setData([{ image: link.image, title: link.name, year: link.format }]);
+                    artworkModal.open(0);
+                });
+            });
+        });
     },
 
     // Bandcamp's own wording for a record that isn't out yet.

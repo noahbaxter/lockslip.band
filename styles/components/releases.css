@@ -120,11 +120,95 @@
     transform: scale(1.1);
 }
 
+/* Product tiles: the record itself, photographed, not a vendor's logo, so the
+   picture leads. One line of them, always, all the same size. However much room
+   the column has they neither stretch nor shrink to suit it; the row scrolls
+   sideways rather than wrapping and taking the height the blurb needs. */
+.physical-links-grid.is-products {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 8.5rem;
+    justify-content: start;
+    flex-wrap: initial;
+    /* scroll, not auto: the gutter is then reserved whether or not the row has
+       anywhere to scroll, so tiles do not jump when the fifth one fits. The track
+       is transparent, so an idle scrollbar is invisible. */
+    overflow-x: scroll;
+    scrollbar-gutter: stable;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-a30) transparent;
+}
+
+.physical-links-grid.is-products::-webkit-scrollbar { height: 0.375rem; }
+.physical-links-grid.is-products::-webkit-scrollbar-track { background: transparent; }
+.physical-links-grid.is-products::-webkit-scrollbar-thumb { background: var(--accent-a30); }
+.physical-links-grid.is-products::-webkit-scrollbar-thumb:hover { background: var(--accent-a50); }
+
+/* Scoped through .physical-link, or the vendor-logo rule above wins on specificity
+   and the photo comes out at logo size. The shots are square, so the tiles are too
+   and nothing is cropped; a source that is not square gets cropped here rather than
+   in the file, and the full-size view still opens the whole image. */
+.is-products .physical-link img.physical-link-photo {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    transition: none;
+}
+
+.is-products .physical-link {
+    gap: 0.6rem;
+    padding: 0.6rem 0.6rem 0.7rem;
+}
+
+.is-products .physical-link-name { font-size: 0.75rem; }
+
+/* The format sits on the tile's last line whether the name above it took one or
+   two, so the row of them reads straight across. */
+.is-products .physical-link-text { flex: 1; }
+
+.is-products .physical-link-format {
+    font-size: 0.5625rem;
+    margin-top: auto;
+    padding-top: 0.2rem;
+}
+
+.physical-links-note {
+    font-size: 0.5625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--text-faint);
+    margin-bottom: 0.6rem;
+}
+
+/* The tile is not a link, but the photo opens full size. The pointer says so;
+   these are product shots on a flat backdrop, not the photography elsewhere on
+   the site that grows under the cursor. */
+.physical-link.is-zoomable img { cursor: pointer; }
+.physical-link.is-zoomable:hover img { transform: none; }
+
+/* Announced, not on sale yet. The tile itself goes nowhere, so it does not light
+   up under the pointer, but it is not dimmed either: the photo is the content. */
+.physical-link.is-pending {
+    cursor: default;
+}
+
+.physical-link.is-pending:hover {
+    background: var(--surface-light);
+    color: var(--text-color);
+}
+
 .release-content {
     padding: 2rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    /* The buy-button labels size off this column, not the viewport: the player
+       beside it is a fixed width, so the two do not track each other. */
+    container-type: inline-size;
 }
 
 .release-header {

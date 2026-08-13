@@ -4,10 +4,37 @@
     {
       "id": "the-conversation",
       "title": "The Conversation",
-      "description": "",
+      "description": "On \"The Conversation\", Lockslip delivers a punishing brand of hardcore inspired equally by Converge's bleeding-heart authenticity and Car Bomb's kaleidoscopic complexity. The songs are powered by inexorable momentum, like blind horses barreling down mountainsides. Out soon on Bleakhouse, the album features guest vocals from label head King Yosef on \"Gray World\", Kathryn Edwards of Thirdface on \"Paradise Is Not for Us\", and Todd Jones of Nails on \"Iconoclast\". The album is recorded and mixed by drummer Noah Baxter at Dichotic Studios, and mastered by Nick Townsend.",
       "year": "2026",
       "month": "November",
       "day": "6",
+      "physicalLinks": {
+        "vinyl-bleakhouse": {
+          "name": "Bleakhouse Variant",
+          "format": "VINYL",
+          "image": "assets/releases/2026-lp1-vinyl-bleakhouse.jpg"
+        },
+        "vinyl-conversation": {
+          "name": "The Conversation Variant",
+          "format": "VINYL",
+          "image": "assets/releases/2026-lp1-vinyl-conversation.jpg"
+        },
+        "vinyl-gray-world": {
+          "name": "The Gray World Variant",
+          "format": "VINYL",
+          "image": "assets/releases/2026-lp1-vinyl-gray-world.jpg"
+        },
+        "cd": {
+          "name": "Compact Disc",
+          "format": "CD",
+          "image": "assets/releases/2026-lp1-cd.jpg"
+        },
+        "tape": {
+          "name": "Cassette",
+          "format": "TAPE",
+          "image": "assets/releases/2026-lp1-tape.jpg"
+        }
+      },
       "tracks": [
         "1. Gray World (ft. King Yosef)",
         "2. Vengeance (You'll Be Seen by Your God)",
@@ -117,19 +144,19 @@
       "physicalLinks": {
         "deathwish": {
           "url": "https://deathwishinc.com/products/lockslip-lockslip",
-          "name": "Deathwish Inc.",
+          "name": "Deathwish",
           "format": "VINYL",
           "icon": "https://deathwishinc.com/cdn/shop/files/logo_footer_400x.png?v=1613155780"
         },
         "protagonist": {
           "url": "https://protagonistmusic.bandcamp.com/album/self-titled-16",
-          "name": "Protagonist Music",
+          "name": "Protagonist",
           "format": "VINYL",
           "icon": "https://f4.bcbits.com/img/0002629124_10.jpg"
         },
         "badbreak": {
           "url": "https://www.badbreakrecords.com/products/777388-lockslip-ep",
-          "name": "Bad Break Records",
+          "name": "Bad Break",
           "format": "TAPES",
           "icon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZjGOlCYE4UR9_2JTHHSx93D8qQmEv7IAU2A&s"
         }
