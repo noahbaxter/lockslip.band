@@ -131,9 +131,9 @@ const ReleasesComponent = {
         const date = `${release.month} ${release.day}, ${release.year}`;
         const when = new Date(`${release.month} ${release.day}, ${release.year}`);
         const upcoming = !isNaN(when) && when > new Date();
-        return `<span class="release-date${upcoming ? ' is-upcoming' : ''}">` +
-               (upcoming ? '<span class="release-date-label">Releases</span> ' : '') +
-               `${date}</span>`;
+        return `<span class="release-date${upcoming ? ' is-upcoming' : ''}">${date}` +
+               (upcoming ? '<span class="release-date-label">Coming soon</span>' : '') +
+               `</span>`;
     },
 
     renderRelease(release) {
