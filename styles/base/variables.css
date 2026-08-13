@@ -182,8 +182,9 @@
     /* Component Variables */
     --merch-item-padding: 1rem;
     --merch-item-bg: var(--surface-card);
-    --merch-image-height: 21.875rem;
-    --merch-image-height-mobile: 12.5rem;
+    /* The plate a product photo sits on, a step up from the card so a cutout
+       with no background of its own still has one. */
+    --merch-plate: rgba(255, 255, 255, 0.07);
 
     /* Cards separate by sitting on a slightly lifted surface rather than inside
        a drawn box, the way the poster wall separates by the art's own edges.

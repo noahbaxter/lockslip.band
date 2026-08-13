@@ -2,6 +2,60 @@
 class CarouselManager {
     constructor() {
         this.currentCollectionIndex = 0;
+        this.watchSwipes();
+    }
+
+    // Swiping a photo steps through that item's photos, since a phone has no
+    // hover and the dots are a small thing to aim at while holding a phone.
+    // Delegated, so it covers cards the merch component renders later.
+    watchSwipes() {
+        let start = null;
+
+        document.addEventListener('touchstart', e => {
+            start = null;
+            if (!e.target.closest) return;
+
+            // Found through the card, not from the target: the card's link is
+            // laid over the whole thing, so a finger on the photo lands on that
+            // rather than on the carousel underneath it.
+            const card = e.target.closest('.merch-item');
+            const carousel = card && card.querySelector('.merch-image-carousel');
+            if (!carousel) return;
+
+            const y = e.changedTouches[0].clientY;
+            const photo = carousel.getBoundingClientRect();
+            if (y < photo.top || y > photo.bottom) return;
+
+            start = { x: e.changedTouches[0].clientX, y, carousel };
+        }, { passive: true });
+
+        document.addEventListener('touchend', e => {
+            const from = start;
+            start = null;
+            if (!from) return;
+
+            const dx = e.changedTouches[0].clientX - from.x;
+            const dy = e.changedTouches[0].clientY - from.y;
+            // Sideways, and meant: anything shorter is a tap and anything more
+            // vertical is the page being scrolled.
+            if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
+
+            this.navigateItemCarousel(from.carousel.dataset.itemId, dx < 0 ? 1 : -1);
+
+            // The whole card is a link, so the click that follows a swipe would
+            // otherwise open the shop.
+            const card = from.carousel.closest('.merch-item');
+            if (!card) return;
+            card.classList.add('is-swiping');
+            setTimeout(() => card.classList.remove('is-swiping'), 500);
+        }, { passive: true });
+
+        document.addEventListener('click', e => {
+            if (e.target.closest && e.target.closest('.merch-item.is-swiping')) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }, true);
     }
 
     // The id sits on the carousel, not on something around it.
