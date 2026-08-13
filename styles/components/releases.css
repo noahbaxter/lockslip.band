@@ -225,3 +225,88 @@
         font-size: 0.55rem;
     }
 }
+/* Release switcher
+ *
+ * One release is shown at a time. An 11-track record with its list open buries
+ * anything stacked below it, so these tabs are how you get between records.
+ */
+.release-switcher {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid var(--accent-a20);
+}
+
+.release-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+    padding: 0.75rem 1.25rem 0.7rem 0;
+    margin-right: 2rem;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    color: var(--text-muted);
+    cursor: pointer;
+    text-align: left;
+    transition: color 0.15s, border-color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.release-tab:hover { color: var(--text-color); }
+
+.release-tab.is-active {
+    color: var(--text-color);
+    border-bottom-color: var(--accent-color);
+}
+
+.release-tab-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+}
+
+.release-tab-year {
+    font-size: 0.6875rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+}
+
+.release-tab.is-active .release-tab-year { color: var(--accent-color); }
+
+.release-item[hidden] { display: none; }
+
+@media (max-width: 768px) {
+    .release-switcher { margin-bottom: 1.75rem; }
+    .release-tab { margin-right: 1.25rem; padding-right: 0.5rem; }
+    .release-tab-title { font-size: 0.8125rem; }
+}
+
+/* A release with nothing announced yet: title above the player, single narrow
+   column. Left as a full-width row it reads as a broken layout rather than a
+   record that simply hasn't been announced. */
+.release-item.is-sparse {
+    grid-template-columns: minmax(0, 21.875rem);
+    max-width: 27rem;
+    gap: 0;
+}
+
+.release-item.is-sparse .release-content {
+    order: -1;
+    padding-bottom: 0;
+}
+
+.release-item.is-sparse .release-header { margin-bottom: 0; }
+
+/* The artwork column has no padding of its own, so match it or the title floats
+   inset from the cover it belongs to. */
+.release-item.is-sparse .release-artwork { padding: 0 2rem 2rem; }
+
+@media (max-width: 768px) {
+    .release-item.is-sparse .release-artwork { padding: 0 1.5rem 1.5rem; }
+}
+.release-item.is-sparse .content-streaming-links { display: none; }

@@ -130,15 +130,8 @@ class PlayerInstance {
             num.textContent = track.num;
             const name = document.createElement('span');
             name.className = 'ap-name';
-            name.textContent = track.name;
+            name.textContent = this.title(track);
             li.append(num, name);
-            if (track.feature) {
-                // Guest credit is not part of the title, so it rides alongside it.
-                const ft = document.createElement('span');
-                ft.className = 'ap-feature';
-                ft.textContent = 'ft. ' + track.feature;
-                name.appendChild(ft);
-            }
             if (track.duration) {
                 const dur = document.createElement('span');
                 dur.className = 'ap-dur';
@@ -236,6 +229,10 @@ class PlayerInstance {
         return this.tracks[this.index].duration || 0;
     }
 
+    title(track) {
+        return track.feature ? `${track.name} (ft. ${track.feature})` : track.name;
+    }
+
     fmt(s) {
         if (!isFinite(s) || s < 0) s = 0;
         return Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
@@ -251,13 +248,7 @@ class PlayerInstance {
     renderTrack() {
         const t = this.tracks[this.index];
         if (!this.playable) this.el.status.textContent = this.unavailableNote;
-        this.el.name.textContent = t.name;
-        if (t.feature) {
-            const ft = document.createElement('span');
-            ft.className = 'ap-feature';
-            ft.textContent = 'ft. ' + t.feature;
-            this.el.name.appendChild(ft);
-        }
+        this.el.name.textContent = this.title(t);
         this.el.counter.textContent = `${this.index + 1} / ${this.tracks.length} ·`;
         [...this.el.list.children].forEach((li, i) =>
             li.classList.toggle('ap-active', i === this.index));

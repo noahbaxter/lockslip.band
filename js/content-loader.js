@@ -25,6 +25,8 @@ class ContentLoader {
 
             this.config = config;
             this.releases = releases;
+
+            await this.applyPrivateAudio();
             this.shows = shows;
             this.merchandise = merchandise;
             this.media = media;
@@ -40,6 +42,24 @@ class ContentLoader {
         } catch (error) {
             console.error('Error loading content:', error);
             UIHelpers.showError();
+        }
+    }
+
+    // Audio URLs for unreleased records live in the private octopus submodule, not
+    // in content/releases.json, so nothing playable ships in the public repo. When
+    // the file is absent this fetch 404s and the release simply renders unplayable.
+    async applyPrivateAudio() {
+        try {
+            const res = await fetch('octopus/private-audio.json');
+            if (!res.ok) return;
+            const sources = await res.json();
+            for (const release of this.releases.releases) {
+                const src = sources[release.id];
+                if (!src) continue;
+                release.audio = { ...release.audio, ...src };
+            }
+        } catch (e) {
+            // Nothing to do: no private sources means nothing extra is playable.
         }
     }
 
@@ -83,6 +103,7 @@ class ContentLoader {
         const releasesSection = document.getElementById('music');
         if (releasesSection && this.releases) {
             releasesSection.innerHTML = ReleasesComponent.render(this.releases);
+            ReleasesComponent.initSwitcher();
             AudioPlayer.initAll();
         }
     }

@@ -69,9 +69,17 @@ const ReleasesComponent = {
         `;
     },
 
+    // An unannounced release has no blurb, links or vendors yet. Without this the
+    // two-column grid leaves half the row empty.
+    isSparse(release) {
+        return !release.description
+            && !Object.keys(release.streamingLinks || {}).length
+            && !Object.keys(release.physicalLinks || {}).length;
+    },
+
     renderRelease(release) {
         return `
-            <div class="release-item" data-release-id="${release.id}">
+            <div class="release-item${this.isSparse(release) ? ' is-sparse' : ''}" data-release-id="${release.id}" role="tabpanel">
                 <div class="release-artwork">
                     ${this.renderPlayer(release)}
                 </div>
@@ -90,6 +98,44 @@ const ReleasesComponent = {
         `;
     },
 
+    // One release is shown at a time. With an 11-track record open, stacking them
+    // buries anything below it, so the switcher is navigation rather than decoration.
+    renderSwitcher(list) {
+        if (list.length < 2) return '';
+        return `
+            <div class="release-switcher" role="tablist" aria-label="Releases">
+                ${list.map((r, i) => `
+                    <button class="release-tab${i === 0 ? ' is-active' : ''}"
+                            type="button" role="tab"
+                            aria-selected="${i === 0}"
+                            data-target="${r.id}">
+                        <span class="release-tab-title">${r.title}</span>
+                        ${r.year ? `<span class="release-tab-year">${r.year}</span>`
+                                 : `<span class="release-tab-year">Out soon</span>`}
+                    </button>
+                `).join('')}
+            </div>
+        `;
+    },
+
+    initSwitcher() {
+        const tabs = document.querySelectorAll('.release-tab');
+        if (!tabs.length) return;
+        const items = document.querySelectorAll('.release-item');
+
+        const show = id => {
+            tabs.forEach(t => {
+                const on = t.dataset.target === id;
+                t.classList.toggle('is-active', on);
+                t.setAttribute('aria-selected', String(on));
+            });
+            items.forEach(el => { el.hidden = el.dataset.releaseId !== id; });
+        };
+
+        tabs.forEach(t => t.addEventListener('click', () => show(t.dataset.target)));
+        show(tabs[0].dataset.target);
+    },
+
     render(releases) {
         if (!releases || !releases.releases) return '';
         
@@ -97,6 +143,7 @@ const ReleasesComponent = {
             <div class="container">
                 ${UIHelpers.sectionHeader("MUSIC")}
                 <div class="releases">
+                    ${this.renderSwitcher(releases.releases.filter(r => !r.hidden))}
                     <div class="release-list">
                         ${releases.releases.filter(r => !r.hidden).map(release => this.renderRelease(release)).join('')}
                     </div>

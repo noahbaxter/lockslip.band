@@ -134,25 +134,25 @@
           {
             "num": 1,
             "name": "Guillotine Blueprint",
-            "file": "ep/01-guillotine-blueprint.m4a",
+            "file": "c14a5cad3dc8c404/01-guillotine-blueprint.m4a",
             "duration": 188.952
           },
           {
             "num": 2,
             "name": "Bend",
-            "file": "ep/02-bend.m4a",
+            "file": "c14a5cad3dc8c404/02-bend.m4a",
             "duration": 205.659
           },
           {
             "num": 3,
             "name": "Evildoer",
-            "file": "ep/03-evildoer.m4a",
+            "file": "c14a5cad3dc8c404/03-evildoer.m4a",
             "duration": 179.612
           },
           {
             "num": 4,
             "name": "Payment",
-            "file": "ep/04-payment.m4a",
+            "file": "c14a5cad3dc8c404/04-payment.m4a",
             "duration": 276.533
           }
         ]
