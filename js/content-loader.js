@@ -83,6 +83,7 @@ class ContentLoader {
         const releasesSection = document.getElementById('music');
         if (releasesSection && this.releases) {
             releasesSection.innerHTML = ReleasesComponent.render(this.releases);
+            AudioPlayer.initAll();
         }
     }
 

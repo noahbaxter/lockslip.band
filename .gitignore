@@ -23,3 +23,13 @@ node_modules/
 test-results/
 playwright-report/
 .playwright/
+
+# Anything in the repo is served publicly by GitHub Pages, so unreleased material
+# must never be tracked. Lyrics and audio for the album stay local until release.
+content/lyrics.txt
+audio-dist/
+audio-local
+docs/superpowers/
+
+# CDN path prefixes for the private audio bucket
+audio-prefixes.json
