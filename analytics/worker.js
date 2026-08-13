@@ -16,8 +16,12 @@ const MEMORY_DAYS = 1;
 
 const ORIGINS = ['https://lockslip.band', 'https://www.lockslip.band'];
 
-// A beacon's response is discarded, but a browser still needs the header to
-// avoid logging a CORS error on the page.
+// Ids, not free text. Every row is keyed by these, so anything that can vary
+// without limit is a way to fill the database from outside. A release is a slug
+// and a track is its number; the name rides along as a label only.
+const RELEASE_RE = /^[a-z0-9][a-z0-9-]{0,31}$/;
+const MAX_BODY = 1024;
+
 const cors = origin => ({
     'Access-Control-Allow-Origin': ORIGINS.includes(origin) ? origin : ORIGINS[0],
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -25,8 +29,6 @@ const cors = origin => ({
     'Access-Control-Max-Age': '86400',
 });
 
-// The window the id is good for. Same number for MEMORY_DAYS in a row, then it
-// moves and every id moves with it.
 function window_(now) {
     if (!MEMORY_DAYS) return 'fixed';
     return String(Math.floor(now / (MEMORY_DAYS * 86400)));
@@ -41,7 +43,10 @@ async function visitorId(request, env, now) {
         .map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-const clean = (v, max) => typeof v === 'string' ? v.slice(0, max) : null;
+// Kept for reading, never for keying, so a strange one cannot make a new row.
+const label = v => typeof v === 'string'
+    ? [...v].filter(c => c >= ' ').join('').slice(0, 128)
+    : null;
 
 export default {
     async fetch(request, env) {
@@ -49,11 +54,26 @@ export default {
 
         if (request.method === 'OPTIONS') return new Response(null, { headers: cors(origin) });
         if (request.method !== 'POST') return new Response('POST only', { status: 405 });
-        if (origin && !ORIGINS.includes(origin)) return new Response('no', { status: 403 });
+
+        // Loudly, rather than hashing against the string "undefined": a guessable
+        // salt makes every stored id reversible to the IP that made it, and it
+        // would look like it was working.
+        if (!env.SALT) return new Response('no salt', { status: 503 });
+
+        // Required, not just checked when present. The endpoint is on another
+        // host than the page, so a real beacon always carries one; letting a
+        // missing header through waves past everything that is not a browser.
+        // A determined script can still forge it, which is what the rate limit
+        // rule in README.md is for.
+        if (!ORIGINS.includes(origin)) return new Response('no', { status: 403 });
+
+        if (Number(request.headers.get('Content-Length')) > MAX_BODY) {
+            return new Response('too big', { status: 413, headers: cors(origin) });
+        }
 
         let body;
         try {
-            body = JSON.parse((await request.text()).slice(0, 1024));
+            body = JSON.parse((await request.text()).slice(0, MAX_BODY));
         } catch {
             return new Response('bad json', { status: 400, headers: cors(origin) });
         }
@@ -75,9 +95,9 @@ export default {
                 `).bind(day, visitor, country, region, city, now, now).run();
 
             } else if (body.t === 'l') {
-                const release = clean(body.r, 64);
-                const track = clean(body.k, 128);
-                if (!release || !track) return new Response('bad event', { status: 400, headers: cors(origin) });
+                const release = typeof body.r === 'string' && RELEASE_RE.test(body.r) ? body.r : null;
+                const num = Number.isInteger(body.n) && body.n > 0 && body.n <= 99 ? body.n : null;
+                if (!release || !num) return new Response('bad event', { status: 400, headers: cors(origin) });
 
                 // Clamped: a beacon claiming an hour of listening is a broken
                 // client or someone poking at the endpoint.
@@ -85,17 +105,18 @@ export default {
                 const starts = body.st ? 1 : 0;
 
                 await env.DB.prepare(`
-                    INSERT INTO listens (day, visitor, country, release, track, starts, seconds)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
-                    ON CONFLICT (day, visitor, release, track) DO UPDATE SET
+                    INSERT INTO listens (day, visitor, country, release, num, name, starts, seconds)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    ON CONFLICT (day, visitor, release, num) DO UPDATE SET
                         starts = starts + excluded.starts,
-                        seconds = seconds + excluded.seconds
-                `).bind(day, visitor, country, release, track, starts, seconds).run();
+                        seconds = seconds + excluded.seconds,
+                        name = excluded.name
+                `).bind(day, visitor, country, release, num, label(body.k), starts, seconds).run();
             }
         } catch (err) {
             // Never let stats break the page: the client ignores the response
             // anyway, and a failed write is not worth an error in anyone's console.
-            console.error(err);
+            console.error(err.message);
         }
 
         return new Response(null, { status: 204, headers: cors(origin) });

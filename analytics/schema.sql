@@ -14,15 +14,19 @@ CREATE TABLE IF NOT EXISTS visits (
     PRIMARY KEY (day, visitor)
 );
 
+-- Keyed by the track's number rather than its name: the key space has to be
+-- something an outsider cannot invent rows in. The name is a label, updated
+-- whenever a beat carries one.
 CREATE TABLE IF NOT EXISTS listens (
     day      TEXT NOT NULL,
     visitor  TEXT NOT NULL,
     country  TEXT,
     release  TEXT NOT NULL,
-    track    TEXT NOT NULL,
+    num      INTEGER NOT NULL,
+    name     TEXT,
     starts   INTEGER NOT NULL DEFAULT 0,
     seconds  INTEGER NOT NULL DEFAULT 0,
-    PRIMARY KEY (day, visitor, release, track)
+    PRIMARY KEY (day, visitor, release, num)
 );
 
 CREATE INDEX IF NOT EXISTS listens_day ON listens (day);

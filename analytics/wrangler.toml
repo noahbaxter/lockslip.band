@@ -6,7 +6,7 @@ compatibility_date = "2026-08-01"
 binding = "DB"
 database_name = "lockslip-stats"
 # Filled in by `wrangler d1 create lockslip-stats`.
-database_id = "REPLACE_ME"
+database_id = "00000000-0000-0000-0000-000000000000"
 
 # SALT is a secret, not a var: it is the only thing standing between the stored
 # hash and the IP that made it. Set it with

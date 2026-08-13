@@ -31,7 +31,8 @@ const Analytics = {
 
         const track = owner.tracks[owner.index];
         if (!track) return null;
-        return { r: owner.id, k: track.name || String(owner.index + 1) };
+        // The number is what the row is keyed by; the name is only a label.
+        return { r: owner.id, n: track.num || owner.index + 1, k: track.name || '' };
     },
 
     beat() {
@@ -40,8 +41,8 @@ const Analytics = {
 
         // A track change inside one beat is credited as a start on the new track
         // rather than silently adding the time to the old one.
-        const started = !this.last || this.last.r !== now.r || this.last.k !== now.k;
-        this.send({ t: 'l', r: now.r, k: now.k, s: this.BEAT_MS / 1000, st: started ? 1 : 0 });
+        const started = !this.last || this.last.r !== now.r || this.last.n !== now.n;
+        this.send({ t: 'l', r: now.r, n: now.n, k: now.k, s: this.BEAT_MS / 1000, st: started ? 1 : 0 });
         this.last = now;
     },
 
