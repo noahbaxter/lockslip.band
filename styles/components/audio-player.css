@@ -22,7 +22,7 @@
 .ap-art-wrap {
     width: 100%;
     aspect-ratio: 1;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     background: var(--surface-near-black);
 }
 
@@ -55,7 +55,9 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    margin-bottom: 0.9rem;
+    /* Inset so the bar doesn't run into the card edge the way the art does. */
+    padding-left: 0.75rem;
+    margin-bottom: 0.6rem;
 }
 
 .ap-position .ap-seek { flex: 1; }
@@ -109,7 +111,7 @@
     justify-content: center;
     align-items: center;
     gap: 2.5rem;
-    margin: 0 0 0.75rem;
+    margin: 0 0 0.4rem;
 }
 
 .ap-transport button {
@@ -117,7 +119,7 @@
     border: none;
     color: var(--text-color);
     cursor: pointer;
-    padding: 0.75rem;
+    padding: 0.25rem 0.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
