@@ -75,9 +75,6 @@ const NowPlaying = {
         zen.className = 'np-zen';
         zen.hidden = true;
         zen.innerHTML = `
-            <button class="np-zen-close" type="button" aria-label="Leave full screen player">
-                <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="2" fill="none"/></svg>
-            </button>
             <div class="np-zen-stage">
                 <img class="np-zen-art" alt="">
                 <div class="np-zen-lyrics" hidden></div>
@@ -113,6 +110,9 @@ const NowPlaying = {
                     </button>
                 </span>
             </div>
+            <button class="np-zen-close" type="button" aria-label="Leave full screen player">
+                <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+            </button>
         `;
 
         // One picker, moved between the two places it can appear: over the artwork
@@ -245,7 +245,13 @@ const NowPlaying = {
         document.addEventListener('touchend', endScrub);
 
         document.addEventListener('keydown', e => {
-            if (e.key === 'Escape' && !this.zen.hidden) return this.closeZen();
+            // Escape is the way out, not a step back through layers: it leaves the
+            // full screen player and takes the lyrics or the list with it, the same
+            // as pressing the chevron.
+            if (e.key === 'Escape') {
+                if (!this.zen.hidden) this.closeZen();
+                return;
+            }
             if (e.key !== ' ' && e.key !== 'Spacebar') return;
 
             // Space is the transport key while a record is up, wherever you are on
@@ -274,8 +280,12 @@ const NowPlaying = {
         this.sync();
     },
 
+    // Leaving takes the lyrics and the list with it. They belong to the full screen
+    // view, and a list left open would reappear as a popover over the page.
     closeZen() {
         this.zen.hidden = true;
+        this.pickerOpen = false;
+        this.lyricsOpen = false;
         document.body.classList.remove('np-zen-open');
         this.sync();
     },

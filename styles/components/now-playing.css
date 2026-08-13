@@ -242,13 +242,12 @@ body.np-playing {
 /* The page underneath does not scroll while zen mode is up. */
 body.np-zen-open { overflow: hidden; }
 
+/* Under the transport, in the flow. Pinned to the top of the screen it read as
+   window chrome, miles from the thing it closes. */
 .np-zen-close {
-    position: absolute;
-    top: 1.25rem;
-    left: 50%;
-    transform: translateX(-50%);
     width: 3rem;
-    height: 2rem;
+    height: 2.25rem;
+    margin-top: 0.5rem;
     padding: 0;
     background: none;
     border: none;
