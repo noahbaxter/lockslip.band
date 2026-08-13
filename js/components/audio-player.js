@@ -44,6 +44,12 @@ class PlayerInstance {
         this.onArtClick = data.onArtClick || null;
         this.onLyrics = data.onLyrics || null;
         this.lyricsOpen = false;
+        // Set once the record has run out: index is back at the first track but
+        // nothing is playing and nothing is selected.
+        this.stopped = false;
+        // Scrubbing to the very end of a paused track fires 'ended'. That is not
+        // the record moving on, so it must not advance.
+        this.suppressAdvance = false;
 
         if (!this.tracks.length) return;
 
@@ -174,7 +180,11 @@ class PlayerInstance {
 
         const a = this.audio;
 
-        a.addEventListener('play', () => { this.setPlaying(true); this.loop(); });
+        a.addEventListener('play', () => {
+            this.suppressAdvance = false;
+            this.setPlaying(true);
+            this.loop();
+        });
         a.addEventListener('pause', () => { this.setPlaying(false); this.tick(); });
         // Deliberately no 'waiting'/'canplay' status. A loading line that comes and
         // goes reflows the whole player on every track change.
@@ -182,14 +192,9 @@ class PlayerInstance {
         a.addEventListener('error', () => { this.el.status.textContent = 'Playback error'; });
 
         a.addEventListener('ended', () => {
-            if (this.index < this.tracks.length - 1) {
-                this.playTrack(this.index + 1);
-            } else {
-                this.index = 0;
-                a.removeAttribute('src');
-                a.load();
-                this.renderTrack();
-            }
+            if (this.suppressAdvance) { this.suppressAdvance = false; return; }
+            if (this.index < this.tracks.length - 1) this.playTrack(this.index + 1);
+            else this.stop();
         });
 
         this.el.play.addEventListener('click', () => this.toggle());
@@ -200,7 +205,11 @@ class PlayerInstance {
             const rect = this.el.seek.getBoundingClientRect();
             const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
             const dur = this.dur();
-            if (dur) this.audio.currentTime = Math.max(0, Math.min(1, x / rect.width)) * dur;
+            if (!dur) return;
+            // Only playback advances the record. Scrubbing a paused track to the
+            // end parks it there.
+            if (this.audio.paused) this.suppressAdvance = true;
+            this.audio.currentTime = Math.max(0, Math.min(1, x / rect.width)) * dur;
             this.tick();
         };
         this.el.seek.addEventListener('mousedown', e => { this.seeking = true; seekFrom(e); });
@@ -211,8 +220,24 @@ class PlayerInstance {
         document.addEventListener('touchend', () => { this.seeking = false; });
     }
 
+    // Back to the top of the record, idle. Not the same as pausing on track one:
+    // nothing is cued and no row is marked.
+    stop() {
+        if (this.preloadAbort) this.preloadAbort.abort();
+        this.stopped = true;
+        this.index = 0;
+        if (this.audio) {
+            this.audio.pause();
+            this.audio.removeAttribute('src');
+            this.audio.load();
+        }
+        this.setPlaying(false);
+        this.renderTrack();
+    }
+
     playTrack(i) {
         if (this.preloadAbort) this.preloadAbort.abort();
+        this.stopped = false;
         this.index = i;
         this.audio.src = this.trackUrl(i);
         this.renderTrack();
@@ -230,7 +255,7 @@ class PlayerInstance {
     }
 
     toggle() {
-        if (!this.audio.src) return this.playTrack(this.index);
+        if (this.stopped || !this.audio.src) return this.playTrack(this.index);
         if (this.audio.paused) this.audio.play().catch(() => {});
         else this.audio.pause();
     }
@@ -242,6 +267,7 @@ class PlayerInstance {
 
     next() {
         if (this.index < this.tracks.length - 1) this.playTrack(this.index + 1);
+        else this.stop();
     }
 
     dur() {
@@ -273,9 +299,9 @@ class PlayerInstance {
         if (!this.playable) this.el.status.textContent = this.unavailableNote;
         this.el.counterIndex.textContent = this.index + 1;
         [...this.el.list.children].forEach((li, i) => {
-            li.classList.toggle('ap-active', i === this.index);
+            li.classList.toggle('ap-active', !this.stopped && i === this.index);
             // Rows that stopped playing go back to showing just their length.
-            if (i !== this.index) {
+            if (this.stopped || i !== this.index) {
                 li.querySelector('.ap-dur').textContent = this.fmt(this.tracks[i].duration || 0);
             }
         });
@@ -305,8 +331,9 @@ class PlayerInstance {
         const cur = (this.audio && this.audio.currentTime) || 0;
         this.el.fill.style.width = (dur ? Math.min(100, cur / dur * 100) : 0) + '%';
 
-        // The clock lives on the playing row, next to that track's length.
-        const row = this.el.list.children[this.index];
+        // The clock lives on the playing row, next to that track's length. With the
+        // record stopped there is no playing row.
+        const row = this.stopped ? null : this.el.list.children[this.index];
         if (!row) return;
         const cell = row.querySelector('.ap-dur');
         cell.textContent = this.playable

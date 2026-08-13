@@ -315,7 +315,19 @@
     color: var(--text-dark);
     line-height: 1.65;
     font-size: 0.9rem;
+    /* Long lyrics scroll rather than stretching the card past the player beside
+       them. Sized to stay under the artwork column's natural height. */
+    max-height: 25.75rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-a30) transparent;
 }
+
+.release-lyrics-body::-webkit-scrollbar { width: 0.375rem; }
+.release-lyrics-body::-webkit-scrollbar-track { background: transparent; }
+.release-lyrics-body::-webkit-scrollbar-thumb { background: var(--accent-a30); }
+.release-lyrics-body::-webkit-scrollbar-thumb:hover { background: var(--accent-a50); }
 
 .release-lyrics-body.is-empty {
     color: var(--text-faint);
