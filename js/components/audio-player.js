@@ -14,8 +14,20 @@ const AudioPlayer = {
     // is no element to hang data off until after innerHTML lands.
     pending: {},
 
+    // Every player on the page. They own separate <audio> elements, so without a
+    // registry two releases will happily play over each other.
+    instances: [],
+
     register(id, data) {
         this.pending[id] = data;
+    },
+
+    // Only one release plays at a time. The others go back to idle rather than
+    // pausing, so returning to one is the same as arriving at it fresh.
+    stopOthers(active) {
+        this.instances.forEach(inst => {
+            if (inst !== active && !inst.stopped) inst.stop();
+        });
     },
 
     mount(id) {
@@ -25,7 +37,7 @@ const AudioPlayer = {
     initAll() {
         document.querySelectorAll('.audio-player[data-player]').forEach(el => {
             const data = this.pending[el.dataset.player];
-            if (data && !el.dataset.ready) new PlayerInstance(el, data);
+            if (data && !el.dataset.ready) this.instances.push(new PlayerInstance(el, data));
         });
     }
 };
@@ -187,6 +199,7 @@ class PlayerInstance {
         const a = this.audio;
 
         a.addEventListener('play', () => {
+            AudioPlayer.stopOthers(this);
             this.suppressAdvance = false;
             this.setPlaying(true);
             this.loop();
