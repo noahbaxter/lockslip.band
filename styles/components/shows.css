@@ -874,7 +874,7 @@
          3. a hard stop at --poster-content-top: it may never rise level with
             the year rule, whatever the window height */
     bottom: min(
-        var(--poster-nav-inset),
+        calc(var(--poster-nav-inset) + var(--np-bar-h)),
         max(0px, calc(100vh - var(--poster-nav-size) - var(--poster-nav-floor))),
         calc(100vh - var(--poster-nav-size) - var(--poster-content-top))
     );
