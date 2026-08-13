@@ -32,6 +32,11 @@ jobs:
         run: |
           git submodule foreach 'git lfs pull'
 
+      # A real file at every linkable URL, so /music/the-conversation is a page
+      # rather than a 404 and carries its own preview image.
+      - name: Write route stubs
+        run: python3 build_routes.py
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 

@@ -12,6 +12,9 @@ import time
 from pathlib import Path
 
 PORT = 8000
+# Kept in step with the section ids in index.html; build_routes.py reads them
+# from the markup at deploy time.
+ROUTE_SECTIONS = {'news', 'music', 'shows', 'store', 'extras'}
 WATCH_DIRS = ['.', 'js', 'styles', 'content', 'assets']
 WATCH_EXTENSIONS = {'.js', '.css', '.json', '.html', '.md'}
 
@@ -48,6 +51,23 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             print(f"  {status} {short_path}{size_info}{range_info}")
         else:
             print(f"  {format % args}")
+
+    def translate_path(self, path):
+        """Serve the home page at the section routes, the way deploy does.
+
+        build_routes.py writes a copy of index.html at /music, /music/<release>
+        and the rest before the site is uploaded. Locally there is nothing to
+        build, so a request for one of those falls back to index.html here and
+        the two behave the same.
+        """
+        translated = super().translate_path(path)
+        if os.path.exists(translated):
+            return translated
+
+        first = path.split('?')[0].strip('/').split('/')[0]
+        if first in ROUTE_SECTIONS:
+            return os.path.join(os.getcwd(), 'index.html')
+        return translated
 
     def do_GET(self):
         range_header = self.headers.get('Range')

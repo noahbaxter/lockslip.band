@@ -36,3 +36,10 @@ audio-prefixes.json
 
 # Wrangler's local D1 and dev state for the stats worker.
 analytics/.wrangler/
+
+# Route stubs written by build_routes.py at deploy time.
+/news/
+/music/
+/shows/
+/store/
+/extras/

@@ -51,6 +51,15 @@ const Router = {
         return path.endsWith('/') || path.endsWith('.html') ? path : path + '/';
     },
 
+    // /music, /music/the-conversation and /shows are all the home page: deploy
+    // writes a copy of it at each. They have to collapse to one panel key, or
+    // moving between sections would fetch and mount the home page again for each
+    // one, and the player inside the first copy would keep the audio.
+    key(path) {
+        const first = path.split('/').filter(Boolean)[0];
+        return typeof UrlState !== 'undefined' && UrlState.isSection(first) ? '/' : path;
+    },
+
     init() {
         const main = document.querySelector('main');
         if (!main) return;
@@ -59,7 +68,7 @@ const Router = {
         style.textContent = PANEL_HIDDEN_CSS;
         document.head.appendChild(style);
 
-        this.current = this.normalise(location.pathname);
+        this.current = this.key(this.normalise(location.pathname));
         this.panels.set(this.current, {
             main,
             title: document.title,
@@ -72,7 +81,7 @@ const Router = {
         // UrlState's, and re-showing the panel here would scroll it to the top
         // out from under it.
         window.addEventListener('popstate', () => {
-            const path = this.normalise(location.pathname);
+            const path = this.key(this.normalise(location.pathname));
             if (path !== this.current) this.show(path, false);
         });
     },
@@ -108,28 +117,31 @@ const Router = {
         if (!this.routable(path)) return;
 
         e.preventDefault();
-        if (path === this.current) {
-            // Nav links are absolute (/#music), so they land here rather than in
-            // the anchor handler, and this is where the URL has to be written.
-            if (url.hash) {
-                this.scrollToHash(url.hash);
-                UrlState.section(url.hash.slice(1));
-            }
+
+        // A section link is a move within the home panel: no swap, just the URL
+        // and a scroll. UrlState owns both so the record open in MUSIC comes
+        // along in the path.
+        const section = UrlState.parse(url).section;
+        if (section && this.key(path) === this.current) {
+            UrlState.section(section);
+            UrlState.scrollTo(section, 'smooth');
             return;
         }
+
         this.go(url);
     },
 
-    // Only the three pages that share this shell. Anything else, including the
+    // The three pages that share this shell, plus every section path, since deploy
+    // writes the home page at each of those too. Anything else, including the
     // plugin demo iframe and the hidden octopus page, navigates normally.
     routable(path) {
-        return ['/', '/press/', '/plugin/'].includes(path);
+        return ['/', '/press/', '/plugin/'].includes(path) || this.key(path) === '/';
     },
 
     async go(url) {
         const path = this.normalise(url.pathname);
         try {
-            await this.show(path, true, url.hash);
+            await this.show(this.key(path), true, url.hash, url);
         } catch (err) {
             // Any failure falls back to a real navigation rather than stranding
             // the visitor on a half-swapped page.
@@ -138,7 +150,7 @@ const Router = {
         }
     },
 
-    async show(path, push, hash) {
+    async show(path, push, hash, url) {
         if (!this.panels.has(path)) await this.build(path);
 
         const next = this.panels.get(path);
@@ -152,8 +164,13 @@ const Router = {
         document.body.className = next.bodyClass;
         this.current = path;
 
-        if (push) history.pushState({}, '', path + (hash || ''));
-        if (hash) this.scrollToHash(hash, 'instant');
+        // The real URL, which for a section is longer than the panel's key.
+        const href = url ? url.pathname + url.search + url.hash : path + (hash || '');
+        if (push) history.pushState({}, '', href);
+
+        const state = url ? UrlState.parse(url) : {};
+        if (state.section) UrlState.apply(state, 'instant');
+        else if (hash) this.scrollToHash(hash, 'instant');
         else window.scrollTo(0, 0);
 
         if (window.ImageLoader) ImageLoader.refresh(next.main);
