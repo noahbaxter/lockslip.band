@@ -11,6 +11,12 @@
 // re-deriving "which track is playing, how far in" from an element that never
 // stopped, which is a resync bug waiting to happen.
 
+// `hidden` is only a UA-stylesheet `display: none`, so any author rule that sets
+// display on a panel (the plugin page uses flex) silently beats it and the panel
+// stays on screen. Panels are hidden by class instead, with the rule living next
+// to the router that depends on it.
+const PANEL_HIDDEN_CSS = 'main.router-inactive { display: none !important; }';
+
 const Router = {
     // path -> { main, title, bodyClass }
     panels: new Map(),
@@ -30,6 +36,10 @@ const Router = {
     init() {
         const main = document.querySelector('main');
         if (!main) return;
+
+        const style = document.createElement('style');
+        style.textContent = PANEL_HIDDEN_CSS;
+        document.head.appendChild(style);
 
         this.current = this.normalise(location.pathname);
         this.panels.set(this.current, {
@@ -97,9 +107,9 @@ const Router = {
         if (!next) { location.href = path; return; }
 
         const previous = this.panels.get(this.current);
-        if (previous) previous.main.hidden = true;
+        if (previous) previous.main.classList.add('router-inactive');
 
-        next.main.hidden = false;
+        next.main.classList.remove('router-inactive');
         document.title = next.title;
         document.body.className = next.bodyClass;
         this.current = path;
@@ -120,7 +130,7 @@ const Router = {
         const main = doc.querySelector('main');
         if (!main) throw new Error(`no <main> in ${path}`);
 
-        main.hidden = true;
+        main.classList.add('router-inactive');
         document.querySelector('main').parentNode.insertBefore(
             main, document.querySelector('footer') || null);
 
