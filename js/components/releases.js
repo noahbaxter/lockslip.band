@@ -75,6 +75,7 @@ const ReleasesComponent = {
         if (release.audio && release.audio.tracks && release.audio.tracks.length) {
             AudioPlayer.register(release.id, {
                 baseUrl: release.audio.baseUrl,
+                version: release.audio.version,
                 tracks: release.audio.tracks,
                 coverImage: release.coverImage,
                 releaseTitle: release.title,

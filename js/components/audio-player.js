@@ -75,6 +75,7 @@ class PlayerInstance {
         this.releaseTitle = data.releaseTitle || '';
         this.tracks = data.tracks || [];
         this.baseUrl = data.baseUrl || '';
+        this.version = data.version || '';
         this.coverImage = data.coverImage || '';
         this.index = 0;
         this.raf = null;
@@ -132,8 +133,12 @@ class PlayerInstance {
         return -1;
     }
 
+    // The version rides as a query rather than in the key, so re-mastering a record
+    // does not mean new object names. Without it a listener who already has the old
+    // audio cached keeps hearing it: same URL, and browsers hold on to media hard.
     trackUrl(i) {
-        return this.baseUrl + this.tracks[i].file.split('/').map(encodeURIComponent).join('/');
+        const path = this.tracks[i].file.split('/').map(encodeURIComponent).join('/');
+        return this.baseUrl + path + (this.version ? `?v=${encodeURIComponent(this.version)}` : '');
     }
 
     build() {
