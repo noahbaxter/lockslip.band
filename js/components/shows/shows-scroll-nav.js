@@ -129,13 +129,18 @@ const ShowsScrollNav = {
         const clipped = box.top < line - 2 || box.bottom > foot + 2;
         if (!clipped) return;
 
-        // Round in whichever direction buries the neighbouring row: a sub-pixel
-        // of slack the wrong way leaves a strip of it hoverable, which kicks off
+        // Round in whichever direction buries the neighbouring row: a sub-pixel of
+        // slack the wrong way leaves a strip of it hoverable, which kicks off
         // another settle. scrollIntoView is no good here either, since html's
         // scroll-padding-top would stack on top of the target and overshoot.
+        //
+        // The bottom needs a whole pixel rather than a rounding. Up top the header
+        // covers the overshoot, but the window edge covers nothing, and between a
+        // smooth scroll landing where it lands and fractional row heights, the
+        // rounding alone left a third of a pixel of the next row hoverable.
         const target = box.top < line
             ? Math.ceil(box.top + window.scrollY - line)
-            : Math.floor(box.bottom + window.scrollY - foot);
+            : Math.floor(box.bottom + window.scrollY - foot) - 1;
 
         this.scrolling = true;
         window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
