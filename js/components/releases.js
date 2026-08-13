@@ -33,12 +33,17 @@ const ReleasesComponent = {
 
     showLyrics(release, trackIndex) {
         const panel = document.querySelector(`.release-lyrics[data-lyrics-for="${release.id}"]`);
-        const description = panel && panel.parentElement.querySelector('.release-description');
         if (!panel) return;
+        const content = panel.parentElement;
+        const description = content.querySelector('.release-description');
 
+        // Lyrics take over the whole column, title and streaming row included,
+        // so a verse gets the height instead of sharing it with the header.
         if (trackIndex === null) {
             panel.hidden = true;
-            if (description) { description.hidden = false; this.fitDescriptions(); }
+            content.classList.remove('is-lyrics');
+            if (description) description.hidden = false;
+            this.fitDescriptions();
             return;
         }
 
@@ -62,6 +67,7 @@ const ReleasesComponent = {
         panel.appendChild(text);
 
         panel.hidden = false;
+        content.classList.add('is-lyrics');
         if (description) description.hidden = true;
     },
 
@@ -240,26 +246,45 @@ const ReleasesComponent = {
             if (!player || !content) return;
 
             content.style.maxHeight = '';
+            this.syncHeader(item);
             // Hidden panels measure as zero, so there is nothing to fit against.
             const target = player.getBoundingClientRect().height;
             if (!target || stacked) return;
 
             // Hard cap beside the player. Anything inside that wants more room,
-            // the lyrics box in particular, scrolls instead of pushing the card.
+            // the description and the lyrics box, scrolls instead of pushing the card.
             content.style.maxHeight = target + 'px';
-
-            const desc = item.querySelector('.release-description');
-            if (!desc || desc.hidden) return;
-            desc.style.fontSize = '';
-
-            let size = parseFloat(getComputedStyle(desc).fontSize);
-            // Below the floor the blurb stops being readable, so past that point
-            // the card is allowed to grow instead.
-            while (size > this.MIN_DESCRIPTION_PX && content.scrollHeight > target) {
-                size = Math.max(this.MIN_DESCRIPTION_PX, size - 0.25);
-                desc.style.fontSize = size + 'px';
-            }
         });
+    },
+
+    // Once the date drops under the title the header is already two lines deep,
+    // and a third row of icons under that is more masthead than the column can
+    // spare, so the streaming row goes. Hiding it cannot unwrap the header, so
+    // there is nothing here to oscillate.
+    syncHeader(item) {
+        const content = item.querySelector('.release-content');
+        const title = item.querySelector('.release-header h4');
+        const date = item.querySelector('.release-date');
+        if (!content || !title || !date) return;
+
+        // Stacked, the header is a column, so the date is always under the title.
+        const stacked = window.matchMedia('(max-width: 768px)').matches;
+        const wrapped = !stacked &&
+            date.getBoundingClientRect().top > title.getBoundingClientRect().top + 1;
+        content.classList.toggle('is-header-wrapped', wrapped);
+    },
+
+    // Driven by the header's own size rather than the debounced resize pass, so
+    // the icons go the frame the date wraps instead of a tenth of a second later.
+    watchHeaders() {
+        if (this._headers) this._headers.disconnect();
+        this._headers = new ResizeObserver(entries => {
+            entries.forEach(entry => {
+                const item = entry.target.closest('.release-item');
+                if (item) this.syncHeader(item);
+            });
+        });
+        document.querySelectorAll('.release-header').forEach(el => this._headers.observe(el));
     },
 
     watchDescriptions() {
