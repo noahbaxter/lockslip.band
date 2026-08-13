@@ -5,9 +5,9 @@
       "id": "the-conversation",
       "title": "The Conversation",
       "description": "",
-      "year": "",
-      "month": "",
-      "day": "",
+      "year": "2026",
+      "month": "November",
+      "day": "6",
       "tracks": [
         "1. Gray World (ft. King Yosef)",
         "2. Vengeance (You'll Be Seen by Your God)",
@@ -21,7 +21,9 @@
         "10. Iconoclast (ft. Todd Jones)",
         "11. End the Conversation"
       ],
-      "streamingLinks": {},
+      "streamingLinks": {
+        "bandcamp": "https://lockslip.bandcamp.com/album/the-conversation"
+      },
       "audio": {
         "unavailableNote": "Out soon",
         "tracks": [

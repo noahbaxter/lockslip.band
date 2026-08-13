@@ -69,17 +69,9 @@ const ReleasesComponent = {
         `;
     },
 
-    // An unannounced release has no blurb, links or vendors yet. Without this the
-    // two-column grid leaves half the row empty.
-    isSparse(release) {
-        return !release.description
-            && !Object.keys(release.streamingLinks || {}).length
-            && !Object.keys(release.physicalLinks || {}).length;
-    },
-
     renderRelease(release) {
         return `
-            <div class="release-item${this.isSparse(release) ? ' is-sparse' : ''}" data-release-id="${release.id}" role="tabpanel">
+            <div class="release-item" data-release-id="${release.id}" role="tabpanel">
                 <div class="release-artwork">
                     ${this.renderPlayer(release)}
                 </div>

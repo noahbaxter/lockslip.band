@@ -79,7 +79,7 @@ class PlayerInstance {
                 </button>
                 <button class="ap-play" type="button" aria-label="Play">
                     <svg class="ap-icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    <svg class="ap-icon-pause" viewBox="0 0 24 24" hidden><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                    <svg class="ap-icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
                 </button>
                 <button class="ap-next" type="button" aria-label="Next track">
                     <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
@@ -155,8 +155,8 @@ class PlayerInstance {
 
         a.addEventListener('play', () => { this.setPlaying(true); this.loop(); });
         a.addEventListener('pause', () => { this.setPlaying(false); this.tick(); });
-        a.addEventListener('waiting', () => { this.el.status.textContent = 'Loading…'; });
-        a.addEventListener('canplay', () => { this.el.status.textContent = ''; });
+        // Deliberately no 'waiting'/'canplay' status. A loading line that comes and
+        // goes reflows the whole player on every track change.
         a.addEventListener('loadedmetadata', () => this.tick());
         a.addEventListener('error', () => { this.el.status.textContent = 'Playback error'; });
 
@@ -239,8 +239,10 @@ class PlayerInstance {
     }
 
     setPlaying(playing) {
-        this.el.iconPlay.hidden = playing;
-        this.el.iconPause.hidden = !playing;
+        // `hidden` is an HTMLElement property. These icons are SVG elements, so
+        // assigning it sets a JS property that never becomes an attribute and the
+        // [hidden] selector never matches. Toggle a class on the button instead.
+        this.el.play.classList.toggle('is-playing', playing);
         this.el.play.setAttribute('aria-label', playing ? 'Pause' : 'Play');
         if (!playing) cancelAnimationFrame(this.raf);
     }

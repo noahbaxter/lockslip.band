@@ -286,27 +286,7 @@
     .release-tab-title { font-size: 0.8125rem; }
 }
 
-/* A release with nothing announced yet: title above the player, single narrow
-   column. Left as a full-width row it reads as a broken layout rather than a
-   record that simply hasn't been announced. */
-.release-item.is-sparse {
-    grid-template-columns: minmax(0, 21.875rem);
-    max-width: 27rem;
-    gap: 0;
-}
 
-.release-item.is-sparse .release-content {
-    order: -1;
-    padding-bottom: 0;
-}
-
-.release-item.is-sparse .release-header { margin-bottom: 0; }
-
-/* The artwork column has no padding of its own, so match it or the title floats
-   inset from the cover it belongs to. */
-.release-item.is-sparse .release-artwork { padding: 0 2rem 2rem; }
-
-@media (max-width: 768px) {
-    .release-item.is-sparse .release-artwork { padding: 0 1.5rem 1.5rem; }
-}
-.release-item.is-sparse .content-streaming-links { display: none; }
+/* Track titles and headers get the width they need. With a fixed-height player
+   there is room, and wrapping a title onto a second line shifts everything below it. */
+.release-header h4 { white-space: nowrap; }
