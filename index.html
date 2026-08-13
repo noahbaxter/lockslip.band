@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- data-accent names the record whose colour the page is wearing. The value here
+     is the no-JS fallback. -->
+<html lang="en" data-accent="the-conversation">
 <head>
     <base href="/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lockslip</title>
+    <script>
+        /* The site accent follows the record open in MUSIC (see variables.css).
+           Inline and ahead of the stylesheet so a return visit never paints a
+           frame in the previous record's colour. Set ACCENT_PIN to an accent id
+           to force one colour for good; null follows whatever is open. */
+        window.ACCENT_PIN = null;
+        (function () {
+            var saved = null;
+            try { saved = localStorage.getItem('accent-release'); } catch (e) {}
+            var id = window.ACCENT_PIN || saved;
+            if (id) document.documentElement.dataset.accent = id;
+        })();
+    </script>
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon.png">
     <link rel="apple-touch-icon" href="assets/icons/favicon.png">

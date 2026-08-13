@@ -189,6 +189,14 @@ const ReleasesComponent = {
                `</span>`;
     },
 
+    // "Gray World" where the blurb names the track is a switch: it drains the
+    // site to the record's grey and back. Nothing announces it, so it reads as
+    // the track's name until someone tries it.
+    renderDescription(text) {
+        return text.replace('"Gray World"',
+            '"<button type="button" class="accent-switch" aria-pressed="false">Gray World</button>"');
+    },
+
     renderRelease(release) {
         return `
             <div class="release-item" data-release-id="${release.id}" role="tabpanel">
@@ -203,7 +211,7 @@ const ReleasesComponent = {
                     <div class="content-streaming-links">
                         ${this.renderStreamingLinks(release.streamingLinks)}
                     </div>
-                    ${release.description ? `<p class="release-description">${release.description}</p>` : ''}
+                    ${release.description ? `<p class="release-description">${this.renderDescription(release.description)}</p>` : ''}
                     <div class="release-lyrics" data-lyrics-for="${release.id}" hidden></div>
                     ${this.renderPhysicalLinks(release.physicalLinks)}
                 </div>
@@ -299,6 +307,21 @@ const ReleasesComponent = {
         });
     },
 
+    setAccent(id) {
+        if (window.ACCENT_PIN) return;
+        document.documentElement.dataset.accent = id;
+    },
+
+    // Whether gray world was clicked, as opposed to merely hovered. The accent
+    // follows the pointer; this is what decides where it lands when it leaves.
+    greyHeld: false,
+
+    holdGrey(on) {
+        this.greyHeld = on;
+        document.querySelectorAll('.accent-switch')
+            .forEach(sw => sw.setAttribute('aria-pressed', String(on)));
+    },
+
     initSwitcher() {
         const tabs = document.querySelectorAll('.release-tab');
         if (!tabs.length) return;
@@ -311,13 +334,48 @@ const ReleasesComponent = {
                 t.setAttribute('aria-selected', String(on));
             });
             items.forEach(el => { el.hidden = el.dataset.releaseId !== id; });
+
+            // Hands the page over to the record's accent (see variables.css) and
+            // remembers it, so a return visit opens where you left off. Changing
+            // record also drops gray world, which no record owns.
+            try { localStorage.setItem('accent-release', id); } catch (e) {}
+            this.holdGrey(false);
+            this.setAccent(id);
         };
 
         tabs.forEach(t => t.addEventListener('click', () => {
             show(t.dataset.target);
             this.fitDescriptions();
         }));
-        show(tabs[0].dataset.target);
+
+        // Hovering the word drains the page for as long as you are on it, so the
+        // mode shows itself before you commit to it. Clicking keeps it.
+        document.querySelectorAll('.accent-switch').forEach(sw => {
+            const release = sw.closest('.release-item').dataset.releaseId;
+            // On the word the page is grey either way, so clicking is only ever
+            // the difference between grey that leaves with the pointer and grey
+            // that stays. The word carries that, in its two shades.
+            const preview = () => this.setAccent('gray-world');
+            const restore = () => { if (!this.greyHeld) this.setAccent(release); };
+
+            sw.addEventListener('mouseenter', preview);
+            sw.addEventListener('mouseleave', restore);
+            sw.addEventListener('focus', preview);
+            sw.addEventListener('blur', restore);
+            sw.addEventListener('click', () => {
+                this.holdGrey(!this.greyHeld);
+                this.setAccent('gray-world');
+            });
+        });
+
+        // A remembered record that is no longer on the page falls back to the
+        // newest rather than opening nothing.
+        let opening = null;
+        try { opening = localStorage.getItem('accent-release'); } catch (e) {}
+        if (!opening || ![...tabs].some(t => t.dataset.target === opening)) {
+            opening = tabs[0].dataset.target;
+        }
+        show(opening);
     },
 
     // Every cover on the page, so the modal can page between records.

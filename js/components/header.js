@@ -53,7 +53,7 @@ const HeaderComponent = {
           <ul class="nav-links">
             ${navLinksHTML}
           </ul>
-          <a href="${basePath}" class="logo">
+          <a href="${basePath}" class="logo" style="--logo-src: url('${basePath}assets/logos/lockslip-logo-heavy.png')">
             <img src="${basePath}assets/logos/lockslip-logo-heavy.png" alt="Lockslip">
           </a>
           <div class="streaming-icons" id="streaming-icons">

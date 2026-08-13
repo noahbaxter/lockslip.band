@@ -288,6 +288,30 @@
     scrollbar-color: var(--accent-a30) transparent;
 }
 
+/* Sits in the sentence as plain text until you are on it, then admits it does
+   something. All of the button is stripped: any of it showing gives the trick
+   away at a glance. */
+.accent-switch {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    transition: color var(--t-fast) var(--ease);
+}
+
+/* Two shades of the accent, since the page looks the same hovered as held: the
+   lighter one is the preview under the pointer, the darker one is it staying
+   put. Clicking off with the pointer still on the word shows up as the darker
+   dropping back to the lighter. */
+.accent-switch:hover,
+.accent-switch:focus-visible {
+    color: color-mix(in srgb, var(--accent-color) 70%, #fff);
+}
+
+.accent-switch[aria-pressed="true"] { color: var(--accent-color); }
+
 .release-description::-webkit-scrollbar { width: 0.375rem; }
 .release-description::-webkit-scrollbar-track { background: transparent; }
 .release-description::-webkit-scrollbar-thumb { background: var(--accent-a30); }
