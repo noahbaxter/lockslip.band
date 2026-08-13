@@ -38,6 +38,7 @@
     <script src="js/components/press.js"></script>
     <script src="js/press-loader.js"></script>
     <script src="js/content-loader.js"></script>
+    <script src="js/plugin-loader.js"></script>
     <script src="js/router.js"></script>
 </head>
 <body class="press-page">
@@ -47,16 +48,6 @@
         </section>
     </main>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <!-- Footer content loaded dynamically -->
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; <span id="copyright-year">2024</span> Lockslip. All rights reserved.</p>
-                <p>Site designed & built by Noah Baxter.</p>
-            </div>
-        </div>
-    </footer>
+    <!-- Footer is built once by FooterComponent.init, shared across all pages. -->
 </body>
 </html>

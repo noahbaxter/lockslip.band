@@ -11,11 +11,28 @@
 // re-deriving "which track is playing, how far in" from an element that never
 // stopped, which is a resync bug waiting to happen.
 
-// `hidden` is only a UA-stylesheet `display: none`, so any author rule that sets
-// display on a panel (the plugin page uses flex) silently beats it and the panel
-// stays on screen. Panels are hidden by class instead, with the rule living next
-// to the router that depends on it.
-const PANEL_HIDDEN_CSS = 'main.router-inactive { display: none !important; }';
+// Inactive panels move off screen rather than being display:none'd.
+//
+// Two reasons, both learned the hard way. `hidden` alone is only a UA-stylesheet
+// `display: none`, so an author rule that sets display (the plugin page uses
+// flex) silently beats it and the panel stays visible. And `display: none` tears
+// down the rendering context of anything live inside a panel: it stops the
+// guillotine plugin demo dead even though its DOM is untouched.
+//
+// Off screen keeps them laid out and painting, which is the whole point of
+// caching panels in the first place.
+const PANEL_HIDDEN_CSS = `
+main.router-inactive {
+    /* Fixed, not absolute: an absolutely positioned panel still counts toward the
+       document's scrollable height, so the tall home panel left a page of dead
+       space under the short ones. Fixed positioning is out of that calculation
+       while still laying the panel out, which is what keeps its contents alive. */
+    position: fixed !important;
+    top: 0 !important;
+    left: -200vw !important;
+    width: 100% !important;
+    pointer-events: none !important;
+}`;
 
 const Router = {
     // path -> { main, title, bodyClass }
@@ -26,6 +43,7 @@ const Router = {
     BOOTS: [
         { test: main => main.querySelector('#music'), init: main => window.initHomePanel(main) },
         { test: main => main.querySelector('#press'), init: main => window.initPressPanel(main) },
+        { test: main => main.querySelector('.plugin-showcase'), init: main => window.initPluginPanel(main) },
     ],
 
     normalise(url) {
@@ -56,6 +74,15 @@ const Router = {
     boot(main) {
         const match = this.BOOTS.find(b => b.test(main));
         if (match) match.init(main);
+    },
+
+    // Off-screen panels are still in the accessibility tree and still focusable,
+    // so they have to be marked as well as moved.
+    setActive(main, active) {
+        main.classList.toggle('router-inactive', !active);
+        if (active) main.removeAttribute('aria-hidden');
+        else main.setAttribute('aria-hidden', 'true');
+        main.inert = !active;
     },
 
     onClick(e) {
@@ -107,15 +134,15 @@ const Router = {
         if (!next) { location.href = path; return; }
 
         const previous = this.panels.get(this.current);
-        if (previous) previous.main.classList.add('router-inactive');
+        if (previous) this.setActive(previous.main, false);
 
-        next.main.classList.remove('router-inactive');
+        this.setActive(next.main, true);
         document.title = next.title;
         document.body.className = next.bodyClass;
         this.current = path;
 
         if (push) history.pushState({}, '', path + (hash || ''));
-        if (hash) this.scrollToHash(hash);
+        if (hash) this.scrollToHash(hash, 'instant');
         else window.scrollTo(0, 0);
 
         if (window.ImageLoader) ImageLoader.refresh(next.main);
@@ -130,7 +157,7 @@ const Router = {
         const main = doc.querySelector('main');
         if (!main) throw new Error(`no <main> in ${path}`);
 
-        main.classList.add('router-inactive');
+        this.setActive(main, false);
         document.querySelector('main').parentNode.insertBefore(
             main, document.querySelector('footer') || null);
 
@@ -142,13 +169,32 @@ const Router = {
         this.boot(main);
     },
 
-    scrollToHash(hash) {
+    // Smooth only when already on the page: gliding to a section you can see is
+    // the point. Coming from another page there is nothing to glide past, and
+    // animating from the top of a freshly shown panel just adds a delay.
+    scrollToHash(hash, behavior = 'smooth') {
         const target = document.querySelector(hash);
-        if (target) target.scrollIntoView({ behavior: 'smooth' });
+        if (!target) return;
+
+        // Same offset UIHelpers.setupSmoothScrolling uses, or the section lands
+        // under the fixed header.
+        const header = document.querySelector('header');
+        const top = target.getBoundingClientRect().top + window.scrollY
+                  - (header ? header.offsetHeight : 0) - 20;
+        window.scrollTo({ top, behavior });
     },
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     HeaderComponent.init({ basePath: '/' });
+
+    // Header and footer are the shell: built once, shared by every panel.
+    try {
+        const config = await fetch('content/site-config.json').then(r => r.json());
+        FooterComponent.init(config);
+    } catch (e) {
+        console.error('Footer config failed to load:', e);
+    }
+
     Router.init();
 });

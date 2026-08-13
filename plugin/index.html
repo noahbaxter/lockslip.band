@@ -36,7 +36,8 @@
   <script src="js/components/press.js"></script>
   <script src="js/press-loader.js"></script>
   <script src="js/content-loader.js"></script>
-  <script src="js/router.js"></script>
+  <script src="js/plugin-loader.js"></script>
+    <script src="js/router.js"></script>
 </head>
 <body>
 
@@ -99,10 +100,7 @@
       </div>
     </div>
   </main>
-  <script>
-    fetch('/guillotine/VERSION')
-      .then(r => r.text())
-      .then(v => document.querySelector('.download-version').textContent = 'v' + v.trim());
-  </script>
+  <!-- Footer is built once by FooterComponent.init, shared across all pages. -->
+
 </body>
 </html>
