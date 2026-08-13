@@ -78,7 +78,7 @@ test.describe('zen', () => {
 
     await page.click('.np-open');
     await page.waitForTimeout(300);
-    expect(await hash(page)).toBe('#zen/ep-2024');
+    expect(await hash(page)).toBe('#music/ep-2024/zen');
     expect(await inZen(page)).toBe(true);
 
     await page.click('.np-zen-close');
@@ -95,8 +95,8 @@ test.describe('zen', () => {
   // Whether it then plays is the browser's call, not ours: a real one refuses
   // audio nobody asked for and leaves it paused, while the test browser has that
   // policy disabled. So this asserts the cue, which is the part we control.
-  test('#zen/<record> opens cold, cued to that record', async ({ page }) => {
-    await ready(page, '/#zen/ep-2024');
+  test('a record with zen after it opens cold, cued to that record', async ({ page }) => {
+    await ready(page, '/#music/ep-2024/zen');
     await page.waitForTimeout(500);
 
     expect(await inZen(page)).toBe(true);
@@ -108,23 +108,26 @@ test.describe('zen', () => {
   });
 
   test('a record that no longer exists lands on one that plays and says so', async ({ page }) => {
-    await ready(page, '/#zen/deleted-record');
+    await ready(page, '/#music/deleted-record/zen');
     await page.waitForTimeout(500);
 
     expect(await inZen(page)).toBe(true);
-    expect(await hash(page)).toMatch(/^#zen\/[a-z0-9-]+$/);
+    expect(await hash(page)).toMatch(/zen$/);
     expect(await hash(page)).not.toContain('deleted-record');
   });
 
-  test('a leftover track segment is ignored, not honoured', async ({ page }) => {
-    await ready(page, '/#zen/ep-2024/3');
+  // The short form is what a page with no music section has to use, so it stays
+  // valid; on the site it rewrites itself to the long one.
+  test('the short zen form still opens and normalises', async ({ page }) => {
+    await ready(page, '/#zen/ep-2024');
     await page.waitForTimeout(500);
-    expect(await hash(page)).toBe('#zen/ep-2024');
+    expect(await inZen(page)).toBe(true);
+    expect(await hash(page)).toBe('#music/ep-2024/zen');
   });
 });
 
 test('picking another record inside zen moves the URL, the tab and the accent', async ({ page }) => {
-  await ready(page, '/#zen/the-conversation');
+  await ready(page, '/#music/the-conversation/zen');
   await page.waitForTimeout(500);
 
   await page.click('.np-zen-queue');
@@ -135,7 +138,7 @@ test('picking another record inside zen moves the URL, the tab and the accent', 
   await page.locator('.np-picker-track').nth(1).click();
   await page.waitForTimeout(500);
 
-  expect(await hash(page)).toBe('#zen/ep-2024');
+  expect(await hash(page)).toBe('#music/ep-2024/zen');
   await expect(openTab(page)).toHaveAttribute('data-target', 'ep-2024');
   expect(await page.evaluate(() =>
     getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim())).toBe('#ff0000');

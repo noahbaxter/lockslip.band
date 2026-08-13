@@ -95,6 +95,9 @@ class PlayerInstance {
         this.seeking = false;
         this.preloadAbort = null;
         this.unavailableNote = data.unavailableNote || 'Not yet available';
+        // Optional: a page can hand a player its own lyrics rather than leaving
+        // the bar to find them through ReleasesComponent.
+        this.lyrics = data.lyrics || null;
         this.onArtClick = data.onArtClick || null;
         this.onLyrics = data.onLyrics || null;
         this.lyricsOpen = false;

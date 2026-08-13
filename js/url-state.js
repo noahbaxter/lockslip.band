@@ -25,12 +25,21 @@ const UrlState = {
         return Boolean(id && document.querySelector(`main section[id="${CSS.escape(id)}"]`));
     },
 
+    // zen is a mode of a record rather than a place of its own, so it reads as the
+    // last segment: #music/the-conversation/zen. #zen and #zen/<record> are the
+    // same thing said the short way, which is what a page with no music section
+    // to sit under has to use.
     parse(hash = location.hash) {
-        const [head, ...rest] = hash.replace(/^#\/?/, '').split('/')
+        let parts = hash.replace(/^#\/?/, '').split('/')
             .filter(Boolean).map(decodeURIComponent);
 
-        if (head === 'zen') return { zen: true, release: rest[0] || '' };
-        if (this.isSection(head)) return { section: head, release: rest[0] || '' };
+        const zen = parts[0] === 'zen' || parts[parts.length - 1] === 'zen';
+        if (parts[0] === 'zen') parts = parts.slice(1);
+        else if (zen) parts = parts.slice(0, -1);
+
+        const [head, ...rest] = parts;
+        if (this.isSection(head)) return { section: head, release: rest[0] || '', zen };
+        if (zen) return { zen: true, release: head || '' };
         return {};
     },
 
@@ -77,16 +86,24 @@ const UrlState = {
             return this.write(open ? '#music/' + open : '', false);
         }
 
-        const owner = NowPlaying.owner();
         this.zenPushed = true;
-        this.write('#zen' + (owner ? '/' + owner.id : ''), true);
+        this.write(this.zenHash(), true);
+    },
+
+    // Under the record on a page that has one, on its own where there is no
+    // music section to sit under, which is how the press page addresses it.
+    zenHash(id) {
+        const owner = NowPlaying.owner();
+        const rec = id || (owner ? owner.id : '');
+        if (rec && this.isSection('music')) return `#music/${rec}/zen`;
+        return '#zen' + (rec ? '/' + rec : '');
     },
 
     // Zen can change record under you, from its own picker, and the URL follows.
     // Called only when the record actually changes.
     zenRecord(id) {
-        if (this.applying || !location.hash.startsWith('#zen')) return;
-        this.write('#zen/' + id, false);
+        if (this.applying || !this.parse().zen) return;
+        this.write(this.zenHash(id), false);
     },
 
     // The components are declared with const, which is a global binding but not a
@@ -132,8 +149,7 @@ const UrlState = {
         // Say what you actually landed on. A URL naming a record that has been
         // renamed or pulled lands on whatever is playable, and leaving the old
         // name in the address bar would be the page lying about itself.
-        const owner = NowPlaying.owner();
-        if (owner) this.write('#zen/' + owner.id, false);
+        if (NowPlaying.owner()) this.write(this.zenHash(), false);
     },
 
     scrollTo(id, behavior) {

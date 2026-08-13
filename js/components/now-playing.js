@@ -276,6 +276,9 @@ const NowPlaying = {
 
     openZen() {
         if (!this.owner()) return;
+        // A page can ask for zen before DOMContentLoaded has built it, which is
+        // what a URL opening straight into zen does.
+        this.build();
         this.zen.hidden = false;
         document.body.classList.add('np-zen-open');
         UrlState.zen(true);
@@ -372,9 +375,12 @@ const NowPlaying = {
         });
     },
 
+    // A player can carry its own set, which is how a page that mounts one on its
+    // own gets lyrics without the whole releases component behind it.
     lyricsFor(owner) {
-        if (typeof ReleasesComponent === 'undefined' || !owner.id) return null;
-        const set = ReleasesComponent.lyricsFor(owner.id);
+        const set = owner.lyrics || (typeof ReleasesComponent !== 'undefined' && owner.id
+            ? ReleasesComponent.lyricsFor(owner.id)
+            : null);
         if (!set) return null;
         const track = owner.tracks[owner.index];
         const body = (set.tracks || {})[String(track.num)];
