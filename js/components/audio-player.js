@@ -14,20 +14,43 @@ const AudioPlayer = {
     // is no element to hang data off until after innerHTML lands.
     pending: {},
 
-    // Every player on the page. They own separate <audio> elements, so without a
-    // registry two releases will happily play over each other.
     instances: [],
+
+    // One <audio> for the whole page, lent to whichever release is playing.
+    // Separate elements per player would let two releases run at once, and would
+    // also confuse MediaSession later: the OS keys its lock screen off a single
+    // element and shows whichever it noticed last.
+    el: null,
+    owner: null,
+
+    audio() {
+        if (this.el) return this.el;
+        this.el = new Audio();
+        this.el.preload = 'auto';
+        // Events go to whoever currently holds the element, so the players don't
+        // need listeners of their own.
+        const toOwner = method => () => { if (this.owner) this.owner[method](); };
+        this.el.addEventListener('play', toOwner('onPlay'));
+        this.el.addEventListener('pause', toOwner('onPause'));
+        this.el.addEventListener('ended', toOwner('onEnded'));
+        this.el.addEventListener('loadedmetadata', toOwner('onMeta'));
+        this.el.addEventListener('error', toOwner('onError'));
+        return this.el;
+    },
+
+    // Hands the element to a player. Whoever had it goes back to idle, so
+    // returning to that release is the same as arriving at it fresh.
+    claim(instance) {
+        if (this.owner !== instance) {
+            const previous = this.owner;
+            if (previous && !previous.stopped) previous.stop();
+            this.owner = instance;
+        }
+        return this.audio();
+    },
 
     register(id, data) {
         this.pending[id] = data;
-    },
-
-    // Only one release plays at a time. The others go back to idle rather than
-    // pausing, so returning to one is the same as arriving at it fresh.
-    stopOthers(active) {
-        this.instances.forEach(inst => {
-            if (inst !== active && !inst.stopped) inst.stop();
-        });
     },
 
     mount(id) {
@@ -71,15 +94,22 @@ class PlayerInstance {
         // tracklist renders but nothing plays.
         this.playable = Boolean(this.baseUrl) && this.tracks.every(t => t.file);
 
-        if (this.playable) {
-            this.audio = new Audio();
-            this.audio.preload = 'auto';
-        }
 
         root.dataset.ready = '1';
         this.build();
         this.wire();
         this.renderTrack();
+    }
+
+    // True only while this player holds the shared element.
+    owns() {
+        return AudioPlayer.owner === this;
+    }
+
+    // The shared element, or null when another release has it. Reading playback
+    // state off it while someone else owns it would report their position.
+    get audio() {
+        return this.owns() ? AudioPlayer.el : null;
     }
 
     trackUrl(i) {
@@ -193,42 +223,46 @@ class PlayerInstance {
         });
     }
 
+    onPlay() {
+        this.suppressAdvance = false;
+        this.setPlaying(true);
+        this.loop();
+    }
+
+    onPause() {
+        this.setPlaying(false);
+        this.tick();
+    }
+
+    onMeta() { this.tick(); }
+
+    onError() { this.el.status.textContent = 'Playback error'; }
+
+    onEnded() {
+        // Scrubbing a paused track to its end also fires this; that is not the
+        // record moving on.
+        if (this.suppressAdvance) { this.suppressAdvance = false; return; }
+        if (this.index < this.tracks.length - 1) this.playTrack(this.index + 1);
+        else this.stop();
+    }
+
     wire() {
         if (!this.playable) return;
-
-        const a = this.audio;
-
-        a.addEventListener('play', () => {
-            AudioPlayer.stopOthers(this);
-            this.suppressAdvance = false;
-            this.setPlaying(true);
-            this.loop();
-        });
-        a.addEventListener('pause', () => { this.setPlaying(false); this.tick(); });
-        // Deliberately no 'waiting'/'canplay' status. A loading line that comes and
-        // goes reflows the whole player on every track change.
-        a.addEventListener('loadedmetadata', () => this.tick());
-        a.addEventListener('error', () => { this.el.status.textContent = 'Playback error'; });
-
-        a.addEventListener('ended', () => {
-            if (this.suppressAdvance) { this.suppressAdvance = false; return; }
-            if (this.index < this.tracks.length - 1) this.playTrack(this.index + 1);
-            else this.stop();
-        });
 
         this.el.play.addEventListener('click', () => this.toggle());
         this.el.prev.addEventListener('click', () => this.prev());
         this.el.next.addEventListener('click', () => this.next());
 
         const seekFrom = e => {
+            const a = this.audio;
+            const dur = this.dur();
+            if (!a || !dur) return;
             const rect = this.el.seek.getBoundingClientRect();
             const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-            const dur = this.dur();
-            if (!dur) return;
             // Only playback advances the record. Scrubbing a paused track to the
             // end parks it there.
-            if (this.audio.paused) this.suppressAdvance = true;
-            this.audio.currentTime = Math.max(0, Math.min(1, x / rect.width)) * dur;
+            if (a.paused) this.suppressAdvance = true;
+            a.currentTime = Math.max(0, Math.min(1, x / rect.width)) * dur;
             this.tick();
         };
         this.el.seek.addEventListener('mousedown', e => { this.seeking = true; seekFrom(e); });
@@ -245,10 +279,11 @@ class PlayerInstance {
         if (this.preloadAbort) this.preloadAbort.abort();
         this.stopped = true;
         this.index = 0;
-        if (this.audio) {
-            this.audio.pause();
-            this.audio.removeAttribute('src');
-            this.audio.load();
+        const a = this.audio;
+        if (a) {
+            a.pause();
+            a.removeAttribute('src');
+            a.load();
         }
         this.setPlaying(false);
         this.renderTrack();
@@ -256,11 +291,13 @@ class PlayerInstance {
 
     playTrack(i) {
         if (this.preloadAbort) this.preloadAbort.abort();
+        // Takes the shared element, which idles whichever release had it.
+        const a = AudioPlayer.claim(this);
         this.stopped = false;
         this.index = i;
-        this.audio.src = this.trackUrl(i);
+        a.src = this.trackUrl(i);
         this.renderTrack();
-        this.audio.play().catch(() => {});
+        a.play().catch(() => {});
         this.preloadNext();
     }
 
@@ -274,9 +311,10 @@ class PlayerInstance {
     }
 
     toggle() {
-        if (this.stopped || !this.audio.src) return this.playTrack(this.index);
-        if (this.audio.paused) this.audio.play().catch(() => {});
-        else this.audio.pause();
+        const a = this.audio;
+        if (this.stopped || !a || !a.src) return this.playTrack(this.index);
+        if (a.paused) a.play().catch(() => {});
+        else a.pause();
     }
 
     prev() {
@@ -367,7 +405,8 @@ class PlayerInstance {
         cancelAnimationFrame(this.raf);
         const step = () => {
             this.tick();
-            if (!this.audio.paused) this.raf = requestAnimationFrame(step);
+            const a = this.audio;
+            if (a && !a.paused) this.raf = requestAnimationFrame(step);
         };
         step();
     }
