@@ -22,9 +22,8 @@
 .ap-art-wrap {
     width: 100%;
     aspect-ratio: 1;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
     background: var(--surface-near-black);
-    border: 1px solid var(--accent-a20);
 }
 
 .ap-art-wrap[hidden] { display: none; }
@@ -36,16 +35,7 @@
     display: block;
 }
 
-/* Now playing */
-
-.ap-track-name {
-    font-size: 1.0625rem;
-    font-weight: 700;
-    line-height: 1.25;
-    min-height: 1.25em;
-    letter-spacing: -0.01em;
-    margin-bottom: 0.2rem;
-}
+/* Status */
 
 .ap-status {
     font-size: 0.6875rem;
@@ -58,6 +48,17 @@
 /* No reserved line: an empty status must not occupy space, or every player
    carries a permanent gap under the title. */
 .ap-status:empty { display: none; }
+
+/* Position */
+
+.ap-position {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.9rem;
+}
+
+.ap-position .ap-seek { flex: 1; }
 
 /* Seek bar */
 
@@ -94,19 +95,10 @@
 .ap-seek:hover .ap-seek-fill::after { opacity: 1; }
 
 .ap-counter {
+    flex: 0 0 auto;
     color: var(--text-muted);
     font-size: 0.6875rem;
     letter-spacing: 0.06em;
-    font-variant-numeric: tabular-nums;
-}
-
-.ap-times {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    font-size: 0.75rem;
-    color: var(--text-dark);
-    margin-top: 0.4rem;
     font-variant-numeric: tabular-nums;
 }
 
@@ -117,7 +109,7 @@
     justify-content: center;
     align-items: center;
     gap: 2.5rem;
-    margin: 1rem 0 0.75rem;
+    margin: 0 0 0.75rem;
 }
 
 .ap-transport button {
@@ -246,7 +238,10 @@
     color: var(--text-muted);
     font-size: 0.75rem;
     font-variant-numeric: tabular-nums;
+    text-align: right;
 }
+
+.ap-list li.ap-active .ap-dur { color: var(--accent-color); }
 
 @media (max-width: 768px) {
     .audio-player { max-width: 100%; }

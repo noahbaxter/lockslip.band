@@ -69,14 +69,7 @@ class PlayerInstance {
             <div class="ap-art-wrap">
                 <img class="ap-art" alt="" ${this.coverImage ? `src="${this.coverImage}"` : ''}>
             </div>
-            <div class="ap-track-name"></div>
             <div class="ap-status"></div>
-            <div class="ap-seek"><div class="ap-seek-fill"></div></div>
-            <div class="ap-times">
-                <span class="ap-elapsed">0:00</span>
-                <span class="ap-counter"></span>
-                <span class="ap-duration">0:00</span>
-            </div>
             <div class="ap-transport">
                 <button class="ap-prev" type="button" aria-label="Previous track">
                     <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
@@ -89,18 +82,19 @@ class PlayerInstance {
                     <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
                 </button>
             </div>
+            <div class="ap-position">
+                <div class="ap-seek"><div class="ap-seek-fill"></div></div>
+                <span class="ap-counter"></span>
+            </div>
             <div class="ap-list-wrap"><ol class="ap-list"></ol></div>
         `;
 
         this.el = {
             art: this.root.querySelector('.ap-art'),
             artWrap: this.root.querySelector('.ap-art-wrap'),
-            name: this.root.querySelector('.ap-track-name'),
             status: this.root.querySelector('.ap-status'),
             seek: this.root.querySelector('.ap-seek'),
             fill: this.root.querySelector('.ap-seek-fill'),
-            elapsed: this.root.querySelector('.ap-elapsed'),
-            duration: this.root.querySelector('.ap-duration'),
             play: this.root.querySelector('.ap-play'),
             iconPlay: this.root.querySelector('.ap-icon-play'),
             iconPause: this.root.querySelector('.ap-icon-pause'),
@@ -131,12 +125,10 @@ class PlayerInstance {
             name.className = 'ap-name';
             name.textContent = this.title(track);
             li.append(num, name);
-            if (track.duration) {
-                const dur = document.createElement('span');
-                dur.className = 'ap-dur';
-                dur.textContent = this.fmt(track.duration);
-                li.appendChild(dur);
-            }
+            const dur = document.createElement('span');
+            dur.className = 'ap-dur';
+            dur.textContent = this.fmt(track.duration || 0);
+            li.appendChild(dur);
             if (this.playable) li.addEventListener('click', () => this.playTrack(i));
             this.el.list.appendChild(li);
         });
@@ -229,7 +221,8 @@ class PlayerInstance {
 
     fmt(s) {
         if (!isFinite(s) || s < 0) s = 0;
-        return Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+        return String(Math.floor(s / 60)).padStart(2, '0') + ':' +
+               String(Math.floor(s % 60)).padStart(2, '0');
     }
 
     setPlaying(playing) {
@@ -242,21 +235,30 @@ class PlayerInstance {
     }
 
     renderTrack() {
-        const t = this.tracks[this.index];
         if (!this.playable) this.el.status.textContent = this.unavailableNote;
-        this.el.name.textContent = this.title(t);
         this.el.counter.textContent = `${this.index + 1} / ${this.tracks.length}`;
-        [...this.el.list.children].forEach((li, i) =>
-            li.classList.toggle('ap-active', i === this.index));
+        [...this.el.list.children].forEach((li, i) => {
+            li.classList.toggle('ap-active', i === this.index);
+            // Rows that stopped playing go back to showing just their length.
+            if (i !== this.index) {
+                li.querySelector('.ap-dur').textContent = this.fmt(this.tracks[i].duration || 0);
+            }
+        });
         this.tick();
     }
 
     tick() {
         const dur = this.dur();
         const cur = (this.audio && this.audio.currentTime) || 0;
-        this.el.elapsed.textContent = this.fmt(cur);
-        this.el.duration.textContent = this.fmt(dur);
         this.el.fill.style.width = (dur ? Math.min(100, cur / dur * 100) : 0) + '%';
+
+        // The clock lives on the playing row, next to that track's length.
+        const row = this.el.list.children[this.index];
+        if (!row) return;
+        const cell = row.querySelector('.ap-dur');
+        cell.textContent = this.playable
+            ? `${this.fmt(cur)} / ${this.fmt(dur)}`
+            : this.fmt(dur);
     }
 
     loop() {
