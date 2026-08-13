@@ -25,15 +25,22 @@ const ReleasesComponent = {
     // Bandcamp lists a record before it is out.
     renderPlayer(release) {
         if (release.audio && release.audio.tracks && release.audio.tracks.length) {
-            const artIndex = this.artwork.findIndex(a => a.id === release.id);
             AudioPlayer.register(release.id, {
                 baseUrl: release.audio.baseUrl,
                 tracks: release.audio.tracks,
                 coverImage: release.coverImage,
                 unavailableNote: release.audio.unavailableNote,
-                onArtClick: artIndex < 0 ? null : () => {
-                    artworkModal.setData(this.artwork);
-                    artworkModal.open(artIndex);
+                // One cover per modal. Paging between unrelated records is not
+                // navigation anyone asked for.
+                onArtClick: !release.coverImage ? null : () => {
+                    artworkModal.setData([{
+                        image: release.coverImage,
+                        title: release.title,
+                        year: release.year,
+                        credit: (release.artwork || {}).credit,
+                        creditUrl: (release.artwork || {}).creditUrl
+                    }]);
+                    artworkModal.open(0);
                 }
             });
             return `<div class="release-player flex-center">${AudioPlayer.mount(release.id)}</div>`;
@@ -139,18 +146,7 @@ const ReleasesComponent = {
     render(releases) {
         if (!releases || !releases.releases) return '';
 
-        const shown = releases.releases.filter(r => !r.hidden);
-        this.artwork = shown
-            .filter(r => r.coverImage)
-            .map(r => ({
-                id: r.id,
-                image: r.coverImage,
-                title: r.title,
-                year: r.year,
-                credit: (r.artwork || {}).credit,
-                creditUrl: (r.artwork || {}).creditUrl
-            }));
-        
+        const shown = releases.releases.filter(r => !r.hidden);        
         return `
             <div class="container">
                 ${UIHelpers.sectionHeader("MUSIC")}
