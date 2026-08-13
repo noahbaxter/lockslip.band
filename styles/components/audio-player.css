@@ -264,3 +264,20 @@
 
 .ap-list li { flex-wrap: nowrap; }
 .ap-dur { flex: 0 0 auto; }
+
+/* Art sits on a lifted card surface, so it needs a hairline to read as its own
+   plane rather than bleeding into the block behind it. */
+.ap-art-wrap {
+    border: var(--hairline-border);
+}
+
+.ap-art-wrap.is-clickable {
+    cursor: pointer;
+    transition: border-color 0.15s;
+}
+
+.ap-art-wrap.is-clickable:hover,
+.ap-art-wrap.is-clickable:focus-visible {
+    border-color: rgba(255, 255, 255, 0.4);
+    outline: none;
+}

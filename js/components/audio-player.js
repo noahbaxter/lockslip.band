@@ -41,6 +41,7 @@ class PlayerInstance {
         this.seeking = false;
         this.preloadAbort = null;
         this.unavailableNote = data.unavailableNote || 'Not yet available';
+        this.onArtClick = data.onArtClick || null;
 
         if (!this.tracks.length) return;
 
@@ -107,6 +108,17 @@ class PlayerInstance {
 
         if (!this.coverImage) this.el.artWrap.hidden = true;
         this.el.art.onerror = () => { this.el.artWrap.hidden = true; };
+
+        if (this.onArtClick && this.coverImage) {
+            this.el.artWrap.classList.add('is-clickable');
+            this.el.artWrap.setAttribute('role', 'button');
+            this.el.artWrap.setAttribute('tabindex', '0');
+            this.el.artWrap.setAttribute('aria-label', 'View cover artwork');
+            this.el.artWrap.addEventListener('click', () => this.onArtClick());
+            this.el.artWrap.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.onArtClick(); }
+            });
+        }
 
         if (!this.playable) {
             this.root.classList.add('ap-unavailable');

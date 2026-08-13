@@ -25,11 +25,16 @@ const ReleasesComponent = {
     // Bandcamp lists a record before it is out.
     renderPlayer(release) {
         if (release.audio && release.audio.tracks && release.audio.tracks.length) {
+            const artIndex = this.artwork.findIndex(a => a.id === release.id);
             AudioPlayer.register(release.id, {
                 baseUrl: release.audio.baseUrl,
                 tracks: release.audio.tracks,
                 coverImage: release.coverImage,
-                unavailableNote: release.audio.unavailableNote
+                unavailableNote: release.audio.unavailableNote,
+                onArtClick: artIndex < 0 ? null : () => {
+                    artworkModal.setData(this.artwork);
+                    artworkModal.open(artIndex);
+                }
             });
             return `<div class="release-player flex-center">${AudioPlayer.mount(release.id)}</div>`;
         }
@@ -128,16 +133,31 @@ const ReleasesComponent = {
         show(tabs[0].dataset.target);
     },
 
+    // Every cover on the page, so the modal can page between records.
+    artwork: [],
+
     render(releases) {
         if (!releases || !releases.releases) return '';
+
+        const shown = releases.releases.filter(r => !r.hidden);
+        this.artwork = shown
+            .filter(r => r.coverImage)
+            .map(r => ({
+                id: r.id,
+                image: r.coverImage,
+                title: r.title,
+                year: r.year,
+                credit: (r.artwork || {}).credit,
+                creditUrl: (r.artwork || {}).creditUrl
+            }));
         
         return `
             <div class="container">
                 ${UIHelpers.sectionHeader("MUSIC")}
                 <div class="releases">
-                    ${this.renderSwitcher(releases.releases.filter(r => !r.hidden))}
+                    ${this.renderSwitcher(shown)}
                     <div class="release-list">
-                        ${releases.releases.filter(r => !r.hidden).map(release => this.renderRelease(release)).join('')}
+                        ${shown.map(release => this.renderRelease(release)).join('')}
                     </div>
                 </div>
             </div>
