@@ -206,14 +206,19 @@ const MerchandiseComponent = {
         // No button: the card is the link. A card that is one target end to end
         // has no small thing to aim at, and the name and price get to be the
         // loudest things on it rather than a green rectangle at the foot.
+        //
+        // Sold out goes over the photo rather than into a line of its own: it is
+        // a fact about the thing pictured, and a line for it only exists on the
+        // cards that have it, which knocks the rest of the row out of step.
         return `
             <div class="merch-item ${item.isSoldOut ? 'item-sold-out' : ''} ${item.isComingSoon ? 'item-coming-soon' : ''}" data-item-id="${item.id}">
                 <a class="merch-link" href="${item.purchaseUrl}" target="_blank" rel="noopener"
                    aria-label="${item.name}${status ? ', ' + status : ', ' + item.price}"></a>
                 ${this.renderItemImageCarousel(item)}
+                ${status ? `<span class="merch-status">${status}</span>` : ''}
                 <div class="merch-details">
                     <h3>${item.name}</h3>
-                    <p class="merch-price">${status || item.price}</p>
+                    <p class="merch-price">${item.price}</p>
                     ${this.renderSizes(item)}
                     ${item.description ? `<p class="merch-description">${item.description}</p>` : ''}
                 </div>

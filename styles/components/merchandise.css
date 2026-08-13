@@ -84,6 +84,29 @@
 
 .merch-item:hover h3 { color: var(--accent-color); }
 
+/* Struck across the photo it belongs to. The photo dims behind it so the words
+   are readable on a bright shot without a solid band hiding the shirt. */
+.merch-status {
+    position: absolute;
+    top: calc(var(--merch-item-padding) + 1.25rem);
+    /* The card's own padding, so the band stops at the photo's edges instead of
+       running out over the card. */
+    left: var(--merch-item-padding);
+    right: var(--merch-item-padding);
+    z-index: 2;
+    padding: 0.4rem 0;
+    background: var(--scrim-heavy);
+    color: var(--text-color);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: var(--track-wide);
+    pointer-events: none;
+}
+
+.item-sold-out .carousel-images,
+.item-coming-soon .carousel-images { opacity: 0.55; }
+
 /* Merch Item */
 .merch-item {
     position: relative;
@@ -259,9 +282,7 @@
     line-height: 1.4;
     font-style: italic;
     font-weight: 400;
-    /* Pushes the button to the foot of the card, so a short blurb and a long one
-       still line their buttons up across the row. */
-    flex: 1;
+    margin-top: auto;
 }
 
 .merch-sizes {
