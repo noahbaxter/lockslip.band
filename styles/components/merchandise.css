@@ -37,6 +37,9 @@
     gap: var(--carousel-gap);
 }
 
+/* Same box as the poster wall's jump arrows, and over the content like them.
+   Outside the carousel they were the first thing a narrow window cut off, and
+   an arrow off the edge of the screen is an arrow nobody can press. */
 .collection-nav {
     position: absolute;
     top: 50%;
@@ -45,8 +48,8 @@
     color: var(--nav-btn-color);
     border: var(--nav-btn-border);
     font-size: var(--nav-btn-font-size);
-    width: var(--nav-btn-width);
-    height: var(--nav-btn-height);
+    width: var(--poster-nav-size);
+    height: var(--poster-nav-size);
     border-radius: var(--nav-btn-border-radius);
     cursor: pointer;
     z-index: var(--z-carousel-nav);
@@ -65,11 +68,11 @@
 }
 
 .collection-nav.prev {
-    left: calc(-10px - var(--nav-btn-width));
+    left: var(--poster-rail-inset);
 }
 
 .collection-nav.next {
-    right: calc(-10px - var(--nav-btn-width));
+    right: var(--poster-rail-inset);
 }
 
 /* Merch Item */
