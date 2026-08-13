@@ -90,9 +90,9 @@ class PlayerInstance {
         if (!this.tracks.length) return;
 
         // A release can list its tracks before the audio exists, the way Bandcamp
-        // shows an upcoming record. No baseUrl or no per-track file means the
-        // tracklist renders but nothing plays.
-        this.playable = Boolean(this.baseUrl) && this.tracks.every(t => t.file);
+        // shows an upcoming record. Availability is per track, so a record can go
+        // up with only its single playable and the rest listed but greyed out.
+        this.playable = Boolean(this.baseUrl) && this.tracks.some(t => t.file);
 
 
         root.dataset.ready = '1';
@@ -110,6 +110,21 @@ class PlayerInstance {
     // state off it while someone else owns it would report their position.
     get audio() {
         return this.owns() ? AudioPlayer.el : null;
+    }
+
+    canPlay(i) {
+        const t = this.tracks[i];
+        return Boolean(this.baseUrl && t && t.file);
+    }
+
+    // Next playable row in either direction, or -1. Skipping is what makes the
+    // transport agree with the greyed rows: nothing gets you to a track that
+    // isn't out.
+    seek(from, step) {
+        for (let i = from; i >= 0 && i < this.tracks.length; i += step) {
+            if (this.canPlay(i)) return i;
+        }
+        return -1;
     }
 
     trackUrl(i) {
@@ -218,7 +233,11 @@ class PlayerInstance {
             dur.className = 'ap-dur';
             dur.textContent = this.fmt(track.duration || 0);
             li.appendChild(dur);
-            if (this.playable) li.addEventListener('click', () => this.playTrack(i));
+            if (this.canPlay(i)) li.addEventListener('click', () => this.playTrack(i));
+            else if (this.playable) {
+                li.classList.add('is-unavailable');
+                li.setAttribute('aria-disabled', 'true');
+            }
             this.el.list.appendChild(li);
         });
     }
@@ -242,8 +261,9 @@ class PlayerInstance {
         // Scrubbing a paused track to its end also fires this; that is not the
         // record moving on.
         if (this.suppressAdvance) { this.suppressAdvance = false; return; }
-        if (this.index < this.tracks.length - 1) this.playTrack(this.index + 1);
-        else this.stop();
+        const forward = this.seek(this.index + 1, 1);
+        if (forward < 0) this.stop();
+        else this.playTrack(forward);
     }
 
     wire() {
@@ -290,12 +310,16 @@ class PlayerInstance {
     }
 
     playTrack(i) {
+        // Landing on a track that isn't out yet rolls forward to one that is.
+        const target = this.canPlay(i) ? i : this.seek(i, 1);
+        if (target < 0) return this.stop();
+
         if (this.preloadAbort) this.preloadAbort.abort();
         // Takes the shared element, which idles whichever release had it.
         const a = AudioPlayer.claim(this);
         this.stopped = false;
-        this.index = i;
-        a.src = this.trackUrl(i);
+        this.index = target;
+        a.src = this.trackUrl(target);
         this.renderTrack();
         a.play().catch(() => {});
         this.preloadNext();
@@ -304,8 +328,8 @@ class PlayerInstance {
     // Warms the browser cache for the next track so the gap at the boundary is
     // network latency free. Abortable so skipping around doesn't pile up requests.
     preloadNext() {
-        const next = this.index + 1;
-        if (next >= this.tracks.length) return;
+        const next = this.seek(this.index + 1, 1);
+        if (next < 0) return;
         this.preloadAbort = new AbortController();
         fetch(this.trackUrl(next), { signal: this.preloadAbort.signal }).catch(() => {});
     }
@@ -320,14 +344,16 @@ class PlayerInstance {
     prev() {
         // Idle: any transport press starts the record from the top.
         if (this.stopped) return this.playTrack(0);
-        if (this.audio.currentTime > 3 || this.index === 0) this.audio.currentTime = 0;
-        else this.playTrack(this.index - 1);
+        const back = this.seek(this.index - 1, -1);
+        if (this.audio.currentTime > 3 || back < 0) this.audio.currentTime = 0;
+        else this.playTrack(back);
     }
 
     next() {
         if (this.stopped) return this.playTrack(0);
-        if (this.index < this.tracks.length - 1) this.playTrack(this.index + 1);
-        else this.stop();
+        const forward = this.seek(this.index + 1, 1);
+        if (forward < 0) this.stop();
+        else this.playTrack(forward);
     }
 
     dur() {
@@ -358,6 +384,11 @@ class PlayerInstance {
     renderTrack() {
         if (!this.playable) this.el.status.textContent = this.unavailableNote;
         this.el.counterIndex.textContent = this.index + 1;
+        // No lyrics for a track that isn't out. The button is the only way in,
+        // so disabling it is the whole gate.
+        if (this.el.lyrics && !this.el.lyrics.hidden) {
+            this.el.lyrics.disabled = !this.canPlay(this.index);
+        }
         [...this.el.list.children].forEach((li, i) => {
             li.classList.toggle('ap-active', !this.stopped && i === this.index);
             // Rows that stopped playing go back to showing just their length.

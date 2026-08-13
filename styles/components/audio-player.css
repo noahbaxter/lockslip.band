@@ -219,6 +219,17 @@
     min-width: 0;
 }
 
+/* A track that isn't out yet on a record that partly is. Still listed, with its
+   running time, because the tracklist is the announcement; just not reachable. */
+.ap-list li.is-unavailable {
+    color: var(--text-faint);
+    cursor: default;
+}
+
+.ap-list li.is-unavailable:hover { background: none; }
+.ap-list li.is-unavailable .ap-num,
+.ap-list li.is-unavailable .ap-dur { opacity: 0.55; }
+
 /* Not-yet-released state: the tracklist is the point, the transport is inert. */
 
 .audio-player.ap-unavailable .ap-transport button {
@@ -323,6 +334,10 @@
 }
 
 .ap-lyrics:hover { opacity: 1; }
+
+/* Cued to a track that isn't out: nothing to show. */
+.ap-lyrics:disabled,
+.ap-lyrics:disabled:hover { opacity: 0.2; cursor: default; }
 
 .ap-lyrics.is-open { opacity: 1; }
 
