@@ -1,6 +1,7 @@
 // Press page loader - renders the press kit (bio, band photos, live media)
-document.addEventListener('DOMContentLoaded', async () => {
-    HeaderComponent.init({ basePath: '/' });
+window.initPressPanel = async function (root) {
+    if (!root || root.dataset.booted) return;
+    root.dataset.booted = '1';
 
     try {
         const [config, media, press] = await Promise.all([
@@ -21,4 +22,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (err) {
         console.error('Failed to load press content:', err);
     }
-});
+};

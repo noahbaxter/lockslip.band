@@ -238,8 +238,13 @@ class ContentLoader {
     }
 }
 
-// Initialize content loader when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
+// Named so the router can boot a panel it just built. Runs once per panel: the
+// router keeps panels around rather than rebuilding them, which is also what
+// keeps the audio element and its UI in step across navigation.
+window.initHomePanel = function (root) {
+    if (!root || root.dataset.booted) return;
+    root.dataset.booted = '1';
+
     const contentLoader = new ContentLoader();
     contentLoader.loadAllContent();
 
@@ -248,5 +253,5 @@ document.addEventListener('DOMContentLoaded', () => {
         contentLoader.renderShows();
         ImageLoader.refresh();
     });
-});
+};
 

@@ -81,6 +81,10 @@ const HeaderComponent = {
 
   // Initialize header in the DOM
   init(options = {}) {
+    // The router keeps one shell for the whole site, so a second call would stack
+    // another header on top of the first.
+    if (document.querySelector('header')) return;
+
     const headerHTML = this.render(options);
     const headerElement = document.createElement('div');
     headerElement.innerHTML = headerHTML;
