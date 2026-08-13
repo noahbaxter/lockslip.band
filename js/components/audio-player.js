@@ -44,9 +44,10 @@ class PlayerInstance {
         this.onArtClick = data.onArtClick || null;
         this.onLyrics = data.onLyrics || null;
         this.lyricsOpen = false;
-        // Set once the record has run out: index is back at the first track but
-        // nothing is playing and nothing is selected.
-        this.stopped = false;
+        // Idle: cued to the first track but nothing playing and no row marked.
+        // This is both the state a fresh player starts in and the one it returns
+        // to when the record runs out, so the two are indistinguishable.
+        this.stopped = true;
         // Scrubbing to the very end of a paused track fires 'ended'. That is not
         // the record moving on, so it must not advance.
         this.suppressAdvance = false;
@@ -266,11 +267,14 @@ class PlayerInstance {
     }
 
     prev() {
+        // Idle: any transport press starts the record from the top.
+        if (this.stopped) return this.playTrack(0);
         if (this.audio.currentTime > 3 || this.index === 0) this.audio.currentTime = 0;
         else this.playTrack(this.index - 1);
     }
 
     next() {
+        if (this.stopped) return this.playTrack(0);
         if (this.index < this.tracks.length - 1) this.playTrack(this.index + 1);
         else this.stop();
     }
