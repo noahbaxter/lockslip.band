@@ -31,7 +31,8 @@ const artworkModal = new Modal({
 
     getAlt: (art) => `${art.title} cover artwork`,
 
-    getDownload: (art) => art.image,
+    // No download: cover art is not ours to hand out as a file.
+    getDownload: () => null,
 
     renderInfo: renderArtworkCaption
 });

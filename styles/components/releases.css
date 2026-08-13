@@ -290,3 +290,11 @@
 /* Track titles and headers get the width they need. With a fixed-height player
    there is room, and wrapping a title onto a second line shifts everything below it. */
 .release-header h4 { white-space: nowrap; }
+
+/* An unreleased record says so before its date. */
+.release-date.is-upcoming { color: var(--text-color); }
+
+.release-date-label {
+    color: var(--accent-color);
+    font-weight: 700;
+}

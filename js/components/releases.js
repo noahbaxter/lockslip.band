@@ -81,6 +81,17 @@ const ReleasesComponent = {
         `;
     },
 
+    // Bandcamp's own wording for a record that isn't out yet.
+    renderDate(release) {
+        if (!release.year) return '';
+        const date = `${release.month} ${release.day}, ${release.year}`;
+        const when = new Date(`${release.month} ${release.day}, ${release.year}`);
+        const upcoming = !isNaN(when) && when > new Date();
+        return `<span class="release-date${upcoming ? ' is-upcoming' : ''}">` +
+               (upcoming ? '<span class="release-date-label">Releases</span> ' : '') +
+               `${date}</span>`;
+    },
+
     renderRelease(release) {
         return `
             <div class="release-item" data-release-id="${release.id}" role="tabpanel">
@@ -90,7 +101,7 @@ const ReleasesComponent = {
                 <div class="release-content">
                     <div class="release-header">
                         <h4>${release.title}</h4>
-                        ${release.year ? `<span class="release-date">${release.month} ${release.day}, ${release.year}</span>` : ''}
+                        ${this.renderDate(release)}
                     </div>
                     <div class="content-streaming-links">
                         ${this.renderStreamingLinks(release.streamingLinks)}

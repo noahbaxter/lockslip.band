@@ -256,7 +256,23 @@ class PlayerInstance {
                 li.querySelector('.ap-dur').textContent = this.fmt(this.tracks[i].duration || 0);
             }
         });
+        this.revealActive();
         this.tick();
+    }
+
+    // Scrolls the list, never the page: scrollIntoView would drag the document
+    // around when a track changes while the player is off screen.
+    revealActive() {
+        const row = this.el.list.children[this.index];
+        const wrap = this.el.listWrap;
+        if (!row || !wrap) return;
+        // Measured, not offsetTop: .release-item is positioned, so offsetTop is
+        // relative to the whole card and the comparison never fires.
+        const top = row.getBoundingClientRect().top
+                  - wrap.getBoundingClientRect().top + wrap.scrollTop;
+        const bottom = top + row.getBoundingClientRect().height;
+        if (top < wrap.scrollTop) wrap.scrollTop = top;
+        else if (bottom > wrap.scrollTop + wrap.clientHeight) wrap.scrollTop = bottom - wrap.clientHeight;
     }
 
     tick() {
