@@ -93,9 +93,17 @@
 
 .ap-seek:hover .ap-seek-fill::after { opacity: 1; }
 
+.ap-counter {
+    color: var(--text-muted);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    font-variant-numeric: tabular-nums;
+}
+
 .ap-times {
     display: flex;
     justify-content: space-between;
+    align-items: baseline;
     font-size: 0.75rem;
     color: var(--text-dark);
     margin-top: 0.4rem;
@@ -145,43 +153,12 @@
 
 /* Tracklist */
 
-.ap-toggle {
-    display: none;
-}
-
-.ap-toggle-legacy {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 0.65rem 0.4rem;
-    background: none;
-    border: none;
-    border-top: 1px solid var(--accent-a20);
-    border-bottom: 1px solid var(--accent-a20);
-    color: var(--text-dark);
-    font: inherit;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.0625rem;
-    cursor: pointer;
-    transition: background 0.15s;
-    -webkit-tap-highlight-color: transparent;
-}
-
-.ap-toggle:hover { background: var(--accent-a05); }
-
-.ap-toggle-arrow {
-    font-size: 0.65rem;
-    transition: transform 0.2s;
-}
-
-.audio-player.ap-open .ap-toggle-arrow { transform: rotate(180deg); }
-
-/* Fixed height, not max-height: a 4-track EP and an 11-track LP must produce the
-   same player, so switching releases never jumps the page. */
+/* Exactly five rows. Fixed height rather than max-height so a 4-track EP and an
+   11-track LP produce the same player and switching releases can't jump the page.
+   A row is 2.2rem: 0.5rem padding either side, 0.8125rem text at 1.5, plus the
+   1px rule. */
 .ap-list-wrap {
-    height: 15.5rem;
+    height: 11rem;
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-width: thin;

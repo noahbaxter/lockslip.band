@@ -72,7 +72,11 @@ class PlayerInstance {
             <div class="ap-track-name"></div>
             <div class="ap-status"></div>
             <div class="ap-seek"><div class="ap-seek-fill"></div></div>
-            <div class="ap-times"><span class="ap-elapsed">0:00</span><span class="ap-duration">0:00</span></div>
+            <div class="ap-times">
+                <span class="ap-elapsed">0:00</span>
+                <span class="ap-counter"></span>
+                <span class="ap-duration">0:00</span>
+            </div>
             <div class="ap-transport">
                 <button class="ap-prev" type="button" aria-label="Previous track">
                     <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
@@ -85,10 +89,6 @@ class PlayerInstance {
                     <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
                 </button>
             </div>
-            <button class="ap-toggle" type="button" aria-expanded="false">
-                <span class="ap-toggle-label"><span class="ap-counter"></span> Tracklist</span>
-                <span class="ap-toggle-arrow">&#9660;</span>
-            </button>
             <div class="ap-list-wrap"><ol class="ap-list"></ol></div>
         `;
 
@@ -106,7 +106,6 @@ class PlayerInstance {
             iconPause: this.root.querySelector('.ap-icon-pause'),
             prev: this.root.querySelector('.ap-prev'),
             next: this.root.querySelector('.ap-next'),
-            toggle: this.root.querySelector('.ap-toggle'),
             listWrap: this.root.querySelector('.ap-list-wrap'),
             list: this.root.querySelector('.ap-list'),
             counter: this.root.querySelector('.ap-counter'),
@@ -144,11 +143,6 @@ class PlayerInstance {
     }
 
     wire() {
-        this.el.toggle.addEventListener('click', () => {
-            const open = this.root.classList.toggle('ap-open');
-            this.el.toggle.setAttribute('aria-expanded', String(open));
-        });
-
         if (!this.playable) return;
 
         const a = this.audio;
@@ -251,7 +245,7 @@ class PlayerInstance {
         const t = this.tracks[this.index];
         if (!this.playable) this.el.status.textContent = this.unavailableNote;
         this.el.name.textContent = this.title(t);
-        this.el.counter.textContent = `${this.index + 1} / ${this.tracks.length} ·`;
+        this.el.counter.textContent = `${this.index + 1} / ${this.tracks.length}`;
         [...this.el.list.children].forEach((li, i) =>
             li.classList.toggle('ap-active', i === this.index));
         this.tick();
