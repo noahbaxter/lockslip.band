@@ -15,38 +15,6 @@ class UIHelpers {
         return `<h2 class="section-line"><span class="section-line-label">${title}</span><i class="section-line-rule"></i></h2>`;
     }
 
-    // Setup smooth scrolling with header offset
-    static setupSmoothScrolling() {
-        // Get header height for offset calculation
-        const getHeaderHeight = () => {
-            const header = document.querySelector('header');
-            return header ? header.offsetHeight : 0;
-        };
-
-        // Handle clicks on navigation links
-        document.addEventListener('click', (e) => {
-            const link = e.target.closest('a[href^="#"]');
-            if (!link) return;
-
-            const href = link.getAttribute('href');
-            const targetId = href.slice(1); // Remove the #
-            const targetElement = document.getElementById(targetId);
-
-            if (targetElement) {
-                e.preventDefault();
-
-                const headerHeight = getHeaderHeight();
-                const rect = targetElement.getBoundingClientRect();
-                const targetPosition = rect.top + window.scrollY - headerHeight - 20;
-
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    }
-
     // Newsletter subscription placeholder
     static subscribeNewsletter() {
         const email = document.getElementById('newsletter-email').value;

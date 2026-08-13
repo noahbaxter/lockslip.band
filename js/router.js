@@ -68,7 +68,13 @@ const Router = {
         this.boot(main);
 
         document.addEventListener('click', e => this.onClick(e));
-        window.addEventListener('popstate', () => this.show(this.normalise(location.pathname), false));
+        // Only real page moves. A back button press that only changed the hash is
+        // UrlState's, and re-showing the panel here would scroll it to the top
+        // out from under it.
+        window.addEventListener('popstate', () => {
+            const path = this.normalise(location.pathname);
+            if (path !== this.current) this.show(path, false);
+        });
     },
 
     boot(main) {
@@ -103,7 +109,12 @@ const Router = {
 
         e.preventDefault();
         if (path === this.current) {
-            if (url.hash) this.scrollToHash(url.hash);
+            // Nav links are absolute (/#music), so they land here rather than in
+            // the anchor handler, and this is where the URL has to be written.
+            if (url.hash) {
+                this.scrollToHash(url.hash);
+                UrlState.section(url.hash.slice(1));
+            }
             return;
         }
         this.go(url);
@@ -172,16 +183,11 @@ const Router = {
     // Smooth only when already on the page: gliding to a section you can see is
     // the point. Coming from another page there is nothing to glide past, and
     // animating from the top of a freshly shown panel just adds a delay.
+    //
+    // The offset that clears the fixed header lives in UrlState, since a hash and
+    // a place on the page are the same question asked twice.
     scrollToHash(hash, behavior = 'smooth') {
-        const target = document.querySelector(hash);
-        if (!target) return;
-
-        // Same offset UIHelpers.setupSmoothScrolling uses, or the section lands
-        // under the fixed header.
-        const header = document.querySelector('header');
-        const top = target.getBoundingClientRect().top + window.scrollY
-                  - (header ? header.offsetHeight : 0) - 20;
-        window.scrollTo({ top, behavior });
+        UrlState.scrollTo(UrlState.parse(hash).section, behavior);
     },
 };
 

@@ -37,7 +37,6 @@ class ContentLoader {
 
             this.renderAllContent();
             UIHelpers.updateCopyrightYear();
-            UIHelpers.setupSmoothScrolling();
             this.handleInitialHash();
             ImageLoader.init();
         } catch (error) {
@@ -222,21 +221,10 @@ class ContentLoader {
     }
 
     handleInitialHash() {
-        const hash = window.location.hash;
-        if (!hash) return;
-
-        const targetId = hash.slice(1);
-        const targetElement = document.getElementById(targetId);
-        if (!targetElement) return;
-
-        // Small delay to ensure DOM is fully rendered
-        setTimeout(() => {
-            const header = document.querySelector('header');
-            const headerHeight = header ? header.offsetHeight : 0;
-            const rect = targetElement.getBoundingClientRect();
-            const targetPosition = rect.top + window.scrollY - headerHeight - 20;
-            window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-        }, 100);
+        // Late enough that the players exist and the sections have their height,
+        // so a URL naming a track or a section lands on it rather than on where
+        // that thing was going to be.
+        setTimeout(() => UrlState.init(), 100);
     }
 }
 

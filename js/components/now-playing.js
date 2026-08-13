@@ -277,6 +277,7 @@ const NowPlaying = {
         if (!this.owner()) return;
         this.zen.hidden = false;
         document.body.classList.add('np-zen-open');
+        UrlState.zen(true);
         this.sync();
     },
 
@@ -287,6 +288,7 @@ const NowPlaying = {
         this.pickerOpen = false;
         this.lyricsOpen = false;
         document.body.classList.remove('np-zen-open');
+        UrlState.zen(false);
         this.sync();
     },
 
@@ -410,6 +412,19 @@ const NowPlaying = {
 
         this.bar.hidden = !this.zen.hidden;
         document.body.classList.add('np-playing');
+
+        // Putting a different record on makes it the record the site is about, so
+        // the tab behind, the accent, the URL and what a return visit opens on all
+        // follow it. Picking from zen's own list is the case that needs this:
+        // there is no tab to click in there. Sync runs every frame, so this is the
+        // one comparison that gates all of it.
+        if (owner.id && owner.id !== this.followed) {
+            this.followed = owner.id;
+            if (typeof ReleasesComponent !== 'undefined' && ReleasesComponent.openRelease) {
+                ReleasesComponent.openRelease(owner.id);
+            }
+            UrlState.zenRecord(owner.id);
+        }
 
         this.placePicker();
         this.picker.hidden = !this.pickerOpen;

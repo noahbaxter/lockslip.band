@@ -343,8 +343,12 @@ const ReleasesComponent = {
             this.setAccent(id);
         };
 
+        // The URL follows the open record, and a URL naming one opens it.
+        this.openRelease = show;
+
         tabs.forEach(t => t.addEventListener('click', () => {
             show(t.dataset.target);
+            UrlState.release(t.dataset.target);
             this.fitDescriptions();
         }));
 
