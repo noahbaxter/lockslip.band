@@ -38,7 +38,7 @@ const ReleasesComponent = {
 
         if (trackIndex === null) {
             panel.hidden = true;
-            if (description) description.hidden = false;
+            if (description) { description.hidden = false; this.fitDescriptions(); }
             return;
         }
 
@@ -178,6 +178,53 @@ const ReleasesComponent = {
         `;
     },
 
+    // The player sets the row height. A long blurb in a narrow column would push
+    // past it, growing the card or spilling out, so the type steps down until it
+    // fits rather than the layout giving way.
+    MIN_DESCRIPTION_PX: 13,
+
+    fitDescriptions() {
+        // Single column on mobile, where the card is free to be any height.
+        const stacked = window.matchMedia('(max-width: 768px)').matches;
+
+        document.querySelectorAll('.release-item').forEach(item => {
+            const player = item.querySelector('.audio-player');
+            const content = item.querySelector('.release-content');
+            if (!player || !content) return;
+
+            content.style.maxHeight = '';
+            // Hidden panels measure as zero, so there is nothing to fit against.
+            const target = player.getBoundingClientRect().height;
+            if (!target || stacked) return;
+
+            // Hard cap beside the player. Anything inside that wants more room,
+            // the lyrics box in particular, scrolls instead of pushing the card.
+            content.style.maxHeight = target + 'px';
+
+            const desc = item.querySelector('.release-description');
+            if (!desc || desc.hidden) return;
+            desc.style.fontSize = '';
+
+            let size = parseFloat(getComputedStyle(desc).fontSize);
+            // Below the floor the blurb stops being readable, so past that point
+            // the card is allowed to grow instead.
+            while (size > this.MIN_DESCRIPTION_PX && content.scrollHeight > target) {
+                size = Math.max(this.MIN_DESCRIPTION_PX, size - 0.25);
+                desc.style.fontSize = size + 'px';
+            }
+        });
+    },
+
+    watchDescriptions() {
+        if (this._fitBound) return;
+        this._fitBound = true;
+        let queued;
+        window.addEventListener('resize', () => {
+            clearTimeout(queued);
+            queued = setTimeout(() => this.fitDescriptions(), 100);
+        });
+    },
+
     initSwitcher() {
         const tabs = document.querySelectorAll('.release-tab');
         if (!tabs.length) return;
@@ -192,7 +239,10 @@ const ReleasesComponent = {
             items.forEach(el => { el.hidden = el.dataset.releaseId !== id; });
         };
 
-        tabs.forEach(t => t.addEventListener('click', () => show(t.dataset.target)));
+        tabs.forEach(t => t.addEventListener('click', () => {
+            show(t.dataset.target);
+            this.fitDescriptions();
+        }));
         show(tabs[0].dataset.target);
     },
 

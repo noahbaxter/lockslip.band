@@ -310,6 +310,15 @@
 /* Lyrics take the description's place, so the column is used either way. */
 .release-lyrics[hidden] { display: none; }
 
+/* Fills whatever the column has left rather than carrying its own height, so
+   opening lyrics can never change the size of the card. */
+.release-lyrics {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+}
+
 .release-lyrics-title {
     font-size: 0.9375rem;
     font-weight: 700;
@@ -324,9 +333,10 @@
     color: var(--text-dark);
     line-height: 1.65;
     font-size: 0.9rem;
-    /* Long lyrics scroll rather than stretching the card past the player beside
-       them. Sized to stay under the artwork column's natural height. */
-    max-height: 25.75rem;
+    /* Scrolls inside the space the column has left. No fixed height: that was a
+       magic number that stopped matching the moment the player changed size. */
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-width: thin;

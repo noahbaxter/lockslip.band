@@ -121,6 +121,10 @@ class ContentLoader {
             releasesSection.innerHTML = ReleasesComponent.render(this.releases);
             ReleasesComponent.initSwitcher();
             AudioPlayer.initAll();
+            ReleasesComponent.fitDescriptions();
+            ReleasesComponent.watchDescriptions();
+            // Cover art changes the player height once it lands, so measure again.
+            window.addEventListener('load', () => ReleasesComponent.fitDescriptions(), { once: true });
         }
     }
 

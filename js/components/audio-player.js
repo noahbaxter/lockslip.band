@@ -91,12 +91,17 @@ class PlayerInstance {
                     <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
                 </button>
             </div>
-            <button class="ap-lyrics" type="button" aria-pressed="false" hidden>Lyrics</button>
             <div class="ap-position">
                 <div class="ap-seek"><div class="ap-seek-fill"></div></div>
-                <span class="ap-counter">
-                    <span class="ap-counter-index"></span> / <span class="ap-counter-total"></span>
-                </span>
+                <div class="ap-meta">
+                    <span class="ap-counter">
+                        <span class="ap-counter-index"></span> / <span class="ap-counter-total"></span>
+                    </span>
+                    <button class="ap-lyrics" type="button" aria-pressed="false"
+                            aria-label="Show lyrics" title="Lyrics" hidden>
+                        <img src="assets/icons/lyrics.png" alt="">
+                    </button>
+                </div>
             </div>
             <div class="ap-list-wrap"><ol class="ap-list"></ol></div>
         `;
