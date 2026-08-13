@@ -57,6 +57,9 @@ const NowPlaying = {
                 </button>
             </div>
             <div class="np-bar-end">
+                <span class="np-time">
+                    <span class="np-elapsed">00:00</span> / <span class="np-total">00:00</span>
+                </span>
                 <button class="np-stop" type="button" aria-label="Stop playback">
                     <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" fill="none"/></svg>
                 </button>
@@ -127,6 +130,9 @@ const NowPlaying = {
             title: bar.querySelector('.np-title'),
             release: bar.querySelector('.np-release'),
             fill: bar.querySelector('.np-progress-fill'),
+            progress: bar.querySelector('.np-progress'),
+            elapsed: bar.querySelector('.np-elapsed'),
+            total: bar.querySelector('.np-total'),
             play: bar.querySelector('.np-play'),
             zenArt: zen.querySelector('.np-zen-art'),
             zenLyrics: zen.querySelector('.np-zen-lyrics'),
@@ -185,22 +191,50 @@ const NowPlaying = {
         zen.querySelector('.np-zen-play').addEventListener('click', act(o => o.toggle()));
         this.el.zenLyricsToggle.addEventListener('click', () => this.toggleLyrics());
 
+        // Both progress bars scrub, off whichever one the drag started on. The bar
+        // at the foot of the page is a transport, so it takes a scrub like any
+        // other, not just the full screen one.
         const seek = e => {
             const owner = this.owner();
             const dur = owner && owner.dur();
-            if (!owner || !dur || !owner.audio) return;
-            const rect = this.el.zenSeek.getBoundingClientRect();
+            if (!owner || !dur || !owner.audio || !this.seekEl) return;
+            const rect = this.seekEl.getBoundingClientRect();
             const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+            // Scrubbing a paused track to its end must not advance the record.
             if (owner.audio.paused) owner.suppressAdvance = true;
             owner.audio.currentTime = Math.max(0, Math.min(1, x / rect.width)) * dur;
             this.sync();
         };
-        this.el.zenSeek.addEventListener('mousedown', e => { this.seeking = true; seek(e); });
-        this.el.zenSeek.addEventListener('touchstart', e => { this.seeking = true; seek(e); }, { passive: true });
-        document.addEventListener('mousemove', e => { if (this.seeking) seek(e); });
-        document.addEventListener('touchmove', e => { if (this.seeking) seek(e); }, { passive: true });
-        document.addEventListener('mouseup', () => { this.seeking = false; });
-        document.addEventListener('touchend', () => { this.seeking = false; });
+
+        // A knob follows the pointer along the track so you can see where a click
+        // would land before you commit to it.
+        const mark = (track, e) => {
+            const rect = track.getBoundingClientRect();
+            const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width)) * 100;
+            track.style.setProperty('--np-hover', pct + '%');
+        };
+
+        [this.el.zenSeek, this.el.progress].forEach(track => {
+            track.addEventListener('mousedown', e => {
+                e.preventDefault();
+                this.seekEl = track;
+                track.classList.add('is-scrubbing');
+                seek(e);
+            });
+            track.addEventListener('touchstart', e => { this.seekEl = track; seek(e); }, { passive: true });
+            track.addEventListener('mousemove', e => mark(track, e));
+            document.addEventListener('mousemove', e => { if (this.seekEl === track) mark(track, e); });
+        });
+
+        document.addEventListener('mousemove', e => { if (this.seekEl) seek(e); });
+        document.addEventListener('touchmove', e => { if (this.seekEl) seek(e); }, { passive: true });
+        const endScrub = () => {
+            if (!this.seekEl) return;
+            this.seekEl.classList.remove('is-scrubbing');
+            this.seekEl = null;
+        };
+        document.addEventListener('mouseup', endScrub);
+        document.addEventListener('touchend', endScrub);
 
         document.addEventListener('keydown', e => {
             if (e.key === 'Escape' && !this.zen.hidden) return this.closeZen();
@@ -373,6 +407,8 @@ const NowPlaying = {
         this.el.title.textContent = title;
         this.el.release.textContent = owner.releaseTitle || '';
         this.el.fill.style.width = (dur ? Math.min(100, cur / dur * 100) : 0) + '%';
+        this.el.elapsed.textContent = owner.fmt(cur);
+        this.el.total.textContent = owner.fmt(dur);
         this.el.play.classList.toggle('is-playing', playing);
         this.el.play.setAttribute('aria-label', playing ? 'Pause' : 'Play');
 
