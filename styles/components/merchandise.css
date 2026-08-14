@@ -37,28 +37,41 @@
     gap: var(--carousel-gap);
 }
 
-/* The look lives with the other arrows in base/buttons.css; the row only says
-   how big it is and where it sits. Over the outer cards rather than beside them:
-   outside the carousel they were the first thing a narrow window cut off. */
+/* The look lives with the other arrows in base/buttons.css; this only says how
+   big they are and where they sit.
+
+   Under the row by default, next to the dots, rather than over the outer cards:
+   an arrow on top of a shirt covers the thing it is there to help you look at.
+   Once the page margin is wide enough to hold one, they step out beside the
+   cards and the dots stay below on their own. */
+.merch-carousel-controls {
+    --merch-controls-gap: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: var(--merch-controls-gap);
+}
+
 .collection-nav {
+    position: static;
     width: var(--poster-nav-size);
     height: var(--poster-nav-size);
+    transform: none;
     z-index: var(--z-carousel-nav);
+    flex: none;
 }
 
-.collection-nav.prev {
-    left: var(--poster-rail-inset);
-}
-
-.collection-nav.next {
-    right: var(--poster-rail-inset);
-}
-
-/* Same deal as the poster wall's jump arrows, at the same width: once the page
-   margin can hold one, the arrows step out of the carousel and stop covering
-   the outer cards. Below that the margin is too narrow and they ride over them
-   instead, which still beats being off the edge of the window. */
 @media (min-width: 1400px) {
+    /* Centred on the cards, not on the carousel: the controls row is still down
+       there holding the dots, and half of it would drag the arrows below the
+       middle of the shirts they belong to. */
+    .collection-nav {
+        position: absolute;
+        top: calc((100% - var(--poster-nav-size) - 1.5rem) / 2);
+        transform: translateY(-50%);
+    }
+
     .collection-nav.prev {
         left: calc(-1 * (var(--poster-nav-size) + var(--poster-rail-inset)));
     }
@@ -66,6 +79,33 @@
     .collection-nav.next {
         right: calc(-1 * (var(--poster-nav-size) + var(--poster-rail-inset)));
     }
+}
+
+/* One per item, so the row says how many there are as well as where you are in
+   it. Same dot as an item's own photos carry, except these are read rather than
+   pressed: white for what is on screen, grey for what is not. No accent, since
+   nothing here is selected, it is just what happens to be in view. */
+.merch-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.merch-dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: var(--radius-pill);
+    background: var(--text-color);
+    opacity: 0.28;
+    transition: opacity var(--t-base) var(--ease),
+                transform var(--t-base) var(--ease);
+}
+
+.merch-dot.is-showing {
+    opacity: 1;
+    transform: scale(1.15);
 }
 
 /* The card is one target: an empty link laid over all of it. The dots sit above
@@ -438,20 +478,4 @@
         }
     }
     
-    /* Mobile collection navigation below cards */
-    .mobile-collection-nav {
-        display: flex;
-        justify-content: center;
-        gap: 2rem;
-        margin-top: 1rem;
-    }
-    
-    .mobile-collection-nav .collection-nav {
-        position: static;
-        font-size: var(--text-3xl);
-        width: 3.125rem;
-        height: 3.125rem;
-        transform: none;
-        margin: 0;
-    }
 }

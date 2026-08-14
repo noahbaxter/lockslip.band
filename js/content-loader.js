@@ -154,12 +154,16 @@ class ContentLoader {
                 const merchHTML = await MerchandiseComponent.renderAsync();
                 merchSection.innerHTML = merchHTML;
                 ImageLoader.refresh(merchSection);
+                // Lights the dots for whatever is on screen before anyone has
+                // pressed an arrow.
+                carouselManager.refreshCollection();
             } catch (error) {
                 console.error('Failed to render merchandise:', error);
                 // Fallback to static data if available
                 if (this.merchandise) {
                     merchSection.innerHTML = MerchandiseComponent.render(this.merchandise);
                     ImageLoader.refresh(merchSection);
+                    carouselManager.refreshCollection();
                 } else {
                     merchSection.innerHTML = `
                         <div class="container">

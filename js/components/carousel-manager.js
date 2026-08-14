@@ -3,6 +3,24 @@ class CarouselManager {
     constructor() {
         this.currentCollectionIndex = 0;
         this.watchSwipes();
+        this.watchWidth();
+    }
+
+    // Items per view is a CSS variable and changes with the window, so the row
+    // has to be re-measured on resize: three dots lit on a desktop is one dot lit
+    // on a phone, and an index that was in range can fall out of it.
+    watchWidth() {
+        let pending = null;
+        window.addEventListener('resize', () => {
+            clearTimeout(pending);
+            pending = setTimeout(() => this.refreshCollection(), 150);
+        });
+    }
+
+    // A move of nothing: clamps the index, re-applies the transform, and puts the
+    // arrows and dots in step with whatever the width is now.
+    refreshCollection() {
+        if (document.querySelector('.merch-carousel-track')) this.navigateCollectionCarousel(0);
     }
 
     // Swiping a photo steps through that item's photos, since a phone has no
@@ -148,6 +166,20 @@ class CarouselManager {
         
         // Update nav button visibility
         this.updateCollectionNavigation(shouldLoop, maxIndex);
+        this.updateCollectionDots(itemsPerView, totalItems);
+    }
+
+    // One dot per item, so the row says how much there is as well as where you
+    // are in it. The ones on screen are lit; the rest are not.
+    updateCollectionDots(itemsPerView, totalItems) {
+        const dots = document.querySelectorAll('.merch-dot');
+        if (!dots.length) return;
+
+        const first = this.currentCollectionIndex;
+        const last = Math.min(first + itemsPerView, totalItems) - 1;
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('is-showing', index >= first && index <= last);
+        });
     }
 
     updateCollectionNavigation(shouldLoop, maxIndex) {
