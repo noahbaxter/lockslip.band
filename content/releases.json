@@ -12,27 +12,32 @@
         "vinyl-bleakhouse": {
           "name": "Bleakhouse Variant",
           "format": "VINYL",
-          "image": "assets/releases/2026-lp1-vinyl-bleakhouse.jpg"
+          "image": "assets/releases/2026-lp1-vinyl-bleakhouse.jpg",
+          "url": "https://lockslip.bandcamp.com/album/the-conversation"
         },
         "vinyl-conversation": {
           "name": "The Conversation Variant",
           "format": "VINYL",
-          "image": "assets/releases/2026-lp1-vinyl-conversation.jpg"
+          "image": "assets/releases/2026-lp1-vinyl-conversation.jpg",
+          "url": "https://lockslip.bandcamp.com/album/the-conversation"
         },
         "vinyl-gray-world": {
           "name": "The Gray World Variant",
           "format": "VINYL",
-          "image": "assets/releases/2026-lp1-vinyl-gray-world.jpg"
+          "image": "assets/releases/2026-lp1-vinyl-gray-world.jpg",
+          "url": "https://lockslip.bandcamp.com/album/the-conversation"
         },
         "cd": {
           "name": "Compact Disc",
           "format": "CD",
-          "image": "assets/releases/2026-lp1-cd.jpg"
+          "image": "assets/releases/2026-lp1-cd.jpg",
+          "url": "https://lockslip.bandcamp.com/album/the-conversation"
         },
         "tape": {
           "name": "Cassette",
           "format": "TAPE",
-          "image": "assets/releases/2026-lp1-tape.jpg"
+          "image": "assets/releases/2026-lp1-tape.jpg",
+          "url": "https://lockslip.bandcamp.com/album/the-conversation"
         }
       },
       "tracks": [
