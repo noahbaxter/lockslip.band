@@ -49,7 +49,11 @@
         "11. End the Conversation"
       ],
       "streamingLinks": {
-        "bandcamp": "https://lockslip.bandcamp.com/album/the-conversation"
+        "bandcamp": "https://lockslip.bandcamp.com/album/the-conversation",
+        "spotify": "https://open.spotify.com/album/5mkLIgPv6kTq6C67pXalHs",
+        "apple": "https://music.apple.com/us/album/6800056814",
+        "tidal": "https://tidal.com/album/550974378",
+        "deezer": "https://www.deezer.com/album/1050854702"
       },
       "audio": {
         "unavailableNote": "Out soon",
@@ -138,7 +142,9 @@
       "streamingLinks": {
         "bandcamp": "https://lockslip.bandcamp.com/album/lockslip",
         "spotify": "https://open.spotify.com/album/7megYx0XmIKQLbz2tun7CU",
-        "apple": "https://music.apple.com/us/album/lockslip-ep/1727216728"
+        "apple": "https://music.apple.com/us/album/lockslip-ep/1727216728",
+        "tidal": "https://tidal.com/album/341588267",
+        "deezer": "https://www.deezer.com/album/539160222"
       },
       "bandcampEmbed": "https://bandcamp.com/EmbeddedPlayer/album=2052797199/size=large/bgcol=000000/linkcol=ff0000/transparent=true/",
       "physicalLinks": {

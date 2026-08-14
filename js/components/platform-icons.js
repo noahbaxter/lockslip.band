@@ -6,6 +6,8 @@ const PlatformIcons = {
         youtube: 'assets/social/youtube.svg',
         bandcamp: 'assets/social/bandcamp.svg',
         soundcloud: 'assets/social/soundcloud.svg',
+        deezer: 'assets/social/deezer.svg',
+        tidal: 'assets/social/tidal.svg',
         instagram: 'assets/social/instagram.svg',
         twitter: 'assets/social/twitter.svg',
         facebook: 'assets/social/facebook.svg',
@@ -28,7 +30,9 @@ const PlatformIcons = {
     // recolourable Spotify green is just a wrong Spotify green. Everything else
     // is a silhouette that means nothing in particular, so it takes the accent
     // (see .accent-mark in utilities.css).
-    BRANDS: ['spotify', 'apple', 'youtube', 'bandcamp', 'soundcloud',
+    // Tidal is not here on purpose: its mark is a plain silhouette with no colour
+    // of its own, so it takes the accent like the rest of them.
+    BRANDS: ['spotify', 'apple', 'youtube', 'bandcamp', 'soundcloud', 'deezer',
              'instagram', 'twitter', 'facebook', 'tiktok', 'bandsintown'],
 
     // The file again, for the mask that tints it: CSS cannot read an img's src.
