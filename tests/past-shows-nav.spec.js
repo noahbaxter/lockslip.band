@@ -90,8 +90,8 @@ test('a poster opens the modal it belongs to', async ({ page }) => {
   await first.click();
   await page.waitForTimeout(500);
 
-  const date = await page.locator('.poster-modal-date').innerText();
-  const location = await page.locator('.poster-modal-location').innerText();
+  const date = await page.locator('.modal-date').innerText();
+  const location = await page.locator('.modal-location').innerText();
   console.log('year rule readout:', readout, '|| modal:', date, '/', location);
   expect(readout.toUpperCase()).toContain(location.toUpperCase());
 });

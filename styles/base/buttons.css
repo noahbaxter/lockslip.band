@@ -138,10 +138,8 @@
    ============================================================ */
 .poster-nav-btn,
 .collection-nav,
-.poster-modal-nav,
-.photo-modal-nav,
-.poster-modal-close,
-.photo-modal-close {
+.modal-nav,
+.modal-close {
     position: absolute;
     display: flex;
     align-items: center;
@@ -161,12 +159,29 @@
                 opacity var(--t-base) var(--ease);
 }
 
+/* Held back until wanted. Only where there is a pointer to hover with: on a
+   touch screen the resting state is the only state there is, and a permanently
+   dimmed arrow just reads as disabled. */
+@media (hover: hover) {
+    .poster-nav-btn,
+    .collection-nav,
+    .modal-nav,
+    .modal-close {
+        opacity: 0.75;
+    }
+
+    .poster-nav-btn:hover,
+    .collection-nav:hover,
+    .modal-nav:hover,
+    .modal-close:hover {
+        opacity: 1;
+    }
+}
+
 .poster-nav-btn:hover,
 .collection-nav:hover,
-.poster-modal-nav:hover,
-.photo-modal-nav:hover,
-.poster-modal-close:hover,
-.photo-modal-close:hover {
+.modal-nav:hover,
+.modal-close:hover {
     background: var(--accent-color);
     border-color: var(--accent-color);
     color: var(--text-light);
@@ -175,8 +190,7 @@
 /* The ones sitting beside something, rather than pinned to a rail. Same arrows
    as the wall's, turned on their side, so the whole site points with one glyph. */
 .collection-nav,
-.poster-modal-nav,
-.photo-modal-nav {
+.modal-nav {
     top: 50%;
     transform: translateY(-50%);
     font-size: var(--nav-btn-font-size);

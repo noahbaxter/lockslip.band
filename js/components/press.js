@@ -3,7 +3,7 @@
 // Dedicated modal for the band promo photos (credit shown fullscreen, like live photos)
 const bandPhotoModal = new Modal({
     modalId: 'bandPhotoModal',
-    classPrefix: 'photo-modal',
+    variant: 'photo',
     getAlt: () => 'Lockslip band photo',
     getDownload: (photo) => photo.hires || photo.image,
     // Same caption as the live shots; the fields these items lack drop out.

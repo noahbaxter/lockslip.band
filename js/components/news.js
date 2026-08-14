@@ -76,24 +76,54 @@ const NewsComponent = {
         `;
     },
 
-    // Older entries collapse to a date + headline line. Once there are enough of
-    // them to need more than a list, they get their own page instead.
-    renderArchive(items) {
-        if (!items.length) return '';
+    // Every post as a date + headline line, the one on show marked. This is the
+    // only way back to an older post: it used to list the ones that were not
+    // featured and do nothing when clicked, so a post became unreachable the
+    // moment a newer one arrived. Once there are enough to outgrow a list, they
+    // get their own page instead.
+    renderIndex(items, current) {
+        if (items.length < 2) return '';
 
-        const rows = items.map(item => `
-            <li class="news-archive-item">
-                <span class="news-archive-date">${this.formatDate(item.date)}</span>
-                <span class="news-archive-headline">${item.headline}</span>
+        const rows = items.map((item, index) => `
+            <li class="news-index-item${index === current ? ' is-current' : ''}">
+                <button type="button" onclick="NewsComponent.select(${index})"${index === current ? ' aria-current="true"' : ''}>
+                    <span class="news-index-date">${this.formatDate(item.date)}</span>
+                    <span class="news-index-headline">${item.headline}</span>
+                </button>
             </li>
         `).join('');
 
         return `
-            <div class="news-archive">
-                <h4>Previously</h4>
+            <div class="news-index">
+                <h4>All posts</h4>
                 <ul>${rows}</ul>
             </div>
         `;
+    },
+
+    // Swaps the featured post in place, the way the release switcher swaps
+    // records. Re-rendering the banner also re-points the modal at this post's
+    // images, which is what made the older ones unreachable before.
+    select(index) {
+        const item = this.items && this.items[index];
+        if (!item) return;
+
+        const featured = document.querySelector('.news-featured');
+        if (!featured) return;
+        featured.outerHTML = this.renderFeatured(item);
+
+        document.querySelectorAll('.news-index-item').forEach((li, i) => {
+            li.classList.toggle('is-current', i === index);
+            const button = li.querySelector('button');
+            if (button) button.toggleAttribute('aria-current', i === index);
+        });
+
+        // The list sits under the post, so without this a click looks like it
+        // did nothing: the part that changed is off the top of the screen.
+        const shown = document.querySelector('.news-featured');
+        if (shown && shown.getBoundingClientRect().top < 0) {
+            shown.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     },
 
     render(news) {
@@ -101,12 +131,13 @@ const NewsComponent = {
 
         const items = news.items.filter(item => !item.hidden);
         if (!items.length) return '';
+        this.items = items;
 
         return `
             <div class="container">
                 ${UIHelpers.sectionHeader(news.sectionTitle)}
                 ${this.renderFeatured(items[0])}
-                ${this.renderArchive(items.slice(1))}
+                ${this.renderIndex(items, 0)}
             </div>
         `;
     }

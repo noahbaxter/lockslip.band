@@ -308,7 +308,7 @@
 /* Scoped to the artwork modal so the photo galleries keep their current spacing.
    The last caption line carries a bottom margin that stacks on the container
    padding, leaving the block visibly bottom-heavy. */
-#artworkModal .photo-modal-info > *:last-child { margin-bottom: 0; }
+#artworkModal .modal-info > *:last-child { margin-bottom: 0; }
 
 /* Lyrics toggle. Sits with the counter so the two read as one small utility
    cluster at the end of the bar. */

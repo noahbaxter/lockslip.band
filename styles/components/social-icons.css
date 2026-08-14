@@ -45,6 +45,12 @@
     filter: brightness(0) saturate(100%) invert(11%) sepia(100%) saturate(7378%) hue-rotate(4deg) brightness(97%) contrast(118%);
 }
 
+/* Deezer ships its purple in the file, so dropping the filter is the brand
+   colour exactly, rather than a hue-rotate that lands near it. */
+.streaming-icon.deezer:hover img {
+    filter: none;
+}
+
 /* Anything without a brand colour of its own is tinted by .accent-mark, which
    PlatformIcons puts on it. */
 

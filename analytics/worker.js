@@ -1,4 +1,6 @@
-// Listen stats for lockslip.band.
+import { dashboard } from './dash.js';
+
+// Listen stats for lockslip.band. Writes here, reads in dash.js.
 //
 // The IP never lands anywhere. It goes into a hash with the user agent and a
 // secret mixed with the current window, and only 16 hex characters of that are
@@ -15,6 +17,9 @@ const ORIGINS = ['https://lockslip.band', 'https://www.lockslip.band'];
 // without limit is a way to fill the database from outside. A release is a slug
 // and a track is its number; the name rides along as a label only.
 const RELEASE_RE = /^[a-z0-9][a-z0-9-]{0,31}$/;
+// A press ref comes off ?ref= on a link, so it is whatever anyone types. It is
+// in a primary key, so it is bounded the same way a release slug is.
+const REF_RE = /^[A-Za-z0-9._-]{1,32}$/;
 const MAX_BODY = 1024;
 
 const cors = origin => ({
@@ -48,6 +53,13 @@ export default {
         const origin = request.headers.get('Origin') || '';
 
         if (request.method === 'OPTIONS') return new Response(null, { headers: cors(origin) });
+
+        // The dashboard is the only thing here that is read rather than written,
+        // and the only thing that answers a GET.
+        if (request.method === 'GET' && new URL(request.url).pathname === '/dash') {
+            return dashboard(request, env);
+        }
+
         if (request.method !== 'POST') return new Response('POST only', { status: 405 });
 
         // Loudly, rather than hashing against the string "undefined": a guessable
@@ -80,14 +92,36 @@ export default {
         const region = request.cf?.region ?? null;
         const city = request.cf?.city ?? null;
 
+        // Empty for the public site. A beacon from the press kit carries the ref
+        // the link was sent out with, which is the whole point of that page:
+        // there, "who" is a question worth asking.
+        const ref = typeof body.p === 'string' && REF_RE.test(body.p) ? body.p : '';
+
         try {
             if (body.t === 'v') {
+                // Host only. A full referrer is a page someone was reading, which
+                // is more than is needed to answer "did they come from Instagram".
+                const source = typeof body.s === 'string' && body.s.length <= 64
+                    ? body.s.replace(/[^A-Za-z0-9.:-]/g, '').slice(0, 64) || null
+                    : null;
+
                 await env.DB.prepare(`
-                    INSERT INTO visits (day, visitor, country, region, city, hits, first_seen, last_seen)
-                    VALUES (?, ?, ?, ?, ?, 1, ?, ?)
+                    INSERT INTO visits (day, visitor, country, region, city, source, hits, first_seen, last_seen)
+                    VALUES (?, ?, ?, ?, ?, ?, 1, ?, ?)
                     ON CONFLICT (day, visitor) DO UPDATE SET
                         hits = hits + 1, last_seen = excluded.last_seen
-                `).bind(day, visitor, country, region, city, now, now).run();
+                `).bind(day, visitor, country, region, city, source, now, now).run();
+
+            } else if (body.t === 'p') {
+                // One row per open rather than one per person per day: a press
+                // link goes to a named recipient, and coming back to it twice in
+                // a week is the signal.
+                if (!ref) return new Response('bad ref', { status: 400, headers: cors(origin) });
+                await env.DB.prepare(`
+                    INSERT INTO press_visits (ts, ref, visitor, country, region, city, ua)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                `).bind(now, ref, visitor, country, region, city,
+                    label(request.headers.get('User-Agent'))).run();
 
             } else if (body.t === 'l') {
                 const release = typeof body.r === 'string' && RELEASE_RE.test(body.r) ? body.r : null;
@@ -98,15 +132,21 @@ export default {
                 // client or someone poking at the endpoint.
                 const seconds = Math.max(0, Math.min(60, Number(body.s) || 0));
                 const starts = body.st ? 1 : 0;
+                // The track's own length, so seconds listened can be read against
+                // it later. Absent from an older client, and then stays null.
+                const dur = Number.isFinite(Number(body.d)) && Number(body.d) > 0
+                    ? Math.min(3600, Math.round(Number(body.d))) : null;
 
                 await env.DB.prepare(`
-                    INSERT INTO listens (day, visitor, country, release, num, name, starts, seconds)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                    ON CONFLICT (day, visitor, release, num) DO UPDATE SET
+                    INSERT INTO listens (day, visitor, ref, country, release, num, name, dur, starts, seconds, last_seen)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    ON CONFLICT (day, visitor, ref, release, num) DO UPDATE SET
                         starts = starts + excluded.starts,
                         seconds = seconds + excluded.seconds,
-                        name = excluded.name
-                `).bind(day, visitor, country, release, num, label(body.k), starts, seconds).run();
+                        name = excluded.name,
+                        dur = COALESCE(excluded.dur, dur),
+                        last_seen = excluded.last_seen
+                `).bind(day, visitor, ref, country, release, num, label(body.k), dur, starts, seconds, now).run();
             }
         } catch (err) {
             // Never let stats break the page: the client ignores the response

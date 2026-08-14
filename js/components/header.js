@@ -155,8 +155,13 @@ const HeaderComponent = {
       });
     });
 
-    // Close menu when clicking outside
+    // Close menu when clicking outside. Guarded on the menu actually being open,
+    // the way the escape handler below is: unguarded, every click anywhere ran
+    // this and cleared body overflow, which is the scroll lock a modal sets when
+    // it opens. The click that opened the modal set the lock and then bubbled to
+    // here and released it, so the page scrolled behind every lightbox.
     document.addEventListener('click', function(e) {
+      if (!mobileMenu.classList.contains('active')) return;
       if (!mobileMenuToggle.contains(e.target) && !mobileMenu.contains(e.target)) {
         mobileMenuToggle.classList.remove('active');
         mobileMenu.classList.remove('active');

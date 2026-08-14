@@ -269,16 +269,23 @@ const MerchandiseComponent = {
                 <div class="container">
                     ${UIHelpers.sectionHeader(merchandise.sectionTitle)}
                     <div class="merch-collection-carousel">
-                        <button class="collection-nav prev desktop-only" onclick="navigateCollectionCarousel(-1)">&larr;</button>
-                        <button class="collection-nav next desktop-only" onclick="navigateCollectionCarousel(1)">&rarr;</button>
                         <div class="merch-carousel-container">
                             <div class="merch-carousel-track">
                                 ${displayItems.map(item => this.renderMerchItem(item)).join('')}
                             </div>
                         </div>
-                        <div class="mobile-collection-nav mobile-only">
-                            <button class="collection-nav prev" onclick="navigateCollectionCarousel(-1)">&larr;</button>
-                            <button class="collection-nav next" onclick="navigateCollectionCarousel(1)">&rarr;</button>
+                        <!-- One row, two layouts. Where the page margin is wide
+                             enough the arrows step out beside the cards; below
+                             that they stay down here rather than sitting on top
+                             of the items. Rendered once either way. -->
+                        <div class="merch-carousel-controls">
+                            <button class="collection-nav prev" onclick="navigateCollectionCarousel(-1)" aria-label="Previous items">&larr;</button>
+                            <div class="merch-dots" role="tablist" aria-label="Items">
+                                ${displayItems.map((item, index) => `
+                                    <span class="merch-dot" data-item="${index}" title="${item.name}"></span>
+                                `).join('')}
+                            </div>
+                            <button class="collection-nav next" onclick="navigateCollectionCarousel(1)" aria-label="Next items">&rarr;</button>
                         </div>
                     </div>
                 </div>
