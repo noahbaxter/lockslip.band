@@ -31,8 +31,30 @@ const Analytics = {
 
         const track = owner.tracks[owner.index];
         if (!track) return null;
-        // The number is what the row is keyed by; the name is only a label.
-        return { r: owner.id, n: track.num || owner.index + 1, k: track.name || '' };
+        // The number is what the row is keyed by; the name is only a label. The
+        // length rides along so time listened can be read as a share of the
+        // track rather than a bare count of minutes.
+        return {
+            r: owner.id,
+            n: track.num || owner.index + 1,
+            k: track.name || '',
+            d: Math.round(track.duration || 0) || undefined,
+        };
+    },
+
+    // Set by the press kit, which is the one page where who is listening is a
+    // question worth asking. Empty everywhere else.
+    ref: '',
+
+    // Host only. The full URL is a page someone was reading, which is more than
+    // is needed to tell Instagram apart from a search.
+    source() {
+        try {
+            const host = document.referrer && new URL(document.referrer).host;
+            return host && host !== location.host ? host : undefined;
+        } catch (e) {
+            return undefined;
+        }
     },
 
     beat() {
@@ -42,7 +64,10 @@ const Analytics = {
         // A track change inside one beat is credited as a start on the new track
         // rather than silently adding the time to the old one.
         const started = !this.last || this.last.r !== now.r || this.last.n !== now.n;
-        this.send({ t: 'l', r: now.r, n: now.n, k: now.k, s: this.BEAT_MS / 1000, st: started ? 1 : 0 });
+        this.send({
+            t: 'l', r: now.r, n: now.n, k: now.k, d: now.d,
+            s: this.BEAT_MS / 1000, st: started ? 1 : 0, p: this.ref || undefined,
+        });
         this.last = now;
     },
 
@@ -50,7 +75,11 @@ const Analytics = {
         if (this.started) return;
         this.started = true;
 
-        this.send({ t: 'v' });
+        // A press open is its own event: one row per open rather than one per
+        // person per day, because coming back to it a week later is the signal.
+        if (this.ref) this.send({ t: 'p', p: this.ref });
+        else this.send({ t: 'v', s: this.source() });
+
         setInterval(() => this.beat(), this.BEAT_MS);
 
         // The tail of the last beat, so a two minute listen does not round down
