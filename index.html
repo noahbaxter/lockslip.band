@@ -1,9 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- data-accent names the record whose colour the page is wearing. The value here
+     is the no-JS fallback. -->
+<html lang="en" data-accent="the-conversation">
 <head>
+    <base href="/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lockslip</title>
+    <script>
+        /* The site accent follows the record open in MUSIC (see variables.css).
+           Inline and ahead of the stylesheet so a return visit never paints a
+           frame in the previous record's colour. Set ACCENT_PIN to an accent id
+           to force one colour for good; null follows whatever is open. */
+        window.ACCENT_PIN = null;
+        (function () {
+            var saved = null;
+            try { saved = localStorage.getItem('accent-release'); } catch (e) {}
+            var id = window.ACCENT_PIN || saved;
+            if (id) document.documentElement.dataset.accent = id;
+        })();
+    </script>
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon.png">
     <link rel="apple-touch-icon" href="assets/icons/favicon.png">
@@ -12,7 +28,9 @@
     <script src="js/components/navigation.js"></script>
     <script src="js/components/header.js"></script>
     <script src="js/components/news.js"></script>
+    <script src="js/components/audio-player.js"></script>
     <script src="js/components/releases.js"></script>
+    <script src="js/components/now-playing.js"></script>
     <script src="js/components/merchandise.js"></script>
     <script src="js/components/media.js"></script>
     <script src="js/components/extras.js"></script>
@@ -28,19 +46,20 @@
     <script src="js/components/modal.js"></script>
     <script src="js/components/poster-modal.js"></script>
     <script src="js/components/photo-modal.js"></script>
+    <script src="js/components/artwork-modal.js"></script>
     <script src="js/components/news-modal.js"></script>
     <script src="js/components/carousel-manager.js"></script>
     <script src="js/utils/helpers.js"></script>
     <script src="js/utils/image-loader.js"></script>
+    <script src="js/components/press.js"></script>
+    <script src="js/press-loader.js"></script>
+    <script src="js/url-state.js"></script>
+    <script src="js/analytics.js"></script>
     <script src="js/content-loader.js"></script>
+    <script src="js/plugin-loader.js"></script>
+    <script src="js/router.js"></script>
 </head>
 <body>
-    <script>
-        // Initialize header on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            HeaderComponent.init();
-        });
-    </script>
 
     <main>
         <section id="news">
@@ -64,16 +83,6 @@
         </section>
     </main>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <!-- Footer content loaded dynamically by content-loader.js -->
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; <span id="copyright-year">2024</span> Lockslip. All rights reserved.</p>
-                <p>Site designed & built by Noah Baxter.</p>
-            </div>
-        </div>
-    </footer>
+    <!-- Footer is built once by FooterComponent.init, shared across all pages. -->
 </body>
 </html>

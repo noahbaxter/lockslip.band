@@ -831,27 +831,12 @@
     padding-right: var(--poster-rail-gap);
 }
 
+/* The look is shared with every other arrow, in base/buttons.css. */
 .poster-nav-btn {
     pointer-events: auto;
     width: 100%;
     aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* Let the art read through: solid black over a poster is a hole in it. */
-    background: var(--scrim-strong);
-    border: 1px solid var(--border-color-faded);
-    color: var(--text-dark);
-    font-size: var(--text-lg);
-    line-height: 1;
-    cursor: pointer;
-    /* Colours and the fade only. `all` would animate the arrow's size and
-       position too, so it slid across the screen on resize and drifted while
-       the sticky edge moved. */
-    transition: background-color var(--t-base) var(--ease),
-                border-color var(--t-base) var(--ease),
-                color var(--t-base) var(--ease),
-                opacity var(--t-base) var(--ease);
+    font-size: var(--nav-btn-font-size);
 }
 
 /* Parented to the controls layer, which shares the year line's box and sticky
@@ -874,7 +859,7 @@
          3. a hard stop at --poster-content-top: it may never rise level with
             the year rule, whatever the window height */
     bottom: min(
-        var(--poster-nav-inset),
+        calc(var(--poster-nav-inset) + var(--np-bar-h)),
         max(0px, calc(100vh - var(--poster-nav-size) - var(--poster-nav-floor))),
         calc(100vh - var(--poster-nav-size) - var(--poster-content-top))
     );
@@ -897,12 +882,6 @@
 .poster-nav-btn.is-hidden {
     opacity: 0;
     pointer-events: none;
-}
-
-.poster-nav-btn:hover {
-    background: var(--accent-color);
-    border-color: var(--accent-color);
-    color: var(--text-light);
 }
 
 /* The table's stand-in for the poster wall's year rule: same height, same

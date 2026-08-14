@@ -110,22 +110,37 @@ const ShowsScrollNav = {
         return { top, bottom: top + item.offsetHeight };
     },
 
+    // Last readable pixel at the foot of the window. The now playing bar covers
+    // the bottom of the viewport while a record is up, so a poster parked at
+    // innerHeight would have its bottom edge underneath the transport.
+    bottomLine() {
+        const bar = document.querySelector('.np-bar');
+        const covered = bar && !bar.hidden ? bar.getBoundingClientRect().height : 0;
+        return window.innerHeight - covered;
+    },
+
     // Hovering a poster the chrome is cutting off scrolls it clear.
     settle(item) {
         if (this.userIsScrolling()) return;
 
         const box = this.layoutBox(item);
         const line = this.offset();
-        const clipped = box.top < line - 2 || box.bottom > window.innerHeight + 2;
+        const foot = this.bottomLine();
+        const clipped = box.top < line - 2 || box.bottom > foot + 2;
         if (!clipped) return;
 
-        // Round in whichever direction buries the neighbouring row: a sub-pixel
-        // of slack the wrong way leaves a strip of it hoverable, which kicks off
+        // Round in whichever direction buries the neighbouring row: a sub-pixel of
+        // slack the wrong way leaves a strip of it hoverable, which kicks off
         // another settle. scrollIntoView is no good here either, since html's
         // scroll-padding-top would stack on top of the target and overshoot.
+        //
+        // The bottom needs a whole pixel rather than a rounding. Up top the header
+        // covers the overshoot, but the window edge covers nothing, and between a
+        // smooth scroll landing where it lands and fractional row heights, the
+        // rounding alone left a third of a pixel of the next row hoverable.
         const target = box.top < line
             ? Math.ceil(box.top + window.scrollY - line)
-            : Math.floor(box.bottom + window.scrollY - window.innerHeight);
+            : Math.floor(box.bottom + window.scrollY - foot) - 1;
 
         this.scrolling = true;
         window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
@@ -276,9 +291,10 @@ const ShowsScrollNav = {
         const first = this.items[0].getBoundingClientRect();
         const last = this.items[this.items.length - 1].getBoundingClientRect();
 
+        const foot = this.bottomLine();
         this.setArrow(this.upBtn, first.bottom > line);
         this.setArrow(this.downBtn,
-            first.bottom > window.innerHeight || last.top < window.innerHeight || !this.downIsParked());
+            first.bottom > foot || last.top < foot || !this.downIsParked());
     },
 
     // Down is only ever shown sitting still at its resting spot: not while the

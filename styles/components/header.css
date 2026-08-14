@@ -77,9 +77,23 @@ nav {
     gap: 1rem;
 }
 
-.logo:hover img {
-    filter: brightness(0) saturate(100%) invert(11%) sepia(100%) saturate(7378%) hue-rotate(4deg) brightness(97%) contrast(118%);
+/* Hover tint: the accent painted over the mark and cut to its own alpha. The
+   hue-rotate filter chain this replaced could only land on the one colour it was
+   tuned for, so it stayed red once the accent moved. --logo-src is set inline by
+   HeaderComponent, which is the only thing that knows the path under a base. */
+.logo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent-color);
+    -webkit-mask: var(--logo-src) center / contain no-repeat;
+    mask: var(--logo-src) center / contain no-repeat;
+    opacity: 0;
+    transition: opacity var(--t-fast) var(--ease);
+    pointer-events: none;
 }
+
+.logo:hover::after { opacity: 1; }
 
 /* Social Media Icons - styles moved to utilities.css */
 

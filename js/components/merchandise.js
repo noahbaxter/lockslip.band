@@ -152,8 +152,6 @@ const MerchandiseComponent = {
         return `
             <div class="merch-image-container">
                 <div class="merch-image-carousel" data-item-id="${item.id}">
-                    <button class="carousel-nav prev" onclick="navigateItemCarousel('${item.id}', -1)">‹</button>
-                    <button class="carousel-nav next" onclick="navigateItemCarousel('${item.id}', 1)">›</button>
                     <div class="carousel-images">
                         ${item.images.map((image, index) => `
                             <img src="${image}"
@@ -164,8 +162,10 @@ const MerchandiseComponent = {
                     </div>
                     <div class="carousel-dots">
                         ${item.images.map((_, index) => `
-                            <button class="carousel-dot ${index === 0 ? 'active' : ''}" 
+                            <button class="carousel-dot ${index === 0 ? 'active' : ''}"
+                                    onmouseenter="goToItemImage('${item.id}', ${index})"
                                     onclick="goToItemImage('${item.id}', ${index})"
+                                    aria-label="${item.name} - photo ${index + 1}"
                                     data-index="${index}"></button>
                         `).join('')}
                     </div>
@@ -174,70 +174,53 @@ const MerchandiseComponent = {
         `;
     },
 
-    renderSizeSelection(item) {
-        // Use sizeOptions if available (both Big Cartel and unified manual format)
-        if (item.sizeOptions && item.sizeOptions.length > 0) {
-            const displayableSizes = item.sizeOptions.filter(sizeOption =>
-                this.shouldDisplaySize(sizeOption.name)
-            );
+    // Availability, not a control. These used to be a row of chips that looked
+    // like the buttons they were not, and they out-shouted the product name.
+    renderSizes(item) {
+        let sizes = [];
 
-            // If no sizes to display (only DEFAULT), return empty
-            if (displayableSizes.length === 0) return '';
-
-            return `
-                <div class="size-selection">
-                    ${displayableSizes.map(sizeOption => {
-                        const className = sizeOption.soldOut ? 'out-of-stock' : 'in-stock';
-                        const displaySize = this.abbreviateSize(sizeOption.name);
-                        return `<span class="size-btn ${className}">${displaySize}</span>`;
-                    }).join('')}
-                </div>
-            `;
+        if (item.sizeOptions && item.sizeOptions.length) {
+            sizes = item.sizeOptions
+                .filter(o => this.shouldDisplaySize(o.name))
+                .map(o => ({ name: o.name, soldOut: o.soldOut }));
+        } else if (item.sizes) {
+            const gone = item.sizesSoldOut || [];
+            sizes = item.sizes
+                .filter(size => this.shouldDisplaySize(size))
+                .map(size => ({ name: size, soldOut: gone.includes(size) }));
         }
 
-        // Fallback for legacy manual format (backward compatibility)
-        if (item.sizes) {
-            const sizesToRender = item.sizes.filter(size => this.shouldDisplaySize(size));
-            const soldOutSizes = item.sizesSoldOut || [];
+        if (!sizes.length) return '';
 
-            // If no sizes to display (only DEFAULT), return empty
-            if (sizesToRender.length === 0) return '';
-
-            return `
-                <div class="size-selection">
-                    ${sizesToRender.map(size => {
-                        const isSoldOut = soldOutSizes.includes(size);
-                        const className = isSoldOut ? 'out-of-stock' : 'in-stock';
-                        const displaySize = this.abbreviateSize(size);
-                        return `<span class="size-btn ${className}">${displaySize}</span>`;
-                    }).join('')}
-                </div>
-            `;
-        }
-
-        return '';
+        return `
+            <p class="merch-sizes">
+                ${sizes.map(size => `<span class="merch-size${size.soldOut ? ' is-gone' : ''}"
+                    >${this.abbreviateSize(size.name)}</span>`).join('')}
+            </p>
+        `;
     },
 
     renderMerchItem(item) {
-        // Determine button based on status
-        let buttonHtml = '';
+        const status = item.isComingSoon ? 'COMING SOON' : item.isSoldOut ? 'SOLD OUT' : '';
 
-        if (item.isComingSoon) {
-            buttonHtml = `<a href="${item.purchaseUrl}" class="btn purchase-btn small coming-soon" target="_blank" rel="noopener">COMING SOON</a>`;
-        } else if (item.isSoldOut) {
-            buttonHtml = `<a href="${item.purchaseUrl}" class="btn purchase-btn small sold-out" target="_blank" rel="noopener">SOLD OUT</a>`;
-        } else {
-            buttonHtml = `<a href="${item.purchaseUrl}" class="btn purchase-btn small" target="_blank" rel="noopener">${item.price}</a>`;
-        }
-
+        // No button: the card is the link. A card that is one target end to end
+        // has no small thing to aim at, and the name and price get to be the
+        // loudest things on it rather than a green rectangle at the foot.
+        //
+        // Sold out goes over the photo rather than into a line of its own: it is
+        // a fact about the thing pictured, and a line for it only exists on the
+        // cards that have it, which knocks the rest of the row out of step.
         return `
             <div class="merch-item ${item.isSoldOut ? 'item-sold-out' : ''} ${item.isComingSoon ? 'item-coming-soon' : ''}" data-item-id="${item.id}">
+                <a class="merch-link" href="${item.purchaseUrl}" target="_blank" rel="noopener"
+                   aria-label="${item.name}${status ? ', ' + status : ', ' + item.price}"></a>
                 ${this.renderItemImageCarousel(item)}
+                ${status ? `<span class="merch-status">${status}</span>` : ''}
                 <div class="merch-details">
                     <h3>${item.name}</h3>
-                    ${this.renderSizeSelection(item)}
+                    <p class="merch-price">${item.price}</p>
+                    ${this.renderSizes(item)}
                     ${item.description ? `<p class="merch-description">${item.description}</p>` : ''}
-                    ${buttonHtml}
                 </div>
             </div>
         `;
@@ -286,16 +269,16 @@ const MerchandiseComponent = {
                 <div class="container">
                     ${UIHelpers.sectionHeader(merchandise.sectionTitle)}
                     <div class="merch-collection-carousel">
-                        <button class="collection-nav prev desktop-only" onclick="navigateCollectionCarousel(-1)">‹</button>
-                        <button class="collection-nav next desktop-only" onclick="navigateCollectionCarousel(1)">›</button>
+                        <button class="collection-nav prev desktop-only" onclick="navigateCollectionCarousel(-1)">&larr;</button>
+                        <button class="collection-nav next desktop-only" onclick="navigateCollectionCarousel(1)">&rarr;</button>
                         <div class="merch-carousel-container">
                             <div class="merch-carousel-track">
                                 ${displayItems.map(item => this.renderMerchItem(item)).join('')}
                             </div>
                         </div>
                         <div class="mobile-collection-nav mobile-only">
-                            <button class="collection-nav prev" onclick="navigateCollectionCarousel(-1)">‹</button>
-                            <button class="collection-nav next" onclick="navigateCollectionCarousel(1)">›</button>
+                            <button class="collection-nav prev" onclick="navigateCollectionCarousel(-1)">&larr;</button>
+                            <button class="collection-nav next" onclick="navigateCollectionCarousel(1)">&rarr;</button>
                         </div>
                     </div>
                 </div>

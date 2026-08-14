@@ -1,102 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <base href="/">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Guillotine VST - Lockslip</title>
-  <link rel="icon" type="image/png" href="../assets/icons/favicon.png">
-  <link rel="stylesheet" href="../styles.css">
-  <script src="../js/components/platform-icons.js"></script>
-  <script src="../js/components/navigation.js"></script>
-  <script src="../js/components/header.js"></script>
-  <style>
-    /* Page content */
-    main {
-      padding-top: 120px; /* Account for header */
-      padding-bottom: 4rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    /* Plugin showcase */
-    .plugin-showcase {
-      width: 100%;
-      max-width: 1200px;
-      padding: 0 2rem;
-      display: flex;
-      gap: 3rem;
-      align-items: flex-start;
-    }
-
-    /* Plugin frame container */
-    .plugin-frame-container {
-      flex: 1;
-      border: 1px solid #333;
-      box-shadow: 0 4px 30px rgba(255, 0, 0, 0.1);
-    }
-    .plugin-frame {
-      display: block;
-      width: 100%;
-      aspect-ratio: 6 / 5;
-      border: none;
-    }
-
-    /* Right column */
-    .plugin-sidebar {
-      flex: 0 0 280px;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    /* Description */
-    .plugin-description {
-      color: #aaa;
-      line-height: 1.6;
-      font-size: 0.95rem;
-    }
-
-    /* Plugin link styling */
-    .plugin-link {
-      color: inherit;
-      text-decoration: underline;
-      cursor: pointer;
-    }
-
-    .plugin-link:hover {
-      opacity: 0.8;
-    }
-
-    @media (max-width: 900px) {
-      .plugin-showcase {
-        flex-direction: column;
-        gap: 2rem;
-        padding: 0;
-      }
-      .plugin-frame-container {
-        width: calc(100% - 3rem);
-        margin: 0 1.5rem;
-      }
-      .plugin-sidebar {
-        width: 100%;
-        padding: 0 1.5rem;
-      }
-    }
-  </style>
+  <link rel="icon" type="image/png" href="/assets/icons/favicon.png">
+  <link rel="stylesheet" href="styles.css">
+  <script src="js/components/platform-icons.js"></script>
+  <script src="js/components/navigation.js"></script>
+  <script src="js/components/header.js"></script>
+  <script src="js/components/news.js"></script>
+  <script src="js/components/audio-player.js"></script>
+  <script src="js/components/releases.js"></script>
+  <script src="js/components/now-playing.js"></script>
+  <script src="js/components/merchandise.js"></script>
+  <script src="js/components/media.js"></script>
+  <script src="js/components/extras.js"></script>
+  <script src="js/components/footer.js"></script>
+  <script src="js/components/shows-processor.js"></script>
+  <script src="js/components/shows/shows-card.js"></script>
+  <script src="js/components/shows/shows-carousel.js"></script>
+  <script src="js/components/shows/shows-poster-grid.js"></script>
+  <script src="js/components/shows/shows-table.js"></script>
+  <script src="js/components/shows/shows-list.js"></script>
+  <script src="js/components/shows/shows-scroll-nav.js"></script>
+  <script src="js/components/shows/shows.js"></script>
+  <script src="js/components/modal.js"></script>
+  <script src="js/components/poster-modal.js"></script>
+  <script src="js/components/photo-modal.js"></script>
+  <script src="js/components/artwork-modal.js"></script>
+  <script src="js/components/news-modal.js"></script>
+  <script src="js/components/carousel-manager.js"></script>
+  <script src="js/utils/helpers.js"></script>
+  <script src="js/utils/image-loader.js"></script>
+  <script src="js/components/press.js"></script>
+  <script src="js/press-loader.js"></script>
+  <script src="js/url-state.js"></script>
+  <script src="js/analytics.js"></script>
+  <script src="js/content-loader.js"></script>
+  <script src="js/plugin-loader.js"></script>
+    <script src="js/router.js"></script>
 </head>
 <body>
-  <script>
-    // Initialize header on page load with relative paths for plugin subdirectory
-    document.addEventListener('DOMContentLoaded', () => {
-      HeaderComponent.init({ basePath: '../' });
-    });
-  </script>
 
-  <main>
+  <main class="plugin-page-body">
     <div class="plugin-showcase">
       <div class="plugin-frame-container">
-        <iframe class="plugin-frame" src="demo.html"></iframe>
+        <iframe class="plugin-frame" src="/plugin/demo.html"></iframe>
       </div>
 
       <div class="plugin-sidebar">
@@ -118,7 +69,9 @@
 
           <div class="download-links">
             <a href="https://pub-b82e8190aadf4695a10d612bef9e77e3.r2.dev/Guillotine-macOS.pkg" class="download-link">
-              <img src="../assets/icons/os/macos.svg" alt="macOS" class="download-icon" />
+              <span class="accent-mark download-mark" style="--icon-src: url('/assets/icons/os/macos.svg')">
+                <img src="/assets/icons/os/macos.svg" alt="macOS" class="download-icon" />
+              </span>
               <div class="download-text">
                 <span class="download-platform">macOS</span>
                 <span class="download-subtitle">Universal (Intel + Apple Silicon)</span>
@@ -127,7 +80,9 @@
             </a>
 
             <a href="https://pub-b82e8190aadf4695a10d612bef9e77e3.r2.dev/Guillotine-Windows.exe" class="download-link">
-              <img src="../assets/icons/os/windows.svg" alt="Windows" class="download-icon" />
+              <span class="accent-mark download-mark" style="--icon-src: url('/assets/icons/os/windows.svg')">
+                <img src="/assets/icons/os/windows.svg" alt="Windows" class="download-icon" />
+              </span>
               <div class="download-text">
                 <span class="download-platform">Windows</span>
                 <span class="download-subtitle">64-bit</span>
@@ -136,7 +91,9 @@
             </a>
 
             <a href="https://pub-b82e8190aadf4695a10d612bef9e77e3.r2.dev/Guillotine-Linux-x64.zip" class="download-link">
-              <img src="../assets/icons/os/linux.svg" alt="Linux" class="download-icon" />
+              <span class="accent-mark download-mark" style="--icon-src: url('/assets/icons/os/linux.svg')">
+                <img src="/assets/icons/os/linux.svg" alt="Linux" class="download-icon" />
+              </span>
               <div class="download-text">
                 <span class="download-platform">Linux</span>
                 <span class="download-subtitle">x64</span>
@@ -152,10 +109,7 @@
       </div>
     </div>
   </main>
-  <script>
-    fetch('/guillotine/VERSION')
-      .then(r => r.text())
-      .then(v => document.querySelector('.download-version').textContent = 'v' + v.trim());
-  </script>
+  <!-- Footer is built once by FooterComponent.init, shared across all pages. -->
+
 </body>
 </html>

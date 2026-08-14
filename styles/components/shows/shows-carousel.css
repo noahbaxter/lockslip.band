@@ -139,6 +139,7 @@
 
 .carousel-row {
     display: grid;
+    /* date, venue/location, bands, ticket */
     grid-template-columns: 3.75rem 10rem 1fr 5rem;
     gap: 0.8rem;
     padding: 0.8rem 1rem;
@@ -216,7 +217,6 @@
     color: var(--text-light);
     text-align: left;
     line-height: 1.3;
-    min-width: 12.5rem;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -366,15 +366,17 @@
         width: 18.75rem;
     }
 
+    /* Bands go first once the row gets tight. The poster next to it already
+       names them, and they were what pushed the row past its width. */
     .carousel-row {
-        grid-template-columns: 3.125rem 8.75rem 1fr 4.375rem;
+        grid-template-columns: 3.125rem 1fr 4.375rem;
         padding: 0.7rem 0.8rem;
         gap: 0.7rem;
         height: 4.375rem;
     }
 
-    .carousel-row-info {
-        width: 8.75rem;
+    .carousel-row-bands {
+        display: none;
     }
 
     .carousel-row-ticket {
@@ -391,10 +393,6 @@
         font-size: var(--text-md);
     }
 
-    .carousel-row-bands {
-        font-size: var(--text-xs);
-        max-width: 9.375rem;
-    }
 
     .carousel-row-ticket {
         padding: 0.3125rem 0.625rem;

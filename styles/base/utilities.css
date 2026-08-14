@@ -105,3 +105,31 @@
     grid-template-columns: repeat(auto-fit, minmax(11.25rem, 1fr));
     gap: 1rem;
 }
+/* A single-colour mark that takes the accent: the accent painted over the art
+   and cut to the art's own alpha. It replaces the hue-rotate filter chains that
+   used to do this, which could only ever land on the one colour they were tuned
+   for and stayed red once the accent moved.
+
+   Only for marks that mean nothing in particular. A brand keeps its own colour,
+   since a recolourable Spotify green is just a wrong Spotify green.
+
+   --icon-src names the same file as the img's src, because CSS cannot read one.
+   Add .is-on for a mark that stays lit rather than lighting on hover. */
+.accent-mark {
+    position: relative;
+}
+
+.accent-mark::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent-color);
+    -webkit-mask: var(--icon-src) center / contain no-repeat;
+    mask: var(--icon-src) center / contain no-repeat;
+    opacity: 0;
+    transition: opacity var(--t-fast) var(--ease);
+    pointer-events: none;
+}
+
+.accent-mark:hover::after,
+.accent-mark.is-on::after { opacity: 1; }

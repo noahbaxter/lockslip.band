@@ -20,9 +20,29 @@ const FooterComponent = {
         `;
     },
 
+    // Builds the whole <footer>, the way HeaderComponent builds the header. The
+    // shell markup used to be copy-pasted into all three pages, which meant the
+    // copyright line and the byline could drift apart between them.
+    init(config) {
+        if (document.querySelector('footer')) return;
+
+        const footer = document.createElement('footer');
+        footer.innerHTML = `
+            <div class="container">
+                <div class="footer-content">${this.render(config)}</div>
+                <div class="footer-bottom">
+                    <p>&copy; <span id="copyright-year">2024</span> Lockslip. All rights reserved.</p>
+                    <p>Site designed &amp; built by Noah Baxter.</p>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(footer);
+        if (window.UIHelpers) UIHelpers.updateCopyrightYear();
+    },
+
     render(config) {
         if (!config) return '';
-        
+
         return `
             <div class="footer-section">
                 <h3>FOLLOW</h3>

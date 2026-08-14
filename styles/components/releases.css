@@ -12,8 +12,13 @@
 
 .release-item {
     display: grid;
-    grid-template-columns: 21.875rem 1fr;
-    gap: 3rem;
+    /* minmax(0, 1fr), not 1fr: a plain fr track has an automatic minimum of its
+       content, so the text column refuses to shrink and pushes the whole card
+       past the viewport in the last stretch before the mobile breakpoint. */
+    grid-template-columns: 21.875rem minmax(0, 1fr);
+    /* The content column pads itself by 2rem, so the visual gutter is that plus
+       this. 3rem here read as a hole and cost the text the width. */
+    gap: 1rem;
     border: none;
     background: var(--surface-card);
     position: relative;
@@ -47,7 +52,8 @@
     gap: 1rem;
     justify-content: flex-start;
     align-items: center;
-    margin-bottom: 1.5rem;
+    /* No margin: the column's own gap is the spacing, and stacking the two put a
+       hole between the icons and the blurb. */
 }
 
 .content-streaming-links .streaming-icon {
@@ -57,33 +63,42 @@
 
 /* Physical Links in Content Area */
 .physical-links-content {
-    margin-top: 2rem;
+    margin-top: 1.25rem;
 }
 
+/* One row, always. Three vendors reading across is the layout; stacked, they
+   read as a list and eat the height the description needs. */
 .physical-links-grid {
     display: flex;
-    gap: 1rem;
+    gap: 0.6rem;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
+    flex-wrap: nowrap;
 }
 
+/* The box keeps its shape and the icon its size; only the labels give, and they
+   track the column's own width (see container-type on .release-content) rather
+   than a number something measured at runtime. */
 .physical-link {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.8rem;
+    gap: 0.5rem;
     text-decoration: none;
     color: var(--text-color);
-    transition: var(--standard-transition);
-    padding: 1rem;
+    /* Hover colours only. `all` also animated the width and the fluid label size,
+       so every resize dragged the buttons along behind the cursor. */
+    transition: background var(--t-base) var(--ease), color var(--t-base) var(--ease);
+    padding: 0.6rem 0.4rem;
     border-radius: var(--radius-md);
     background: var(--surface-light);
-    min-width: 7.5rem;
+    flex: 1 1 0;
+    min-width: 0;
 }
 
 .physical-link img {
-    width: 3.75rem;
-    height: 3.75rem;
+    width: 2.25rem;
+    height: 2.25rem;
     object-fit: contain;
     border-radius: var(--radius-sm);
     transition: var(--transition-transform);
@@ -98,13 +113,16 @@
 }
 
 .physical-link-name {
-    font-size: var(--text-sm);
+    font-size: clamp(0.58rem, 3.1cqw, 0.75rem);
     font-weight: 600;
     line-height: 1.2;
+    /* At the floor a label like "Protagonist Music" can still outrun a third of
+       a narrow column, so it wraps and, failing that, breaks. */
+    overflow-wrap: anywhere;
 }
 
 .physical-link-format {
-    font-size: 0.65rem;
+    font-size: clamp(0.46rem, 2.5cqw, 0.6rem);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: var(--track-tight);
@@ -120,11 +138,95 @@
     transform: scale(1.1);
 }
 
+/* Product tiles: the record itself, photographed, not a vendor's logo, so the
+   picture leads. One line of them, always, all the same size. However much room
+   the column has they neither stretch nor shrink to suit it; the row scrolls
+   sideways rather than wrapping and taking the height the blurb needs. */
+.physical-links-grid.is-products {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 8.5rem;
+    justify-content: start;
+    flex-wrap: initial;
+    /* scroll, not auto: the gutter is then reserved whether or not the row has
+       anywhere to scroll, so tiles do not jump when the fifth one fits. The track
+       is transparent, so an idle scrollbar is invisible. */
+    overflow-x: scroll;
+    scrollbar-gutter: stable;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-a30) transparent;
+}
+
+.physical-links-grid.is-products::-webkit-scrollbar { height: 0.375rem; }
+.physical-links-grid.is-products::-webkit-scrollbar-track { background: transparent; }
+.physical-links-grid.is-products::-webkit-scrollbar-thumb { background: var(--accent-a30); }
+.physical-links-grid.is-products::-webkit-scrollbar-thumb:hover { background: var(--accent-a50); }
+
+/* Scoped through .physical-link, or the vendor-logo rule above wins on specificity
+   and the photo comes out at logo size. The shots are square, so the tiles are too
+   and nothing is cropped; a source that is not square gets cropped here rather than
+   in the file, and the full-size view still opens the whole image. */
+.is-products .physical-link img.physical-link-photo {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    transition: none;
+}
+
+.is-products .physical-link {
+    gap: 0.6rem;
+    padding: 0.6rem 0.6rem 0.7rem;
+}
+
+.is-products .physical-link-name { font-size: 0.75rem; }
+
+/* The format sits on the tile's last line whether the name above it took one or
+   two, so the row of them reads straight across. */
+.is-products .physical-link-text { flex: 1; }
+
+.is-products .physical-link-format {
+    font-size: 0.5625rem;
+    margin-top: auto;
+    padding-top: 0.2rem;
+}
+
+.physical-links-note {
+    font-size: 0.5625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--text-faint);
+    margin-bottom: 0.6rem;
+}
+
+/* The tile is not a link, but the photo opens full size. The pointer says so;
+   these are product shots on a flat backdrop, not the photography elsewhere on
+   the site that grows under the cursor. */
+.physical-link.is-zoomable img { cursor: pointer; }
+.physical-link.is-zoomable:hover img { transform: none; }
+
+/* Announced, not on sale yet. The tile itself goes nowhere, so it does not light
+   up under the pointer, but it is not dimmed either: the photo is the content. */
+.physical-link.is-pending {
+    cursor: default;
+}
+
+.physical-link.is-pending:hover {
+    background: var(--surface-light);
+    color: var(--text-color);
+}
+
 .release-content {
     padding: 2rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    /* The buy-button labels size off this column, not the viewport: the player
+       beside it is a fixed width, so the two do not track each other. */
+    container-type: inline-size;
 }
 
 .release-header {
@@ -132,6 +234,9 @@
     justify-content: space-between;
     align-items: flex-start;
     gap: 1rem;
+    /* The title and date are both nowrap, so in a tight column the date has to be
+       allowed to drop under the title rather than push out of the card. */
+    flex-wrap: wrap;
 }
 
 .release-header h4 {
@@ -167,11 +272,50 @@
     border-bottom: none;
 }
 
+/* The one flexible block in the column. Everything around it keeps its size and
+   this takes what is left over, scrolling when that is not enough. */
 .release-description {
     color: var(--text-dark);
     line-height: 1.6;
     font-size: 0.95rem;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    /* Reserved whether it scrolls or not, so switching records does not reflow
+       the text by the width of a scrollbar. */
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-a30) transparent;
 }
+
+/* Sits in the sentence as plain text until you are on it, then admits it does
+   something. All of the button is stripped: any of it showing gives the trick
+   away at a glance. */
+.accent-switch {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    transition: color var(--t-fast) var(--ease);
+}
+
+/* Two shades of the accent, since the page looks the same hovered as held: the
+   lighter one is the preview under the pointer, the darker one is it staying
+   put. Clicking off with the pointer still on the word shows up as the darker
+   dropping back to the lighter. */
+.accent-switch:hover,
+.accent-switch:focus-visible {
+    color: color-mix(in srgb, var(--accent-color) 70%, #fff);
+}
+
+.accent-switch[aria-pressed="true"] { color: var(--accent-color); }
+
+.release-description::-webkit-scrollbar { width: 0.375rem; }
+.release-description::-webkit-scrollbar-track { background: transparent; }
+.release-description::-webkit-scrollbar-thumb { background: var(--accent-a30); }
+.release-description::-webkit-scrollbar-thumb:hover { background: var(--accent-a50); }
 
 /* Mobile responsive */
 @media (max-width: 768px) {
@@ -197,31 +341,180 @@
     }
     
     .physical-links-grid {
-        flex-wrap: wrap;
         gap: 0.4rem;
         justify-content: center;
     }
-    
+
     .content-streaming-links {
         justify-content: center;
-        margin-bottom: 1rem;
     }
-    
-    .physical-link {
-        min-width: 5.3125rem;
-        padding: 0.6rem;
-    }
-    
+
     .physical-link img {
         width: 2.5rem;
         height: 2.5rem;
     }
-    
-    .physical-link-name {
-        font-size: 0.65rem;
-    }
-    
-    .physical-link-format {
-        font-size: 0.55rem;
-    }
+}
+/* Release switcher
+ *
+ * One release is shown at a time. An 11-track record with its list open buries
+ * anything stacked below it, so these tabs are how you get between records.
+ */
+.release-switcher {
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid var(--accent-a20);
+}
+
+/* Equal columns, sized to the widest tab: the active underline is the same
+   length under every record instead of measuring out its title. The grid is
+   max-content wide so the tabs stay left, while the hairline above spans the card. */
+.release-tabs {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    justify-content: start;
+    gap: 2rem;
+    width: max-content;
+    max-width: 100%;
+}
+
+.release-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+    padding: 0.75rem 0 0.7rem;
+    min-width: 0;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    color: var(--text-muted);
+    cursor: pointer;
+    text-align: left;
+    transition: color 0.15s, border-color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.release-tab:hover { color: var(--text-color); }
+
+.release-tab.is-active {
+    color: var(--text-color);
+    border-bottom-color: var(--accent-color);
+}
+
+.release-tab-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+}
+
+.release-tab-year {
+    font-size: 0.6875rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+}
+
+.release-tab.is-active .release-tab-year { color: var(--accent-color); }
+
+.release-item[hidden] { display: none; }
+
+@media (max-width: 768px) {
+    .release-switcher { margin-bottom: 1.75rem; }
+    .release-tabs { gap: 1.25rem; }
+    .release-tab-title { font-size: 0.8125rem; }
+}
+
+
+/* Track titles and headers get the width they need. With a fixed-height player
+   there is room, and wrapping a title onto a second line shifts everything below it. */
+.release-header h4 { white-space: nowrap; }
+
+/* An unreleased record says so under its date. Inline, the pair overran the
+   header and clipped the year, so the label hangs below it, out of flow: an
+   upcoming record's header is the same height as a released one's and the
+   streaming row sits in the same place on both. */
+.release-date.is-upcoming {
+    position: relative;
+}
+
+.release-date-label {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.2rem;
+    white-space: nowrap;
+    color: var(--accent-color);
+    font-weight: 700;
+    font-size: 0.6875rem;
+    letter-spacing: 0.09em;
+}
+
+/* Lyrics take the description's place, so the column is used either way. */
+.release-lyrics[hidden] { display: none; }
+
+/* While a track is open the lyrics get the whole column: title, date, streaming
+   row and buy buttons all step aside so a long verse has the full height. */
+.release-content.is-lyrics > .release-header,
+.release-content.is-lyrics > .content-streaming-links,
+.release-content.is-lyrics > .physical-links-content { display: none; }
+
+/* Two-line header, no icon row under it. Set from releases.js, which is the only
+   place that can tell whether the date actually wrapped. */
+.release-content.is-header-wrapped > .content-streaming-links { display: none; }
+
+/* On its own line the date has room beside it, so the label sits to its right
+   instead of hanging underneath. */
+.is-header-wrapped .release-date-label {
+    top: 50%;
+    left: 100%;
+    right: auto;
+    /* Centred on the date's line rather than hung from its top: the label is the
+       smaller type, so aligning the tops sits it high. */
+    transform: translateY(-50%);
+    margin: 0 0 0 0.6rem;
+}
+
+/* Fills whatever the column has left rather than carrying its own height, so
+   opening lyrics can never change the size of the card. */
+.release-lyrics {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+}
+
+.release-lyrics-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.75rem;
+    color: var(--accent-color);
+}
+
+.release-lyrics-body {
+    white-space: pre-line;
+    color: var(--text-dark);
+    line-height: 1.65;
+    font-size: 0.9rem;
+    /* Scrolls inside the space the column has left. No fixed height: that was a
+       magic number that stopped matching the moment the player changed size. */
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-a30) transparent;
+}
+
+.release-lyrics-body::-webkit-scrollbar { width: 0.375rem; }
+.release-lyrics-body::-webkit-scrollbar-track { background: transparent; }
+.release-lyrics-body::-webkit-scrollbar-thumb { background: var(--accent-a30); }
+.release-lyrics-body::-webkit-scrollbar-thumb:hover { background: var(--accent-a50); }
+
+.release-lyrics-body.is-empty {
+    color: var(--text-faint);
+    font-style: italic;
 }

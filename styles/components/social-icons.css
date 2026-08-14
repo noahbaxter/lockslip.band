@@ -45,10 +45,8 @@
     filter: brightness(0) saturate(100%) invert(11%) sepia(100%) saturate(7378%) hue-rotate(4deg) brightness(97%) contrast(118%);
 }
 
-/* Default streaming icon hover for unknown platforms */
-.streaming-icon:not(.spotify):not(.apple):not(.bandcamp):not(.youtube):hover img {
-    filter: brightness(0) saturate(100%) invert(11%) sepia(100%) saturate(7378%) hue-rotate(4deg) brightness(97%) contrast(118%);
-}
+/* Anything without a brand colour of its own is tinted by .accent-mark, which
+   PlatformIcons puts on it. */
 
 /* Platform-specific hover effects - Social Media */
 .social-icon.instagram {
@@ -135,10 +133,6 @@
 
 .social-icon.facebook:hover img {
     filter: brightness(0) saturate(100%) invert(28%) sepia(96%) saturate(1651%) hue-rotate(213deg) brightness(99%) contrast(101%);
-}
-
-.social-icon.email:hover img {
-    filter: brightness(0) saturate(100%) invert(70%) sepia(54%) saturate(329%) hue-rotate(71deg) brightness(91%) contrast(87%);
 }
 
 .social-icon.bandsintown:hover img {

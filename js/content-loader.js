@@ -25,6 +25,9 @@ class ContentLoader {
 
             this.config = config;
             this.releases = releases;
+
+            await this.applyPrivateAudio();
+            await this.loadLyrics();
             this.shows = shows;
             this.merchandise = merchandise;
             this.media = media;
@@ -34,13 +37,45 @@ class ContentLoader {
 
             this.renderAllContent();
             UIHelpers.updateCopyrightYear();
-            UIHelpers.setupSmoothScrolling();
             this.handleInitialHash();
             ImageLoader.init();
         } catch (error) {
             console.error('Error loading content:', error);
             UIHelpers.showError();
         }
+    }
+
+    // Audio URLs for unreleased records live in the private octopus submodule, not
+    // in content/releases.json, so nothing playable ships in the public repo. When
+    // the file is absent this fetch 404s and the release simply renders unplayable.
+    async applyPrivateAudio() {
+        try {
+            const res = await fetch('octopus/private-audio.json');
+            if (!res.ok) return;
+            const sources = await res.json();
+            for (const release of this.releases.releases) {
+                const src = sources[release.id];
+                if (!src) continue;
+                release.audio = { ...release.audio, ...src };
+            }
+        } catch (e) {
+            // Nothing to do: no private sources means nothing extra is playable.
+        }
+    }
+
+    // Public lyrics ship in content/lyrics.json. Unreleased ones come from the
+    // private octopus submodule, which 404s until that file is committed there.
+    async loadLyrics() {
+        const merged = {};
+        for (const url of ['content/lyrics.json', 'octopus/private-lyrics.json']) {
+            try {
+                const res = await fetch(url);
+                if (res.ok) Object.assign(merged, await res.json());
+            } catch (e) {
+                // A missing lyrics file just means no lyrics button.
+            }
+        }
+        ReleasesComponent.lyrics = merged;
     }
 
     async loadJSON(url) {
@@ -83,6 +118,14 @@ class ContentLoader {
         const releasesSection = document.getElementById('music');
         if (releasesSection && this.releases) {
             releasesSection.innerHTML = ReleasesComponent.render(this.releases);
+            ReleasesComponent.initSwitcher();
+            ReleasesComponent.initProductTiles(this.releases);
+            AudioPlayer.initAll();
+            ReleasesComponent.fitDescriptions();
+            ReleasesComponent.watchDescriptions();
+            ReleasesComponent.watchHeaders();
+            // Cover art changes the player height once it lands, so measure again.
+            window.addEventListener('load', () => ReleasesComponent.fitDescriptions(), { once: true });
         }
     }
 
@@ -178,26 +221,20 @@ class ContentLoader {
     }
 
     handleInitialHash() {
-        const hash = window.location.hash;
-        if (!hash) return;
-
-        const targetId = hash.slice(1);
-        const targetElement = document.getElementById(targetId);
-        if (!targetElement) return;
-
-        // Small delay to ensure DOM is fully rendered
-        setTimeout(() => {
-            const header = document.querySelector('header');
-            const headerHeight = header ? header.offsetHeight : 0;
-            const rect = targetElement.getBoundingClientRect();
-            const targetPosition = rect.top + window.scrollY - headerHeight - 20;
-            window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-        }, 100);
+        // Late enough that the players exist and the sections have their height,
+        // so a URL naming a track or a section lands on it rather than on where
+        // that thing was going to be.
+        setTimeout(() => UrlState.init(), 100);
     }
 }
 
-// Initialize content loader when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
+// Named so the router can boot a panel it just built. Runs once per panel: the
+// router keeps panels around rather than rebuilding them, which is also what
+// keeps the audio element and its UI in step across navigation.
+window.initHomePanel = function (root) {
+    if (!root || root.dataset.booted) return;
+    root.dataset.booted = '1';
+
     const contentLoader = new ContentLoader();
     contentLoader.loadAllContent();
 
@@ -206,5 +243,5 @@ document.addEventListener('DOMContentLoaded', () => {
         contentLoader.renderShows();
         ImageLoader.refresh();
     });
-});
+};
 

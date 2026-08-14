@@ -5,10 +5,10 @@ const HeaderComponent = {
     const { basePath = '' } = options;
 
     const navItems = [
-      { label: 'News', href: `${basePath}#news` },
-      { label: 'Music', href: `${basePath}#music` },
-      { label: 'Shows', href: `${basePath}#shows` },
-      { label: 'Store', href: `${basePath}#store` },
+      { label: 'News', href: `${basePath}news` },
+      { label: 'Music', href: `${basePath}music` },
+      { label: 'Shows', href: `${basePath}shows` },
+      { label: 'Store', href: `${basePath}store` },
       { label: 'Plugin', href: `${basePath}plugin/` },
       { label: 'Press', href: `${basePath}press/` }
     ];
@@ -53,7 +53,7 @@ const HeaderComponent = {
           <ul class="nav-links">
             ${navLinksHTML}
           </ul>
-          <a href="${basePath}" class="logo">
+          <a href="${basePath}" class="logo" style="--logo-src: url('${basePath}assets/logos/lockslip-logo-heavy.png')">
             <img src="${basePath}assets/logos/lockslip-logo-heavy.png" alt="Lockslip">
           </a>
           <div class="streaming-icons" id="streaming-icons">
@@ -81,6 +81,10 @@ const HeaderComponent = {
 
   // Initialize header in the DOM
   init(options = {}) {
+    // The router keeps one shell for the whole site, so a second call would stack
+    // another header on top of the first.
+    if (document.querySelector('header')) return;
+
     const headerHTML = this.render(options);
     const headerElement = document.createElement('div');
     headerElement.innerHTML = headerHTML;

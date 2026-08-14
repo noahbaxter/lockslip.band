@@ -2,6 +2,126 @@
   "sectionTitle": "RELEASES",
   "releases": [
     {
+      "id": "the-conversation",
+      "title": "The Conversation",
+      "description": "On \"The Conversation\", Lockslip delivers a punishing brand of hardcore inspired equally by Converge's bleeding-heart authenticity and Car Bomb's kaleidoscopic complexity. The songs are powered by inexorable momentum, like blind horses barreling down mountainsides. Out soon on Bleakhouse, the album features guest vocals from label head King Yosef on \"Gray World\", Kathryn Edwards of Thirdface on \"Paradise Is Not for Us\", and Todd Jones of Nails on \"Iconoclast\". The album is recorded and mixed by drummer Noah Baxter at Dichotic Studios, and mastered by Nick Townsend.",
+      "year": "2026",
+      "month": "November",
+      "day": "6",
+      "physicalLinks": {
+        "vinyl-bleakhouse": {
+          "name": "Bleakhouse Variant",
+          "format": "VINYL",
+          "image": "assets/releases/2026-lp1-vinyl-bleakhouse.jpg"
+        },
+        "vinyl-conversation": {
+          "name": "The Conversation Variant",
+          "format": "VINYL",
+          "image": "assets/releases/2026-lp1-vinyl-conversation.jpg"
+        },
+        "vinyl-gray-world": {
+          "name": "The Gray World Variant",
+          "format": "VINYL",
+          "image": "assets/releases/2026-lp1-vinyl-gray-world.jpg"
+        },
+        "cd": {
+          "name": "Compact Disc",
+          "format": "CD",
+          "image": "assets/releases/2026-lp1-cd.jpg"
+        },
+        "tape": {
+          "name": "Cassette",
+          "format": "TAPE",
+          "image": "assets/releases/2026-lp1-tape.jpg"
+        }
+      },
+      "tracks": [
+        "1. Gray World (ft. King Yosef)",
+        "2. Vengeance (You'll Be Seen by Your God)",
+        "3. Rattle of Death",
+        "4. I'm the Same",
+        "5. Speak Without Words",
+        "6. Inglorious",
+        "7. Paradise is Not for Us (ft. Kathryn Edwards)",
+        "8. Cut Out the Odds",
+        "9. Young",
+        "10. Iconoclast (ft. Todd Jones)",
+        "11. End the Conversation"
+      ],
+      "streamingLinks": {
+        "bandcamp": "https://lockslip.bandcamp.com/album/the-conversation"
+      },
+      "audio": {
+        "unavailableNote": "Out soon",
+        "tracks": [
+          {
+            "num": 1,
+            "name": "Gray World",
+            "duration": 204.235,
+            "feature": "King Yosef"
+          },
+          {
+            "num": 2,
+            "name": "Vengeance (You'll Be Seen by Your God)",
+            "duration": 184.675
+          },
+          {
+            "num": 3,
+            "name": "Rattle of Death",
+            "duration": 151.283
+          },
+          {
+            "num": 4,
+            "name": "I'm the Same",
+            "duration": 123.258
+          },
+          {
+            "num": 5,
+            "name": "Speak Without Words",
+            "duration": 164.885
+          },
+          {
+            "num": 6,
+            "name": "Inglorious",
+            "duration": 226.827
+          },
+          {
+            "num": 7,
+            "name": "Paradise is Not for Us",
+            "duration": 128.936,
+            "feature": "Kathryn Edwards"
+          },
+          {
+            "num": 8,
+            "name": "Cut Out the Odds",
+            "duration": 261.842
+          },
+          {
+            "num": 9,
+            "name": "Young",
+            "duration": 74.558
+          },
+          {
+            "num": 10,
+            "name": "Iconoclast",
+            "duration": 219.568,
+            "feature": "Todd Jones"
+          },
+          {
+            "num": 11,
+            "name": "End the Conversation",
+            "duration": 259.38
+          }
+        ]
+      },
+      "hidden": false,
+      "coverImage": "assets/releases/2026-lp1-cover.jpg",
+      "artwork": {
+        "credit": "Emma Maatman",
+        "creditUrl": "https://www.instagram.com/emma.maatman/"
+      }
+    },
+    {
       "id": "ep-2024",
       "title": "Lockslip - EP",
       "description": "Lockslip is the crushing self-titled debut EP from the Los Angeles metallic hardcore outfit. Forming in late 2022 and self-producing/self-releasing the EP in January 2024, the band turned heads quickly with this 14-minute display of chaos. With punishing breakdowns that any hardcore fan would enjoy, as well as plenty of complex mathy bits, this feels less like the debut release of a brand-new band, and more like an intentional and polished group looking ahead to the future. These 4 songs tell the story of being fed up with the status quo, and of expressing a deep inner turmoil through feedback-laden anguish. The EP was produced and mixed by drummer Noah Baxter at Dichotic Studios, mastered digitally by Brian Skipworth at Skipwave Sound, and remastered for vinyl by Nick Townsend at Townsend Mastering.",
@@ -24,22 +144,56 @@
       "physicalLinks": {
         "deathwish": {
           "url": "https://deathwishinc.com/products/lockslip-lockslip",
-          "name": "Deathwish Inc.",
+          "name": "Deathwish",
           "format": "VINYL",
           "icon": "https://deathwishinc.com/cdn/shop/files/logo_footer_400x.png?v=1613155780"
         },
         "protagonist": {
           "url": "https://protagonistmusic.bandcamp.com/album/self-titled-16",
-          "name": "Protagonist Music",
+          "name": "Protagonist",
           "format": "VINYL",
           "icon": "https://f4.bcbits.com/img/0002629124_10.jpg"
         },
         "badbreak": {
           "url": "https://www.badbreakrecords.com/products/777388-lockslip-ep",
-          "name": "Bad Break Records",
+          "name": "Bad Break",
           "format": "TAPES",
           "icon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZjGOlCYE4UR9_2JTHHSx93D8qQmEv7IAU2A&s"
         }
+      },
+      "audio": {
+        "baseUrl": "https://cdn.lockslip.band/",
+        "tracks": [
+          {
+            "num": 1,
+            "name": "Guillotine Blueprint",
+            "file": "c14a5cad3dc8c404/01-guillotine-blueprint.m4a",
+            "duration": 188.952
+          },
+          {
+            "num": 2,
+            "name": "Bend",
+            "file": "c14a5cad3dc8c404/02-bend.m4a",
+            "duration": 205.461
+          },
+          {
+            "num": 3,
+            "name": "Evildoer",
+            "file": "c14a5cad3dc8c404/03-evildoer.m4a",
+            "duration": 191.17
+          },
+          {
+            "num": 4,
+            "name": "Payment",
+            "file": "c14a5cad3dc8c404/04-payment.m4a",
+            "duration": 270.174
+          }
+        ],
+        "version": "2024-finals"
+      },
+      "artwork": {
+        "credit": "James Hutton",
+        "creditUrl": "https://www.instagram.com/stitching_a_laugh_to_darkness/"
       }
     }
   ]

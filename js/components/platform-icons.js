@@ -17,11 +17,28 @@ const PlatformIcons = {
 
     socialIconMap: {
         'Instagram': 'instagram',
-        'Twitter': 'twitter', 
+        'Twitter': 'twitter',
         'Facebook': 'facebook',
         'TikTok': 'tiktok',
         'Email': 'email',
         'Bandsintown': 'bandsintown'
+    },
+
+    // Marks whose colour is theirs and not ours. They keep it on hover: a
+    // recolourable Spotify green is just a wrong Spotify green. Everything else
+    // is a silhouette that means nothing in particular, so it takes the accent
+    // (see .accent-mark in utilities.css).
+    BRANDS: ['spotify', 'apple', 'youtube', 'bandcamp', 'soundcloud',
+             'instagram', 'twitter', 'facebook', 'tiktok', 'bandsintown'],
+
+    // The file again, for the mask that tints it: CSS cannot read an img's src.
+    // Root relative, since a url() inside a custom property resolves against the
+    // stylesheet that substitutes it rather than the page, and that stylesheet
+    // is two directories down.
+    markAttrs(platform, iconPath) {
+        if (this.BRANDS.includes(platform)) return { className: '', style: '' };
+        const src = '/' + String(iconPath).replace(/^\/+/, '');
+        return { className: ' accent-mark', style: ` style="--icon-src: url('${src}')"` };
     },
 
     renderStreamingLink(platform, url, isIcon = false, title = null, basePath = '') {
@@ -30,8 +47,9 @@ const PlatformIcons = {
         const fullIconPath = iconPath ? basePath + iconPath : null;
 
         if (isIcon && fullIconPath) {
+            const mark = this.markAttrs(platform, fullIconPath);
             return `
-                <a href="${url}" class="streaming-icon ${platform}" target="_blank" rel="noopener" title="${displayTitle}">
+                <a href="${url}" class="streaming-icon ${platform}${mark.className}" target="_blank" rel="noopener" title="${displayTitle}"${mark.style}>
                     <img src="${fullIconPath}" alt="${displayTitle}" />
                 </a>
             `;
@@ -99,8 +117,9 @@ const PlatformIcons = {
 
         if (iconPath) {
             const fullIconPath = basePath + iconPath;
+            const mark = this.markAttrs(platformKey, fullIconPath);
             return `
-                <a href="${socialMedia.url}" class="social-icon ${platformKey}" target="_blank" rel="noopener" title="${socialMedia.platform}">
+                <a href="${socialMedia.url}" class="social-icon ${platformKey}${mark.className}" target="_blank" rel="noopener" title="${socialMedia.platform}"${mark.style}>
                     <img src="${fullIconPath}" alt="${socialMedia.platform}" />
                 </a>
             `;

@@ -9,6 +9,14 @@ html {
     scroll-padding-top: calc(var(--header-height) + 20px);
 }
 
+/* Gray world drains the artwork too, not just the accent. This has to sit on the
+   root element: a filter anywhere else would become the containing block for
+   every fixed thing on the page, and the header, the now playing bar and the
+   modals would all start scrolling with the content. The root is exempt. */
+:root[data-accent="gray-world"] {
+    filter: grayscale(1);
+}
+
 body {
     font-family: 'Helvetica', 'Arial Black', Arial, sans-serif;
     line-height: 1.4;
