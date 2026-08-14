@@ -2,6 +2,45 @@
   "sectionTitle": "NEWS",
   "items": [
     {
+      "id": "gray-world-single",
+      "date": {
+        "month": "August",
+        "day": "14",
+        "year": "2026"
+      },
+      "headline": "GRAY WORLD FT. KING YOSEF OUT NOW",
+      "body": [
+        "Lockslip's debut bleakhouse single \"GRAY WORLD FT. KING YOSEF\" is out now with a music video. Watch or stream it on your preferred platform.",
+        "Lockslip's debut album \"THE CONVERSATION\" is due out November 6th via bleakhouse. Pre-orders are now live."
+      ],
+      "attribution": "Bleakhouse",
+      "images": [
+        "assets/news/2026-08-14-gray-world-1.jpg",
+        "assets/news/2026-08-14-gray-world-2.jpg",
+        "assets/news/2026-08-14-gray-world-3.jpg",
+        "assets/news/2026-08-14-gray-world-4.jpg",
+        "assets/news/2026-08-14-gray-world-5.jpg"
+      ],
+      "links": [
+        {
+          "name": "Music Video",
+          "url": "https://www.youtube.com/watch?v=R9sdOVkKj5I",
+          "icon": "youtube"
+        },
+        {
+          "name": "Announcement",
+          "url": "https://www.instagram.com/p/DcBlhzajp-9/",
+          "icon": "instagram"
+        },
+        {
+          "name": "Bleakhouse",
+          "url": "https://bleakhouse.co/",
+          "icon": "bleakhouse"
+        }
+      ],
+      "hidden": false
+    },
+    {
       "id": "bleakhouse-signing",
       "date": { "month": "August", "day": "12", "year": "2026" },
       "headline": "LOCKSLIP SIGNS TO BLEAKHOUSE",
