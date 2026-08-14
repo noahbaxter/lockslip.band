@@ -26,6 +26,9 @@ class Modal {
         this.currentIndex = index;
         this.createModal();
         this.updateContent();
+        // Details up front. A caption you have to know to ask for is one nobody
+        // reads; a tap on the picture puts it away when it is in the way.
+        this.toggleDetail(true);
         this.show();
     }
 
@@ -41,7 +44,6 @@ class Modal {
             <div class="modal-overlay"></div>
             <div class="modal-content">
                 <button class="modal-close" onclick="${this.config.modalId}.close()">&times;</button>
-                ${this.config.getDownload ? `<a class="modal-download" download title="Download photo" aria-label="Download photo" onclick="event.stopPropagation()">${DOWNLOAD_ICON_SVG}</a>` : ''}
                 <button class="modal-nav prev" onclick="${this.config.modalId}.navigate(-1)">&larr;</button>
                 <button class="modal-nav next" onclick="${this.config.modalId}.navigate(1)">&rarr;</button>
                 <img class="modal-image" src="" alt="Item">
@@ -51,6 +53,11 @@ class Modal {
         document.body.appendChild(this.modal);
         this.setupOverlayListener();
         this.setupTouchListeners();
+
+        // A picture has no height until it has loaded, and the frame is drawn
+        // around what is on screen.
+        this.modal.querySelector('.modal-image').addEventListener('load', () => this.alignFrame());
+        window.addEventListener('resize', () => this.alignFrame());
     }
 
     setupOverlayListener() {
@@ -66,9 +73,124 @@ class Modal {
         content.addEventListener('click', () => this.close());
 
         // Prevent close when clicking on image, info, or nav buttons
-        image.addEventListener('click', (e) => e.stopPropagation());
+        image.addEventListener('click', (e) => {
+            e.stopPropagation();
+            // On a phone the image is the whole screen, so there is nothing
+            // beside it to put the caption in: it sits over the bottom of the
+            // picture and a tap puts it away. The close button is the way out
+            // there, which is why it is the one control always on screen.
+            if (Modal.isPhone()) this.toggleDetail();
+        });
         info.addEventListener('click', (e) => e.stopPropagation());
         navButtons.forEach(btn => btn.addEventListener('click', (e) => e.stopPropagation()));
+    }
+
+    // Matches the phone breakpoint in modal.css. One number, named in both
+    // places, rather than a second breakpoint that can drift from the first.
+    static isPhone() {
+        return window.matchMedia('(max-width: 48rem)').matches;
+    }
+
+    // The controls make a frame around the content: an arrow down each side, the
+    // close at its top right corner. The frame is drawn for the whole set, not
+    // for the item on screen, so it does not shuffle about as you page through
+    // pictures of different shapes. That means the tallest item in the set: high
+    // enough to clear that one, and every shorter one hangs below it.
+    //
+    // Only the close needs this. The arrows are centred, which is the same line
+    // whatever the picture is doing.
+    alignFrame() {
+        if (!this.modal) return;
+        const close = this.modal.querySelector('.modal-close');
+        const image = this.modal.querySelector('.modal-image');
+        if (!close || !image) return;
+
+        if (Modal.isPhone()) {
+            close.style.removeProperty('top');
+            return;
+        }
+
+        // The variable is authored in rem, and a computed custom property comes
+        // back as the text that was written, so parseFloat alone reads "2rem" as
+        // two pixels.
+        const raw = getComputedStyle(this.modal).getPropertyValue('--modal-space').trim();
+        const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+        const gap = raw.endsWith('rem') ? parseFloat(raw) * rem : parseFloat(raw) || 32;
+
+        // The cell the picture is fitted into, not the picture: its own size is
+        // whatever this one item came out at, which is exactly what must not
+        // decide where the frame sits.
+        const area = image.parentElement.getBoundingClientRect();
+        const info = this.modal.querySelector('.modal-info');
+        const panel = info && getComputedStyle(info).display !== 'none'
+            ? info.getBoundingClientRect() : null;
+        const beside = panel && panel.left >= area.left + area.width / 2;
+
+        const room = {
+            w: area.width - (beside ? panel.width + gap : 0),
+            h: area.height - (panel && !beside ? panel.height + gap : 0),
+        };
+
+        // What the tallest picture in the set comes out at in this window.
+        let tallest = 0;
+        for (const size of this.naturalSizes()) {
+            const scale = Math.min(room.w / size.w, room.h / size.h, 1);
+            tallest = Math.max(tallest, size.h * scale);
+        }
+        if (!tallest) return;
+
+        const top = area.top + (room.h - tallest) / 2;
+        close.style.top = `${Math.max(24, top - gap - close.getBoundingClientRect().height)}px`;
+    }
+
+    // Natural sizes for the whole set, measured once. The pictures are already on
+    // the page that opened this, so these come from cache rather than the network.
+    // Anything not decoded yet is skipped and folded in on a later pass.
+    naturalSizes() {
+        if (!this.sizes) this.sizes = new Map();
+
+        for (const item of this.data) {
+            const src = item.poster || item.image;
+            if (!src || this.sizes.has(src)) continue;
+
+            const probe = new Image();
+            probe.src = src;
+            if (probe.complete && probe.naturalHeight) {
+                this.sizes.set(src, { w: probe.naturalWidth, h: probe.naturalHeight });
+            } else {
+                probe.addEventListener('load', () => {
+                    this.sizes.set(src, { w: probe.naturalWidth, h: probe.naturalHeight });
+                    this.alignFrame();
+                }, { once: true });
+            }
+        }
+
+        return this.sizes.values();
+    }
+
+    // In the details rather than floating over the picture. Only the press kit
+    // and the live shots offer one, and on those it belongs with the credit it
+    // is attached to rather than as a button loose on the artwork. Appended
+    // after renderInfo, which owns that innerHTML.
+    addDownload(infoEl, item) {
+        if (!this.config.getDownload) return;
+        const url = this.config.getDownload(item);
+        if (!url) return;
+
+        const link = document.createElement('a');
+        link.className = 'modal-download';
+        link.href = url;
+        link.download = '';
+        link.title = 'Download photo';
+        link.innerHTML = `${DOWNLOAD_ICON_SVG}<span>Download</span>`;
+        link.addEventListener('click', e => e.stopPropagation());
+        infoEl.appendChild(link);
+    }
+
+    toggleDetail(force) {
+        if (!this.modal) return;
+        const open = force !== undefined ? force : !this.modal.classList.contains('is-detail-open');
+        this.modal.classList.toggle('is-detail-open', open && this.modal.classList.contains('has-info'));
     }
 
     updateContent() {
@@ -97,21 +219,12 @@ class Modal {
             imageEl.alt = this.config.getAlt ? this.config.getAlt(item) : 'Item';
         }
 
-        // Update info using config renderer
+        // Update info using config renderer. An item with nothing to say gets no
+        // panel and no gap held open for one.
         if (infoEl) {
             infoEl.innerHTML = this.config.renderInfo(item, this);
-        }
-
-        // Update download link (fullscreen button, useful on mobile where hover isn't available)
-        const downloadEl = this.modal.querySelector('.modal-download');
-        if (downloadEl && this.config.getDownload) {
-            const url = this.config.getDownload(item);
-            if (url) {
-                downloadEl.setAttribute('href', url);
-                downloadEl.style.display = 'flex';
-            } else {
-                downloadEl.style.display = 'none';
-            }
+            this.addDownload(infoEl, item);
+            this.modal.classList.toggle('has-info', infoEl.textContent.trim().length > 0);
         }
 
         // Update counter
@@ -124,6 +237,7 @@ class Modal {
 
         // Update navigation button visibility
         this.updateNavigation();
+        this.alignFrame();
     }
 
     updateNavigation() {
