@@ -1,7 +1,7 @@
 // Generic Modal Component - Works for posters, photos, and other gallery items
 class Modal {
     constructor(config) {
-        this.config = config; // { modalId, classPrefix, renderInfo }
+        this.config = config; // { modalId, variant, renderInfo }
         this.currentIndex = 0;
         this.data = [];
         this.modal = null;
@@ -32,19 +32,20 @@ class Modal {
     createModal() {
         if (this.modal) return;
 
-        const classPrefix = this.config.classPrefix;
         this.modal = document.createElement('div');
         this.modal.id = this.config.modalId;
-        this.modal.className = classPrefix;
+        // One family of classes for every lightbox; the variant is a modifier
+        // for the handful of rules that genuinely differ (see modal.css).
+        this.modal.className = `modal modal-${this.config.variant || 'photo'}`;
         this.modal.innerHTML = `
-            <div class="${classPrefix}-overlay"></div>
-            <div class="${classPrefix}-content">
-                <button class="${classPrefix}-close" onclick="${this.config.modalId}.close()">&times;</button>
-                ${this.config.getDownload ? `<a class="${classPrefix}-download" download title="Download photo" aria-label="Download photo" onclick="event.stopPropagation()">${DOWNLOAD_ICON_SVG}</a>` : ''}
-                <button class="${classPrefix}-nav prev" onclick="${this.config.modalId}.navigate(-1)">&larr;</button>
-                <button class="${classPrefix}-nav next" onclick="${this.config.modalId}.navigate(1)">&rarr;</button>
-                <img class="${classPrefix}-image" src="" alt="Item">
-                <div class="${classPrefix}-info"></div>
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <button class="modal-close" onclick="${this.config.modalId}.close()">&times;</button>
+                ${this.config.getDownload ? `<a class="modal-download" download title="Download photo" aria-label="Download photo" onclick="event.stopPropagation()">${DOWNLOAD_ICON_SVG}</a>` : ''}
+                <button class="modal-nav prev" onclick="${this.config.modalId}.navigate(-1)">&larr;</button>
+                <button class="modal-nav next" onclick="${this.config.modalId}.navigate(1)">&rarr;</button>
+                <img class="modal-image" src="" alt="Item">
+                <div class="modal-info"></div>
             </div>
         `;
         document.body.appendChild(this.modal);
@@ -54,13 +55,11 @@ class Modal {
 
     setupOverlayListener() {
         if (!this.modal) return;
-
-        const classPrefix = this.config.classPrefix;
-        const overlay = this.modal.querySelector(`.${classPrefix}-overlay`);
-        const content = this.modal.querySelector(`.${classPrefix}-content`);
-        const image = this.modal.querySelector(`.${classPrefix}-image`);
-        const info = this.modal.querySelector(`.${classPrefix}-info`);
-        const navButtons = this.modal.querySelectorAll(`.${classPrefix}-nav, .${classPrefix}-close`);
+        const overlay = this.modal.querySelector('.modal-overlay');
+        const content = this.modal.querySelector('.modal-content');
+        const image = this.modal.querySelector('.modal-image');
+        const info = this.modal.querySelector('.modal-info');
+        const navButtons = this.modal.querySelectorAll('.modal-nav, .modal-close');
 
         // Close when clicking on overlay or content
         overlay.addEventListener('click', () => this.close());
@@ -88,11 +87,9 @@ class Modal {
         }
 
         console.log('Item data:', item);
-
-        const classPrefix = this.config.classPrefix;
-        const imageEl = this.modal.querySelector(`.${classPrefix}-image`);
-        const infoEl = this.modal.querySelector(`.${classPrefix}-info`);
-        const counterEl = this.modal.querySelector(`.${classPrefix}-counter`);
+        const imageEl = this.modal.querySelector('.modal-image');
+        const infoEl = this.modal.querySelector('.modal-info');
+        const counterEl = this.modal.querySelector('.modal-counter');
 
         // Update image
         if (imageEl) {
@@ -106,7 +103,7 @@ class Modal {
         }
 
         // Update download link (fullscreen button, useful on mobile where hover isn't available)
-        const downloadEl = this.modal.querySelector(`.${classPrefix}-download`);
+        const downloadEl = this.modal.querySelector('.modal-download');
         if (downloadEl && this.config.getDownload) {
             const url = this.config.getDownload(item);
             if (url) {
@@ -130,9 +127,8 @@ class Modal {
     }
 
     updateNavigation() {
-        const classPrefix = this.config.classPrefix;
-        const prevBtn = this.modal.querySelector(`.${classPrefix}-nav.prev`);
-        const nextBtn = this.modal.querySelector(`.${classPrefix}-nav.next`);
+        const prevBtn = this.modal.querySelector('.modal-nav.prev');
+        const nextBtn = this.modal.querySelector('.modal-nav.next');
 
         if (prevBtn) prevBtn.style.display = this.currentIndex > 0 ? 'flex' : 'none';
         if (nextBtn) nextBtn.style.display = this.currentIndex < this.data.length - 1 ? 'flex' : 'none';
@@ -160,12 +156,10 @@ class Modal {
 
     setupTouchListeners() {
         if (!this.modal) return;
-
-        const classPrefix = this.config.classPrefix;
-        const content = this.modal.querySelector(`.${classPrefix}-content`);
+        const content = this.modal.querySelector('.modal-content');
 
         this.modal.addEventListener('touchstart', (e) => {
-            if (e.target.closest(`.${classPrefix}-content`)) {
+            if (e.target.closest('.modal-content')) {
                 this.touchStartX = e.touches[0].clientX;
                 this.touchStartY = e.touches[0].clientY;
             }

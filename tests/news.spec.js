@@ -46,5 +46,5 @@ test('news images carry no download button', async ({ page }) => {
   await ready(page);
   await page.locator('.news-banner-image').first().click();
 
-  await expect(page.locator('#newsModal .photo-modal-download')).toHaveCount(0);
+  await expect(page.locator('#newsModal .modal-download')).toHaveCount(0);
 });

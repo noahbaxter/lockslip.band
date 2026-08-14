@@ -134,10 +134,10 @@
        over its own width so the year isn't touching the date beside it. */
     --poster-rail-width: 4rem;
     --poster-rail-gap: 0.6rem;
-    /* Arrows step up with the window in fixed sizes (see the steps at the foot
-       of this file): big enough to hit on a wide screen, small enough not to
-       swallow a poster on a narrow one. */
-    --poster-nav-size: 2.75rem;
+    /* One size at every width, for every arrow and every modal close. A thumb
+       needs the same box a cursor does, and a control that changes size between
+       screens stops being the same control. */
+    --poster-nav-size: 3.75rem;
     --poster-nav-inset: 1.5rem;
     /* Holds the arrows and the year off the wall's left edge, so neither sits
        exactly on the seam between the page and the first column. */
@@ -305,17 +305,3 @@
     }
 }
 
-/* Jump-arrow sizes, in steps rather than scaled off the viewport, so the arrow
-   holds one size across a range instead of creeping on every resize. The floor
-   is a thumb-sized target; the ceiling is what a wide page margin can hold. */
-@media (min-width: 769px) {
-    :root {
-        --poster-nav-size: 3.5rem;
-    }
-}
-
-@media (min-width: 1200px) {
-    :root {
-        --poster-nav-size: 3.5rem;
-    }
-}

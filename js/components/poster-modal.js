@@ -1,7 +1,7 @@
 // Poster Modal - Uses generic Modal component with poster-specific rendering
 const posterModal = new Modal({
     modalId: 'posterModal',
-    classPrefix: 'poster-modal',
+    variant: 'poster',
 
     getAlt: (show) => {
         if (show.isTourPoster) {
@@ -16,14 +16,14 @@ const posterModal = new Modal({
 
         // Handle tour posters
         if (show.isTourPoster) {
-            html += `<h3 class="poster-modal-venue">${show.name}</h3>`;
-            html += `<p class="poster-modal-date">${show.startDate.month} ${show.startDate.day} - ${show.endDate.month} ${show.endDate.day}, ${show.startDate.year}</p>`;
+            html += `<h3 class="modal-venue">${show.name}</h3>`;
+            html += `<p class="modal-date">${show.startDate.month} ${show.startDate.day} - ${show.endDate.month} ${show.endDate.day}, ${show.startDate.year}</p>`;
         } else {
             // Regular show
             const displayName = show.event || show.venue;
-            html += `<h3 class="poster-modal-venue">${displayName}</h3>`;
-            html += `<p class="poster-modal-location">${show.location}</p>`;
-            html += `<p class="poster-modal-date">${show.date.month} ${show.date.day}, ${show.date.year}</p>`;
+            html += `<h3 class="modal-venue">${displayName}</h3>`;
+            html += `<p class="modal-location">${show.location}</p>`;
+            html += `<p class="modal-date">${show.date.month} ${show.date.day}, ${show.date.year}</p>`;
 
             // Bands
             if (show.bands && show.bands.length > 0) {
@@ -31,19 +31,19 @@ const posterModal = new Modal({
                 const bandsHtml = displayBands.map(band =>
                     band === 'Lockslip' ? `<span class="lockslip-highlight">${band}</span>` : band
                 ).join(', ');
-                html += `<p class="poster-modal-bands">${bandsHtml}</p>`;
+                html += `<p class="modal-bands">${bandsHtml}</p>`;
             }
 
             // Tickets button
             const isPast = show.showDate < new Date();
             if (!isPast && show.ticketsUrl && !show.isTourPoster) {
-                html += `<div class="poster-modal-tickets"><a href="${show.ticketsUrl}" class="poster-modal-tickets-btn" target="_blank" rel="noopener">TICKETS</a></div>`;
+                html += `<div class="modal-tickets"><a href="${show.ticketsUrl}" class="modal-tickets-btn" target="_blank" rel="noopener">TICKETS</a></div>`;
             }
         }
 
         // Counter
         const counterText = posterModal.config.calculateCounter(modal.currentIndex, modal.data.length, modal);
-        html += `<p class="poster-modal-counter">${counterText}</p>`;
+        html += `<p class="modal-counter">${counterText}</p>`;
 
         return html;
     },

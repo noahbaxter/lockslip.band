@@ -1,10 +1,13 @@
-/* Generic Modal Component - Unified Styles for All Modals */
+/* Every lightbox on the site: show posters, live photos, band photos, cover art
+   and the news graphics. One class family, because they are one component (see
+   js/components/modal.js). The two that differ do so by a modifier on the root,
+   .modal-poster and .modal-photo, rather than by owning a whole set of classes:
+   a change to the chrome used to have to be written twice and stay written
+   twice. Parts a given modal has no data for simply are not rendered. */
 
-/* ==================== SHARED MODAL BASE ==================== */
+/* ==================== BASE ==================== */
 
-/* Modal Container */
-.poster-modal,
-.photo-modal {
+.modal {
     display: none;
     position: fixed;
     top: 0;
@@ -17,9 +20,8 @@
     justify-content: center;
 }
 
-/* Overlay - Clickable backdrop */
-.poster-modal-overlay,
-.photo-modal-overlay {
+/* Clickable backdrop */
+.modal-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -29,9 +31,7 @@
     z-index: 0;
 }
 
-/* Content Container */
-.poster-modal-content,
-.photo-modal-content {
+.modal-content {
     position: relative;
     z-index: 1;
     max-width: 90vw;
@@ -42,10 +42,9 @@
     gap: 2rem;
 }
 
-/* Close Button. Same box as the arrows it shares the overlay with, since a
+/* Close button. Same box as the arrows it shares the overlay with, since a
    control that looks like nothing else on screen reads as something else. */
-.poster-modal-close,
-.photo-modal-close {
+.modal-close {
     top: 1.25rem;
     right: 1.25rem;
     width: var(--poster-nav-size);
@@ -54,8 +53,9 @@
     z-index: 2;
 }
 
-/* Fullscreen download button (left of the close button) */
-.photo-modal-download {
+/* Download, left of the close button. Only the press kit and the live photos
+   render one; the label's announcement graphics and the show posters do not. */
+.modal-download {
     position: absolute;
     top: 1.25rem;
     right: 5rem;
@@ -73,60 +73,52 @@
     backdrop-filter: blur(0.25rem);
 }
 
-.photo-modal-download:hover {
+.modal-download:hover {
     background: var(--secondary-color);
     color: var(--accent-color);
     transform: scale(1.1);
 }
 
-.photo-modal-download svg {
+.modal-download svg {
     width: 1.375rem;
     height: 1.375rem;
     display: block;
 }
 
-/* Navigation Buttons. The look is shared with every other arrow, in
-   base/buttons.css; the same square box as the wall's, over the art. */
-.poster-modal-nav,
-.photo-modal-nav {
+/* Navigation. The look is shared with every other arrow, in base/buttons.css;
+   the same square box as the wall's, over the art. */
+.modal-nav {
     width: var(--poster-nav-size);
     height: var(--poster-nav-size);
     z-index: 2;
 }
 
-.poster-modal-nav.prev,
-.photo-modal-nav.prev {
+.modal-nav.prev {
     left: 0.3125rem;
 }
 
-.poster-modal-nav.next,
-.photo-modal-nav.next {
+.modal-nav.next {
     right: 0.3125rem;
 }
 
-/* Image - Base shared styles */
 /* Unframed on a dimmed backdrop: the art carries its own edge, and the shadow
    below is what lifts it off the overlay. */
-.poster-modal-image,
-.photo-modal-image {
+.modal-image {
     max-height: 80vh;
     object-fit: contain;
     border: none;
     box-shadow: var(--shadow-raise-lg);
 }
 
-/* Image width overrides */
-.poster-modal-image {
+.modal-poster .modal-image {
     max-width: 60vw;
 }
 
-.photo-modal-image {
+.modal-photo .modal-image {
     max-width: 65vw;
 }
 
-/* Info Container - Shared base */
-.poster-modal-info,
-.photo-modal-info {
+.modal-info {
     color: var(--text-color);
     max-height: 70vh;
     padding: 2rem;
@@ -137,8 +129,7 @@
     scrollbar-color: var(--surface-raised) var(--scrim);
 }
 
-/* Info width overrides */
-.poster-modal-info {
+.modal-poster .modal-info {
     max-width: 18.75rem;
 }
 
@@ -146,34 +137,28 @@
    than the poster modal's tracklist. Centred as a block: the counter was
    already centred and everything above it was not, which read as a misaligned
    panel rather than two deliberate alignments. */
-.photo-modal-info {
+.modal-photo .modal-info {
     max-width: 15rem;
     padding: 1.25rem 1.25rem 1.4rem;
     text-align: center;
 }
 
-/* Scrollbar styling - shared */
-.poster-modal-info::-webkit-scrollbar,
-.photo-modal-info::-webkit-scrollbar {
+.modal-info::-webkit-scrollbar {
     width: 0.375rem;
 }
 
-.poster-modal-info::-webkit-scrollbar-track,
-.photo-modal-info::-webkit-scrollbar-track {
+.modal-info::-webkit-scrollbar-track {
     background: var(--scrim);
 }
 
-.poster-modal-info::-webkit-scrollbar-thumb,
-.photo-modal-info::-webkit-scrollbar-thumb {
+.modal-info::-webkit-scrollbar-thumb {
     background: var(--accent-color);
     border-radius: var(--radius-xs);
 }
 
-/* ==================== SHARED INFO TEXT STYLES ==================== */
+/* ==================== INFO TEXT ==================== */
 
-/* Date - Shared base */
-.poster-modal-date,
-.photo-modal-date {
+.modal-date {
     color: var(--accent-color);
     font-weight: 700;
     text-transform: uppercase;
@@ -181,19 +166,16 @@
     margin-bottom: 1rem;
 }
 
-/* Date size overrides */
-.poster-modal-date {
+.modal-poster .modal-date {
     font-size: var(--text-xl);
 }
 
-.photo-modal-date {
+.modal-photo .modal-date {
     font-size: var(--text-sm);
     margin-bottom: 0.6rem;
 }
 
-/* Venue - Shared base */
-.poster-modal-venue,
-.photo-modal-venue {
+.modal-venue {
     font-weight: 800;
     color: var(--secondary-color);
     text-transform: uppercase;
@@ -201,18 +183,15 @@
     margin-bottom: 0.5rem;
 }
 
-/* Venue size overrides */
-.poster-modal-venue {
+.modal-poster .modal-venue {
     font-size: var(--text-3xl);
 }
 
-.photo-modal-venue {
+.modal-photo .modal-venue {
     font-size: var(--text-label);
 }
 
-/* Location - Shared base */
-.poster-modal-location,
-.photo-modal-location {
+.modal-location {
     color: var(--text-dark);
     font-weight: 600;
     text-transform: uppercase;
@@ -220,19 +199,15 @@
     margin-bottom: 1rem;
 }
 
-/* Location size overrides */
-.poster-modal-location {
+.modal-poster .modal-location {
     font-size: var(--text-lg);
 }
 
-.photo-modal-location {
+.modal-photo .modal-location {
     font-size: var(--text-md);
-    margin-bottom: 1rem;
 }
 
-/* Counter - Identical, merged */
-.poster-modal-counter,
-.photo-modal-counter {
+.modal-counter {
     color: var(--text-dark);
     font-size: var(--text-sm);
     font-weight: 600;
@@ -243,21 +218,20 @@
     padding-top: 1rem;
 }
 
-/* ==================== POSTER-MODAL UNIQUE STYLES ==================== */
-
-.poster-modal-bands {
+/* The bill on a show poster. */
+.modal-bands {
     color: var(--text-light);
     line-height: 1.5;
     margin-bottom: 1rem;
     font-size: var(--text-base);
 }
 
-.poster-modal-tickets {
+.modal-tickets {
     margin: 1rem 0;
     text-align: center;
 }
 
-.poster-modal-tickets-btn {
+.modal-tickets-btn {
     display: inline-block;
     padding: 0.625rem 1.25rem;
     font-size: var(--text-sm);
@@ -274,67 +248,62 @@
     max-width: 8.75rem;
 }
 
-.poster-modal-tickets-btn:hover {
+.modal-tickets-btn:hover {
     background: var(--secondary-color);
     color: var(--accent-color);
     box-shadow: var(--glow-accent-hard);
 }
 
-/* ==================== PHOTO-MODAL UNIQUE STYLES ==================== */
-
-.photo-modal-photographer {
+/* Who took the photo, on the shots that carry a credit. */
+.modal-photographer {
     color: var(--text-light);
     font-size: var(--text-sm);
     line-height: 1.5;
     margin-bottom: 1rem;
 }
 
-.photo-modal-photographer a {
+.modal-photographer a {
     color: var(--accent-color);
     text-decoration: none;
     transition: var(--standard-transition);
     font-weight: 600;
 }
 
-.photo-modal-photographer a:hover {
+.modal-photographer a:hover {
     color: var(--secondary-color);
     text-decoration: underline;
 }
 
-/* ==================== RESPONSIVE: DESKTOP ==================== */
+/* ==================== DESKTOP ==================== */
 
 @media (min-width: 769px) {
-    .poster-modal-content,
-    .photo-modal-content {
+    .modal-content {
         width: 100%;
     }
 
-    .poster-modal-close,
-    .photo-modal-close {
+    /* Pinned to the window, not to the image, so they hold still while the art
+       inside changes size. */
+    .modal-close {
         position: fixed;
         top: 1.25rem;
         right: 1.25rem;
     }
 
-    .poster-modal-nav.prev,
-    .photo-modal-nav.prev {
+    .modal-nav.prev {
         position: fixed;
         left: 1.25rem;
     }
 
-    .poster-modal-nav.next,
-    .photo-modal-nav.next {
+    .modal-nav.next {
         position: fixed;
         right: 1.25rem;
     }
 }
 
-/* ==================== RESPONSIVE: MOBILE ==================== */
+/* ==================== MOBILE ==================== */
 
 @media (max-width: 768px) {
-    /* Shared mobile content layout */
-    .poster-modal-content,
-    .photo-modal-content {
+    .modal-content {
         flex-direction: column;
         gap: 1rem;
         padding: 1rem;
@@ -344,9 +313,7 @@
         justify-content: flex-start;
     }
 
-    /* Shared mobile image sizing */
-    .poster-modal-image,
-    .photo-modal-image {
+    .modal-image {
         max-width: 90vw;
         max-height: 50vh;
         width: auto;
@@ -355,9 +322,7 @@
         flex-shrink: 1;
     }
 
-    /* Shared mobile info sizing */
-    .poster-modal-info,
-    .photo-modal-info {
+    .modal-info {
         width: 90vw;
         max-width: 90vw;
         padding: 1.5rem;
@@ -370,28 +335,35 @@
         -webkit-overflow-scrolling: touch;
     }
 
-    /* Shared mobile close button */
-    .poster-modal-close,
-    .photo-modal-close {
+    .modal-close {
         position: fixed;
-        font-size: var(--text-3xl);
-        width: 2.5rem;
-        height: 2.5rem;
         top: 0.625rem;
         right: 0.625rem;
     }
 
-    /* Hide nav buttons on mobile */
-    .poster-modal-nav,
-    .photo-modal-nav {
-        display: none;
+    /* Arrows stay on a phone, alongside the swipe. They used to be hidden here,
+       except updateNavigation() sets display inline to hide them at the ends of
+       a set, and an inline style beats a stylesheet, so the rule never once
+       applied. Pinned to the window rather than floated over the middle of the
+       image. */
+    .modal-nav {
+        position: fixed;
+        top: auto;
+        bottom: 1rem;
+        transform: none;
     }
 
-    /* ---- Mobile Typography Overrides ---- */
+    .modal-nav.prev {
+        left: 1rem;
+    }
 
-    /* Shared mobile date styling */
-    .poster-modal-date,
-    .photo-modal-date {
+    .modal-nav.next {
+        right: 1rem;
+    }
+
+    /* ---- Typography ---- */
+
+    .modal-date {
         color: var(--text-light) !important;
         font-size: 0.75rem !important;
         font-weight: 600 !important;
@@ -401,13 +373,11 @@
         line-height: 1.3;
     }
 
-    .photo-modal-date {
+    .modal-photo .modal-date {
         margin-bottom: 0.6rem;
     }
 
-    /* Shared mobile venue styling */
-    .poster-modal-venue,
-    .photo-modal-venue {
+    .modal-venue {
         font-size: 1rem !important;
         font-weight: 800;
         color: var(--accent-color) !important;
@@ -417,9 +387,7 @@
         line-height: 1.2;
     }
 
-    /* Shared mobile location styling */
-    .poster-modal-location,
-    .photo-modal-location {
+    .modal-location {
         color: var(--text-light) !important;
         font-size: 0.75rem !important;
         font-weight: 400 !important;
@@ -429,34 +397,24 @@
         line-height: 1.3;
     }
 
-    /* Poster-modal mobile unique */
-    .poster-modal-bands {
-        color: var(--text-light);
+    .modal-bands {
         line-height: 1.4;
         margin-bottom: 0.8rem;
         font-size: var(--text-2xs);
     }
 
-    .poster-modal-tickets {
+    .modal-tickets {
         margin: 0.8rem 0;
     }
 
-    .poster-modal-tickets-btn {
+    .modal-tickets-btn {
         padding: 0.5rem 1rem;
         font-size: var(--text-2xs);
         letter-spacing: var(--track-tight);
     }
 
-    /* Photo-modal mobile unique */
-    .photo-modal-photographer {
-        color: var(--text-light);
+    .modal-photographer {
         font-size: var(--text-xs);
         line-height: 1.4;
-        margin-bottom: 1rem;
-    }
-
-    .photo-modal-photographer a {
-        color: var(--accent-color);
-        font-weight: 600;
     }
 }

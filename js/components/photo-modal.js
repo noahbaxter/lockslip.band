@@ -12,11 +12,11 @@ function renderPhotoCaption(photo, modal) {
             day: 'numeric',
             year: 'numeric'
         });
-        parts.push(`<div class="photo-modal-date">${formatted}</div>`);
+        parts.push(`<div class="modal-date">${formatted}</div>`);
     }
 
-    if (photo.venue) parts.push(`<div class="photo-modal-venue">${photo.venue}</div>`);
-    if (photo.location) parts.push(`<div class="photo-modal-location">${photo.location}</div>`);
+    if (photo.venue) parts.push(`<div class="modal-venue">${photo.venue}</div>`);
+    if (photo.location) parts.push(`<div class="modal-location">${photo.location}</div>`);
 
     // Live shots name the photographer per image; band shots share one credit
     // across the set.
@@ -26,12 +26,12 @@ function renderPhotoCaption(photo, modal) {
         const credit = nameUrl
             ? `<a href="${nameUrl}" target="_blank" rel="noopener">${name}</a>`
             : name;
-        parts.push(`<div class="photo-modal-photographer">Photo by ${credit}</div>`);
+        parts.push(`<div class="modal-photographer">Photo by ${credit}</div>`);
     }
 
     // Pointless on a gallery of one, where there is nothing to page through.
     if (modal.data.length > 1) {
-        parts.push(`<p class="photo-modal-counter">${modal.currentIndex + 1} of ${modal.data.length}</p>`);
+        parts.push(`<p class="modal-counter">${modal.currentIndex + 1} of ${modal.data.length}</p>`);
     }
 
     return parts.join('');
@@ -40,7 +40,7 @@ function renderPhotoCaption(photo, modal) {
 // Photo Modal - Uses generic Modal component with photo-specific rendering
 const photoModal = new Modal({
     modalId: 'photoModal',
-    classPrefix: 'photo-modal',
+    variant: 'photo',
 
     getAlt: (photo) => {
         return `${photo.venue} - ${photo.location} - ${photo.photographer}`;
