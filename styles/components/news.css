@@ -163,38 +163,92 @@
     inset: -6%;
 }
 
-.news-archive {
+.news-index {
     margin-top: 4rem;
     border-top: var(--standard-border);
     padding-top: 2rem;
 }
 
-.news-archive h4 {
+.news-index h4 {
     margin-bottom: 1.5rem;
 }
 
-.news-archive ul {
+.news-index ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.news-archive-item {
-    display: flex;
-    gap: 1.5rem;
-    padding: 0.75rem 0;
+.news-index-item {
     border-bottom: 1px solid var(--surface-light);
 }
 
-.news-archive-date {
-    flex: 0 0 11rem;
+/* The whole row is the target, so it reads as a list and behaves as one. */
+.news-index-item button {
+    display: flex;
+    gap: 1.5rem;
+    align-items: baseline;
+    width: 100%;
+    padding: 0.75rem 0;
+    background: none;
+    border: 0;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
 }
 
-.news-archive-headline {
+.news-index-date {
+    flex: 0 0 11rem;
+    color: var(--text-dark);
+    font-size: var(--text-base);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--track);
+    white-space: nowrap;
+}
+
+.news-index-headline {
     color: var(--text-color);
     font-weight: var(--show-font-weight-bold);
     letter-spacing: var(--track);
     text-transform: uppercase;
+}
+
+.news-index-item button:hover .news-index-headline,
+.news-index-item button:hover .news-index-date {
+    color: var(--accent-color);
+}
+
+/* The one on show. Marked rather than hidden from the list: seeing where you
+   are in the run is the point of showing the list at all. */
+.news-index-item.is-current button {
+    cursor: default;
+}
+
+.news-index-item.is-current .news-index-headline,
+.news-index-item.is-current .news-index-date {
+    color: var(--accent-color);
+}
+
+.news-index-item.is-current .news-index-headline::after {
+    content: '';
+    display: inline-block;
+    width: 0.4rem;
+    height: 0.4rem;
+    margin-left: 0.6rem;
+    vertical-align: middle;
+    background: var(--accent-color);
+}
+
+@media (max-width: 48rem) {
+    .news-index-item button {
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+
+    .news-index-date {
+        flex: none;
+    }
 }
 
 @media (max-width: 768px) {

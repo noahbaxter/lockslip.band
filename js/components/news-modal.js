@@ -7,7 +7,8 @@ const newsModal = new Modal({
 
     getAlt: (item) => item.headline,
 
-    getDownload: (item) => item.image,
+    // No getDownload on purpose: these are the label's announcement graphics.
+    // Handing out a download button belongs to the press kit, not here.
 
     renderInfo: (item, modal) => `
         <div class="news-modal-headline">${item.headline}</div>
