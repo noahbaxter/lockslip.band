@@ -2,11 +2,15 @@ name = "lockslip-stats"
 main = "worker.js"
 compatibility_date = "2026-08-01"
 
+# js/analytics.js posts here.
+routes = [
+    { pattern = "stats.lockslip.band", custom_domain = true }
+]
+
 [[d1_databases]]
 binding = "DB"
 database_name = "lockslip-stats"
-# Filled in by `wrangler d1 create lockslip-stats`.
-database_id = "00000000-0000-0000-0000-000000000000"
+database_id = "d6daa17d-775b-41cb-9731-ceac0458b93c"
 
 # SALT is a secret, not a var: it is the only thing standing between the stored
 # hash and the IP that made it. Set it with

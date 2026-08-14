@@ -5,14 +5,9 @@
 // kept. Cloudflare hands over the location for free, so nothing is looked up
 // against anyone else's service.
 //
-// MEMORY_DAYS is the whole privacy design in one number: it is how long the
-// same person keeps the same id, and so how far back "they came back" can be
-// seen. 1 means a visitor cannot be followed past midnight, which is the
-// setting that keeps this uncontroversial. 30 buys returning visitors within a
-// month and is a bigger claim to have to stand behind. 0 never rotates, which
-// is a permanent pseudonym for a person: that is profiling, and it wants a
-// banner and a privacy policy to match.
-const MEMORY_DAYS = 1;
+// How long the same person keeps the same id, and so how far back "they came
+// back" can be seen. 1 rotates at midnight, 30 covers a month, 0 never rotates.
+const MEMORY_DAYS = 30;
 
 const ORIGINS = ['https://lockslip.band', 'https://www.lockslip.band'];
 

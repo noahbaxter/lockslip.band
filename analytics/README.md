@@ -72,8 +72,8 @@ one id:
 
 | value | what you can ask | where that puts you |
 |-------|------------------|---------------------|
-| `1` (current) | how many, from where, what, how long | no identifier is stored on anyone's device and nobody can be followed past midnight |
-| `30` | the above, plus returning visitors within a month | defensible, but a month-long pseudonym is more clearly personal data |
+| `1` | how many, from where, what, how long | no identifier is stored on anyone's device and nobody can be followed past midnight |
+| `30` (current) | the above, plus returning visitors within a month | defensible, but a month-long pseudonym is more clearly personal data |
 | `0` | a lasting profile per person | profiling; wants a consent banner and a privacy policy |
 
 The salt is the only thing standing between a stored id and the IP that made it:
