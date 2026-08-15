@@ -121,13 +121,16 @@ const ReleasesComponent = {
 
         const list = Object.values(physicalLinks);
         const products = list.some(l => l.image);
-        // Numbered over the ones with photos, which is the same list the modal
-        // wiring walks. Numbering over all of them would slip on a mixed record.
-        const photoIndex = new Map(list.filter(l => l.image).map((l, i) => [l, i]));
 
+        // Two labels pressed the same record, so the photo alone does not say
+        // which tile is which. The label's mark rides in the corner of the shot
+        // when there is one.
         const tile = link => (link.image
-            ? `<img class="physical-link-photo" src="${link.image}" alt="${link.name}"
-                    data-product="${photoIndex.get(link)}" onerror="this.style.display='none'">`
+            ? `<span class="physical-link-shot">
+                    <img class="physical-link-photo" src="${link.image}" alt="${link.name}"
+                         onerror="this.style.display='none'">
+                    ${link.icon ? `<img class="physical-link-label" src="${link.icon}" alt="${link.name}" onerror="this.style.display='none'">` : ''}
+               </span>`
             : `<img src="${link.icon}" alt="${link.name}" onerror="this.style.display='none'">`
         ) + `
             <div class="physical-link-text">
@@ -151,31 +154,6 @@ const ReleasesComponent = {
                 </div>
             </div>
         `;
-    },
-
-    // The tiles are small by necessity, so the photo opens full size. One format
-    // per modal, the same as the cover: you clicked the tape, not a slideshow of
-    // everything the record comes on.
-    initProductTiles(releases) {
-        const products = {};
-        (releases.releases || []).forEach(r => {
-            products[r.id] = Object.values(r.physicalLinks || {}).filter(l => l.image);
-        });
-
-        document.querySelectorAll('.release-item').forEach(item => {
-            const set = products[item.dataset.releaseId];
-            if (!set || !set.length) return;
-            item.querySelectorAll('.physical-link-photo').forEach(img => {
-                const link = set[Number(img.dataset.product)];
-                if (!link) return;
-                img.closest('.physical-link').classList.add('is-zoomable');
-                img.addEventListener('click', e => {
-                    e.preventDefault();
-                    artworkModal.setData([{ image: link.image, title: link.name, year: link.format }]);
-                    artworkModal.open(0);
-                });
-            });
-        });
     },
 
     // Bandcamp's own wording for a record that isn't out yet.

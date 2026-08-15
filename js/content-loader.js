@@ -119,7 +119,6 @@ class ContentLoader {
         if (releasesSection && this.releases) {
             releasesSection.innerHTML = ReleasesComponent.render(this.releases);
             ReleasesComponent.initSwitcher();
-            ReleasesComponent.initProductTiles(this.releases);
             AudioPlayer.initAll();
             ReleasesComponent.fitDescriptions();
             ReleasesComponent.watchDescriptions();

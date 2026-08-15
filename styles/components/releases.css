@@ -101,7 +101,6 @@
     height: 2.25rem;
     object-fit: contain;
     border-radius: var(--radius-sm);
-    transition: var(--transition-transform);
 }
 
 .physical-link-text {
@@ -134,9 +133,6 @@
     color: var(--accent-color);
 }
 
-.physical-link:hover img {
-    transform: scale(1.1);
-}
 
 /* Product tiles: the record itself, photographed, not a vendor's logo, so the
    picture leads. One line of them, always, all the same size. However much room
@@ -163,17 +159,33 @@
 .physical-links-grid.is-products::-webkit-scrollbar-thumb { background: var(--accent-a30); }
 .physical-links-grid.is-products::-webkit-scrollbar-thumb:hover { background: var(--accent-a50); }
 
+/* The shot, and the label's mark in its corner where two labels pressed the same
+   record. Sized here rather than by the tile so the mark cannot grow with it. */
+.physical-link-shot {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.physical-link-label {
+    position: absolute;
+    right: 0.3rem;
+    bottom: 0.3rem;
+    width: 2rem;
+    height: 1.4rem;
+    object-fit: contain;
+}
+
 /* Scoped through .physical-link, or the vendor-logo rule above wins on specificity
    and the photo comes out at logo size. The shots are square, so the tiles are too
    and nothing is cropped; a source that is not square gets cropped here rather than
-   in the file, and the full-size view still opens the whole image. */
+   in the file. */
 .is-products .physical-link img.physical-link-photo {
     width: 100%;
     height: auto;
     aspect-ratio: 1;
     object-fit: cover;
     border-radius: var(--radius-sm);
-    transition: none;
 }
 
 .is-products .physical-link {
@@ -205,8 +217,6 @@
 /* The tile is not a link, but the photo opens full size. The pointer says so;
    these are product shots on a flat backdrop, not the photography elsewhere on
    the site that grows under the cursor. */
-.physical-link.is-zoomable img { cursor: pointer; }
-.physical-link.is-zoomable:hover img { transform: none; }
 
 /* Announced, not on sale yet. The tile itself goes nowhere, so it does not light
    up under the pointer, but it is not dimmed either: the photo is the content. */
