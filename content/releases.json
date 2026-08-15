@@ -15,14 +15,14 @@
           "image": "assets/releases/2026-lp1-vinyl-bleakhouse.jpg",
           "url": "https://lockslip.bandcamp.com/album/the-conversation"
         },
-        "vinyl-conversation": {
-          "name": "The Conversation Variant",
+        "vinyl-iconoclast": {
+          "name": "Iconoclast Variant",
           "format": "VINYL",
-          "image": "assets/releases/2026-lp1-vinyl-conversation.jpg",
+          "image": "assets/releases/2026-lp1-vinyl-iconoclast.jpg",
           "url": "https://lockslip.bandcamp.com/album/the-conversation"
         },
         "vinyl-gray-world": {
-          "name": "The Gray World Variant",
+          "name": "Gray World Variant",
           "format": "VINYL",
           "image": "assets/releases/2026-lp1-vinyl-gray-world.jpg",
           "url": "https://lockslip.bandcamp.com/album/the-conversation"
@@ -157,19 +157,21 @@
           "url": "https://deathwishinc.com/products/lockslip-lockslip",
           "name": "Deathwish",
           "format": "VINYL",
-          "icon": "https://deathwishinc.com/cdn/shop/files/logo_footer_400x.png?v=1613155780"
+          "icon": "assets/logos/labels/deathwish.png",
+          "image": "assets/releases/2024-ep-vinyl.jpg"
         },
         "protagonist": {
           "url": "https://protagonistmusic.bandcamp.com/album/self-titled-16",
           "name": "Protagonist",
           "format": "VINYL",
-          "icon": "https://f4.bcbits.com/img/0002629124_10.jpg"
+          "icon": "assets/logos/labels/protagonist.jpg",
+          "image": "assets/releases/2024-ep-vinyl.jpg"
         },
         "badbreak": {
           "url": "https://www.badbreakrecords.com/products/777388-lockslip-ep",
           "name": "Bad Break",
           "format": "TAPES",
-          "icon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZjGOlCYE4UR9_2JTHHSx93D8qQmEv7IAU2A&s"
+          "image": "assets/releases/2024-ep-tape.jpg"
         }
       },
       "audio": {
