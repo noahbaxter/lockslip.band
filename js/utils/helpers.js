@@ -25,16 +25,13 @@ class UIHelpers {
         }
     }
 
-    // Show error page
-    static showError() {
-        document.body.innerHTML = `
-            <div style="display: flex; align-items: center; justify-content: center; height: 100vh; color: white; background: black; font-family: Arial, sans-serif;">
-                <div style="text-align: center;">
-                    <h1>ERROR LOADING CONTENT</h1>
-                    <p>Please check that all content files are available</p>
-                </div>
-            </div>
-        `;
+    // Deliberately not a page. This used to replace document.body with an error
+    // notice, so one missing file threw away every section that had loaded, and
+    // a crawler that caught it indexed the site as the words ERROR LOADING
+    // CONTENT. Whatever did load stays on the screen; the console is where a
+    // failure gets reported.
+    static showError(error) {
+        console.error('Lockslip content error:', error);
     }
 }
 

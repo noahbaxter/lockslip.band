@@ -5,10 +5,12 @@ const { defineConfig, devices } = require('@playwright/test');
 module.exports = defineConfig({
   testDir: './tests',
   fullyParallel: true,
-  // The modal specs each load the poster wall, which is fifty images, and seven
-  // of them run at once. Under that the default 30s is close enough to the real
-  // load time that the suite fails on machine load rather than on the site.
+  // The modal specs each load the poster wall, which is fifty images. Run wide
+  // open, enough of them land at once that the suite starts failing on machine
+  // load rather than on the site. Fewer workers and a longer ceiling costs a few
+  // seconds of wall clock and buys a result that means something.
   timeout: 60000,
+  workers: 4,
   forbidOnly: !!process.env.CI,
   reporter: 'list',
   use: {

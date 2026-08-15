@@ -10,38 +10,45 @@ class ContentLoader {
         this.news = null;
     }
 
+    // Each file stands or falls on its own. One Promise.all over the lot meant a
+    // single missing file rejected the whole thing and the catch replaced the
+    // page with an error, which is what Google indexed the site as: the shows,
+    // the record and the shop were all fine and none of them got rendered.
+    // A section whose file is missing simply does not render.
     async loadAllContent() {
+        const files = {
+            config: 'content/site-config.json',
+            releases: 'content/releases.json',
+            shows: 'content/shows.json',
+            merchandise: 'content/merchandise.json',
+            media: 'content/media.json',
+            extras: 'content/extras.json',
+            press: 'content/press.json',
+            news: 'content/news.json',
+        };
+
+        const names = Object.keys(files);
+        const loaded = await Promise.all(
+            names.map(name => this.loadJSON(files[name]).catch(error => {
+                console.error(`Skipping ${files[name]}:`, error.message);
+                return null;
+            }))
+        );
+        names.forEach((name, i) => { this[name] = loaded[i]; });
+
         try {
-            const [config, releases, shows, merchandise, media, extras, press, news] = await Promise.all([
-                this.loadJSON('content/site-config.json'),
-                this.loadJSON('content/releases.json'),
-                this.loadJSON('content/shows.json'),
-                this.loadJSON('content/merchandise.json'),
-                this.loadJSON('content/media.json'),
-                this.loadJSON('content/extras.json'),
-                this.loadJSON('content/press.json'),
-                this.loadJSON('content/news.json')
-            ]);
-
-            this.config = config;
-            this.releases = releases;
-
             await this.applyPrivateAudio();
             await this.loadLyrics();
-            this.shows = shows;
-            this.merchandise = merchandise;
-            this.media = media;
-            this.extras = extras;
-            this.press = press;
-            this.news = news;
 
             this.renderAllContent();
             UIHelpers.updateCopyrightYear();
             this.handleInitialHash();
             ImageLoader.init();
         } catch (error) {
-            console.error('Error loading content:', error);
-            UIHelpers.showError();
+            // Rendering itself failing is a bug in the site rather than a missing
+            // file, so it is worth saying so out loud, but never by wiping what
+            // did render.
+            console.error('Error rendering content:', error);
         }
     }
 
