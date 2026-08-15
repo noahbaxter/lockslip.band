@@ -9,6 +9,15 @@
 // Every block carries a line saying what it means, so a number is never left to
 // be guessed at, and every aggregate says what window it covers.
 
+import { fillDays, bars, meter } from './chart.js';
+
+// The two audiences. They never share a plot, so these are section colours
+// rather than a categorical scale: one for the public site, one for the private
+// link. Checked against this surface for lightness, chroma, contrast and colour
+// vision separation before use.
+const PUBLIC = '#e01b24';
+const PRESS = '#a06ef0';
+
 const esc = s => String(s ?? '').replace(/[&<>"']/g,
     c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -114,7 +123,8 @@ export async function dashboard(request, env) {
     const q = (sql, ...binds) => env.DB.prepare(sql).bind(...binds).all();
 
     const [nowPlaying, onSite, pressRecent, pressOpens, pressPlays, pressWho,
-        totals, sources, places, tracks, repeats] = await Promise.all([
+        totals, sources, places, tracks, repeats,
+        dailyVisitors, dailyMinutes, dailyPressOpens] = await Promise.all([
         q(`SELECT l.name, l.num, l.ref, l.last_seen, l.seconds, v.city, v.region, v.country
            FROM listens l LEFT JOIN visits v ON v.day = l.day AND v.visitor = l.visitor
            WHERE l.last_seen > ? ORDER BY l.last_seen DESC`, LIVE),
@@ -142,6 +152,15 @@ export async function dashboard(request, env) {
         q(`SELECT COUNT(*) AS n FROM (
              SELECT visitor FROM visits WHERE day >= ? GROUP BY visitor HAVING COUNT(DISTINCT day) > 1
            )`, since),
+
+        // Per day, for the charts. Days with nothing in them are filled in
+        // afterwards so a quiet day reads as quiet rather than as missing.
+        q(`SELECT day, COUNT(DISTINCT visitor) AS value FROM visits
+           WHERE day >= ? GROUP BY day ORDER BY day`, since),
+        q(`SELECT day, SUM(seconds) / 60 AS value FROM listens
+           WHERE ref = '' AND day >= ? GROUP BY day ORDER BY day`, since),
+        q(`SELECT date(ts, 'unixepoch') AS day, COUNT(*) AS value FROM press_visits
+           WHERE date(ts, 'unixepoch') >= ? GROUP BY day ORDER BY day`, since),
     ]);
 
     // --- right now -----------------------------------------------------------
@@ -211,8 +230,7 @@ export async function dashboard(request, env) {
         // honest answer is nothing, not a made-up percentage.
         const avg = r.listeners ? r.secs / r.listeners : 0;
         const pct = r.dur ? Math.min(100, Math.round((avg / r.dur) * 100)) : null;
-        const bar = pct === null ? '<span class="dim">no length recorded</span>'
-            : `<span class="bar"><span style="width:${pct}%"></span></span> ${pct}%`;
+        const bar = meter(pct, PUBLIC);
         return `<tr>
             <td class="dim">${r.num}</td>
             <td>${esc(r.name || '')}</td>
@@ -222,6 +240,20 @@ export async function dashboard(request, env) {
             <td>${bar}</td>
         </tr>`;
     });
+
+    // Charts. A day is a bar; the window decides how many. "All time" has no
+    // fixed span, so it charts the last 30 days rather than inventing an axis.
+    const today = new Date().toISOString().slice(0, 10);
+    const span = days || 30;
+    const visitorSeries = fillDays(all(dailyVisitors), span, today);
+    const minuteSeries = fillDays(all(dailyMinutes), span, today);
+    const pressSeries = fillDays(all(dailyPressOpens), span, today);
+
+    // The press table's headline: of everyone you sent it to, how many pressed
+    // play. Refs from before that was measured are left out of the count rather
+    // than counted as a no.
+    const measurable = all(pressOpens).filter(r => r.last >= trackingFrom);
+    const played = measurable.filter(r => playsBy.has(r.ref)).length;
 
     const tabs = [1, 7, 30, 0].map(d => {
         const label = d ? `${d}d` : 'all';
@@ -252,8 +284,6 @@ td.nowrap, th { white-space:nowrap; }
 .big { font-size:1.6rem; color:#fff; }
 .tabs { color:var(--dim); font-size:.8rem; margin:.5rem 0 0; }
 .tabs a { color:var(--red); text-decoration:none; }
-.bar { display:inline-block; width:5rem; height:.5rem; background:#222; vertical-align:middle; }
-.bar > span { display:block; height:100%; background:var(--red); }
 .lede { border-left:2px solid var(--red); padding-left:.75rem; margin:1rem 0 0; }
 
 /* A table wider than the screen scrolls inside its own box rather than pushing
@@ -263,38 +293,96 @@ input.more { position:absolute; opacity:0; pointer-events:none; }
 label.more { display:inline-block; margin-top:.6rem; padding:.3rem .6rem; cursor:pointer;
     color:var(--red); border:1px solid #222; font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; }
 label.more:hover { border-color:var(--red); }
+
+/* ---- the two audiences ---------------------------------------------------- */
+/* A band per audience, each with its own rule down the side, so a number is
+   always read under the heading that says whose it is. */
+.band { border-left:2px solid var(--edge); padding:0 0 .5rem 1.25rem; margin:3rem 0 0; }
+.band-public { --edge:#e01b24; }
+.band-press { --edge:#a06ef0; }
+.band-title { font-size:1.1rem; color:var(--edge); margin:0; letter-spacing:.12em; }
+.band section h2 { color:var(--edge); }
+.band .says { margin-top:.2rem; }
+.reading { color:#ddd; font-size:.85rem; margin:1rem 0 0; }
+
+/* ---- charts --------------------------------------------------------------- */
+.figures { display:grid; grid-template-columns:repeat(auto-fit,minmax(17rem,1fr)); gap:1.5rem; margin-top:1.25rem; }
+.chart { margin:0; }
+.chart figcaption { display:flex; justify-content:space-between; align-items:baseline; gap:1rem;
+    font-size:.7rem; text-transform:uppercase; letter-spacing:.1em; margin-bottom:.5rem; }
+.chart-label { color:#ddd; }
+.chart-total { color:#fff; }
+.chart svg { width:100%; height:5.5rem; display:block; }
+/* The column is the hit target, not the bar inside it. */
+.bar-hit { fill:transparent; }
+.bar:hover .bar-hit { fill:rgba(255,255,255,.06); }
+.bar-fill { transition:opacity .1s; }
+.bar:hover .bar-fill { opacity:.75; }
+.chart-axis { display:flex; justify-content:space-between; color:var(--dim); font-size:.65rem; margin-top:.35rem; }
+.score { align-self:center; }
+.score .big { margin:0; }
+
+/* A share of one track, so a single bar rather than a chart of its own. */
+.meter { display:inline-block; width:5rem; height:.5rem; background:#222; vertical-align:middle; }
+.meter > span { display:block; height:100%; }
+
 label.more .hide, input.more:checked + .clip + label.more .show { display:none; }
 input.more:checked + .clip + label.more .hide { display:inline; }
 </style></head><body>
 
-<h1>LOCKSLIP</h1>
-<p class="says">Everything below is ${esc(windowLabel)}, except the two live blocks and the press table, which are all time. Times are Pacific. Reloads itself every minute, unless a table is open or you have scrolled down.</p>
-<p class="tabs">window: ${tabs}</p>
+<header class="top">
+  <h1>LOCKSLIP</h1>
+  <p class="tabs">window ${tabs}</p>
+</header>
+<p class="says">Windowed blocks cover the ${esc(windowLabel)}. The live strip is now, and the private link table is all time. Pacific. Reloads every minute unless a table is open or you have scrolled.</p>
 
 <div class="lede">
   <p class="big">${live.length} listening &middot; ${onSiteN} on the site</p>
-  <p class="says">Right now. Someone counts as listening if audio was still running in the last three minutes, and as on the site if they loaded a page in the last five.${recentPress ? ` Press links opened in the last hour: ${esc(recentPress)}.` : ''}</p>
+  <p class="says">Right now. Listening means audio still running in the last three minutes; on the site means a page loaded in the last five.${recentPress ? ` Private link opened in the last hour by ${esc(recentPress)}.` : ''}</p>
 </div>
 
-${block('Playing right now', 'One row per person with audio running. Press rows are someone you sent the private link to.',
+${block('Playing right now', 'One row per person with audio running, whichever door they came in by.',
     ['track', 'where', 'how they got in', 'last beat'], live, 'Nobody is playing anything this second.')}
 
-${block('The private link', `One row per ref you sent out. Opens is how many times that link was loaded, ever. The third column is the one that matters: opening a link is politeness, playing it is interest. Opens from before the press page started reporting what it played read "not measured", which is not the same as nobody playing anything.`,
-    ['ref', 'opens', 'listened', 'last open', 'where', 'device'], pressRows, 'No press opens recorded.', 10)}
+<!-- Two audiences, two sections. A stranger who found the site and a label you
+     posted a link to are different questions, and reading them off one pile of
+     numbers was the thing that made this page hard to parse. -->
+<div class="band band-public">
+  <h2 class="band-title">The public site</h2>
+  <p class="says">Anyone who arrived at lockslip.band on their own.</p>
 
-${block('Where strangers come from', 'Referring site for public visitors. Direct means typed, bookmarked, or an app that strips the referrer, which Instagram and iMessage both do.',
+  <div class="figures">
+    ${bars(visitorSeries, { hue: PUBLIC, label: 'People per day' })}
+    ${bars(minuteSeries, { hue: PUBLIC, label: 'Minutes listened per day', unit: 'm' })}
+  </div>
+
+  <p class="reading">${visitors} visitor${visitors === 1 ? '' : 's'} in the ${esc(windowLabel)}. ${returning} came back on another day, ${fresh} came once. An id is kept 30 days, so this cannot see further back.</p>
+
+${block('Where they came from', 'Direct means typed, bookmarked, or an app that strips the referrer. Instagram and iMessage both do.',
     ['source', 'visitors'], sourceRows, 'No visits in this window.')}
 
-${block('Where they are', 'Public visitors by city. Visitors counts people, loads counts page views, so a big gap between them means people are clicking around.',
+${block('Where they are', 'Visitors counts people, loads counts page views. A gap between them means people are clicking around.',
     ['place', 'visitors', 'loads'], placeRows, 'No visits in this window.', 10)}
 
-${block('What they play', 'Public site only, press listening is in its own table. Listeners is people, plays is how many times a track was started, and finished is the average share of the track those people actually sat through.',
+${block('What they played', 'Public site only. Finished is the average share of the track those listeners actually sat through.',
     ['#', 'track', 'listeners', 'plays', 'total', 'finished'], trackRows, 'Nothing has been played in this window.')}
+</div>
 
-<section>
-  <h2>Coming back</h2>
-  <p class="says">Of ${visitors} visitor${visitors === 1 ? '' : 's'} in the ${esc(windowLabel)}, ${returning} came on more than one day and ${fresh} only ever showed up once. An id is kept for 30 days, so this cannot see further back than that.</p>
-</section>
+<div class="band band-press">
+  <h2 class="band-title">The private link</h2>
+  <p class="says">The unlisted press page, and only the people you sent a ref to.</p>
+
+  <div class="figures">
+    ${bars(pressSeries, { hue: PRESS, label: 'Opens per day' })}
+    <div class="score">
+      <p class="big">${played} <span class="dim">of ${measurable.length}</span></p>
+      <p class="says">Refs that have pressed play since the page started reporting it. Opening a link is politeness; playing it is interest.</p>
+    </div>
+  </div>
+
+${block('Who has it', 'One row per ref you sent out, all time. Opens from before the page reported what it played read "not measured", which is not the same as nobody playing anything.',
+    ['ref', 'opens', 'listened', 'last open', 'where', 'device'], pressRows, 'No press opens recorded.', 10)}
+</div>
 
 <script>
 // A meta refresh would shut every expanded table a few seconds after it was
