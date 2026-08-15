@@ -12,6 +12,7 @@ writes is committed.
     python3 build_routes.py            # write the routes
     python3 build_routes.py --clean    # remove them again
 """
+import datetime
 import json
 import re
 import shutil
@@ -75,6 +76,22 @@ def clean():
     print(f'removed {removed} generated routes')
 
 
+def sitemap(paths):
+    """Every URL the site has, so a crawler is told rather than left to guess.
+
+    The homepage carried a rendering error into Google's index once, and without
+    a sitemap there was nothing to point at to get it looked at again."""
+    today = datetime.date.today().isoformat()
+    urls = ''.join(
+        f'\n  <url><loc>{SITE}/{path}</loc><lastmod>{today}</lastmod></url>'
+        for path in [''] + paths)
+    (ROOT / 'sitemap.xml').write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        f'{urls}\n</urlset>\n')
+    return len(paths) + 1
+
+
 def main():
     if '--clean' in sys.argv:
         return clean()
@@ -103,6 +120,8 @@ def main():
 
     for path in written:
         print('wrote', path.relative_to(ROOT) / 'index.html')
+
+    print(f'wrote sitemap.xml with {sitemap([str(p.relative_to(ROOT)) for p in written])} urls')
 
 
 if __name__ == '__main__':
