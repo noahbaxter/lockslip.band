@@ -568,6 +568,14 @@
       "bands": ["Prolapsed Catholic", "Nine Necks", "Lockslip", "Squid Pisser"]
     },
     {
+      "id": "2026-10-19",
+      "date": {"month": "OCT", "day": "19", "year": "2026"},
+      "venue": "Skatepark of Tampa",
+      "location": "Tampa, FL",
+      "poster": "assets/show-posters/2026_10_19.jpg",
+      "bands": ["Spittoon", "Shiv", "Lockslip", "Drosera"]
+    },
+    {
       "id": "2026-10-23",
       "date": { "month": "OCT", "day": "23", "year": "2026" },
       "event": "The FEST 24",
