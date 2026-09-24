@@ -51,6 +51,8 @@ RELEASES = {
 # Random CDN path prefixes, so the bucket cannot be walked by guessing paths. Kept
 # in a local-only file rather than here: this script is committed to a public repo,
 # and the album's prefix must not ship while the record is unreleased.
+# "<release>-tracks" maps a track number to its own prefix, so releasing one track
+# doesn't reveal where the others live.
 PREFIX_FILE = Path(__file__).parent / "audio-prefixes.json"
 
 BITRATE = "192k"
@@ -99,7 +101,9 @@ def encode(key, outroot):
     if not PREFIX_FILE.exists():
         sys.exit(f"missing {PREFIX_FILE.name}; it holds the CDN path prefixes and is "
                  f"deliberately untracked. Ask Noah or generate new ones.")
-    cdn = json.loads(PREFIX_FILE.read_text())[key]
+    prefixes = json.loads(PREFIX_FILE.read_text())
+    cdn = prefixes[key]
+    per_track = prefixes.get(f"{key}-tracks", {})
 
     features = cfg.get("features", {})
     names = cfg.get("names", {})
@@ -123,7 +127,7 @@ def encode(key, outroot):
         entry = {
             "num": num,
             "name": names.get(num, title),
-            "file": f"{cdn}/{dest.name}",
+            "file": f"{per_track.get(str(num), cdn)}/{dest.name}",
             "duration": duration(dest),
         }
         if num in features:

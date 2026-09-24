@@ -1,18 +1,9 @@
-// Charts for the dashboard. Inline SVG, no library, because this page is served
-// by the worker and has to stand up on its own.
-//
-// Every chart here is one series: the public site and the private link are told
-// apart by living in different sections, not by two colours fighting inside one
-// plot. So there is no legend to read and no palette to get wrong. The two hues
-// (#e01b24 public, #a06ef0 press) were checked against the dark surface for
-// lightness, chroma, contrast and colour-vision separation before use.
+// Inline SVG charts for the dashboard. One series per chart, coloured by section.
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g,
     c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-// Every day in the window, including the ones nothing happened on. Without this
-// a gap reads as "no data" rather than as a quiet Tuesday, and the bars lie
-// about the shape of a week.
+// Every day in the window, zero-filled so empty days still get a slot.
 export function fillDays(rows, days, today) {
     const byDay = new Map(rows.map(r => [r.day, r]));
     const out = [];
@@ -27,9 +18,7 @@ export function fillDays(rows, days, today) {
     return out;
 }
 
-// A day is a bar. Anchored to the baseline, 4px rounded at the top, a 2px gap
-// between them, and the value only on the tallest one: a number over every bar
-// is noise you have to read past to see the shape.
+// One bar per day.
 export function bars(data, { hue, label, unit = '' }) {
     if (!data.length) return '';
 
@@ -43,8 +32,7 @@ export function bars(data, { hue, label, unit = '' }) {
         const x = i * w;
         const day = new Date(d.day + 'T00:00:00Z').toLocaleDateString('en-US',
             { timeZone: 'UTC', month: 'short', day: 'numeric' });
-        // Full height, transparent: the hover target is the column, not the
-        // two pixel bar inside it.
+        // Full-height transparent rect so the whole column is hoverable.
         return `<g class="bar">
             <title>${esc(day)}: ${d.value}${esc(unit)}</title>
             <rect class="bar-hit" x="${x}" y="0" width="${w}" height="100"></rect>
@@ -63,15 +51,13 @@ export function bars(data, { hue, label, unit = '' }) {
             <span class="chart-total">${total}${esc(unit)} <span class="dim">over ${data.length} days</span></span>
         </figcaption>
         ${nothing
-            ? `<p class="none">Nothing yet in this window.</p>`
+            ? `<p class="none">Nothing yet.</p>`
             : `<svg viewBox="0 0 100 100" preserveAspectRatio="none" role="img"
                     aria-label="${esc(label)}, ${total}${esc(unit)} over ${data.length} days">${marks}</svg>`}
         <div class="chart-axis"><span>${esc(fmt(first))}</span><span>peak ${peak}${esc(unit)}</span><span>${esc(fmt(last))}</span></div>
     </figure>`;
 }
 
-// How much of a track people sit through. A share of one thing, so it is a
-// single bar per row rather than a chart: the row is already the label.
 export function meter(pct, hue) {
     if (pct === null) return '<span class="dim">no length recorded</span>';
     return `<span class="meter"><span style="width:${Math.min(100, pct)}%;background:${hue}"></span></span> ${pct}%`;

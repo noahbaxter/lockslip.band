@@ -2,23 +2,17 @@ import { dashboard } from './dash.js';
 
 // Listen stats for lockslip.band. Writes here, reads in dash.js.
 //
-// The IP never lands anywhere. It goes into a hash with the user agent and a
-// secret mixed with the current window, and only 16 hex characters of that are
-// kept. Cloudflare hands over the location for free, so nothing is looked up
-// against anyone else's service.
+// The IP is never stored: it's hashed with the UA and a salted window, and 16
+// hex chars of that are kept.
 //
-// How long the same person keeps the same id, and so how far back "they came
-// back" can be seen. 1 rotates at midnight, 30 covers a month, 0 never rotates.
+// Days one visitor keeps the same id. 0 never rotates.
 const MEMORY_DAYS = 30;
 
 const ORIGINS = ['https://lockslip.band', 'https://www.lockslip.band'];
 
-// Ids, not free text. Every row is keyed by these, so anything that can vary
-// without limit is a way to fill the database from outside. A release is a slug
-// and a track is its number; the name rides along as a label only.
+// These end up in primary keys, so they're bounded to stop the table being
+// filled from outside. Track names are stored as labels only.
 const RELEASE_RE = /^[a-z0-9][a-z0-9-]{0,31}$/;
-// A press ref comes off ?ref= on a link, so it is whatever anyone types. It is
-// in a primary key, so it is bounded the same way a release slug is.
 const REF_RE = /^[A-Za-z0-9._-]{1,32}$/;
 const MAX_BODY = 1024;
 
@@ -54,24 +48,19 @@ export default {
 
         if (request.method === 'OPTIONS') return new Response(null, { headers: cors(origin) });
 
-        // The dashboard is the only thing here that is read rather than written,
-        // and the only thing that answers a GET.
-        if (request.method === 'GET' && new URL(request.url).pathname === '/dash') {
+        // /dash is the old address, kept so existing bookmarks work.
+        const path = new URL(request.url).pathname;
+        if (request.method === 'GET' && (path === '/' || path === '/dash')) {
             return dashboard(request, env);
         }
 
         if (request.method !== 'POST') return new Response('POST only', { status: 405 });
 
-        // Loudly, rather than hashing against the string "undefined": a guessable
-        // salt makes every stored id reversible to the IP that made it, and it
-        // would look like it was working.
+        // Without a salt every stored id is reversible to its IP.
         if (!env.SALT) return new Response('no salt', { status: 503 });
 
-        // Required, not just checked when present. The endpoint is on another
-        // host than the page, so a real beacon always carries one; letting a
-        // missing header through waves past everything that is not a browser.
-        // A determined script can still forge it, which is what the rate limit
-        // rule in README.md is for.
+        // Required, not just checked when present: a real beacon is cross-origin
+        // and always sends one. Forgeable, hence the rate limit in README.md.
         if (!ORIGINS.includes(origin)) return new Response('no', { status: 403 });
 
         if (Number(request.headers.get('Content-Length')) > MAX_BODY) {
@@ -92,15 +81,12 @@ export default {
         const region = request.cf?.region ?? null;
         const city = request.cf?.city ?? null;
 
-        // Empty for the public site. A beacon from the press kit carries the ref
-        // the link was sent out with, which is the whole point of that page:
-        // there, "who" is a question worth asking.
+        // Empty for the public site, the ?ref= for the press page.
         const ref = typeof body.p === 'string' && REF_RE.test(body.p) ? body.p : '';
 
         try {
             if (body.t === 'v') {
-                // Host only. A full referrer is a page someone was reading, which
-                // is more than is needed to answer "did they come from Instagram".
+                // Referrer host only, not the full URL.
                 const source = typeof body.s === 'string' && body.s.length <= 64
                     ? body.s.replace(/[^A-Za-z0-9.:-]/g, '').slice(0, 64) || null
                     : null;
@@ -113,9 +99,7 @@ export default {
                 `).bind(day, visitor, country, region, city, source, now, now).run();
 
             } else if (body.t === 'p') {
-                // One row per open rather than one per person per day: a press
-                // link goes to a named recipient, and coming back to it twice in
-                // a week is the signal.
+                // One row per open, not per day, so repeat opens show up.
                 if (!ref) return new Response('bad ref', { status: 400, headers: cors(origin) });
                 await env.DB.prepare(`
                     INSERT INTO press_visits (ts, ref, visitor, country, region, city, ua)
@@ -128,12 +112,10 @@ export default {
                 const num = Number.isInteger(body.n) && body.n > 0 && body.n <= 99 ? body.n : null;
                 if (!release || !num) return new Response('bad event', { status: 400, headers: cors(origin) });
 
-                // Clamped: a beacon claiming an hour of listening is a broken
-                // client or someone poking at the endpoint.
+                // Clamped to one beat's worth.
                 const seconds = Math.max(0, Math.min(60, Number(body.s) || 0));
                 const starts = body.st ? 1 : 0;
-                // The track's own length, so seconds listened can be read against
-                // it later. Absent from an older client, and then stays null.
+                // Track length. Null from older clients.
                 const dur = Number.isFinite(Number(body.d)) && Number(body.d) > 0
                     ? Math.min(3600, Math.round(Number(body.d))) : null;
 
@@ -149,8 +131,7 @@ export default {
                 `).bind(day, visitor, ref, country, release, num, label(body.k), dur, starts, seconds, now).run();
             }
         } catch (err) {
-            // Never let stats break the page: the client ignores the response
-            // anyway, and a failed write is not worth an error in anyone's console.
+            // The client ignores the response, so a failed write stays quiet.
             console.error(err.message);
         }
 
