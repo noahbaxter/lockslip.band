@@ -41,7 +41,8 @@
     filter: brightness(0) saturate(100%) invert(51%) sepia(18%) saturate(1137%) hue-rotate(152deg) brightness(91%) contrast(88%);
 }
 
-.streaming-icon.youtube:hover img {
+.streaming-icon.youtube:hover img,
+.social-icon.youtube:hover img {
     filter: brightness(0) saturate(100%) invert(11%) sepia(100%) saturate(7378%) hue-rotate(4deg) brightness(97%) contrast(118%);
 }
 
