@@ -2,6 +2,51 @@
   "sectionTitle": "NEWS",
   "items": [
     {
+      "id": "vengeance-single",
+      "date": {
+        "month": "September",
+        "day": "24",
+        "year": "2026"
+      },
+      "headline": "VENGEANCE (YOU'LL BE SEEN BY YOUR GOD) OUT NOW",
+      "body": [
+        "Lockslip's new single \"VENGEANCE (YOU'LL BE SEEN BY YOUR GOD)\" is out now, with the music video premiering through CVLT Nation.",
+        "It's the second single from \"THE CONVERSATION\", due out November 6th via bleakhouse.",
+        "\"The state of the world is complex, it's dark, and it's unpredictable, so we want to write music that reflects those anxieties,\" says vocalist Sara G."
+      ],
+      "attribution": "Bleakhouse",
+      "images": [
+        "assets/news/2026-09-24-vengeance-1.jpg",
+        "assets/news/2026-09-24-vengeance-2.jpg",
+        "assets/news/2026-09-24-vengeance-3.jpg",
+        "assets/news/2026-09-24-vengeance-4.jpg",
+        "assets/news/2026-09-24-vengeance-5.jpg"
+      ],
+      "links": [
+        {
+          "name": "Music Video",
+          "url": "https://www.youtube.com/watch?v=2USogmMTRZE",
+          "icon": "youtube"
+        },
+        {
+          "name": "CVLT Nation Premiere",
+          "url": "https://cvltnation.com/the-rage-effect-witness-lockslips-new-visual-vengeance-feat-king-yosef/",
+          "icon": "cvltnation"
+        },
+        {
+          "name": "Announcement",
+          "url": "https://www.instagram.com/p/Ddt1yICk0UA/",
+          "icon": "instagram"
+        },
+        {
+          "name": "Bleakhouse",
+          "url": "https://bleakhouse.co/",
+          "icon": "bleakhouse"
+        }
+      ],
+      "hidden": false
+    },
+    {
       "id": "gray-world-single",
       "date": {
         "month": "August",
