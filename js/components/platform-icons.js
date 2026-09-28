@@ -14,8 +14,10 @@ const PlatformIcons = {
         tiktok: 'assets/social/tiktok.svg',
         email: 'assets/social/email.svg',
         bandsintown: 'assets/social/bandsintown.svg',
-        bleakhouse: 'assets/social/bleakhouse.png',
-        cvltnation: 'assets/social/cvltnation.png'
+
+        // Labels and press, not platforms we have accounts on
+        bleakhouse: 'assets/logos/labels/bleakhouse.png',
+        cvltnation: 'assets/logos/press/cvltnation.png'
     },
 
     socialIconMap: {
