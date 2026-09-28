@@ -111,6 +111,19 @@
     margin-bottom: 0;
 }
 
+/* Same as the photographer credit in the lightbox. */
+.news-body a {
+    color: var(--accent-color);
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--standard-transition);
+}
+
+.news-body a:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+}
+
 /* The label's own words, kept in their lowercase, marked as theirs. */
 .news-body-quoted {
     /* Accent, not a neutral hairline: this bar marks whose words these are, so
