@@ -1,6 +1,7 @@
 // The stats page. Reads what worker.js writes.
 
 import { fillDays, bars, meter } from './chart.js';
+import { ptDay } from './day.js';
 
 // Section colours: public site, press link.
 const PUBLIC = '#e01b24';
@@ -115,7 +116,7 @@ export async function dashboard(request, env) {
     // Number(null) is 0, which means all time, so absent has to be checked first.
     const asked = url.searchParams.get('d');
     const days = asked !== null && [1, 7, 30, 0].includes(Number(asked)) ? Number(asked) : 7;
-    const since = days ? new Date((now - days * 86400) * 1000).toISOString().slice(0, 10) : '0000-00-00';
+    const since = days ? ptDay((now - days * 86400) * 1000) : '0000-00-00';
     const windowLabel = days ? `last ${days} day${days > 1 ? 's' : ''}` : 'all time';
 
     // The client beats every 15s.
@@ -160,8 +161,8 @@ export async function dashboard(request, env) {
            WHERE day >= ? GROUP BY day ORDER BY day`, since),
         q(`SELECT day, SUM(seconds) / 60 AS value FROM listens
            WHERE ref = '' AND day >= ? GROUP BY day ORDER BY day`, since),
-        q(`SELECT date(ts, 'unixepoch') AS day, COUNT(*) AS value FROM press_visits
-           WHERE date(ts, 'unixepoch') >= ? GROUP BY day ORDER BY day`, since),
+        // Raw times, bucketed below: SQLite's date() only knows UTC.
+        q(`SELECT ts FROM press_visits WHERE ts >= ?`, days ? now - (days + 1) * 86400 : 0),
     ]);
 
     // --- right now -----------------------------------------------------------
@@ -235,11 +236,16 @@ export async function dashboard(request, env) {
     });
 
     // "All time" charts the last 30 days.
-    const today = new Date().toISOString().slice(0, 10);
+    const today = ptDay(now * 1000);
     const span = days || 30;
+    const pressByDay = new Map();
+    for (const { ts } of all(dailyPressOpens)) {
+        const day = ptDay(ts * 1000);
+        if (day >= since) pressByDay.set(day, (pressByDay.get(day) || 0) + 1);
+    }
     const visitorSeries = fillDays(all(dailyVisitors), span, today);
     const minuteSeries = fillDays(all(dailyMinutes), span, today);
-    const pressSeries = fillDays(all(dailyPressOpens), span, today);
+    const pressSeries = fillDays([...pressByDay].map(([day, value]) => ({ day, value })), span, today);
 
     const measurable = all(pressOpens).filter(r => r.last >= trackingFrom);
     const played = measurable.filter(r => playsBy.has(r.ref)).length;

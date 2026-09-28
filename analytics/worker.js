@@ -1,4 +1,5 @@
 import { dashboard } from './dash.js';
+import { ptDay } from './day.js';
 
 // Listen stats for lockslip.band. Writes here, reads in dash.js.
 //
@@ -75,7 +76,7 @@ export default {
         }
 
         const now = Math.floor(Date.now() / 1000);
-        const day = new Date().toISOString().slice(0, 10);
+        const day = ptDay(now * 1000);
         const visitor = await visitorId(request, env, now);
         const country = request.cf?.country ?? null;
         const region = request.cf?.region ?? null;
