@@ -39,6 +39,31 @@ const NewsComponent = {
         return `<div class="news-links">${linksHTML}</div>`;
     },
 
+    // Thumbnail until clicked: a YouTube iframe pulls ~1MB of script, which
+    // the homepage shouldn't pay for a video most visitors won't play.
+    // maxresdefault is missing on some uploads, hqdefault never is.
+    renderVideo(id, headline) {
+        if (!id) return '';
+        return `
+            <div class="news-video">
+                <button type="button" class="news-video-facade" onclick="NewsComponent.playVideo(this, '${id}')" aria-label="Play ${headline} video">
+                    <img src="https://i.ytimg.com/vi/${id}/maxresdefault.jpg" alt="" loading="lazy"
+                        onerror="this.onerror=null; this.src='https://i.ytimg.com/vi/${id}/hqdefault.jpg'">
+                    <span class="news-video-play" aria-hidden="true"></span>
+                </button>
+            </div>
+        `;
+    },
+
+    playVideo(button, id) {
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
+        iframe.title = button.getAttribute('aria-label');
+        iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+        iframe.allowFullscreen = true;
+        button.replaceWith(iframe);
+    },
+
     // Same shape as a release date: full month, uppercased in CSS.
     formatDate(date) {
         return `${date.month} ${date.day}, ${date.year}`;
@@ -69,8 +94,13 @@ const NewsComponent = {
                 <div class="news-content">
                     ${this.renderDate(item.date)}
                     <h3>${item.headline}</h3>
-                    ${this.renderBody(item)}
-                    ${this.renderLinks(item.links)}
+                    <div class="news-main${item.video ? ' has-video' : ''}">
+                        <div class="news-text">
+                            ${this.renderBody(item)}
+                            ${this.renderLinks(item.links)}
+                        </div>
+                        ${this.renderVideo(item.video, item.headline)}
+                    </div>
                 </div>
             </article>
         `;
