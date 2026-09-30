@@ -19,7 +19,8 @@
           "name": "Iconoclast Variant",
           "format": "VINYL",
           "image": "assets/releases/2026-lp1-vinyl-iconoclast.jpg",
-          "url": "https://lockslip.bandcamp.com/album/the-conversation"
+          "url": "https://lockslip.bandcamp.com/album/the-conversation",
+          "soldOut": true
         },
         "vinyl-gray-world": {
           "name": "Gray World Variant",

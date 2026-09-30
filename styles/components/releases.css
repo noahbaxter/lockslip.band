@@ -229,6 +229,11 @@
     color: var(--text-color);
 }
 
+/* Gone, so unlike an announced tile it is dimmed, the way sold-out merch is. */
+.physical-link.is-sold-out .physical-link-shot { opacity: 0.55; }
+
+.physical-link.is-sold-out .physical-link-format { color: var(--text-faint); }
+
 .release-content {
     padding: 2rem;
     display: flex;

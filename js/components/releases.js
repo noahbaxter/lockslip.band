@@ -135,7 +135,7 @@ const ReleasesComponent = {
         ) + `
             <div class="physical-link-text">
                 <span class="physical-link-name">${link.name}</span>
-                <span class="physical-link-format">${link.format}</span>
+                <span class="physical-link-format">${link.soldOut ? 'Sold out' : link.format}</span>
             </div>
         `;
 
@@ -147,7 +147,9 @@ const ReleasesComponent = {
             <div class="physical-links-content">
                 ${soon ? '<div class="physical-links-note">Coming soon</div>' : ''}
                 <div class="physical-links-grid${products ? ' is-products' : ' flex-center'}">
-                    ${list.map(link => link.url
+                    ${list.map(link => link.soldOut
+                        ? `<div class="physical-link is-pending is-sold-out">${tile(link)}</div>`
+                        : link.url
                         ? `<a href="${link.url}" target="_blank" rel="noopener" class="physical-link">${tile(link)}</a>`
                         : `<div class="physical-link is-pending">${tile(link)}</div>`
                     ).join('')}
