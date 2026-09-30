@@ -576,13 +576,22 @@
       "bands": ["Spittoon", "Shiv", "Lockslip", "Drosera"]
     },
     {
-      "id": "2026-10-23",
-      "date": { "month": "OCT", "day": "23", "year": "2026" },
-      "event": "The FEST 24",
+      "id": "2026-10-22",
+      "date": { "month": "OCT", "day": "22", "year": "2026" },
+      "venue": "The Ox",
       "location": "Gainesville, FL",
-      "poster": "assets/show-posters/2026_10_23.jpg",
-      "ticketsUrl": "https://wl.eventim.us/event/The-FEST-24/685111?afflky=TheFest",
-      "bands": ["Lockslip", "Sparta", "A Wilhelm Scream", "The Flatliners", "Small Brown Bike", "Home Front", "Torche", "Bear vs. Shark", "Nerf Herder", "Texas is the Reason", "The Impossibles", "Pulley", "Hey Mercedes", "Algernon Cadwallader", "Lagwagon", "PUP", "The Bouncing Souls"]
+      "poster": "assets/show-posters/2026_10_22.jpg",
+      "ticketsUrl": "https://theoxfl.com/",
+      "bands": ["Winded", "MYSWORDMYSWORD!", "John in a Strange Land", "Actions Speak Louder", "Ada Marie", "Vanish Twin", "Lash Meat", "Days Spent", "Love Hut", "Ca$h Grab", "Ashen Hills", "Lockslip", "Niobe.exe", "Serrated FL", "Drosera", "Ninth Gate", "Boston Marriage", "Exit Strategy"]
+    },
+    {
+      "id": "2026-10-24",
+      "date": { "month": "OCT", "day": "24", "year": "2026" },
+      "venue": "Bazar 47",
+      "location": "Gainesville, FL",
+      "poster": "assets/show-posters/2026_10_24.jpg",
+      "ticketsUrl": "https://wl.eventim.us/event/The-FEST-24/685111",
+      "bands": ["Anchorite", "Human Issue", "Lockslip", "Ambretta", "Orca", "Seeker", "Mass Panic", "Skeletizer", "The Yaupon Holly", "Future Forms", "Damage Done", "Ill Star", "Sandcrawler", "Thunderclap", "Stunner"]
     }
   ],
   "tours": [
@@ -718,6 +727,26 @@
         "2026-08-06",
         "2026-08-07",
         "2026-08-08"
+      ]
+    },
+    {
+      "id": "fest-24",
+      "name": "The FEST 24",
+      "startDate": {
+        "month": "OCT",
+        "day": "19",
+        "year": "2026"
+      },
+      "endDate": {
+        "month": "OCT",
+        "day": "25",
+        "year": "2026"
+      },
+      "poster": "assets/show-posters/2026_fest24_poster.jpg",
+      "shows": [
+        "2026-10-19",
+        "2026-10-22",
+        "2026-10-24"
       ]
     }
   ]
