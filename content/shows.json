@@ -576,6 +576,14 @@
       "bands": ["Spittoon", "Shiv", "Lockslip", "Drosera"]
     },
     {
+      "id": "2026-10-21",
+      "date": { "month": "OCT", "day": "21", "year": "2026" },
+      "venue": "Arcade 51",
+      "location": "Daytona Beach, FL",
+      "poster": "assets/show-posters/2026_10_21.jpg",
+      "bands": ["Direct Fire", "Constant Pressure", "Lockslip", "Drosera"]
+    },
+    {
       "id": "2026-10-22",
       "date": { "month": "OCT", "day": "22", "year": "2026" },
       "venue": "The Ox",
@@ -745,6 +753,7 @@
       "poster": "assets/show-posters/2026_fest24_poster.jpg",
       "shows": [
         "2026-10-19",
+        "2026-10-21",
         "2026-10-22",
         "2026-10-24"
       ]
