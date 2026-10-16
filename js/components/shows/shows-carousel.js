@@ -198,10 +198,8 @@ const ShowsCarousel = {
         if (this.currentIndex < this.shows.length) {
             const currentShow = this.shows[this.currentIndex];
 
-            // Priority: tickets > modal
-            if (currentShow.ticketsUrl) {
-                window.open(currentShow.ticketsUrl, '_blank');
-            } else if (window.showsWithPosters) {
+            // The poster opens the poster viewer; tickets live on the row's button
+            if (window.showsWithPosters) {
                 const posterIndex = window.showsWithPosters.findIndex(s => s.id === currentShow.id);
                 if (posterIndex !== -1) {
                     openPosterModal(posterIndex);
