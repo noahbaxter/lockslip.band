@@ -198,10 +198,8 @@ const ShowsCarousel = {
         if (this.currentIndex < this.shows.length) {
             const currentShow = this.shows[this.currentIndex];
 
-            // Priority: tickets > modal
-            if (currentShow.ticketsUrl) {
-                window.open(currentShow.ticketsUrl, '_blank');
-            } else if (window.showsWithPosters) {
+            // The poster opens the poster viewer; tickets live on the row's button
+            if (window.showsWithPosters) {
                 const posterIndex = window.showsWithPosters.findIndex(s => s.id === currentShow.id);
                 if (posterIndex !== -1) {
                     openPosterModal(posterIndex);
@@ -221,7 +219,7 @@ const ShowsCarousel = {
     fallbackData(show) {
         return {
             month: show.date.month,
-            day: show.date.day,
+            day: ShowsCard.formatDay(show),
             venue: show.event || show.venue,
             location: show.location,
             bandsHtml: this.bandsWithTba(show)
@@ -270,7 +268,7 @@ const ShowsCarousel = {
                  onmouseenter="ShowsCarousel.pause()" onmouseleave="ShowsCarousel.resume()">
                 <div class="carousel-row-date">
                     <span class="month">${show.date.month}</span>
-                    <span class="day">${show.date.day}</span>
+                    ${ShowsCard.renderDays(show)}
                 </div>
                 <div class="carousel-row-info">
                     <div class="venue">${show.event || show.venue}</div>
@@ -297,11 +295,49 @@ const ShowsCarousel = {
             </div>`;
     },
 
+    // Few shows, no tours: poster columns with full details instead of the carousel
+    renderFeatured(shows, showsWithPosters) {
+        const columns = shows.map(show => {
+            const posterIndex = showsWithPosters.findIndex(s => s.id === show.id);
+            const posterClick = posterIndex !== -1 ? `onclick="openPosterModal(${posterIndex})"` : '';
+            const place = show.event ? `${show.venue} · ${show.location}` : show.location;
+            const tickets = show.ticketsUrl
+                ? `<a href="${show.ticketsUrl}" class="btn small featured-tickets" target="_blank" rel="noopener">TICKETS</a>`
+                : '';
+            return `
+                <div class="featured-show">
+                    <div class="featured-poster ${posterClick ? 'has-modal' : ''}" ${posterClick}>
+                        ${this.bigPaneHtml({ poster: show.poster || null, fallback: this.fallbackData(show) })}
+                    </div>
+                    <div class="featured-info">
+                        <div class="featured-date">${show.date.month} ${ShowsCard.formatDay(show)}, ${show.date.year}</div>
+                        <div class="featured-venue">${show.event || show.venue}</div>
+                        <div class="featured-location">${place}</div>
+                        <div class="featured-bands">${this.bandsWithTba(show)}</div>
+                        ${tickets}
+                    </div>
+                </div>`;
+        }).join('');
+
+        return `
+            <div class="shows-section upcoming-section">
+                <h3 class="shows-line"><span class="shows-line-label">UPCOMING SHOWS</span><i class="shows-line-rule"></i></h3>
+                <div class="upcoming-featured">${columns}</div>
+            </div>
+        `;
+    },
+
     // Render carousel HTML
     render(futureItems, showsWithPosters = [], formatBandsFn = null) {
         if (!futureItems || futureItems.length === 0) return '';
 
         this.formatBands = formatBandsFn;
+
+        // The carousel earns its keep on tours and long runs; a handful of shows reads better as columns
+        if (futureItems.length <= 3 && futureItems.every(item => item.type === 'show')) {
+            this.shows = [];
+            return this.renderFeatured(futureItems.map(item => item.data), showsWithPosters);
+        }
 
         const slides = [];
         let listHtml = '';

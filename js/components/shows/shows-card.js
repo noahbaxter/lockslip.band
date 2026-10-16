@@ -16,6 +16,20 @@ const ShowsCard = {
         ).join(', ');
     },
 
+    // Day label, as a range for multi-day shows ("12–13", or "30–NOV 01" across months)
+    formatDay(show) {
+        const end = show.endDate;
+        if (!end) return show.date.day;
+        const endDay = end.month === show.date.month ? end.day : `${end.month} ${end.day}`;
+        return `${show.date.day}–${endDay}`;
+    },
+
+    // Day span for stacked date columns: multi-day shows stack start over end
+    renderDays(show) {
+        const end = show.endDate ? `<br>${show.endDate.day}` : '';
+        return `<span class="day">${show.date.day}${end}</span>`;
+    },
+
     // Date block rendering
     renderDateBlock(date, extraClasses = '') {
         return `

@@ -30,7 +30,7 @@ const ShowsTable = {
                 <td class="show-date-cell">
                     <div class="table-date">
                         <span class="month">${show.date.month}</span>
-                        <span class="day">${show.date.day}</span>
+                        ${ShowsCard.renderDays(show)}
                         <span class="year">${show.date.year}</span>
                     </div>
                 </td>

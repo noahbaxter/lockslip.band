@@ -600,6 +600,17 @@
       "poster": "assets/show-posters/2026_10_24.jpg",
       "ticketsUrl": "https://wl.eventim.us/event/The-FEST-24/685111",
       "bands": ["Anchorite", "Human Issue", "Lockslip", "Ambretta", "Orca", "Seeker", "Mass Panic", "Skeletizer", "The Yaupon Holly", "Future Forms", "Damage Done", "Ill Star", "Sandcrawler", "Thunderclap", "Stunner"]
+    },
+    {
+      "id": "2026-12-12",
+      "date": {"month": "DEC", "day": "12", "year": "2026"},
+      "endDate": {"month": "DEC", "day": "13", "year": "2026"},
+      "event": "For The Children",
+      "venue": "The Belasco",
+      "location": "Los Angeles, CA",
+      "poster": "assets/show-posters/2026_12_12.jpg",
+      "ticketsUrl": "https://www.ticketmaster.com/event/09006505D270C6B1",
+      "bands": ["Strut", "Lockslip", "Scorched-Earth Policy", "Smoked 909", "Unoauno", "Leave No Doubt", "Load Tha Nine", "Recollection", "Blood & Tears", "Bloodshed", "Foreign Hands", "C4", "Living Weapon", "Desperate Measures", "Splitknuckle", "Sin Against Sin", "Bad Beat", "One Step Closer", "Laid 2 Rest", "Inclination", "Outta Pocket", "Like It or Not", "Fatal Realm", "Shattered Realm", "Fury", "Seahaven", "Cro-Mags", "Death Threat", "Dying Fetus"]
     }
   ],
   "tours": [
@@ -740,6 +751,7 @@
     {
       "id": "fest-24",
       "name": "The FEST 24",
+      "hidden": true,
       "startDate": {
         "month": "OCT",
         "day": "19",
