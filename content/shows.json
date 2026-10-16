@@ -740,6 +740,7 @@
     {
       "id": "fest-24",
       "name": "The FEST 24",
+      "hidden": true,
       "startDate": {
         "month": "OCT",
         "day": "19",
