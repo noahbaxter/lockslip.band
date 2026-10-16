@@ -106,9 +106,13 @@ class ShowsProcessor {
     // Helper function to categorize individual shows
     categorizeShow(show) {
         const showDate = this.parseMonthYear(show.date.month, show.date.day, show.date.year);
+        // Multi-day shows stay upcoming through their last day
+        const lastDate = show.endDate
+            ? this.parseMonthYear(show.endDate.month, show.endDate.day, show.endDate.year)
+            : showDate;
         return {
             ...show,
-            actuallyPast: showDate < this.today, // Shows on today or in the future are not past
+            actuallyPast: lastDate < this.today, // Shows on today or in the future are not past
             showDate: showDate
         };
     }

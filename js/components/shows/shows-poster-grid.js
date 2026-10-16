@@ -17,7 +17,7 @@ const ShowsPosterGrid = {
             };
         }
         return {
-            date: `${show.date.month} ${show.date.day}`,
+            date: `${show.date.month} ${ShowsCard.formatDay(show)}`,
             place: show.location,
         };
     },

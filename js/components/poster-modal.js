@@ -23,7 +23,7 @@ const posterModal = new Modal({
             const displayName = show.event || show.venue;
             html += `<h3 class="modal-venue">${displayName}</h3>`;
             html += `<p class="modal-location">${show.location}</p>`;
-            html += `<p class="modal-date">${show.date.month} ${show.date.day}, ${show.date.year}</p>`;
+            html += `<p class="modal-date">${show.date.month} ${ShowsCard.formatDay(show)}, ${show.date.year}</p>`;
 
             // Bands
             if (show.bands && show.bands.length > 0) {

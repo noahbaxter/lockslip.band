@@ -221,7 +221,7 @@ const ShowsCarousel = {
     fallbackData(show) {
         return {
             month: show.date.month,
-            day: show.date.day,
+            day: ShowsCard.formatDay(show),
             venue: show.event || show.venue,
             location: show.location,
             bandsHtml: this.bandsWithTba(show)
@@ -270,7 +270,7 @@ const ShowsCarousel = {
                  onmouseenter="ShowsCarousel.pause()" onmouseleave="ShowsCarousel.resume()">
                 <div class="carousel-row-date">
                     <span class="month">${show.date.month}</span>
-                    <span class="day">${show.date.day}</span>
+                    ${ShowsCard.renderDays(show)}
                 </div>
                 <div class="carousel-row-info">
                     <div class="venue">${show.event || show.venue}</div>
