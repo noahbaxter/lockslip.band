@@ -2,6 +2,49 @@
   "sectionTitle": "NEWS",
   "items": [
     {
+      "id": "im-the-same-single",
+      "date": {
+        "month": "October",
+        "day": "30",
+        "year": "2026"
+      },
+      "headline": "I'M THE SAME OUT NOW",
+      "video": "On7QHaKXaOs",
+      "body": [
+        "Lockslip returns with their final single \"IM THE SAME\" ahead of their debut album \"THE CONVERSATION\"s release next week on November 6th.",
+        "\"IM THE SAME\" sees Lockslip take their wall of sound aggression to melodic spaces without compromising integrity or intensity.",
+        "IM THE SAME is available now via bleakhouse",
+        "\"I'm the Same\" is a two-minute burst of relentless blasting and cathartic vocals, crowned by a spiraling, wistful guitar melody that tips the hat to the band's screamo influences. It is a juxtaposition of elements – the punishing and the pensive – that brings to mind contemporaries such as Cloud Rat and Converge.",
+        "For the official \"I'm the Same\" music video, the band teamed up with digital artist @Freeculture.api, who delivered a deliciously retro, Y2K-era aesthetic, depicting a chilling vampiric tale, just in time for Halloween. Drummer Noah Baxter elaborates: \"Freeculture.api is a digital artist I've followed for years now, part of this renaissance of low poly and early 3D revival in computer art and animation. Growing up, I spent a lot of time in these 3D digital spaces, sometimes surrounded by others but more often alone with my thoughts, so when this song came together and I read Sara's lyrics it just made sense to me, as a way to visually describe the alien and abstract way we actually inhabit our own heads.\""
+      ],
+      "attribution": "Bleakhouse",
+      "images": [
+        "assets/news/2026-10-30-im-the-same-1.jpg",
+        "assets/news/2026-10-30-im-the-same-2.jpg",
+        "assets/news/2026-10-30-im-the-same-3.jpg",
+        "assets/news/2026-10-30-im-the-same-4.jpg",
+        "assets/news/2026-10-30-im-the-same-5.jpg"
+      ],
+      "links": [
+        {
+          "name": "Music Video",
+          "url": "https://www.youtube.com/watch?v=On7QHaKXaOs",
+          "icon": "youtube"
+        },
+        {
+          "name": "Announcement",
+          "url": "https://www.instagram.com/p/DfH2oWmoDBb/",
+          "icon": "instagram"
+        },
+        {
+          "name": "Bleakhouse",
+          "url": "https://bleakhouse.co/",
+          "icon": "bleakhouse"
+        }
+      ],
+      "hidden": false
+    },
+    {
       "id": "vengeance-single",
       "date": {
         "month": "September",
