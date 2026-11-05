@@ -44,3 +44,6 @@ analytics/.wrangler/
 /shows/
 /store/
 /extras/
+
+# Screenshots made for a person to look at: review/<branch>/<timestamp>_<what>/
+/review/
