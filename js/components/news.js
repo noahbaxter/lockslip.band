@@ -56,6 +56,8 @@ const NewsComponent = {
     },
 
     playVideo(button, id) {
+        // Watching stops the record; the release panels reuse this facade too
+        if (typeof AudioPlayer !== 'undefined' && AudioPlayer.el) AudioPlayer.el.pause();
         const iframe = document.createElement('iframe');
         iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
         iframe.title = button.getAttribute('aria-label');

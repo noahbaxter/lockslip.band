@@ -473,6 +473,7 @@
    row and buy buttons all step aside so a long verse has the full height. */
 .release-content.is-lyrics > .release-header,
 .release-content.is-lyrics > .content-streaming-links,
+.release-content.is-lyrics > .release-extras,
 .release-content.is-lyrics > .physical-links-content { display: none; }
 
 /* Two-line header, no icon row under it. Set from releases.js, which is the only
@@ -532,4 +533,136 @@
 .release-lyrics-body.is-empty {
     color: var(--text-faint);
     font-style: italic;
+}
+
+/* A track's video fills the same space the lyrics do, so opening it never changes
+   the size of the card. The player inside is the news one (.news-video). */
+.release-video[hidden] { display: none; }
+
+.release-video {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+}
+
+.release-video-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+
+.release-video-head .release-lyrics-title { margin-bottom: 0; }
+
+.release-video-close {
+    padding: 0 0.25rem;
+    background: none;
+    border: 0;
+    color: var(--text-dark);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.release-video-close:hover { color: var(--accent-color); }
+
+.release-video .news-video {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+/* Merch or videos, one at a time */
+.release-extras-tabs {
+    display: flex;
+    gap: 1.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.release-extras-tabs button {
+    padding: 0 0 0.2rem;
+    background: none;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    color: var(--text-dark);
+    font: inherit;
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: var(--track);
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.release-extras-tabs button:hover { color: var(--text-color); }
+
+.release-extras-tabs button.is-active {
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
+}
+
+/* Both panels sit in the same grid cell and the hidden one only turns invisible,
+   so the taller sets the height and switching never moves anything. */
+.release-extras { display: grid; }
+
+.release-extras-tabs { grid-row: 1; }
+
+.release-extras .release-videos,
+.release-extras .physical-links-content {
+    grid-row: 2;
+    grid-column: 1;
+    margin-top: 0;
+}
+
+.release-extras[data-show="merch"] .release-videos,
+.release-extras[data-show="videos"] .physical-links-content { visibility: hidden; }
+
+/* The record's videos in a row */
+.release-videos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.6rem;
+    align-self: stretch;
+}
+
+/* Thumbnails stretch to whatever height the merch tiles beside them in the same
+   cell set, so the two panels are the same block, not two blocks of their own. */
+.release-video-thumb {
+    position: relative;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    background: var(--surface-near-black);
+    cursor: pointer;
+}
+
+.release-video-thumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* The news play mark, smaller to fit a third of the column */
+.release-video-thumb .news-video-play {
+    transform: translate(-50%, -50%) scale(0.6);
+}
+
+.release-video-thumb:hover .news-video-play { background: var(--accent-color); }
+
+.release-video-name {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0.9rem 0.5rem 0.35rem;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+    color: var(--secondary-color);
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: var(--track);
+    text-align: left;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

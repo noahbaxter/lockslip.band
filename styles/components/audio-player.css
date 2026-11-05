@@ -347,3 +347,40 @@
 
 .ap-lyrics[hidden] { display: none; }
 
+/* A video button inside a track row, always showing; present only on the tracks
+   that have one. Same dim-until-hovered treatment as the lyrics button. */
+.ap-video {
+    flex: none;
+    display: flex;
+    align-items: center;
+    padding: 0.1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.7;
+    color: var(--text-color);
+    transition: opacity var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+
+.ap-video svg { width: 1.1rem; height: 1.1rem; display: block; }
+
+/* Same width as the button (icon + its 0.1rem padding either side) */
+.ap-video-slot { flex: none; width: 1.3rem; }
+
+/* Line up with the header above: the icon's centre under the lyrics button's, and
+   the time ending where the "1 / 11" ends. The row's own padding sits both of
+   them inside the header's edge, so they are pulled back out by the difference. */
+.ap-video,
+.ap-video-slot { margin-right: -0.45rem; }
+
+.ap-dur + .ap-video,
+.ap-dur + .ap-video-slot { margin-left: -0.25rem; }
+
+.ap-video:hover { opacity: 1; }
+
+/* Its video is the one open */
+.ap-video.is-open {
+    opacity: 1;
+    color: var(--accent-color);
+}
+
