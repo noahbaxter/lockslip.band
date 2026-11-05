@@ -57,6 +57,9 @@ const ShowsCarousel = {
         const thumb = document.querySelector('.carousel-scrollbar-thumb');
         if (!list || !track || !thumb) return;
 
+        // Rows below the visible ones (a phone fades the edge instead of a bar)
+        list.classList.toggle('has-more', list.scrollHeight - list.scrollTop - list.clientHeight > 1);
+
         const ratio = list.clientHeight / list.scrollHeight;
         if (ratio >= 1) {
             // Nothing to scroll: hide the indicator entirely
@@ -74,9 +77,14 @@ const ShowsCarousel = {
         thumb.style.top = `${top}px`;
     },
 
+    // Phone layout: the selected row opens in place and a tap selects it
+    isStacked() {
+        return window.matchMedia('(max-width: 768px)').matches;
+    },
+
     // Start auto-play carousel with 5s cycle
     start(totalShows) {
-        if (totalShows <= 1) return; // Don't auto-play single show
+        if (totalShows <= 1 || this.isStacked()) return; // No auto-play for one show, or under a thumb
 
         // Clear any existing timer
         if (this.timer) clearInterval(this.timer);
@@ -145,6 +153,8 @@ const ShowsCarousel = {
             }
             if (delta !== 0) list.scrollBy({ top: delta, behavior: 'smooth' });
         }
+
+        this.updateScrollbar(); // the open row changes how much is below
 
         // Update progress bar (only if not paused)
         if (!this.paused) {
@@ -252,15 +262,17 @@ const ShowsCarousel = {
 
         const posterIndex = showsWithPosters.findIndex(s => s.id === show.id);
 
-        // Click: tickets > poster modal > select in carousel
-        let clickHandler;
+        // Click: tickets > poster modal > select in carousel. On a phone a tap
+        // selects the row, which opens its details; tickets are in there.
+        let action;
         if (show.ticketsUrl) {
-            clickHandler = `onclick="window.open('${show.ticketsUrl}', '_blank')"`;
+            action = `window.open('${show.ticketsUrl}', '_blank')`;
         } else if (posterIndex !== -1) {
-            clickHandler = `onclick="openPosterModal(${posterIndex})"`;
+            action = `openPosterModal(${posterIndex})`;
         } else {
-            clickHandler = `onclick="ShowsCarousel.setShow(${index})"`;
+            action = `ShowsCarousel.setShow(${index})`;
         }
+        const clickHandler = `onclick="if (ShowsCarousel.isStacked()) { ShowsCarousel.setShow(${index}); } else { ${action} }"`;
 
         return `
             <div class="carousel-row ${index === 0 ? 'active' : ''} ${isSub ? 'tour-subrow' : ''}" ${clickHandler}
@@ -310,9 +322,16 @@ const ShowsCarousel = {
                         ${this.bigPaneHtml({ poster: show.poster || null, fallback: this.fallbackData(show) })}
                     </div>
                     <div class="featured-info">
-                        <div class="featured-date">${show.date.month} ${ShowsCard.formatDay(show)}, ${show.date.year}</div>
-                        <div class="featured-venue">${show.event || show.venue}</div>
-                        <div class="featured-location">${place}</div>
+                        <div class="featured-head">
+                            <div class="carousel-row-date">
+                                <span class="month">${show.date.month}</span>
+                                ${ShowsCard.renderDays(show)}
+                            </div>
+                            <div>
+                                <div class="featured-venue">${show.event || show.venue}</div>
+                                <div class="featured-location">${place}</div>
+                            </div>
+                        </div>
                         <div class="featured-bands">${this.bandsWithTba(show)}</div>
                         ${tickets}
                     </div>
@@ -333,8 +352,8 @@ const ShowsCarousel = {
 
         this.formatBands = formatBandsFn;
 
-        // The carousel earns its keep on tours and long runs; a handful of shows reads better as columns
-        if (futureItems.length <= 3 && futureItems.every(item => item.type === 'show')) {
+        // The carousel earns its keep from two shows up; one reads better as a card
+        if (futureItems.length === 1 && futureItems[0].type === 'show') {
             this.shows = [];
             return this.renderFeatured(futureItems.map(item => item.data), showsWithPosters);
         }
