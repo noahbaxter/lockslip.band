@@ -79,8 +79,7 @@
 }
 
 /* Matches .release-date so dates read the same across the site. */
-.news-date,
-.news-archive-date {
+.news-date {
     color: var(--text-dark);
     font-size: var(--text-base);
     font-weight: 600;
@@ -102,13 +101,37 @@
     width: 100%;
 }
 
-/* Even halves: at full width that's about the body's own measure, and as the
-   column narrows both shrink together instead of the video going first. */
-.news-main.has-video {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 2.5rem;
-    align-items: start;
+/* The video, or the banner when there is none, floats right at half the column
+   and the text wraps around it, then runs under it. A float only shortens
+   lines after it, so it comes first in the markup; .news-text is block, not
+   flex, which would sit beside the float instead of wrapping. The banner's
+   15rem panels at 4:5 are as tall as the 16:9 video. */
+.news-main.has-media {
+    display: flow-root;
+}
+
+.news-main .news-video,
+.news-main .news-banner {
+    float: right;
+    width: calc(50% - 1.25rem);
+    margin: 0 0 1.5rem 2.5rem;
+}
+
+.news-main .news-banner {
+    --news-panel-w: 15rem;
+}
+
+.news-main.has-media .news-text {
+    display: block;
+}
+
+/* Uncapped, or nothing would wrap under the media */
+.news-main .news-body {
+    max-width: none;
+}
+
+.news-main.has-media .news-links {
+    margin-top: 1rem;
 }
 
 .news-video {
@@ -249,92 +272,62 @@
     inset: -6%;
 }
 
-.news-index {
-    margin-top: 4rem;
-    border-top: var(--standard-border);
-    padding-top: 2rem;
+/* The open post sits under the row; empty, it takes no space. */
+.news-post:not(:empty) {
+    margin-top: 1rem;
 }
 
-.news-index h4 {
-    margin-bottom: 1.5rem;
-}
-
-.news-index ul {
-    list-style: none;
+/* One row of post cards, fixed width, scrolling sideways with no bar, so more
+   posts never add height. */
+.news-rail {
+    display: flex;
+    gap: 0.75rem;
     margin: 0;
     padding: 0;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: none;
 }
 
-.news-index-item {
-    border-bottom: 1px solid var(--surface-light);
+.news-rail::-webkit-scrollbar {
+    display: none;
 }
 
-/* The whole row is the target, so it reads as a list and behaves as one. */
-.news-index-item button {
+.news-rail-item {
+    flex: 0 0 15rem;
+}
+
+.news-rail-item button {
     display: flex;
-    gap: 1.5rem;
-    align-items: baseline;
+    flex-direction: column;
+    gap: 0.2rem;
     width: 100%;
-    padding: 0.75rem 0;
-    background: none;
+    height: 100%;
+    padding: 0.6rem 0.75rem;
+    background: var(--surface-card);
     border: 0;
+    color: var(--text-color);
     font: inherit;
+    font-size: var(--text-xs);
+    font-weight: var(--show-font-weight-bold);
+    letter-spacing: var(--track);
     text-align: left;
+    text-transform: uppercase;
     cursor: pointer;
 }
 
-.news-index-date {
-    flex: 0 0 11rem;
-    color: var(--text-dark);
-    font-size: var(--text-base);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: var(--track);
-    white-space: nowrap;
+.news-rail-date {
+    opacity: 0.7;
 }
 
-.news-index-headline {
-    color: var(--text-color);
-    font-weight: var(--show-font-weight-bold);
-    letter-spacing: var(--track);
-    text-transform: uppercase;
-}
-
-.news-index-item button:hover .news-index-headline,
-.news-index-item button:hover .news-index-date {
+/* Hovered, or the one that is open */
+.news-rail-item button:hover,
+.news-rail-item.is-current button {
     color: var(--accent-color);
 }
 
-/* The one on show. Marked rather than hidden from the list: seeing where you
-   are in the run is the point of showing the list at all. */
-.news-index-item.is-current button {
-    cursor: default;
-}
-
-.news-index-item.is-current .news-index-headline,
-.news-index-item.is-current .news-index-date {
-    color: var(--accent-color);
-}
-
-.news-index-item.is-current .news-index-headline::after {
-    content: '';
-    display: inline-block;
-    width: 0.4rem;
-    height: 0.4rem;
-    margin-left: 0.6rem;
-    vertical-align: middle;
-    background: var(--accent-color);
-}
-
-@media (max-width: 48rem) {
-    .news-index-item button {
-        flex-direction: column;
-        gap: 0.35rem;
-    }
-
-    .news-index-date {
-        flex: none;
-    }
+.news-rail-item.is-current button {
+    box-shadow: inset 0 -3px 0 var(--accent-color);
 }
 
 @media (max-width: 768px) {
@@ -383,21 +376,26 @@
         padding: 2rem 1.25rem;
     }
 
-    .news-main.has-video {
-        grid-template-columns: minmax(0, 1fr);
+    /* No room to wrap: the video or banner drops back under the text. */
+    .news-main.has-media {
+        display: flex;
+        flex-direction: column;
         gap: 1.5rem;
+    }
+
+    .news-main .news-video,
+    .news-main .news-banner {
+        float: none;
+        width: 100%;
+        margin: 0;
+        order: 2;
+    }
+
+    .news-main .news-banner {
+        --news-panel-w: 17.5rem;
     }
 
     .news-body-quoted {
         padding-left: 1rem;
-    }
-
-    .news-archive-item {
-        flex-direction: column;
-        gap: 0.25rem;
-    }
-
-    .news-archive-date {
-        flex: none;
     }
 }

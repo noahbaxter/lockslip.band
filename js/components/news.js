@@ -87,73 +87,64 @@ const NewsComponent = {
         `;
     },
 
+    // The video floats beside the text; a post without one puts its banner in
+    // that spot instead, and the banner goes under the text only with a video.
     renderFeatured(item) {
+        const media = item.video
+            ? this.renderVideo(item.video, item.headline)
+            : this.renderBanner(item.images, item.headline);
+
         return `
             <article class="news-featured" data-item-id="${item.id}">
-                ${this.renderBanner(item.images, item.headline)}
                 <div class="news-content">
                     ${this.renderDate(item.date)}
                     <h3>${item.headline}</h3>
-                    <div class="news-main${item.video ? ' has-video' : ''}">
+                    <div class="news-main${media ? ' has-media' : ''}">
+                        ${media}
                         <div class="news-text">
                             ${this.renderBody(item)}
                             ${this.renderLinks(item.links)}
                         </div>
-                        ${this.renderVideo(item.video, item.headline)}
                     </div>
                 </div>
+                ${item.video ? this.renderBanner(item.images, item.headline) : ''}
             </article>
         `;
     },
 
-    // Every post as a date + headline line, the one on show marked. This is the
-    // only way back to an older post: it used to list the ones that were not
-    // featured and do nothing when clicked, so a post became unreachable the
-    // moment a newer one arrived. Once there are enough to outgrow a list, they
-    // get their own page instead.
-    renderIndex(items, current) {
-        if (items.length < 2) return '';
-
-        const rows = items.map((item, index) => `
-            <li class="news-index-item${index === current ? ' is-current' : ''}">
-                <button type="button" onclick="NewsComponent.select(${index})"${index === current ? ' aria-current="true"' : ''}>
-                    <span class="news-index-date">${this.formatDate(item.date)}</span>
-                    <span class="news-index-headline">${item.headline}</span>
+    // Every post as a card in one row. The section is just this row until a card
+    // is opened, and it scrolls sideways, so it stays the same height however
+    // many posts pile up.
+    renderRail(items) {
+        const cards = items.map((item, index) => `
+            <li class="news-rail-item">
+                <button type="button" onclick="NewsComponent.select(${index})" aria-expanded="false">
+                    <span class="news-rail-date">${this.formatDate(item.date)}</span>
+                    <span class="news-rail-headline">${item.headline}</span>
                 </button>
             </li>
         `).join('');
 
-        return `
-            <div class="news-index">
-                <h4>All posts</h4>
-                <ul>${rows}</ul>
-            </div>
-        `;
+        return `<ul class="news-rail">${cards}</ul>`;
     },
 
-    // Swaps the featured post in place, the way the release switcher swaps
-    // records. Re-rendering the banner also re-points the modal at this post's
-    // images, which is what made the older ones unreachable before.
+    // Opens a post under the row, swaps it for another, or closes it when its own
+    // card is tapped again. Rendering the banner also re-points the modal at
+    // this post's images.
     select(index) {
         const item = this.items && this.items[index];
-        if (!item) return;
+        const slot = document.querySelector('.news-post');
+        if (!item || !slot) return;
 
-        const featured = document.querySelector('.news-featured');
-        if (!featured) return;
-        featured.outerHTML = this.renderFeatured(item);
+        const closing = this.open === index;
+        this.open = closing ? null : index;
+        slot.innerHTML = closing ? '' : this.renderFeatured(item);
 
-        document.querySelectorAll('.news-index-item').forEach((li, i) => {
-            li.classList.toggle('is-current', i === index);
-            const button = li.querySelector('button');
-            if (button) button.toggleAttribute('aria-current', i === index);
+        document.querySelectorAll('.news-rail-item').forEach((li, i) => {
+            const isOpen = i === this.open;
+            li.classList.toggle('is-current', isOpen);
+            li.querySelector('button').setAttribute('aria-expanded', String(isOpen));
         });
-
-        // The list sits under the post, so without this a click looks like it
-        // did nothing: the part that changed is off the top of the screen.
-        const shown = document.querySelector('.news-featured');
-        if (shown && shown.getBoundingClientRect().top < 0) {
-            shown.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
     },
 
     render(news) {
@@ -162,12 +153,13 @@ const NewsComponent = {
         const items = news.items.filter(item => !item.hidden);
         if (!items.length) return '';
         this.items = items;
+        this.open = null;
 
         return `
             <div class="container">
                 ${UIHelpers.sectionHeader(news.sectionTitle)}
-                ${this.renderFeatured(items[0])}
-                ${this.renderIndex(items, 0)}
+                ${this.renderRail(items)}
+                <div class="news-post"></div>
             </div>
         `;
     }
