@@ -36,6 +36,7 @@ const ReleasesComponent = {
         if (!panel) return;
         const content = panel.parentElement;
         const description = content.querySelector('.release-description');
+        this.clearVideo(content);
 
         // Lyrics take over the whole column, title and streaming row included,
         // so a verse gets the height instead of sharing it with the header.
@@ -71,6 +72,62 @@ const ReleasesComponent = {
         if (description) description.hidden = true;
     },
 
+    // A track's video takes the lyrics' place in the column. Asking for the one
+    // that is open, or the record starting to play, closes it, which also stops it.
+    showVideo(release, trackIndex) {
+        const panel = document.querySelector(`.release-video[data-video-for="${release.id}"]`);
+        if (!panel) return;
+        const content = panel.parentElement;
+        const description = content.querySelector('.release-description');
+        const wasOpen = !panel.hidden;
+        const sameTrack = panel.dataset.track === String(trackIndex);
+        this.clearVideo(content);
+
+        if (trackIndex === null || (wasOpen && sameTrack)) {
+            if (wasOpen) {
+                content.classList.remove('is-lyrics');
+                if (description) description.hidden = false;
+                this.fitDescriptions();
+            }
+            return;
+        }
+
+        const track = release.audio.tracks[trackIndex];
+        const player = AudioPlayer.instances.find(p => p.id === release.id);
+        if (player && player.lyricsOpen) {
+            player.closeLyrics();
+            content.querySelector('.release-lyrics').hidden = true;
+        }
+
+        panel.dataset.track = trackIndex;
+        panel.innerHTML = `
+            <div class="release-video-head">
+                <span class="release-lyrics-title">${track.name}</span>
+                <button type="button" class="release-video-close" aria-label="Close video"
+                        onclick="ReleasesComponent.closeVideo('${release.id}')">&times;</button>
+            </div>
+            ${NewsComponent.renderVideo(release.videos[track.num], track.name)}
+        `;
+        panel.hidden = false;
+        content.classList.add('is-lyrics');
+        if (description) description.hidden = true;
+        content.closest('.release-item').querySelectorAll('.ap-list li')[trackIndex]
+            .querySelector('.ap-video').classList.add('is-open');
+    },
+
+    clearVideo(content) {
+        const panel = content.querySelector('.release-video');
+        if (!panel) return;
+        content.closest('.release-item').querySelectorAll('.ap-video.is-open')
+            .forEach(b => b.classList.remove('is-open'));
+        panel.hidden = true;
+        panel.textContent = '';
+        delete panel.dataset.track;
+    },
+
+    openVideo(id, trackIndex) { this.showVideo(this.byId[id], trackIndex); },
+    closeVideo(id) { this.showVideo(this.byId[id], null); },
+
     renderPlayer(release) {
         if (release.audio && release.audio.tracks && release.audio.tracks.length) {
             AudioPlayer.register(release.id, {
@@ -80,6 +137,9 @@ const ReleasesComponent = {
                 coverImage: release.coverImage,
                 releaseTitle: release.title,
                 unavailableNote: release.audio.unavailableNote,
+                videos: release.videos,
+                onVideo: (trackIndex) => this.showVideo(release, trackIndex),
+                onPlay: () => this.showVideo(release, null),
                 // One cover per modal. Paging between unrelated records is not
                 // navigation anyone asked for.
                 onLyrics: !this.lyricsFor(release.id) ? null
@@ -158,6 +218,56 @@ const ReleasesComponent = {
         `;
     },
 
+    // The record's videos in a row, a thumbnail per track that has one. Clicking
+    // one opens it in the panel the track's own video button opens.
+    renderVideos(release) {
+        const videos = release.videos || {};
+        const items = ((release.audio || {}).tracks || [])
+            .map((track, i) => ({ track, i, id: videos[track.num] }))
+            .filter(item => item.id);
+        if (!items.length) return '';
+
+        return `
+            <div class="release-videos">
+                ${items.map(({ track, i, id }) => `
+                    <button type="button" class="release-video-thumb" aria-label="Watch the ${track.name} video"
+                            onclick="ReleasesComponent.openVideo('${release.id}', ${i})">
+                        <img src="https://i.ytimg.com/vi/${id}/maxresdefault.jpg" alt="" loading="lazy"
+                             onerror="this.onerror=null; this.src='https://i.ytimg.com/vi/${id}/hqdefault.jpg'">
+                        <span class="news-video-play" aria-hidden="true"></span>
+                        <span class="release-video-name">${track.name}</span>
+                    </button>
+                `).join('')}
+            </div>
+        `;
+    },
+
+    // Videos and merch share one row's worth of space, a toggle between them,
+    // videos first; a record with no videos is just the merch, no toggle.
+    renderExtras(release) {
+        const videos = this.renderVideos(release);
+        const merch = this.renderPhysicalLinks(release.physicalLinks);
+        if (!videos) return merch;
+
+        return `
+            <div class="release-extras" data-show="videos">
+                <div class="release-extras-tabs">
+                    <button type="button" class="is-active" data-extra="videos" onclick="ReleasesComponent.showExtra(this)">Videos</button>
+                    <button type="button" data-extra="merch" onclick="ReleasesComponent.showExtra(this)">Buy</button>
+                </div>
+                ${videos}
+                ${merch}
+            </div>
+        `;
+    },
+
+    showExtra(button) {
+        const box = button.closest('.release-extras');
+        box.dataset.show = button.dataset.extra;
+        box.querySelectorAll('.release-extras-tabs button')
+            .forEach(b => b.classList.toggle('is-active', b === button));
+    },
+
     // Bandcamp's own wording for a record that isn't out yet.
     renderDate(release) {
         if (!release.year) return '';
@@ -193,7 +303,8 @@ const ReleasesComponent = {
                     </div>
                     ${release.description ? `<p class="release-description">${this.renderDescription(release.description)}</p>` : ''}
                     <div class="release-lyrics" data-lyrics-for="${release.id}" hidden></div>
-                    ${this.renderPhysicalLinks(release.physicalLinks)}
+                    <div class="release-video" data-video-for="${release.id}" hidden></div>
+                    ${this.renderExtras(release)}
                 </div>
             </div>
         `;
@@ -365,10 +476,14 @@ const ReleasesComponent = {
     // Every cover on the page, so the modal can page between records.
     artwork: [],
 
+    // The shown releases by id, for the handlers in the markup that name one.
+    byId: {},
+
     render(releases) {
         if (!releases || !releases.releases) return '';
 
-        const shown = releases.releases.filter(r => !r.hidden);        
+        const shown = releases.releases.filter(r => !r.hidden);
+        this.byId = Object.fromEntries(shown.map(r => [r.id, r]));
         return `
             <div class="container">
                 ${UIHelpers.sectionHeader("MUSIC")}

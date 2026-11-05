@@ -22,6 +22,14 @@ const AudioPlayer = {
         </svg>
     `,
 
+    // Play in a rounded box, the shape of a video mark; currentColor like the rest.
+    VIDEO_ICON: `
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="2.5" y="5" width="19" height="14" rx="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor"/>
+        </svg>
+    `,
+
     // Populated by ReleasesComponent.render() before the markup is inserted, then
     // drained by initAll(). Needed because rendering is string-templated, so there
     // is no element to hang data off until after innerHTML lands.
@@ -101,6 +109,10 @@ class PlayerInstance {
         this.onArtClick = data.onArtClick || null;
         this.onLyrics = data.onLyrics || null;
         this.lyricsOpen = false;
+        // Track number -> YouTube id, for the rows that get a video button.
+        this.videos = data.videos || {};
+        this.onVideo = data.onVideo || null;
+        this.onPlayStart = data.onPlay || null;
         // Idle: cued to the first track but nothing playing and no row marked.
         // This is both the state a fresh player starts in and the one it returns
         // to when the record runs out, so the two are indistinguishable.
@@ -259,6 +271,26 @@ class PlayerInstance {
             dur.className = 'ap-dur';
             dur.textContent = this.fmt(track.duration || 0);
             li.appendChild(dur);
+            // After the time, at the row's edge: the time grows to "0:41 / 3:04"
+            // on the playing row, and the icon must not move when it does. Rows
+            // without a video get an empty slot of the same size, so every time
+            // sits in the same place.
+            if (this.onVideo && Object.keys(this.videos).length) {
+                if (this.videos[track.num]) {
+                    const video = document.createElement('button');
+                    video.type = 'button';
+                    video.className = 'ap-video';
+                    video.title = 'Music video';
+                    video.setAttribute('aria-label', `Watch the ${this.title(track)} video`);
+                    video.innerHTML = AudioPlayer.VIDEO_ICON;
+                    video.addEventListener('click', e => { e.stopPropagation(); this.onVideo(i); });
+                    li.appendChild(video);
+                } else {
+                    const slot = document.createElement('span');
+                    slot.className = 'ap-video-slot';
+                    li.appendChild(slot);
+                }
+            }
             if (this.canPlay(i)) li.addEventListener('click', () => this.playTrack(i));
             else if (this.playable) {
                 li.classList.add('is-unavailable');
@@ -268,7 +300,16 @@ class PlayerInstance {
         });
     }
 
+    // Lyrics and video share one panel, so opening a video leaves the lyrics
+    // button as it was found: off.
+    closeLyrics() {
+        this.lyricsOpen = false;
+        this.el.lyrics.classList.remove('is-open');
+        this.el.lyrics.setAttribute('aria-pressed', 'false');
+    }
+
     onPlay() {
+        if (this.onPlayStart) this.onPlayStart();
         this.suppressAdvance = false;
         this.setPlaying(true);
         this.loop();
