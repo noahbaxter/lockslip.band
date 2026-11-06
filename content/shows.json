@@ -602,6 +602,16 @@
       "bands": ["Anchorite", "Human Issue", "Lockslip", "Ambretta", "Orca", "Seeker", "Mass Panic", "Skeletizer", "The Yaupon Holly", "Future Forms", "Damage Done", "Ill Star", "Sandcrawler", "Thunderclap", "Stunner"]
     },
     {
+      "id": "2026-11-21",
+      "date": {"month": "NOV", "day": "21", "year": "2026"},
+      "event": "The Conversation Record Release",
+      "venue": "The Haven",
+      "location": "Pomona, CA",
+      "poster": "assets/show-posters/2026_11_21.jpg",
+      "ticketsUrl": "https://www.thehavenpomona.com/event-details/lockslip-contract-killer-cel-damage-auditory-anguish-saw",
+      "bands": ["Friends Like You", "Cel Damage", "Saw", "Auditory Anguish", "Contract Killer", "Lockslip"]
+    },
+    {
       "id": "2026-12-12",
       "date": {"month": "DEC", "day": "12", "year": "2026"},
       "event": "For The Children",
