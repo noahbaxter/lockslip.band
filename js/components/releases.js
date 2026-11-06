@@ -268,15 +268,9 @@ const ReleasesComponent = {
             .forEach(b => b.classList.toggle('is-active', b === button));
     },
 
-    // Bandcamp's own wording for a record that isn't out yet.
     renderDate(release) {
         if (!release.year) return '';
-        const date = `${release.month} ${release.day}, ${release.year}`;
-        const when = new Date(`${release.month} ${release.day}, ${release.year}`);
-        const upcoming = !isNaN(when) && when > new Date();
-        return `<span class="release-date${upcoming ? ' is-upcoming' : ''}">${date}` +
-               (upcoming ? '<span class="release-date-label">Coming soon</span>' : '') +
-               `</span>`;
+        return `<span class="release-date">${release.month} ${release.day}, ${release.year}</span>`;
     },
 
     // "Gray World" where the blurb names the track is a switch: it drains the
